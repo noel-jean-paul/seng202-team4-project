@@ -6,13 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Fitness_Tracker" />
-        <module name="Seng202_Project" />
+        <module name="SENG202_project" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Fitness_Tracker" target="1.5" />
-      <module name="Seng202_Project" target="1.5" />
+      <module name="SENG202_project" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
