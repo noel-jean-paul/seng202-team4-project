@@ -10,6 +10,6 @@ public class NoelsTest {
     }
 
     @Test
-    public void failingTest() { assertTrue(1 + 2 == 0); }
+    public void failingTest() { assertTrue(1 + 2 == 3); }
 }
 
