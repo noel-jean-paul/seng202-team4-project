@@ -6,6 +6,6 @@ import static junit.framework.Assert.assertTrue;
 public class MattMTest {
     @Test
     public void testTest(){
-        assertTrue(1+1 == 3);
+        assertTrue(1+1 == 2);
     }
 }
