@@ -1,12 +1,15 @@
 package seng202.team4;
 
-import junit.framework.TestCase;
+import static junit.framework.Assert.*;
+import org.junit.Test;
 
-public class NoelsTest extends TestCase {
+public class NoelsTest {
+    @Test
     public void testNoelsTest() {
         assertTrue(true);
     }
 
-    public void failingTest() {assertTrue(false); }
+    @Test
+    public void failingTest() { assertTrue(1 + 2 == 3); }
 }
 
