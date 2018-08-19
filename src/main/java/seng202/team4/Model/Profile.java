@@ -15,8 +15,8 @@ public class Profile {
     private LocalDate dateOfBirth;
     private double weight;
     private double height;
-    private List<Activity> activityList = new ArrayList<>();
-    private List<Goal> goalList = new ArrayList<>();
+    private List<Activity> activityList;
+    private List<Goal> goalList;
 
     /**
      *Constructor for profile class taking in the date of birth in string format
@@ -32,6 +32,8 @@ public class Profile {
         this.dateOfBirth = LocalDate.parse(stringDate);
         this.weight = weight;
         this.height = height;
+        goalList = new ArrayList<>();
+        activityList = new ArrayList<>();
     }
 
     /**
@@ -50,6 +52,8 @@ public class Profile {
         this.dateOfBirth = LocalDate.of(year, month, day);
         this.weight = weight;
         this.height = height;
+        goalList = new ArrayList<>();
+        activityList = new ArrayList<>();
     }
 
     /**
