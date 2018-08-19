@@ -15,8 +15,8 @@ public class Profile {
     private LocalDate dateOfBirth;
     private double weight;
     private double height;
-    private List<Activity> activityList = new ArrayList<Activity>();
-    private List<Goal> goalList = new ArrayList<Goal>();
+    private List<Activity> activityList = new ArrayList<>();
+    private List<Goal> goalList = new ArrayList<>();
 
     /**
      *Constructor for profile class taking in the date of birth in string format
