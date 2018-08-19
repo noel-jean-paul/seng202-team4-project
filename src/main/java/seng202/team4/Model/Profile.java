@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Profile {
@@ -14,8 +15,8 @@ public class Profile {
     private LocalDate dateOfBirth;
     private double weight;
     private double height;
-    private List<Activity> = new ArrayList<Activity>();
-    private List<Goal>() = new ArrayList<Goal>();
+    private List<Activity> activityList = new ArrayList<Activity>();
+    private List<Goal> goalList = new ArrayList<Goal>();
 
     /**
      *Constructor for profile class taking in the date of birth in string format
@@ -56,7 +57,7 @@ public class Profile {
      * @return a double as the user's bmi
      */
     public double calculate_bmi() {
-
+        return (this.weight/(this.height * this.height));
     }
 
     public int calculateAge() {
