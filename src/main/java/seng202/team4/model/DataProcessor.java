@@ -1,4 +1,4 @@
-package seng202.team4.Model;
+package seng202.team4.model;
 
 public interface DataProcessor {
     /*
