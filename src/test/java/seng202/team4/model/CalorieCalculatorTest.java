@@ -1,8 +1,8 @@
-package seng202.team4.Model;
+package seng202.team4.model;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import seng202.team4.Model.CalorieCalculator;
+import seng202.team4.model.CalorieCalculator;
 import seng202.team4.model.ActivityType;
 
 public class CalorieCalculatorTest {
