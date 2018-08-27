@@ -2,6 +2,7 @@ package seng202.team4.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 enum ActivityType{
     Walking, Running
@@ -18,7 +19,14 @@ public class Activity {
     private double averageSpeed;
     private double caloriesBurned;
     private ActivityType type;
-    private ActivityRawData rawData;
+    private Collection<DataRow> rawData;
 
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
