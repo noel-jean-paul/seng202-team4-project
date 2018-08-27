@@ -15,6 +15,7 @@ public class Goal {
     private LocalDate expiryDate;
     private Date completionDate = null;
     private String description;
+    private Goal decoratedGoal;
 
     public Goal(GoalType type, LocalDate creationDate, LocalDate expiryDate, String description) {
         this.type = type;
@@ -24,13 +25,13 @@ public class Goal {
     }
 
     public boolean isComplete() {
-        if (completionDate == null){
-            return true;
-        }
-        return false;
+        return completionDate == null;
     }
 
     public int getTimeRemaining() {
         return Period.between(expiryDate, LocalDate.now()).getDays();
     }
+
+
+
 }
