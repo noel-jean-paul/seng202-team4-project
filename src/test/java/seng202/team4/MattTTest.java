@@ -9,5 +9,6 @@ public class MattTTest {
     @Test
     public void testTest(){
         assertTrue(1+1 == 2);
+        assertTrue(true);
     }
 }
