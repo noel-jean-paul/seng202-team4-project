@@ -3,14 +3,13 @@ package seng202.team4;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import seng202.team4.controller.Controller;
 import seng202.team4.controller.CreateProfileController;
 import seng202.team4.controller.LoginController;
-import seng202.team4.controller.ScreenStateManager;
+import seng202.team4.controller.ApplicationStateManager;
 
 import static javafx.application.Application.launch;
 
@@ -25,19 +24,23 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         Scene baseScene = new Scene(new Group(), 600, 400);
-        ScreenStateManager screenManager = new ScreenStateManager(baseScene);
+        ApplicationStateManager applicationStateManager = new ApplicationStateManager(baseScene);
 
-        Pane loginScreen = initializePane("LoginScreen.fxml", new LoginController(screenManager));
+        Pane loginScreen = initializePane("LoginScreen.fxml", new LoginController(applicationStateManager));
+        Pane createProfileScreen = initializePane("CreateProfileScreen.fxml", new CreateProfileController(applicationStateManager));
+        Pane mainScreen = initializePane("MainScreen.fxml", new Controller(applicationStateManager));
 
-        Pane createProfileScreen = initializePane("CreateProfileScreen.fxml", new CreateProfileController(screenManager));
 
-        screenManager.addScreen("LoginScreen", loginScreen);
-        screenManager.addScreen("CreateProfileScreen", createProfileScreen);
-        screenManager.switchToScreen("LoginScreen");
+        applicationStateManager.addScreen("LoginScreen", loginScreen);
+        applicationStateManager.addScreen("CreateProfileScreen", createProfileScreen);
+        applicationStateManager.addScreen("MainScreen.fxml", mainScreen);
+        applicationStateManager.switchToScreen("LoginScreen");
 
         primaryStage.setTitle("Step by Step");
         primaryStage.setScene(baseScene);
         primaryStage.show();
+        primaryStage.setMinWidth(primaryStage.getWidth());
+        primaryStage.setMinHeight(primaryStage.getHeight());
     }
 
     /**
