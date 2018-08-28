@@ -28,4 +28,53 @@ public class ActivityRawData {
         this.longitude = longitude;
         this.elevation = elevation;
     }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate dateSet) {
+        date = dateSet;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalDateTime timeSet) {
+        time = timeSet;
+    }
+
+    public int getHeartRate() {
+        return heartRate;
+    }
+
+    public void setHeartRate(int heartRateSet) {
+        heartRate = heartRateSet;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitudeSet) {
+        latitude = latitudeSet;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitudeSet) {
+        longitude = longitudeSet;
+    }
+
+    public double getElevation() {
+        return elevation;
+    }
+
+    public void setElevation(double elevationSet) {
+        elevation = elevationSet;
+    }
+
 }
