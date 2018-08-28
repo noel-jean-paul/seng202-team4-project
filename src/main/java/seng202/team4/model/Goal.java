@@ -1,7 +1,6 @@
-package seng202.team4.Model;
+package seng202.team4.model;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 enum GoalType{

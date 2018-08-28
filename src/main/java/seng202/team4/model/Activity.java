@@ -1,12 +1,8 @@
-package seng202.team4.Model;
+package seng202.team4.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
-
-enum ActivityType{
-    Walking, Running
-}
 
 public class Activity {
     private String name;
