@@ -9,7 +9,7 @@ public class CalorieCalculatorTest {
 
     @Test
     public void runningMETCalculatorTest() {
-        CalorieCalculator testCalculator = new CalorieCalculator(5.4, 49, ActivityType.Running);
+        CalorieCalculator testCalculator = new CalorieCalculator(5.4, 49, ActivityType.Run);
 
     }
 

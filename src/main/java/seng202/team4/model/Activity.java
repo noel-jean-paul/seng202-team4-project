@@ -10,7 +10,7 @@ import java.util.List;
 public class Activity {
     /* The combination of name and date must be unique for a profile */
     private String name;
-    private LocalDate Date;
+    private LocalDate date;
     private String description;
     private ActivityType type;
     private LocalTime startTime;
@@ -20,14 +20,14 @@ public class Activity {
     private double averageSpeed;
     private List<DataRow> rawData;
 
-    public Activity(String name, LocalDate date, String description, ActivityType type, LocalTime startTime,
-                    LocalTime duration, double distance, double caloriesBurned, double averageSpeed) {
+    public Activity(String name, String date, String description, ActivityType type, String startTime,
+                    String duration, double distance, double caloriesBurned, double averageSpeed) {
         this.name = name;
-        Date = date;
+        this.date = LocalDate.parse(date);
         this.description = description;
         this.type = type;
-        this.startTime = startTime;
-        this.duration = duration;
+        this.startTime = LocalTime.parse(startTime);
+        this.duration = LocalTime.parse(duration);
         this.distance = distance;
         this.caloriesBurned = caloriesBurned;
         this.averageSpeed = averageSpeed;
@@ -51,11 +51,11 @@ public class Activity {
     }
 
     public LocalDate getDate() {
-        return Date;
+        return date;
     }
 
     public void setDate(LocalDate date) {
-        Date = date;
+        this.date = date;
     }
 
     public LocalTime getStartTime() {

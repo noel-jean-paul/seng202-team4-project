@@ -4,7 +4,7 @@ import java.time.Period;
 import java.util.Date;
 
 enum GoalType{
-    Walking, Running
+    Walk, Run
 }
 
 public class Goal {
