@@ -6,13 +6,18 @@ import java.util.List;
 
 public class dataLoader {
 
-    public List<String> fetchAllProfileNames() {
+    public static List<String> fetchAllProfileNames() {
         // TODO: 28/08/18
         return null;
     }
 
-    public Profile loadProfile(int profileId) {
+    public static Profile loadProfile(int profileId) {
         // TODO: 28/08/18
+        return null;
+    }
+    
+    public static List<String> fetchAllActivityKeysForProfile(Profile profile) {
+        // TODO: 29/08/18  
         return null;
     }
 
