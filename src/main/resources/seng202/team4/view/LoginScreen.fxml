@@ -6,8 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.LoginController">
    <top>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Step by Step fitness tracker" BorderPane.alignment="CENTER">
          <font>
@@ -41,6 +40,11 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
               </content>
             </ScrollPane>
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#createProfile" text="Create New Profile">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Button>
          </children>
          <BorderPane.margin>
             <Insets bottom="100.0" left="120.0" right="120.0" />
