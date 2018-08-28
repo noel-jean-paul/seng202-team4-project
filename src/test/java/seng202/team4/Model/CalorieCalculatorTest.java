@@ -23,7 +23,9 @@ public class CalorieCalculatorTest {
 
     @Test
     public void walkingMETCalculatorTest() {
-
+        CalorieCalculator testCalculator = new CalorieCalculator(7.8, 4.1, 103, ActivityType.Walking);
+        double MET = testCalculator.getMET();
+        assertEquals(3.0, MET, 0.1);
     }
 
 }
