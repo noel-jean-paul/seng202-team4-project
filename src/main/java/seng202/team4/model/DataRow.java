@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 class DataRow {
-    private int rowNumber;
+    private int number;
     private LocalDate date;
     private LocalTime time;
     private int heartRate;

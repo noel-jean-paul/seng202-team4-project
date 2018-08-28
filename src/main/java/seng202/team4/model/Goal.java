@@ -18,7 +18,8 @@ public class Goal {
     private double goalDistance;
     private double goalDuration;
 
-    public Goal(double progress, GoalType type, LocalDate creationDate, LocalDate expiryDate, Date completionDate, String description, double goalDistance, double goalDuration) {
+    public Goal(int number, double progress, GoalType type, LocalDate creationDate, LocalDate expiryDate, Date completionDate, String description, double goalDistance, double goalDuration) {
+        this.number = number;
         this.progress = progress;
         this.type = type;
         this.creationDate = creationDate;

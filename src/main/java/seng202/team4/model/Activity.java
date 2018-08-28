@@ -6,9 +6,9 @@ import java.time.LocalTime;
 import java.util.Collection;
 
 public class Activity {
-    private String name; // must be unique
+    /* The combination of name and date must be unique for a profile */
+    private String name;
     private String description;
-    private int id;
     private LocalDate Date;
     private LocalTime startTime;
     private LocalTime duration;

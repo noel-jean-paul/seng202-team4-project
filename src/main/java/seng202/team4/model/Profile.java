@@ -9,7 +9,6 @@ public class Profile {
     /**
      * A class profile which holds the attributes for each user
      */
-    private int profileId;
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
@@ -54,6 +53,54 @@ public class Profile {
         this.height = height;
         goalList = new ArrayList<>();
         activityList = new ArrayList<>();
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public List<Activity> getActivityList() {
+        return activityList;
+    }
+
+    public List<Goal> getGoalList() {
+        return goalList;
     }
 
     /**
