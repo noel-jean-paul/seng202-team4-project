@@ -6,33 +6,39 @@ import static org.junit.Assert.*;
 public class CalorieCalculatorTest {
 
     @Test
-    public void runningMETCalculatorTest() {
-        CalorieCalculator testCalculator = new CalorieCalculator(83.4,9.3, 49, ActivityType.Running);
-        double MET = testCalculator.getMET();
-        assertEquals(9.0, MET, 0.1);
+    public void testRunningModerateSpeed() {
+        double calories = CalorieCalculator.calculateCalories(10.6, 78.6, 1560, ActivityType.Running);
+        assertEquals(350.5, calories, 0.1);
     }
 
     @Test
-    public void runningCalorieCalculatorTest() {
-        // Basing these stats off my own running experience on treadmills, numbers seem consistent
-        // with what I see while running - Matt Kenny
-        CalorieCalculator testCalculator = new CalorieCalculator(78.9, 11, 1560, ActivityType.Running);
-        double calories = testCalculator.getCalories();
-        assertEquals(376.9, calories, 0.5);
+    public void testRunningLowSpeed() {
+        double calories = CalorieCalculator.calculateCalories(4, 78.6, 1560, ActivityType.Running);
+        assertEquals(214.6, calories, 0.1);
     }
 
     @Test
-    public void walkingMETCalculatorTest() {
-        CalorieCalculator testCalculator = new CalorieCalculator(78.6, 4.1, 103, ActivityType.Walking);
-        double MET = testCalculator.getMET();
-        assertEquals(3.0, MET, 0.1);
+    public void testRunningHighSpeed() {
+        double calories = CalorieCalculator.calculateCalories(21, 78.6, 1560, ActivityType.Running);
+        assertEquals(822.5, calories, 0.1);
     }
 
     @Test
-    public void walkingCalorieCalculatorTest() {
-        CalorieCalculator testCalculator = new CalorieCalculator(102, 5.7, 441.4, ActivityType.Walking);
-        double calories = testCalculator.getCalories();
-        assertEquals(65.7, calories, 0.1);
+    public void testWalkingLowSpeed() {
+        double calories = CalorieCalculator.calculateCalories(3.0, 78.6, 1560, ActivityType.Walking);
+        assertEquals(71.5, calories, 0.1);
+    }
+
+    @Test
+    public void testWalkingModerateSpeed() {
+        double calories = CalorieCalculator.calculateCalories(5.4, 78.6, 1560, ActivityType.Walking);
+        assertEquals(153.8, calories, 0.1);
+    }
+
+    @Test
+    public void testWalkingHighSpeed() {
+        double calories = CalorieCalculator.calculateCalories(7.5, 78.6, 1560, ActivityType.Walking);
+        assertEquals(296.8, calories, 0.1);
     }
 
 }
