@@ -9,6 +9,7 @@ public class Profile {
     /**
      * A class profile which holds the attributes for each user
      */
+    private int profileId;
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;

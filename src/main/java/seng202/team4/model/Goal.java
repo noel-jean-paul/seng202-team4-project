@@ -8,6 +8,7 @@ enum GoalType{
 }
 
 public class Goal {
+    private int number;
     private double progress;
     private GoalType type;
     private LocalDate creationDate;

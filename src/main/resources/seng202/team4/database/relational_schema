@@ -1,9 +1,9 @@
-Profile(ProfileID, FName, LName, DateofBirth, Height, Weight)
+Profile(FirstName, LastName, DateofBirth, Height, Weight)
 
-Goal(GoalID, Progress, Type, Description, CreationDate, ExpiryDate, CompletionDate, GoalDuration, GoalDistance, ProfileID)
+Goal(number, Progress, Type, Description, CreationDate, ExpiryDate, CompletionDate, GoalDuration, GoalDistance, firstName, lastName)
 
-Activity(ActivityID, Name, Date, Description, Type, StartTime, Duration, Distance, CaloriesBurned, ProfileID)
+Activity(Name, Date, Description, Type, StartTime, Duration, Distance, CaloriesBurned, firstName, LastName)
 
-DataRow(ActivityID, RowNumber, Date, time, HeartRate, Latitude, Longitude, Altitude)
+DataRow(name, date, RowNumber, Date, time, HeartRate, Latitude, Longitude, Altitude)
 
 

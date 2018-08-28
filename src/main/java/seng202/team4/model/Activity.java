@@ -6,7 +6,7 @@ import java.time.LocalTime;
 import java.util.Collection;
 
 public class Activity {
-    private String name;
+    private String name; // must be unique
     private String description;
     private int id;
     private LocalDate Date;
