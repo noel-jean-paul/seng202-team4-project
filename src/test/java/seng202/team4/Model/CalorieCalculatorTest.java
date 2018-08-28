@@ -12,4 +12,18 @@ public class CalorieCalculatorTest {
         assertEquals(9.0, MET, 0.1);
     }
 
+    @Test
+    public void runningCalorieCalculatorTest() {
+        // Basing these stats off my own running experience on treadmills, numbers seem consistent
+        // with what I see while running - Matt Kenny
+        CalorieCalculator testCalculator = new CalorieCalculator(78.9, 11, 1560, ActivityType.Running);
+        double calories = testCalculator.getCalories();
+        assertEquals(376.9, calories, 0.5);
+    }
+
+    @Test
+    public void walkingMETCalculatorTest() {
+
+    }
+
 }
