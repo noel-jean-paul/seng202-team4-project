@@ -7,15 +7,17 @@ public class CalorieCalculator {
     private double duration;
     private double caloriesBurned;
     private double MET;
+    private double deltaHeight;
     private ActivityType activity;
 
     /**
      * CalorieCalculator contructor.
+     * @param incomingWeight the weight of the user in kilograms.
      * @param incomingSpeed the average speed of the user - in km/h - during the given time segment.
      * @param incomingDuration the duration of the time segment - in minutes.
      * @param incomingActivity the activity which the user is perfoming during the time segment.
      */
-    CalorieCalculator(double incomingWeight, double incomingSpeed, int incomingDuration, ActivityType incomingActivity) {
+    CalorieCalculator(double incomingWeight, double incomingSpeed, double incomingDuration, ActivityType incomingActivity) {
         speed = incomingSpeed;
         duration = incomingDuration / 60;
         weight = incomingWeight;
@@ -25,12 +27,34 @@ public class CalorieCalculator {
 
     private double calculateCalories() {
         if (activity == ActivityType.Walking) {
-            MET = 4.0;
+            MET = walkingMETCalculator();
         } else {
             MET = runningMETCalculator();
         }
         double result = duration * MET * 3.5 * weight / 200;
         return result;
+    }
+
+    private double walkingMETCalculator() {
+        double localMET = 0;
+        if (speed < 3.2) {
+            localMET = 2.0;
+        } else if (3.2 <= speed && speed < 4.0) {
+            localMET = 2.8;
+        } else if (4.0 <= speed && speed < 4.5) {
+            localMET = 3.0;
+        } else if (4.5 <= speed && speed < 5.2) {
+            localMET = 3.5;
+        } else if (5.2 <= speed && speed < 5.6) {
+            localMET = 4.3;
+        } else if (5.6 <= speed && speed < 6.4) {
+            localMET = 5.0;
+        } else if (6.5 <= speed && speed < 7.2) {
+            localMET = 7.0;
+        } else {
+            localMET = 8.3;
+        }
+        return localMET;
     }
 
     /**
