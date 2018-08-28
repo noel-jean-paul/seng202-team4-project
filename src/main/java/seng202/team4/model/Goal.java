@@ -8,19 +8,24 @@ enum GoalType{
 }
 
 public class Goal {
-    private double progress = 0;
+    private double progress;
     private GoalType type;
     private LocalDate creationDate;
     private LocalDate expiryDate;
-    private Date completionDate = null;
+    private Date completionDate;
     private String description;
-    private Goal decoratedGoal;
+    private double goalDistance;
+    private double goalDuration;
 
-    public Goal(GoalType type, LocalDate creationDate, LocalDate expiryDate, String description) {
+    public Goal(double progress, GoalType type, LocalDate creationDate, LocalDate expiryDate, Date completionDate, String description, double goalDistance, double goalDuration) {
+        this.progress = progress;
         this.type = type;
         this.creationDate = creationDate;
         this.expiryDate = expiryDate;
+        this.completionDate = completionDate;
         this.description = description;
+        this.goalDistance = goalDistance;
+        this.goalDuration = goalDuration;
     }
 
     public boolean isComplete() {

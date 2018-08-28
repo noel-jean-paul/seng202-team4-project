@@ -1,0 +1,59 @@
+create table profile (
+profileId integer primary key,
+firstName text not null,
+lastName text not null,
+dateOfBirth character(10) not null,
+height real constraint check_height check (height < 3.00),
+weight real constraint check_weight check (weight < 250)
+);
+
+
+create table goal (
+goalId integer primary key,
+progress integer constraint check_progress check (progress between 0 and 100),
+type character(7) constraint check_type check (type in ("Running", "Walking")),
+description text,
+creationDate character(10) not null,
+expiryDate character(10),
+completionDate character(10),
+goalDuration character(8),
+goalDistance real,
+profileId integer,
+foreign key (profileId) references profile (profileId)
+on delete cascade on update no action
+);
+
+
+create table activity (
+activityId integer primary key,
+name text not null,
+date character(10) not null,
+description text,
+type character(7) constraint check_type check (type in ("Running", "Walking")),
+startTime character(8) not null,
+duration character(8) not null,
+distance real not null,
+caloriesBurned integer not null,
+profileId integer,
+foreign key (profileID) references profile (profileId)
+on delete cascade on update no action
+);
+
+
+
+create table dataRow (
+activityId integer,
+rowNumber integer,
+date character(10) not null,
+time character(8) not null,
+heartRate integer constraint check_heartRate check (heartRate between 60 and 250),
+latitude double constraint check_latitude check (latitude between -90 and 90),
+longitude double constraint check_longitude check (longitude between -180 and 180),
+altitude double constraint check_altitude check (altitude between 0 and 4000),
+primary key (activityId, rowNumber),
+foreign key (activityID) references activity (activityId)
+on delete cascade on update no action
+);
+
+
+

@@ -2,6 +2,7 @@ package seng202.team4.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collection;
 
 public class Activity {
@@ -9,8 +10,8 @@ public class Activity {
     private String description;
     private int id;
     private LocalDate Date;
-    private LocalDateTime startTime;
-    private LocalDateTime duration;
+    private LocalTime startTime;
+    private LocalTime duration;
     private double distance;
     private double averageSpeed;
     private double caloriesBurned;

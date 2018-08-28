@@ -1,0 +1,9 @@
+Profile(ProfileID, FName, LName, DateofBirth, Height, Weight)
+
+Goal(GoalID, Progress, Type, Description, CreationDate, ExpiryDate, CompletionDate, GoalDuration, GoalDistance, ProfileID)
+
+Activity(ActivityID, Name, Date, Description, Type, StartTime, Duration, Distance, CaloriesBurned, ProfileID)
+
+DataRow(ActivityID, RowNumber, Date, time, HeartRate, Latitude, Longitude, Altitude)
+
+
