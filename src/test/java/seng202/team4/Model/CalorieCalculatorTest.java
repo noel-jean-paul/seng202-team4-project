@@ -7,8 +7,9 @@ public class CalorieCalculatorTest {
 
     @Test
     public void runningMETCalculatorTest() {
-        CalorieCalculator testCalculator = new CalorieCalculator(9.3, 49, ActivityType.Running);
-
+        CalorieCalculator testCalculator = new CalorieCalculator(83.4,9.3, 49, ActivityType.Running);
+        double MET = testCalculator.getMET();
+        assertEquals(9.0, MET, 0.1);
     }
 
 }
