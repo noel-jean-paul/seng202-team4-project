@@ -1,11 +1,11 @@
 package seng202.team4.Model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class ActivityRawData {
     private LocalDate date;
-    private LocalDateTime time;
+    private LocalTime time;
     private int heartRate;
     private double latitude;
     private double longitude;
@@ -20,7 +20,7 @@ public class ActivityRawData {
      * @param longitude is the longitude as a double
      * @param elevation is the elevation as a double
      */
-    public ActivityRawData(LocalDate date, LocalDateTime time, int heartRate, double latitude, double longitude, double elevation) {
+    public ActivityRawData(LocalDate date, LocalTime time, int heartRate, double latitude, double longitude, double elevation) {
         this.date = date;
         this.time = time;
         this.heartRate = heartRate;
@@ -29,6 +29,9 @@ public class ActivityRawData {
         this.elevation = elevation;
     }
 
+    /*
+    Getters and Setters
+     */
     public LocalDate getDate() {
         return date;
     }
@@ -37,11 +40,11 @@ public class ActivityRawData {
         date = dateSet;
     }
 
-    public LocalDateTime getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(LocalDateTime timeSet) {
+    public void setTime(LocalTime timeSet) {
         time = timeSet;
     }
 

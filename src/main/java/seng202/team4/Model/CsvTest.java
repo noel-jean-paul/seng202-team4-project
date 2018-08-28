@@ -4,7 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.FileReader;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,26 +17,28 @@ public class CsvTest {
     expected.
      */
 
-    CsvTest() {
-        Activity activity = new Activity();
-    }
-
-    public ArrayList readFile(String filename, ActivityRawData row, ArrayList<ActivityRawData> rows) {
+    public ArrayList readFile(String filename, ArrayList<ActivityRawData> rows) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String line;   //empty line into which data will be read
         String csvSplitBy = ",";    //split on the comma
         String[] dataPoint = new String[6];
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))) {
             String[] firstLine = bufferedReader.readLine().split(csvSplitBy);   //read the first line
+            String activityName = firstLine[1];
             System.out.println(firstLine[1]);
             while (!(line = bufferedReader.readLine()).contains("#")) { //read up until the next # symbol, signifying the start of a new activity
                 dataPoint = line.split(csvSplitBy);
                 //still need to set date and time
-                row.setHeartRate(Integer.parseInt(dataPoint[2]));
-                row.setLatitude(Double.parseDouble(dataPoint[3]));
-                row.setLongitude(Double.parseDouble(dataPoint[4]));
-                row.setElevation(Double.parseDouble(dataPoint[5]));
-                rows.add(row);
+                LocalDate date = LocalDate.parse(dataPoint[0], dateFormatter);
+                LocalTime time = LocalTime.parse(dataPoint[1], timeFormatter);
+                int heartRate = (Integer.parseInt(dataPoint[2]));
+                double latitude = (Double.parseDouble(dataPoint[3]));
+                double longitude = (Double.parseDouble(dataPoint[4]));
+                double elevation = (Double.parseDouble(dataPoint[5]));
+                rows.add(new ActivityRawData(date, time, heartRate, latitude, longitude, elevation));
             }
+            Activity newActivity = new Activity(activityName, rows); // Creates a new Activity class containing all the information
 
         } catch (IOException exception) {
             exception.printStackTrace();
@@ -51,9 +54,8 @@ public class CsvTest {
     public static void main(String[] args) {
         String filename = "seng202_2018_example_data.csv";
         CsvTest test = new CsvTest();
-        ActivityRawData row = new ActivityRawData(null, null,0,0,0,0);  //Date and time not set yet as they are slightly more difficult
         ArrayList<ActivityRawData> rows = new ArrayList<>();
-        test.readFile(filename, row, rows);
+        test.readFile(filename, rows);
         for(ActivityRawData oneRow : rows) {
             System.out.println("Heart Rate: " + oneRow.getHeartRate() + " Latitude: " + oneRow.getLatitude() + " Longitude: " + oneRow.getLongitude() + " Elevation: " + oneRow.getElevation());
         }

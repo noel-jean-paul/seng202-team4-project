@@ -29,8 +29,8 @@ public class Activity {
      * Constructor for the Activity class
      * @param name is the name of the activity as a string
      */
-    public Activity(String name) {
+    public Activity(String name, List<ActivityRawData> rawActivityList) {
         this.name = name;
-        this.rawActivityList = new ArrayList<>();
+        this.rawActivityList = rawActivityList;
     }
 }
