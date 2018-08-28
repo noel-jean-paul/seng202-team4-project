@@ -40,4 +40,33 @@ public class ScreenStateManager {
         rootScene.setRoot(paneMap.get(name));
     }
 
+    /**
+     * Removes a screen from the ScreenStateManager.
+     * @param name The name of the screen to be removed, if no screen of that name
+     *             is found then the function has no effect.
+     */
+    public void removeScreen(String name) {
+        paneMap.remove(name);
+    }
+
+    /**
+     * Checks whether the ScreenStateManager contains a screen of the given name.
+     *
+     * @param name The name of the screen to be checked.
+     * @return
+     */
+    public boolean containsScreen(String name) {
+        return paneMap.containsKey(name);
+    }
+
+    /**
+     * Checks whether the ScreenStateManager contains the given screen.
+     *
+     * @param pane The screen to checked.
+     * @return
+     */
+    public  boolean containsScreen(Pane pane) {
+        return paneMap.containsValue(pane);
+    }
+
 }
