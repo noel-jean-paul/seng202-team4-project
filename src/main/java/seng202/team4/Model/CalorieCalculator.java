@@ -29,7 +29,7 @@ public class CalorieCalculator {
         } else {
             MET = runningMETCalculator();
         }
-        double result = duration * 6.3 * 3.5 * weight / 200;
+        double result = duration * MET * 3.5 * weight / 200;
         return result;
     }
 
