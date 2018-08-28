@@ -32,8 +32,8 @@ public class Profile {
         this.dateOfBirth = LocalDate.parse(stringDate);
         this.weight = weight;
         this.height = height;
-        goalList = new ArrayList<>();
-        activityList = new ArrayList<>();
+        this.goalList = new ArrayList<>();
+        this.activityList = new ArrayList<>();
     }
 
     /**
@@ -52,8 +52,8 @@ public class Profile {
         this.dateOfBirth = LocalDate.of(year, month, day);
         this.weight = weight;
         this.height = height;
-        goalList = new ArrayList<>();
-        activityList = new ArrayList<>();
+        this.goalList = new ArrayList<>();
+        this.activityList = new ArrayList<>();
     }
 
     /**
