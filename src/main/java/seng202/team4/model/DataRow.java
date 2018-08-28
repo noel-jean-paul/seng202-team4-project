@@ -1,10 +1,12 @@
 package seng202.team4.model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
-public class DataRow {
+class DataRow {
     private int rowNumber;
     private LocalDate date;
+    private LocalTime time;
     private int heartRate;
     private double latitude;
     private double longitude;
