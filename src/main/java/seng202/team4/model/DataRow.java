@@ -11,5 +11,4 @@ class DataRow {
     private double latitude;
     private double longitude;
     private double altitude;
-
 }

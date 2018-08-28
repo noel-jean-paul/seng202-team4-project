@@ -13,11 +13,11 @@ public class dataStorerTest {
     private Connection connection;
 
 
-    @Before
-    public void setUp() throws SQLException {
-        String url = "jdbc:sqlite:fitness_tracker.sqlite";
-        connection = DriverManager.getConnection(url);
-    }
+//    @Before
+//    public void setUp() throws SQLException {
+//        String url = "jdbc:sqlite:fitness_tracker.sqlite";
+//        connection = DriverManager.getConnection(url);
+//    }
 
     @Test
     public void insertProfile() {
