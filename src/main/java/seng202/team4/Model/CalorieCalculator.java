@@ -2,41 +2,18 @@ package seng202.team4.Model;
 
 public class CalorieCalculator {
 
-    private double speed;
-    private double weight;
-    private double duration;
-    private double caloriesBurned;
-    private double MET;
-    private double deltaHeight;
-    private ActivityType activity;
-
-    /**
-     * CalorieCalculator contructor.
-     * @param incomingWeight the weight of the user in kilograms.
-     * @param incomingSpeed the average speed of the user - in km/h - during the given time segment.
-     * @param incomingDuration the duration of the time segment - in minutes.
-     * @param incomingActivity the activity which the user is perfoming during the time segment.
-     */
-    CalorieCalculator(double incomingWeight, double incomingSpeed, double incomingDuration, ActivityType incomingActivity) {
-        speed = incomingSpeed;
-        duration = incomingDuration / 60;
-        weight = incomingWeight;
-        activity = incomingActivity;
-        caloriesBurned = calculateCalories();
-    }
-
-    private double calculateCalories() {
+    public static double calculateCalories(double speed, double weight, double duration, ActivityType activity) {
+        double MET = 0;
         if (activity == ActivityType.Walking) {
-            MET = walkingMETCalculator();
+            MET = walkingMETCalculator(speed);
         } else {
-            MET = runningMETCalculator();
+            MET = runningMETCalculator(speed);
         }
-        double result = duration * MET * 3.5 * weight / 200;
-        return result;
+        return (duration / 60) * MET * 3.5 * weight / 200;
     }
 
-    private double walkingMETCalculator() {
-        double localMET = 0;
+    private static double walkingMETCalculator(double speed) {
+        double localMET;
         if (speed < 3.2) {
             localMET = 2.0;
         } else if (3.2 <= speed && speed < 4.0) {
@@ -61,8 +38,8 @@ public class CalorieCalculator {
      * Calculates the MET of the specific running activity through the user's speed.
      * @return the calculated MET.
      */
-    private double runningMETCalculator() {
-        double localMET = 0;
+    private static double runningMETCalculator(double speed) {
+        double localMET;
         if (speed < 6.5) {
             localMET = 6.0;
         } else if (6.5 <= speed && speed < 8.0) {
@@ -91,13 +68,5 @@ public class CalorieCalculator {
             localMET = 23.0;
         }
         return localMET;
-    }
-
-    public double getCalories() {
-        return caloriesBurned;
-    }
-
-    public double getMET() {
-        return MET;
     }
 }
