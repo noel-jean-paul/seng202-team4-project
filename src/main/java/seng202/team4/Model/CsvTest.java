@@ -17,7 +17,7 @@ public class CsvTest {
     expected.
      */
 
-    public ArrayList readFile(String filename, ArrayList<ActivityRawData> rows) {
+    public ArrayList readFile(String filename, ArrayList<ActivityRawData> rows, ArrayList<Activity> allActivities) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String line;   //empty line into which data will be read
@@ -38,7 +38,7 @@ public class CsvTest {
                 double elevation = (Double.parseDouble(dataPoint[5]));
                 rows.add(new ActivityRawData(date, time, heartRate, latitude, longitude, elevation));
             }
-            Activity newActivity = new Activity(activityName, rows); // Creates a new Activity class containing all the information
+            allActivities.add(new Activity(activityName, rows)); // Creates a new Activity class containing the activity name and all activity data and adds it to the list of all activity data.
 
         } catch (IOException exception) {
             exception.printStackTrace();
@@ -54,8 +54,9 @@ public class CsvTest {
     public static void main(String[] args) {
         String filename = "seng202_2018_example_data.csv";
         CsvTest test = new CsvTest();
+        ArrayList<Activity> allActivities = new ArrayList<>(); // Creates a list of all activities parsed in the file
         ArrayList<ActivityRawData> rows = new ArrayList<>();
-        test.readFile(filename, rows);
+        test.readFile(filename, rows, allActivities);
         for(ActivityRawData oneRow : rows) {
             System.out.println("Heart Rate: " + oneRow.getHeartRate() + " Latitude: " + oneRow.getLatitude() + " Longitude: " + oneRow.getLongitude() + " Elevation: " + oneRow.getElevation());
         }
