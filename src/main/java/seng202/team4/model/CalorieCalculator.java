@@ -6,7 +6,7 @@ public class CalorieCalculator {
 
     public static double calculateCalories(double speed, double weight, double duration, ActivityType activity) {
         double MET = 0;
-        if (activity == ActivityType.Walking) {
+        if (activity == ActivityType.Walk) {
             MET = walkingMETCalculator(speed);
         } else {
             MET = runningMETCalculator(speed);
