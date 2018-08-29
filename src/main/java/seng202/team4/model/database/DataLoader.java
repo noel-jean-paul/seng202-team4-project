@@ -5,7 +5,7 @@ import seng202.team4.model.data.*;
 import java.sql.*;
 import java.util.List;
 
-public class DataLoader extends DataAccesser {
+abstract public class DataLoader extends DataAccesser {
 
     /** Return the Profile in the database matching the first/last names.
      *

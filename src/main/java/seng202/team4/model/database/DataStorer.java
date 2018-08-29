@@ -6,7 +6,7 @@ import seng202.team4.model.data.enums.*;
 import java.sql.*;
 
 
-public class DataStorer extends DataAccesser {
+abstract public class DataStorer extends DataAccesser {
 
 //    /** Count the number of rows in the database with the given firstName and lastName
 //     *
@@ -137,6 +137,7 @@ public class DataStorer extends DataAccesser {
 
         statement.executeUpdate();
     }
+
 
     public static void main(String[] args) throws SQLException {
         String url = "jdbc:sqlite:fitness_tracker.sqlite";

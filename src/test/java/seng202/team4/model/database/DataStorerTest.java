@@ -1,10 +1,10 @@
 package seng202.team4.model.database;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
+import static org.junit.Assert.*;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.Profile;
+import seng202.team4.model.data.enums.ActivityType;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,8 +13,9 @@ import java.sql.SQLException;
 
 public class DataStorerTest {
     private static Connection connection;
-    Profile profile;
-    Activity activity;
+    private static Profile profile1;
+    private static Profile profile2;
+    private static Activity activity1;
 
 
     @BeforeClass
@@ -22,52 +23,59 @@ public class DataStorerTest {
         String url = "jdbc:sqlite:fitness_tracker.sqlite";
         connection = DriverManager.getConnection(url);
 
-        // Delete all profiles from the database
-        String select = "delete from profile";
-        PreparedStatement statement = connection.prepareStatement(select);
-        statement.executeUpdate();
+        // Initialise the database connection for the other classes
+        DataStorer.initialiseConnection(url);
+        DataLoader.initialiseConnection(url);
+        DataTestHelper.initialiseConnection(url);
 
-        // Delete all activities from the database
-        select = "delete from activity";
-        statement = connection.prepareStatement(select);
-        statement.executeUpdate();
+        // Remove all data from the database
+        DataTestHelper.clearDatabase();
 
-        // Delete all goals from the database
-        select = "delete from goal";
-        statement = connection.prepareStatement(select);
-        statement.executeUpdate();
+        // Initialise objects and insert some into the database
+        profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
+                1.83);
 
-        // Delete all dataRows from the database
-        select = "delete from dataRow";
-        statement = connection.prepareStatement(select);
-        statement.executeUpdate();
+        profile2 = new Profile("Matthew", "Michewski", "1997-06-23", 76,
+                1.85);
+        DataStorer.insertProfile(profile2);
+
+        activity1 = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
+                "12:15:01", "00:40:00", 5.13, 18, 7.7);
+    }
+
+    @AfterClass
+    public static void tearDown() throws SQLException {
+        connection.close();
     }
 
     @Test
-    public void insertProfileTest() {
-        //fail("not implemented");
+    public void insertProfileTest() throws SQLException {
+        DataStorer.insertProfile(profile1);
+        Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertTrue(profile1.equals(loadedProfile));
     }
 
     @Test
     public void insertActivityTest() throws SQLException {
-//        Activity activity = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
-//                "12:15:01", "00:40:00", 5.13, 18, 7.7);
-//
-//        insertActivity(activity, profile);
+        // Use the profile stored in the database in the @BeforeClass
+        DataStorer.insertActivity(activity1, profile2);
+        //Activity loadedActivity = DataLoader.loadActivity(activity1.getFirstName(), profile2.getLastName());
+
+        //assertTrue(activity1.equals(loadedActivity));
     }
 
     @Test
     public void insertGoal() {
-        //fail("not implemented");
+        // Use the profile stored in the database in the @BeforeClass
+//        DataStorer.insertGoal(goal1, profile2);
+//        Profile loadedProfile = DataLoader.loadProfile(profile2.getFirstName(), profile2.getLastName());
+//
+//        assertTrue(profile2.equals(loadedProfile));
     }
 
     @Test
     public void insertDataRow() {
-        //fail("not implemented");
-    }
-
-    @AfterClass
-    public void tearDown() throws SQLException {
-        connection.close();
+        fail("not implemented");
     }
 }

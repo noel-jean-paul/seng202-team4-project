@@ -1,50 +1,40 @@
 package seng202.team4.model.database;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import seng202.team4.model.data.Profile;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
 public class DataLoaderTest {
     private static Connection connection;
+    private static Profile profile1;
+    private static Profile profile2;
 
-
-    @Before
-    public void setUp() throws SQLException {
+    @BeforeClass
+    public static void setUp() throws SQLException {
         String url = "jdbc:sqlite:fitness_tracker.sqlite";
         connection = DriverManager.getConnection(url);
 
-        // initialise DataStorer and DataLoader connections to the database
+        // Initialise the database connection for the other classes
         DataStorer.initialiseConnection(url);
         DataLoader.initialiseConnection(url);
+        DataTestHelper.initialiseConnection(url);
 
-        // Delete all profiles from the database
-        String select = "delete from profile";
-        PreparedStatement statement = connection.prepareStatement(select);
-        statement.executeUpdate();
+        // Remove all data from the database
+        DataTestHelper.clearDatabase();
 
-        // Delete all activities from the database
-        select = "delete from activity";
-        statement = connection.prepareStatement(select);
-        statement.executeUpdate();
+        // Insert needed data into the database
+        profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
+                1.83);
+        DataStorer.insertProfile(profile1);
 
-        // Delete all goals from the database
-        select = "delete from goal";
-        statement = connection.prepareStatement(select);
-        statement.executeUpdate();
-
-        // Delete all dataRows from the database
-        select = "delete from dataRow";
-        statement = connection.prepareStatement(select);
-        statement.executeUpdate();
+        profile2 = new Profile("Matthew", "Michewski", "1997-06-23", 76,
+                1.85);
+        DataStorer.insertProfile(profile2);
     }
 
     @AfterClass
@@ -54,14 +44,8 @@ public class DataLoaderTest {
 
     @Test
     public void loadProfile() throws SQLException {
-        String firstName = "Noel";
-        String lastName = "Bisson";
-        Profile profile = new Profile(firstName, lastName, "1998-03-06", 85.0,
-                1.83);
-        DataStorer.insertProfile(profile);
-
-        Profile loadedProfile = DataLoader.loadProfile(firstName, lastName);
-        assertTrue(profile.equals(loadedProfile));
+        Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertTrue(profile1.equals(loadedProfile));
     }
 
     @Test
