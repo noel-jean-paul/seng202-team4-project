@@ -8,8 +8,8 @@ public class DataRow {
     private LocalDate date;
     private LocalTime time;
     private int heartRate;
-    private double latitude;
-    private double longitude;
+    private double latitude;    // values in range -90 to 90 inclusive
+    private double longitude;   // values in range -180 to 180 inclusive
     private double altitude;
 
     public DataRow(int number, String date, String time, int heartRate, double latitude, double longitude, double altitude) {
