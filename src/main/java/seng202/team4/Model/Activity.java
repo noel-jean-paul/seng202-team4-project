@@ -33,4 +33,8 @@ public class Activity {
         this.name = name;
         this.rawActivityList = rawActivityList;
     }
+
+    public String getName() {
+        return name;
+    }
 }
