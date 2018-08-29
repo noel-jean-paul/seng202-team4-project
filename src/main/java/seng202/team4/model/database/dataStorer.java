@@ -1,8 +1,8 @@
 package seng202.team4.model.database;
 
-import seng202.team4.model.Activity;
-import seng202.team4.model.ActivityType;
-import seng202.team4.model.Profile;
+import seng202.team4.model.data.*;
+import seng202.team4.model.data.enums.*;
+
 import java.sql.*;
 
 
@@ -79,6 +79,36 @@ public class dataStorer {
         statement.executeUpdate();
     }
 
+    /** Add an goal to the database.
+     *  If the combination of goal name and date is not unique, the profile will not be added.
+     *  It is assumed that all object fields are correctly formatted.
+     * @param goal the goal to be added
+     * @param goalOwner the profile who the goal belongs to
+     * @throws SQLException if an error occurred regarding the database
+     */
+
+    public static void insertGoal(Goal goal, Profile goalOwner) throws SQLException {
+        assert goal != null;
+
+        String insert = "insert into goal(goalNumber, progress, description, type, creationDate, expiryDate, completionDate, " +
+                "goalDuration, goalDistance, firstName, lastName) values (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement statement = connection.prepareStatement(insert);
+        // set the wildcards (indexed from 1)
+        statement.setString(1, String.valueOf(goal.getNumber()));
+        statement.setString(2, String.valueOf(goal.getProgress()));
+        statement.setString(3, goal.getDescription());
+        statement.setString(4, String.valueOf(goal.getType()));
+        statement.setString(5, String.valueOf(goal.getCreationDate()));
+        statement.setString(6, String.valueOf(goal.getExpiryDate()));
+        statement.setString(7, String.valueOf(goal.getCompletionDate()));
+        statement.setString(8, String.valueOf(goal.getGoalDuration()));
+        statement.setString(9, String.valueOf(goal.getGoalDistance()));
+        statement.setString(10, goalOwner.getFirstName());
+        statement.setString(11, goalOwner.getLastName());
+
+        statement.executeUpdate();
+    }
+
     public static void initialiseConnection() {
         String url = "jdbc:sqlite:fitness_tracker.sqlite";
         try {
@@ -88,16 +118,18 @@ public class dataStorer {
         }
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         initialiseConnection();
         Profile profile = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
 //        insertProfile(profile);
 
-        Activity activity = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 18, 7.7);
+//        Activity activity = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
+//                "12:15:01", "00:40:00", 5.13, 18, 7.7);
+//
+//        insertActivity(activity, profile);
 
-        insertActivity(activity, profile);
+       // Goal goal = new Goal(1, 55, GoalType.
     }
 
 

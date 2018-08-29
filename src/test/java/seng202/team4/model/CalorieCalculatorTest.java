@@ -1,9 +1,7 @@
 package seng202.team4.model;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
-import seng202.team4.model.CalorieCalculator;
-import seng202.team4.model.ActivityType;
+import seng202.team4.model.data.enums.ActivityType;
 
 public class CalorieCalculatorTest {
 

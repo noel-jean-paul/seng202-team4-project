@@ -1,6 +1,6 @@
 package seng202.team4.model.database;
 
-import seng202.team4.model.Profile;
+import seng202.team4.model.data.*;
 
 import java.util.List;
 

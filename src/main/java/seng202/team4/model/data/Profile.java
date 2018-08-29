@@ -1,4 +1,4 @@
-package seng202.team4.model;
+package seng202.team4.model.data;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;

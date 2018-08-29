@@ -1,6 +1,6 @@
 package seng202.team4.model;
 
-import seng202.team4.model.ActivityType;
+import seng202.team4.model.data.enums.ActivityType;
 
 public class CalorieCalculator {
 
