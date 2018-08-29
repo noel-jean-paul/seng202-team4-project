@@ -7,10 +7,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
-public class CsvTest {
+public class FileImporter {
 
     /*The current major problem with this class is the fact that it currently only prints out the last data point for an activity
     rather than each datapoint individually. However it prints out this datapoint the same number of times as the rows of datapoints
@@ -29,7 +28,7 @@ public class CsvTest {
             System.out.println(firstLine[1]);
             while (!(line = bufferedReader.readLine()).contains("#")) { //read up until the next # symbol, signifying the start of a new activity
                 dataPoint = line.split(csvSplitBy);
-                //still need to set date and time
+
                 LocalDate date = LocalDate.parse(dataPoint[0], dateFormatter);
                 LocalTime time = LocalTime.parse(dataPoint[1], timeFormatter);
                 int heartRate = (Integer.parseInt(dataPoint[2]));
@@ -47,13 +46,10 @@ public class CsvTest {
         return rows;
     }
 
-    /*public ArrayList addActivity(ArrayList dataRow) {
-
-    }*/
 
     public static void main(String[] args) {
         String filename = "seng202_2018_example_data.csv";
-        CsvTest test = new CsvTest();
+        FileImporter test = new FileImporter();
         ArrayList<Activity> allActivities = new ArrayList<>(); // Creates a list of all activities parsed in the file
         ArrayList<ActivityRawData> rows = new ArrayList<>();
         test.readFile(filename, rows, allActivities);
