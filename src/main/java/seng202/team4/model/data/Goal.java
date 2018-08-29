@@ -4,6 +4,7 @@ import seng202.team4.model.data.enums.GoalType;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class Goal {
@@ -28,6 +29,28 @@ public class Goal {
         this.description = description;
         this.goalDistance = goalDistance;
         this.goalDuration = goalDuration;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Goal goal = (Goal) o;
+        return getNumber() == goal.getNumber() &&
+                Double.compare(goal.getProgress(), getProgress()) == 0 &&
+                Double.compare(goal.getGoalDistance(), getGoalDistance()) == 0 &&
+                Double.compare(goal.getGoalDuration(), getGoalDuration()) == 0 &&
+                getType() == goal.getType() &&
+                Objects.equals(getCreationDate(), goal.getCreationDate()) &&
+                Objects.equals(getExpiryDate(), goal.getExpiryDate()) &&
+                Objects.equals(getCompletionDate(), goal.getCompletionDate()) &&
+                Objects.equals(getDescription(), goal.getDescription());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getNumber(), getProgress(), getType(), getCreationDate(), getExpiryDate(), getCompletionDate(), getDescription(), getGoalDistance(), getGoalDuration());
     }
 
     public int getNumber() {

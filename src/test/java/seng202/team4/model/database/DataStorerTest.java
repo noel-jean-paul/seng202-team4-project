@@ -43,7 +43,7 @@ public class DataStorerTest extends DataAccesser {
     }
 
     @Test
-    public void insertProfileTest() throws SQLException {
+    public void insertProfile() throws SQLException {
         DataStorer.insertProfile(profile1);
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -51,7 +51,7 @@ public class DataStorerTest extends DataAccesser {
     }
 
     @Test
-    public void insertActivityTest() throws SQLException {
+    public void insertActivity() throws SQLException {
         // Use the profile stored in the database in the @BeforeClass
         DataStorer.insertActivity(activity1, profile2);
         //Activity loadedActivity = DataLoader.loadActivity(activity1.getFirstName(), profile2.getLastName());

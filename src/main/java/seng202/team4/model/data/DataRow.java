@@ -2,6 +2,7 @@ package seng202.team4.model.data;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class DataRow {
     private int number;
@@ -20,6 +21,26 @@ public class DataRow {
         this.latitude = latitude;
         this.longitude = longitude;
         this.altitude = altitude;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DataRow dataRow = (DataRow) o;
+        return getNumber() == dataRow.getNumber() &&
+                getHeartRate() == dataRow.getHeartRate() &&
+                Double.compare(dataRow.getLatitude(), getLatitude()) == 0 &&
+                Double.compare(dataRow.getLongitude(), getLongitude()) == 0 &&
+                Double.compare(dataRow.getAltitude(), getAltitude()) == 0 &&
+                Objects.equals(getDate(), dataRow.getDate()) &&
+                Objects.equals(getTime(), dataRow.getTime());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getNumber(), getDate(), getTime(), getHeartRate(), getLatitude(), getLongitude(), getAltitude());
     }
 
     public int getNumber() {

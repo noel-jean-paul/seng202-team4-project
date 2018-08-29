@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class Activity {
     /* The combination of name and date must be unique for a profile */
@@ -33,6 +34,28 @@ public class Activity {
         this.caloriesBurned = caloriesBurned;
         this.averageSpeed = averageSpeed;
         rawData = new ArrayList<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Activity activity = (Activity) o;
+        return Double.compare(activity.getDistance(), getDistance()) == 0 &&
+                Double.compare(activity.getCaloriesBurned(), getCaloriesBurned()) == 0 &&
+                Double.compare(activity.getAverageSpeed(), getAverageSpeed()) == 0 &&
+                Objects.equals(getName(), activity.getName()) &&
+                Objects.equals(getDate(), activity.getDate()) &&
+                Objects.equals(getDescription(), activity.getDescription()) &&
+                getType() == activity.getType() &&
+                Objects.equals(getStartTime(), activity.getStartTime()) &&
+                Objects.equals(getDuration(), activity.getDuration());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getName(), getDate(), getDescription(), getType(), getStartTime(), getDuration(), getDistance(), getCaloriesBurned(), getAverageSpeed());
     }
 
     public String getName() {
