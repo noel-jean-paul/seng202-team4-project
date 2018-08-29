@@ -7,36 +7,30 @@ import javafx.scene.Group;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import seng202.team4.Utilities;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/** Controller for the main screen of the App. */
 public class MainScreenController extends Controller implements Initializable {
 
     @FXML
     private AnchorPane activityPane;
 
+    /** Creates a new LoginController with the given ApplicationStateManager. */
     public MainScreenController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
 
     }
 
+    /**
+     * Creates loads and intializes the different tabs of the main screen.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/ActivityTab.fxml"));
-        loader.setControllerFactory(c -> {return new Controller(applicationStateManager);});
-
-
-        Pane pane = new AnchorPane();
-        try {
-            loader.setLocation(new URL("file:/C:/Users/Matthew%20Toohey/Documents/UNI/2018/SENG202/local_repo/Seng202_Team4/target/classes/seng202/team4/view/ActivityTab.fxml"));
-            System.out.println(loader.getLocation());
-            pane = loader.load();
-        } catch (java.io.IOException e) {
-            System.out.println("ERROR!!!!!!!!!!!!!!!!!!!!!!!!");
-        }
-
-        System.out.println(pane);
-        activityPane.getChildren().setAll(pane);
+        Pane Pane = new Pane();
+        Pane = Utilities.loadPane("ActivityTab.fxml", new Controller(applicationStateManager));
+        activityPane.getChildren().setAll(Pane);
     }
 }

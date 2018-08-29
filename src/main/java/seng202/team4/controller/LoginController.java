@@ -3,7 +3,7 @@ package seng202.team4.controller;
 /** Controller for the login screen. */
 public class LoginController extends Controller {
 
-    /** Creates a new LoginController with the given ScreenStatemanager. */
+    /** Creates a new LoginController with the given ApplicationStateManager. */
     public LoginController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }

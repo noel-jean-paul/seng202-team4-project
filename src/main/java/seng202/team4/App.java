@@ -18,14 +18,14 @@ public class App extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         Scene baseScene = new Scene(new Group(), 600, 400);
         ApplicationStateManager applicationStateManager = new ApplicationStateManager(baseScene);
 
-        Pane loginScreen = initializePane("LoginScreen.fxml", new LoginController(applicationStateManager));
-        Pane createProfileScreen = initializePane("CreateProfileScreen.fxml", new CreateProfileController(applicationStateManager));
-        Pane mainScreen = initializePane("MainScreen.fxml", new MainScreenController(applicationStateManager));
+        Pane loginScreen = Utilities.loadPane("LoginScreen.fxml", new LoginController(applicationStateManager));
+        Pane createProfileScreen = Utilities.loadPane("CreateProfileScreen.fxml", new CreateProfileController(applicationStateManager));
+        Pane mainScreen = Utilities.loadPane("MainScreen.fxml", new MainScreenController(applicationStateManager));
 
 
         applicationStateManager.addScreen("LoginScreen", loginScreen);
@@ -38,22 +38,6 @@ public class App extends Application {
         primaryStage.show();
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
-    }
-
-    /**
-     * Initializes and returns a JavaFX pane from the given arguments.
-     *
-     * @param fxmlFilename The name of the fxml file that describes the pane.
-     * @param controller The controller class for the pane.
-     * @return A newly created pane.
-     * @throws Exception If the function fails to load the program.
-     */
-    private Pane initializePane(String fxmlFilename, Controller controller) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/" + fxmlFilename));
-        System.out.println(loader.getLocation());
-        loader.setControllerFactory(c -> {return controller;});
-        Pane pane = loader.load();
-        return pane;
     }
 
     public static void main(String[] args) {
