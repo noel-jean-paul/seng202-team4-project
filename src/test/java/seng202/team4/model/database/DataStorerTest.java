@@ -1,22 +1,17 @@
 package seng202.team4.model.database;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.Profile;
-import seng202.team4.model.data.enums.ActivityType;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
-import static seng202.team4.model.database.dataStorer.insertActivity;
-
-public class dataStorerTest {
+public class DataStorerTest {
     private static Connection connection;
     Profile profile;
     Activity activity;
@@ -46,8 +41,6 @@ public class dataStorerTest {
         select = "delete from dataRow";
         statement = connection.prepareStatement(select);
         statement.executeUpdate();
-
-
     }
 
     @Test

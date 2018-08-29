@@ -5,19 +5,7 @@ import seng202.team4.model.data.*;
 import java.sql.*;
 import java.util.List;
 
-public class dataLoader {
-
-    private static Connection connection = null;
-
-    /** Initialise the connection the database at the root of the project. */
-    public static void initialiseConnection() {
-        String url = "jdbc:sqlite:fitness_tracker.sqlite";
-        try {
-            connection = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+public class DataLoader extends DataAccesser {
 
     /** Return the Profile in the database matching the first/last names.
      *

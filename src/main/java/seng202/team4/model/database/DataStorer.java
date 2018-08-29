@@ -6,19 +6,7 @@ import seng202.team4.model.data.enums.*;
 import java.sql.*;
 
 
-public class dataStorer {
-
-    private static Connection connection = null;
-
-    /** Initialise the connection the database at the root of the project. */
-    public static void initialiseConnection() {
-        String url = "jdbc:sqlite:fitness_tracker.sqlite";
-        try {
-            connection = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+public class DataStorer extends DataAccesser {
 
 //    /** Count the number of rows in the database with the given firstName and lastName
 //     *
@@ -151,7 +139,9 @@ public class dataStorer {
     }
 
     public static void main(String[] args) throws SQLException {
-        initialiseConnection();
+        String url = "jdbc:sqlite:fitness_tracker.sqlite";
+        initialiseConnection(url);
+
         Profile profile = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
         insertProfile(profile);

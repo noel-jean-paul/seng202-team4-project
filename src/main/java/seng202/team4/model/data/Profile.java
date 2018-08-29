@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class Profile {
@@ -53,6 +54,24 @@ public class Profile {
         this.height = height;
         goalList = new ArrayList<>();
         activityList = new ArrayList<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Profile profile = (Profile) o;
+        return Double.compare(profile.getWeight(), getWeight()) == 0 &&
+                Double.compare(profile.getHeight(), getHeight()) == 0 &&
+                Objects.equals(getFirstName(), profile.getFirstName()) &&
+                Objects.equals(getLastName(), profile.getLastName()) &&
+                Objects.equals(getDateOfBirth(), profile.getDateOfBirth());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getFirstName(), getLastName(), getDateOfBirth(), getWeight(), getHeight());
     }
 
     public String getFirstName() {
