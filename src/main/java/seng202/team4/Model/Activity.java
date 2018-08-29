@@ -23,18 +23,22 @@ public class Activity {
     private double averageSpeed;
     private double caloriesBurned;
     private ActivityType type;
-    private List<ActivityRawData> rawActivityList;
+    private ArrayList<ActivityRawData> rawActivityList;
 
     /**
      * Constructor for the Activity class
      * @param name is the name of the activity as a string
      */
-    public Activity(String name, List<ActivityRawData> rawActivityList) {
+    public Activity(String name, ArrayList<ActivityRawData> rawActivityList) {
         this.name = name;
         this.rawActivityList = rawActivityList;
     }
 
     public String getName() {
         return name;
+    }
+
+    public ArrayList getRawActivityList() {
+        return rawActivityList;
     }
 }
