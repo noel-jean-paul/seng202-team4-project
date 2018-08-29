@@ -21,14 +21,14 @@ public class Profile {
      *Constructor for profile class taking in the date of birth in string format
      * @param firstName is the first name of the user in string format
      * @param lastName is the last name of the user in string format
-     * @param stringDate is the date of birth in string format
+     * @param dateOfBirth is the date of birth in string format
      * @param weight is the weight of the user in double format
      * @param height is the height of the user in double format
      */
-    public Profile(String firstName, String lastName, String stringDate, double weight, double height) {
+    public Profile(String firstName, String lastName, String dateOfBirth, double weight, double height) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.dateOfBirth = LocalDate.parse(stringDate);
+        this.dateOfBirth = LocalDate.parse(dateOfBirth);
         this.weight = weight;
         this.height = height;
         goalList = new ArrayList<>();

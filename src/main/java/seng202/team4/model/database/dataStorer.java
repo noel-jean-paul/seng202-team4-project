@@ -10,6 +10,16 @@ public class dataStorer {
 
     private static Connection connection = null;
 
+    /** Initialise the connection the database at the root of the project. */
+    public static void initialiseConnection() {
+        String url = "jdbc:sqlite:fitness_tracker.sqlite";
+        try {
+            connection = DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 //    /** Count the number of rows in the database with the given firstName and lastName
 //     *
 //     * @param firstName a non-null firstName to match to profiles in the database
@@ -140,41 +150,26 @@ public class dataStorer {
         statement.executeUpdate();
     }
 
-    /** Initialise the connection the database at the root of the project. */
-    public static void initialiseConnection() {
-        String url = "jdbc:sqlite:fitness_tracker.sqlite";
-        try {
-            connection = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
     public static void main(String[] args) throws SQLException {
         initialiseConnection();
         Profile profile = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
-//        insertProfile(profile);
+        insertProfile(profile);
 
         Activity activity = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
                 "12:15:01", "00:40:00", 5.13, 18, 7.7);
-//
-//        insertActivity(activity, profile);
+
+        insertActivity(activity, profile);
 
         Goal goal = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
                 "2019-01-15", "Go for a walk", 2.00, 0);
 
-        //insertGoal(goal, profile);
+        insertGoal(goal, profile);
 
         DataRow row = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
                 178.4352, 203);
 
         insertDataRow(row, activity);
-
-
-
-
-
     }
 
 
