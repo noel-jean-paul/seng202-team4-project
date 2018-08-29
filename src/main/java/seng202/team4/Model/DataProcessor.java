@@ -1,8 +1,6 @@
 package seng202.team4.Model;
 
-import javax.xml.crypto.Data;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -14,36 +12,48 @@ public class DataProcessor {
      * @param dataList the ArrayList containing the raw data for the given activity
      * @return the total distance travelled during the activity - in meters.
      */
-    public static double totalDistance(ArrayList<ActivityRawData> dataList) {
-        double totalDistance;
+    public static float totalDistance(ArrayList<ActivityRawData> dataList) {
+        double totalDistance = 0;
+        int earthRadius = 6371000;
         int j = 0;
-        for (int i = 1; i < dataList.size(); i++) {
-            ActivityRawData start = dataList.get(j);
-            ActivityRawData end = dataList.get(i);
-            j++;
+        if (dataList != null) {
+            for (int i = 1; i < dataList.size(); i++) {
+                double startLat = Math.toRadians(dataList.get(i).getLatitude());
+                double endLat = Math.toRadians(dataList.get(j).getLatitude());
+                double startLong = Math.toRadians(dataList.get(i).getLongitude());
+                double endLong = Math.toRadians(dataList.get(j).getLongitude());
+                double latDiff = endLat - startLat;
+                double longDiff = endLong - startLong;
+                double a = 0.5 * (1 - Math.cos(latDiff));
+                double b = Math.cos(startLat) * Math.cos(endLat) * 0.5 * (1 - Math.cos(longDiff));
+                double distance = 2 * earthRadius * Math.asin(a + b);
+                totalDistance += distance;
+                System.out.println("Distance is: " + distance);
+            }
+        } else {
         }
-        return 1;
+        return (float)totalDistance;
     }
 
+    /**
+     * Using the time values from the Activity's raw data ArrayList, calculates the total duration of the activity.
+     * If the ArrayList is null, returns 0.
+     * @param dataList the ArrayList containg the raw data for the given activity.
+     * @return the total duration of the activity - in seconds.
+     */
     public static int calculateDuration(ArrayList<ActivityRawData> dataList) {
         Duration totalDuration = Duration.ZERO;
         int j = 0;
-        for (int i = 1; i < dataList.size(); i++) {
-            LocalTime startTime = dataList.get(j).getTime();
-            LocalTime endTime = dataList.get(i).getTime();
-            totalDuration.plus(Duration.between(startTime, endTime));
-            j++;
+        if (dataList != null) {
+            for (int i = 1; i < dataList.size(); i++) {
+                LocalTime startTime = dataList.get(j).getTime();
+                LocalTime endTime = dataList.get(i).getTime();
+                totalDuration = totalDuration.plus(Duration.between(startTime, endTime));
+                j++;
+            }
+            return (int) totalDuration.getSeconds();
+        } else {
+            return 0;
         }
-        return (int)totalDuration.getSeconds();
-    }
-
-    public static void main(String[] args) {
-        ArrayList<ActivityRawData> tester = new ArrayList<ActivityRawData>();
-        tester.add(new ActivityRawData(LocalDate.parse("2015-04-10"), LocalTime.parse("23:42:28"), 0, 0, 0, 0));
-        tester.add(new ActivityRawData(LocalDate.parse("2015-04-10"), LocalTime.parse("23:43:05"), 0, 0, 0, 0));
-        tester.add(new ActivityRawData(LocalDate.parse("2015-04-10"), LocalTime.parse("23:43:15"), 0, 0, 0, 0));
-        tester.add(new ActivityRawData(LocalDate.parse("2015-04-10"), LocalTime.parse("23:43:34"), 0, 0, 0, 0));
-        int time = DataProcessor.calculateDuration(tester);
-        System.out.println("Time taken: " + time + "s");
     }
 }
