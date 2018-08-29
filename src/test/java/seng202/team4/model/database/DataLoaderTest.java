@@ -9,20 +9,14 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class DataLoaderTest {
-    private static Connection connection;
+public class DataLoaderTest extends DataAccesser {
     private static Profile profile1;
     private static Profile profile2;
 
     @BeforeClass
     public static void setUp() throws SQLException {
-        String url = "jdbc:sqlite:fitness_tracker.sqlite";
-        connection = DriverManager.getConnection(url);
-
         // Initialise the database connection for the other classes
-        DataStorer.initialiseConnection(url);
-        DataLoader.initialiseConnection(url);
-        DataTestHelper.initialiseConnection(url);
+        DataAccesser.initialiseConnection();
 
         // Remove all data from the database
         DataTestHelper.clearDatabase();

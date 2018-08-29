@@ -140,8 +140,7 @@ abstract public class DataStorer extends DataAccesser {
 
 
     public static void main(String[] args) throws SQLException {
-        String url = "jdbc:sqlite:fitness_tracker.sqlite";
-        initialiseConnection(url);
+        DataAccesser.initialiseConnection();
 
         Profile profile = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);

@@ -11,6 +11,8 @@ import seng202.team4.controller.Controller;
 import seng202.team4.controller.CreateProfileController;
 import seng202.team4.controller.LoginController;
 import seng202.team4.controller.ScreenStateManager;
+import seng202.team4.model.database.DataLoader;
+import seng202.team4.model.database.DataStorer;
 
 import static javafx.application.Application.launch;
 

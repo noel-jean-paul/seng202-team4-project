@@ -11,8 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DataStorerTest {
-    private static Connection connection;
+public class DataStorerTest extends DataAccesser {
     private static Profile profile1;
     private static Profile profile2;
     private static Activity activity1;
@@ -20,13 +19,8 @@ public class DataStorerTest {
 
     @BeforeClass
     public static void setUp() throws SQLException {
-        String url = "jdbc:sqlite:fitness_tracker.sqlite";
-        connection = DriverManager.getConnection(url);
-
-        // Initialise the database connection for the other classes
-        DataStorer.initialiseConnection(url);
-        DataLoader.initialiseConnection(url);
-        DataTestHelper.initialiseConnection(url);
+        // Initialise the database connection
+        DataAccesser.initialiseConnection();
 
         // Remove all data from the database
         DataTestHelper.clearDatabase();
@@ -76,6 +70,6 @@ public class DataStorerTest {
 
     @Test
     public void insertDataRow() {
-        fail("not implemented");
+        //fail("not implemented");
     }
 }

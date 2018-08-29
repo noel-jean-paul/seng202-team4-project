@@ -11,12 +11,13 @@ abstract public class DataLoader extends DataAccesser {
      *
      * @param firstName the firstName of the desired profile
      * @param lastName the lastName of the desired profile
-     * @return the profile matching the names as a Profile object
-     * @throws SQLException if an error occurred regarding the database
+     * @return the profile matching the names as a Profile object or null if an error occurred regarding
+     *          the database.
      */
     public static Profile loadProfile(String firstName, String lastName) throws SQLException {
+
         // Select profile matching first name and last name
-        String select = "select * from profile where firstName = (?) and lastName = (?)";
+        String select = "SELECT * FROM profile WHERE firstName = (?) AND lastName = (?)";
         PreparedStatement statement = connection.prepareStatement(select);
 
         // set the wildcards (indexed from 1)
