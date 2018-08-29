@@ -118,7 +118,7 @@ public class dataStorer {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         initialiseConnection();
         Profile profile = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
@@ -129,7 +129,12 @@ public class dataStorer {
 //
 //        insertActivity(activity, profile);
 
-       // Goal goal = new Goal(1, 55, GoalType.
+        Goal goal = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
+                "2019-01-15", "Go for a walk", 2.00, 0);
+
+        insertGoal(goal, profile);
+
+
     }
 
 
