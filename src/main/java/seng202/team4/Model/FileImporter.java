@@ -62,6 +62,7 @@ public class FileImporter {
 
         for(Activity oneActivity : allActivities) {     //print out each activities name (also need to print out each row of data for each activity)
             System.out.println(oneActivity.getName());
+            System.out.println(Math.round(oneActivity.getDistance())); // prints our the activity total distance covered rounded to int
         }
     }
 
