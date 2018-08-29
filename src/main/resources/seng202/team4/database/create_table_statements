@@ -37,7 +37,7 @@ distance real not null,
 caloriesBurned integer not null,
 firstName text,
 lastName text,
-primary key (name, activityDate),
+primary key (name, activityDate, firstName, lastName),
 foreign key (firstName, lastName) references profile
 on delete cascade on update no action
 );
