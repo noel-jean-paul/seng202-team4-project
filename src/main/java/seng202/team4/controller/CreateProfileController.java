@@ -64,7 +64,7 @@ public class CreateProfileController extends Controller {
 
             applicationStateManager.setCurrentProfile(profile);
             System.out.println("profile Created!");
-            applicationStateManager.switchToScreen("MainScreen.fxml");
+            applicationStateManager.switchToScreen("MainScreen");
         }
 
     }

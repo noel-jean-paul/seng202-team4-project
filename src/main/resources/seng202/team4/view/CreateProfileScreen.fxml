@@ -55,17 +55,17 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Date of birth" />
-                  <TextField fx:id="dayField" text="Day">
+                  <TextField fx:id="dayField" promptText="Day">
                      <HBox.margin>
                         <Insets left="10.0" right="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <TextField fx:id="monthField" text="Month">
+                  <TextField fx:id="monthField" promptText="Month">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <TextField fx:id="yearField" text="Year">
+                  <TextField fx:id="yearField" promptText="Year">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>

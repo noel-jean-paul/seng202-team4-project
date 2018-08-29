@@ -6,10 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import seng202.team4.controller.Controller;
-import seng202.team4.controller.CreateProfileController;
-import seng202.team4.controller.LoginController;
-import seng202.team4.controller.ApplicationStateManager;
+import seng202.team4.controller.*;
 
 import static javafx.application.Application.launch;
 
@@ -28,12 +25,12 @@ public class App extends Application {
 
         Pane loginScreen = initializePane("LoginScreen.fxml", new LoginController(applicationStateManager));
         Pane createProfileScreen = initializePane("CreateProfileScreen.fxml", new CreateProfileController(applicationStateManager));
-        Pane mainScreen = initializePane("MainScreen.fxml", new Controller(applicationStateManager));
+        Pane mainScreen = initializePane("MainScreen.fxml", new MainScreenController(applicationStateManager));
 
 
         applicationStateManager.addScreen("LoginScreen", loginScreen);
         applicationStateManager.addScreen("CreateProfileScreen", createProfileScreen);
-        applicationStateManager.addScreen("MainScreen.fxml", mainScreen);
+        applicationStateManager.addScreen("MainScreen", mainScreen);
         applicationStateManager.switchToScreen("LoginScreen");
 
         primaryStage.setTitle("Step by Step");
@@ -53,6 +50,7 @@ public class App extends Application {
      */
     private Pane initializePane(String fxmlFilename, Controller controller) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("view/" + fxmlFilename));
+        System.out.println(loader.getLocation());
         loader.setControllerFactory(c -> {return controller;});
         Pane pane = loader.load();
         return pane;
