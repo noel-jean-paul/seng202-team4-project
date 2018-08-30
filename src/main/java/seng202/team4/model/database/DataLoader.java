@@ -7,6 +7,8 @@ import seng202.team4.model.data.utilities.ProfileKey;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 abstract public class DataLoader extends DataAccesser {
@@ -73,9 +75,10 @@ abstract public class DataLoader extends DataAccesser {
     }
 
 
-    /** Return a List of ProfileKeys - 1 key for each profile in the database.
+    /** Return a List of ProfileKeys - 1 key for each profile in the database. The list is sorted alphabetically
+     *  by first name with last name as a secondary sorting attribute.
      *
-     * @return a list of ProfileKeys -> effectively (firstName, lastName) tuples
+     * @return a sorted list of ProfileKeys -> effectively (firstName, lastName) tuples
      * @throws SQLException if an error occurred regarding the database
      */
     public static List<ProfileKey> fetchAllProfileKeys() throws SQLException {
@@ -92,8 +95,10 @@ abstract public class DataLoader extends DataAccesser {
             ProfileKey key = new ProfileKey(set.getString("firstName"),
                     set.getString("lastName"));
             profileKeys.add(key);
-            System.out.println(key.getFirstName() + key.getLastName());
         }
+        // Sort the list by its natural ordering
+        java.util.Collections.sort(profileKeys);
+
         return profileKeys;
     }
 
