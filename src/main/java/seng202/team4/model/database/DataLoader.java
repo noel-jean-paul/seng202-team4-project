@@ -73,12 +73,28 @@ abstract public class DataLoader extends DataAccesser {
     }
 
 
-    /** Return a List of tuples of (firstName, lastName) for each profile in the database
+    /** Return a List of ProfileKeys - 1 key for each profile in the database.
      *
-     *  */
-    public static List<ProfileKey> fetchAllProfileKeys() {
-        // TODO: 28/08/18
-        return new ArrayList<>();
+     * @return a list of ProfileKeys -> effectively (firstName, lastName) tuples
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public static List<ProfileKey> fetchAllProfileKeys() throws SQLException {
+        //Initialise list
+        List<ProfileKey> profileKeys = new ArrayList<>();
+
+        // Select all profiles
+        String select = "SELECT firstName, lastName FROM profile";
+        PreparedStatement statement = connection.prepareStatement(select);
+        ResultSet set = statement.executeQuery();
+
+        // Parse the result set into a list of ProfileKeys - ResultSet cursor starts 1 before the first row
+        while (set.next()) {
+            ProfileKey key = new ProfileKey(set.getString("firstName"),
+                    set.getString("lastName"));
+            profileKeys.add(key);
+            System.out.println(key.getFirstName() + key.getLastName());
+        }
+        return profileKeys;
     }
 
     public static Profile loadProfile(int profileId) {

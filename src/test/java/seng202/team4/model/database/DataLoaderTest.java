@@ -87,7 +87,7 @@ public class DataLoaderTest extends DataAccesser {
     }
 
     @Test
-    public void fetchAllProfileKeys() {
+    public void fetchAllProfileKeys() throws SQLException {
         // Get the returned list
         List<ProfileKey> profileKeys = DataLoader.fetchAllProfileKeys();
 
@@ -96,6 +96,7 @@ public class DataLoaderTest extends DataAccesser {
         expectedKeys.add(new ProfileKey(profile1.getFirstName(), profile1.getLastName()));
         expectedKeys.add(new ProfileKey(profile2.getFirstName(), profile2.getLastName()));
 
+        assertEquals(profileKeys,expectedKeys);
         assertTrue(profileKeys.equals(expectedKeys));
     }
 
