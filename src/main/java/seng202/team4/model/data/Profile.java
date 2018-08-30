@@ -1,4 +1,7 @@
 package seng202.team4.model.data;
+import seng202.team4.model.database.DataStorer;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -181,5 +184,13 @@ public class Profile {
         return (date.compareTo(MIN_DOB) > 0 && date.compareTo(LocalDate.now()) < 0);
     }
 
-
+    /** Add an activity to the activity list in correct date position and save the activity in the database.
+     *
+     * @param activity the activity to be added
+     */
+    public void addActivity(Activity activity) throws SQLException {
+        activityList.add(activity);
+        java.util.Collections.sort(activityList);
+        DataStorer.insertActivity(activity, this);
+    }
 }

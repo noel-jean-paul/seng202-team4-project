@@ -35,12 +35,12 @@ public class ProfileKey implements Comparable<ProfileKey> {
      */
     @Override
     public int compareTo(ProfileKey o) {
-        int c;
-        int d;
-        if ((c = this.getFirstName().compareTo(o.getFirstName())) != 0) {
-            return c;
-        } else if ((d = this.getLastName().compareTo(o.getLastName())) != 0) {
-            return d;
+        int firstNameCompare;
+        int lastNameCompare;
+        if ((firstNameCompare = this.getFirstName().compareTo(o.getFirstName())) != 0) {
+            return firstNameCompare;
+        } else if ((lastNameCompare = this.getLastName().compareTo(o.getLastName())) != 0) {
+            return lastNameCompare;
         } else {
             return 0;
         }

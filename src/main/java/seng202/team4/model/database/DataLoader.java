@@ -2,6 +2,7 @@ package seng202.team4.model.database;
 
 import javafx.util.Pair;
 import seng202.team4.model.data.*;
+import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.utilities.ProfileKey;
 
 import java.sql.*;
@@ -67,13 +68,38 @@ abstract public class DataLoader extends DataAccesser {
 ////    }
 
 
-    /** Load all activities belonging to a profile from the database
+    /** Load all activities belonging to a profile from the database into that profile's activity list.
      *
      * @param profile the profile owning the activities (must be in the database already)
-     * @return a list of the activities ordered from newest to oldest by date.
      */
-    public static List<Activity> loadProfileActivities(Profile profile) throws SQLException {
-        return new ArrayList<>();
+    public static void loadProfileActivities(Profile profile) throws SQLException {
+        //Initialise list
+        List<Activity> activities = profile.getActivityList();
+
+        // Select all activities for the profile
+        String select = "SELECT * FROM activity where firstName = (?) and lastName = (?)";
+        PreparedStatement statement = connection.prepareStatement(select);
+
+        // Set the wildcards (indexed from 1)
+        statement.setString(1, profile.getFirstName());
+        statement.setString(2, profile.getLastName());
+
+        ResultSet set = statement.executeQuery();
+
+        // Parse the result set into a list - ResultSet cursor starts 1 before the first row
+        while (set.next()) {
+            Activity activity = new Activity(
+                    set.getString("name"),
+                    set.getString("activityDate"),
+                    set.getString("description"),
+                    ActivityType.valueOf(set.getString("type")),
+                    set.getString("startTime"),
+                    set.getString("duration"),
+                    set.getDouble("distance"),
+                    set.getInt("caloriesBurned")
+                    );
+            profile.addActivity(activity);
+        }
     }
 
     /** Load all goals belonging to a profile from the database
