@@ -131,7 +131,7 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(4, String.valueOf(dataRow.getHeartRate()));
         statement.setString(5, String.valueOf(dataRow.getLatitude()));
         statement.setString(6, String.valueOf(dataRow.getLongitude()));
-        statement.setString(7, String.valueOf(dataRow.getAltitude()));
+        statement.setString(7, String.valueOf(dataRow.getElevation()));
         statement.setString(8, activity.getName());
         statement.setString(9, String.valueOf(activity.getDate()));
 
