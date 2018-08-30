@@ -42,7 +42,9 @@ public class Activity {
         return name;
     }
 
-    public double getDistance() {return distance;}
+    public double getDistance() {
+        return distance;
+    }
 
     public ArrayList getRawActivityList() {
         return rawActivityList;
