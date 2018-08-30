@@ -71,11 +71,24 @@ public class Activity implements Comparable<Activity> {
                 getDistance(), getCaloriesBurned(), getAverageSpeed());
     }
 
+    /** Compare an Activity to another based on Date and then based on Time in case of ties.
+     *  Consistent with equals as defined by Comparable
+     *
+     * @param o the ProfileKey to compare to
+     * @return a negative integer, zero, or a positive integer as this object
+     *          is less than, equal to, or greater than the specified object.
+     */
     @Override
     public int compareTo(Activity o) {
-//        if (this == o) {
-            return 0;
-//        } else if (this.getDate) //TODO comparison of Local Dates
+        int dateCompare;
+        int timeCompare;
+         if ((dateCompare = this.getDate().compareTo(o.getDate())) != 0) {
+             return dateCompare;
+         } else if ((timeCompare = this.getStartTime().compareTo(o.getStartTime())) != 0) {
+             return timeCompare;
+         } else {
+             return 0;  // Same date and startTime
+         }
     }
 
     public String getName() {

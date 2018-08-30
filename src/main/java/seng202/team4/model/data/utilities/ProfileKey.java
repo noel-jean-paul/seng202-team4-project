@@ -26,14 +26,18 @@ public class ProfileKey implements Comparable<ProfileKey> {
     }
 
 
-
+    /** Compare a ProfileKey to another alphabetically. Primarily on firstName and on lastName to resolve ties.
+     * Consistent with equals as defined by Comparable
+     *
+     * @param o the ProfileKey to compare to
+     * @return a negative integer, zero, or a positive integer as this object
+     *          is less than, equal to, or greater than the specified object.
+     */
     @Override
     public int compareTo(ProfileKey o) {
         int c;
         int d;
-        if (this == o) {    // Same object
-            return 0;
-        } else if ((c = this.getFirstName().compareTo(o.getFirstName())) != 0) {
+        if ((c = this.getFirstName().compareTo(o.getFirstName())) != 0) {
             return c;
         } else if ((d = this.getLastName().compareTo(o.getLastName())) != 0) {
             return d;
