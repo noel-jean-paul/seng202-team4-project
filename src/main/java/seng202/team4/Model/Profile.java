@@ -1,4 +1,6 @@
 package seng202.team4.Model;
+import seng202.team4.model.data.Goal;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;

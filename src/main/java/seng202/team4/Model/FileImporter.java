@@ -1,6 +1,7 @@
 package seng202.team4.Model;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.FileReader;
 import java.time.LocalDate;
@@ -54,7 +55,7 @@ public class FileImporter {
 
 
     public static void main(String[] args) {
-        String filename = "seng202_2018_example_data.csv";
+        String filename = "seng202_2018_example_data.csv";  //example file for testing purposes
         FileImporter fileImporter = new FileImporter();
         ArrayList<Activity> allActivities = new ArrayList<>(); // Creates a list of all activities parsed in the file
         ArrayList<ActivityRawData> rows = new ArrayList<>();
