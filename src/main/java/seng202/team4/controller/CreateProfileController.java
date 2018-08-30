@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import seng202.team4.model.data.Profile;
+import seng202.team4.model.database.DataLoader;
+import seng202.team4.model.database.DataStorer;
 
 import java.time.LocalDate;
 
@@ -95,6 +97,12 @@ public class CreateProfileController extends Controller {
             Profile profile = new Profile(firstName, lastName, dateString, weight, height);
             applicationStateManager.setCurrentProfile(profile);    //Sets the current profile to the new profile.
             System.out.println("profile Created!");
+            try {
+                DataStorer.insertProfile(profile);
+            } catch (java.sql.SQLException e) {
+                System.out.println("Error storing new profile in the data base.");
+            }
+
             applicationStateManager.switchToScreen("MainScreen");   //Changes to main screen.
         }
 

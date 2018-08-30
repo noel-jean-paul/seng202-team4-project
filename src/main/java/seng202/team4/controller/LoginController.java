@@ -1,11 +1,52 @@
 package seng202.team4.controller;
 
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.*;
+import seng202.team4.Utilities;
+import seng202.team4.model.data.utilities.ProfileKey;
+import seng202.team4.model.database.DataLoader;
+
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
 /** Controller for the login screen. */
 public class LoginController extends Controller {
+
+    @FXML
+    private VBox profileListVbox;
+
+    @FXML
+    private ScrollPane profileListScrollPane;
 
     /** Creates a new LoginController with the given ApplicationStateManager. */
     public LoginController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
+    }
+
+    @FXML
+    public void initialize() {
+        updateProfileList();
+    }
+
+    public void updateProfileList() {
+        List<ProfileKey> profileKeys = null;
+        try {
+            profileKeys = DataLoader.fetchAllProfileKeys();
+        } catch (java.sql.SQLException e) {
+            System.out.println("Error loading profile names from the database.");
+            System.exit(1);
+        }
+
+        for (ProfileKey profileKey: profileKeys) {
+            ProfileListItemController controller = new ProfileListItemController(applicationStateManager);
+            Pane profileItemPane = Utilities.loadPane("ProfileListItem.fxml", controller);
+            profileListVbox.getChildren().add(profileItemPane);
+
+            controller.setNameText(String.format("%s %s", profileKey.getFirstName(), profileKey.getLastName()));
+        }
     }
 
     /**
