@@ -3,16 +3,10 @@ package seng202.team4;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import seng202.team4.controller.Controller;
-import seng202.team4.controller.CreateProfileController;
-import seng202.team4.controller.LoginController;
-import seng202.team4.controller.ScreenStateManager;
-import seng202.team4.model.database.DataLoader;
-import seng202.team4.model.database.DataStorer;
+import seng202.team4.controller.*;
 
 import static javafx.application.Application.launch;
 
@@ -24,37 +18,26 @@ public class App extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         Scene baseScene = new Scene(new Group(), 600, 400);
-        ScreenStateManager screenManager = new ScreenStateManager(baseScene);
+        ApplicationStateManager applicationStateManager = new ApplicationStateManager(baseScene);
 
-        Pane loginScreen = initializePane("LoginScreen.fxml", new LoginController(screenManager));
+        Pane loginScreen = Utilities.loadPane("LoginScreen.fxml", new LoginController(applicationStateManager));
+        Pane createProfileScreen = Utilities.loadPane("CreateProfileScreen.fxml", new CreateProfileController(applicationStateManager));
+        Pane mainScreen = Utilities.loadPane("MainScreen.fxml", new MainScreenController(applicationStateManager));
 
-        Pane createProfileScreen = initializePane("CreateProfileScreen.fxml", new CreateProfileController(screenManager));
 
-        screenManager.addScreen("LoginScreen", loginScreen);
-        screenManager.addScreen("CreateProfileScreen", createProfileScreen);
-        screenManager.switchToScreen("LoginScreen");
+        applicationStateManager.addScreen("LoginScreen", loginScreen);
+        applicationStateManager.addScreen("CreateProfileScreen", createProfileScreen);
+        applicationStateManager.addScreen("MainScreen", mainScreen);
+        applicationStateManager.switchToScreen("LoginScreen");
 
         primaryStage.setTitle("Step by Step");
         primaryStage.setScene(baseScene);
         primaryStage.show();
-    }
-
-    /**
-     * Initializes and returns a JavaFX pane from the given arguments.
-     *
-     * @param fxmlFilename The name of the fxml file that describes the pane.
-     * @param controller The controller class for the pane.
-     * @return A newly created pane.
-     * @throws Exception If the function fails to load the program.
-     */
-    private Pane initializePane(String fxmlFilename, Controller controller) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/" + fxmlFilename));
-        loader.setControllerFactory(c -> {return controller;});
-        Pane pane = loader.load();
-        return pane;
+        primaryStage.setMinWidth(primaryStage.getWidth());
+        primaryStage.setMinHeight(primaryStage.getHeight());
     }
 
     public static void main(String[] args) {
