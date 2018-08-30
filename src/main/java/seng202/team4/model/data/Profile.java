@@ -10,6 +10,13 @@ public class Profile {
     /**
      * A class profile which holds the attributes for each user
      */
+
+    public static final int MAX_NAME_SIZE = 20;
+    public static final int MIN_NAME_SIZE = 2;
+    public static final double MAX_WEIGHT = 250;
+    public static final double MAX_HEIGHT = 3.0;
+    public static final LocalDate MIN_DOB = LocalDate.parse("1900-01-01");
+
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
@@ -133,4 +140,45 @@ public class Profile {
     public int calculateAge() {
         return ((LocalDate.now()).getYear() - dateOfBirth.getYear());
     }
+
+    /**
+     * Checks that the given name is valid for a profile name.
+     *
+     * @param name The name to check.
+     * @return true if the name is valid, false otherwise.
+     */
+    public static boolean isValidName(String name) {
+        return (name.length() >= MIN_NAME_SIZE && name.length() <= MAX_NAME_SIZE);
+    }
+
+    /**
+     * Checks that a weight value is valid for a profile.
+     *
+     * @param weight The weight value to be checked.
+     * @return true if the weight is valid, false otherwise.
+     */
+    public static boolean isValidWeight(double weight) {
+        return (weight > 0 && weight <= MAX_WEIGHT);
+    }
+
+    /**
+     * Checks that a height value is valid for a profile.
+     *
+     * @param height the height value to be checked.
+     * @return true if the height is valid, false otherwise.
+     */
+    public static boolean isValidHeight(double height) {
+        return (height > 0 && height <= MAX_HEIGHT);
+    }
+
+    /**
+     * Checks that a date is a valid date of birth.
+     *
+     * @param date the date to be checked.
+     * @return true if the date is valid, false otherwise.
+     */
+    public static boolean isValidDateOfBirth(LocalDate date) {
+        return (date.compareTo(MIN_DOB) > 0 && date.compareTo(LocalDate.now()) < 0);
+    }
+
 }

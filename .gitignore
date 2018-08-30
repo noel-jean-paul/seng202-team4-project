@@ -35,5 +35,5 @@ target/
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-
-
+http://central.maven.org/maven2/org/xerial/sqlite-jdbc/
+3.21.0.1/sqlite-jdbc-3.21.0.1.jar
