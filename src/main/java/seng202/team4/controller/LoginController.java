@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /** Controller for the login screen. */
-public class LoginController extends Controller implements Initializable {
+public class LoginController extends Controller {
 
     @FXML
     private VBox profileListVbox;
@@ -26,9 +26,12 @@ public class LoginController extends Controller implements Initializable {
         super(applicationStateManager);
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    @FXML
+    public void initialize() {
+        updateProfileList();
+    }
 
+    public void updateProfileList() {
         List<ProfileKey> profileKeys = null;
         try {
             profileKeys = DataLoader.fetchAllProfileKeys();

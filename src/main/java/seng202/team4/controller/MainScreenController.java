@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /** Controller for the main screen of the App. */
-public class MainScreenController extends Controller implements Initializable {
+public class MainScreenController extends Controller {
 
     @FXML
     private AnchorPane activityPane;
@@ -27,8 +27,8 @@ public class MainScreenController extends Controller implements Initializable {
     /**
      * Creates loads and intializes the different tabs of the main screen.
      */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    @FXML
+    public void initialize() {
         Pane Pane = new Pane();
         Pane = Utilities.loadPane("ActivityTab.fxml", new Controller(applicationStateManager));
         activityPane.getChildren().setAll(Pane);

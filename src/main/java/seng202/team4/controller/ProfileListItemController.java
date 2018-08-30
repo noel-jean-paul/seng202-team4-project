@@ -14,7 +14,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ProfileListItemController extends Controller implements Initializable {
+public class ProfileListItemController extends Controller {
 
     private final Background focusBackground = new Background( new BackgroundFill( Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY ) );
     private final Background unfocusBackground = new Background( new BackgroundFill( Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY ) );
@@ -29,8 +29,8 @@ public class ProfileListItemController extends Controller implements Initializab
         super(applicationStateManager);
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    @FXML
+    public void initialize() {
         profileListItemPane.setOnMouseClicked(event -> {profileListItemPane.requestFocus();});
         profileListItemPane.backgroundProperty().bind( Bindings
                 .when( profileListItemPane.focusedProperty() )
