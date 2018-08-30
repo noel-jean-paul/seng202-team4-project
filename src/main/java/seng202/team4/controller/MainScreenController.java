@@ -33,4 +33,11 @@ public class MainScreenController extends Controller implements Initializable {
         Pane = Utilities.loadPane("ActivityTab.fxml", new Controller(applicationStateManager));
         activityPane.getChildren().setAll(Pane);
     }
+
+    /**
+     * Takes the user to the login is screen where they may switch their profile.
+     */
+    public void switchProfile() {
+        applicationStateManager.switchToScreen("LoginScreen");
+    }
 }
