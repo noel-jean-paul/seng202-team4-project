@@ -142,24 +142,27 @@ abstract public class DataStorer extends DataAccesser {
     public static void main(String[] args) throws SQLException {
         DataAccesser.initialiseConnection();
 
-        Profile profile = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
-                1.83);
-        insertProfile(profile);
+//        Profile profile = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
+//                1.83);
+//        insertProfile(profile);
+//
+//        Activity activity = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
+//                "12:15:01", "00:40:00", 5.13, 18, 7.7);
+//
+//        insertActivity(activity, profile);
+//
+//        Goal goal = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
+//                "2019-01-15", "Go for a walk", 2.00, 0);
+//
+//        insertGoal(goal, profile);
+//
+//        DataRow row = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
+//                178.4352, 203);
+//
+//        insertDataRow(row, activity);
 
-        Activity activity = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 18, 7.7);
 
-        insertActivity(activity, profile);
 
-        Goal goal = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
-                "2019-01-15", "Go for a walk", 2.00, 0);
-
-        insertGoal(goal, profile);
-
-        DataRow row = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
-                178.4352, 203);
-
-        insertDataRow(row, activity);
     }
 
 

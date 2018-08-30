@@ -85,6 +85,7 @@ public class DataLoaderTest extends DataAccesser {
 
     @Test
     public void fetchAllProfileNames() {
+
     }
 
 
