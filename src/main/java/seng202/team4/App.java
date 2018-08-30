@@ -31,6 +31,7 @@ public class App extends Application {
 
 
         Scene baseScene = new Scene(new Group(), 600, 400);
+
         ApplicationStateManager applicationStateManager = new ApplicationStateManager(baseScene);
 
         Pane loginScreen = Utilities.loadPane("LoginScreen.fxml", new LoginController(applicationStateManager));
