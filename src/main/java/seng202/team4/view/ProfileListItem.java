@@ -12,13 +12,16 @@ import seng202.team4.App;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.Controller;
 import seng202.team4.controller.ProfileListItemController;
+import seng202.team4.model.data.utilities.ProfileKey;
 
 public class ProfileListItem extends AnchorPane {
 
-    private final Background focusBackground = new Background( new BackgroundFill( Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY ) );
-    private final Background unfocusBackground = new Background( new BackgroundFill( Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY ) );
+    private final Background selectedBackground = new Background( new BackgroundFill( Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY ) );
+    private final Background unselectedBackground = new Background( new BackgroundFill( Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY ) );
 
-    public ProfileListItem(Controller controller) {
+    private ProfileKey profileKey;
+
+    public ProfileListItem(ProfileListItemController controller, ProfileKey profileKey) {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("view/ProfileListItem.fxml"));
         loader.setControllerFactory(c -> {return controller;});
         loader.setRoot(this);
@@ -27,13 +30,20 @@ public class ProfileListItem extends AnchorPane {
         } catch (java.io.IOException e) {
             System.out.println(String.format("Error: Could not load %s", loader.getLocation()));
         }
+        controller.setNameText(String.format("%s %s", profileKey.getFirstName(), profileKey.getLastName()));
+        this.profileKey = profileKey;
+    }
 
-        this.setOnMouseClicked(event -> {this.requestFocus();});
-        this.backgroundProperty().bind( Bindings
-                .when( this.focusedProperty() )
-                .then( focusBackground )
-                .otherwise( unfocusBackground )
-        );
+    public void select() {
+        this.setBackground(selectedBackground);
+    }
+
+    public  void deselect() {
+        this.setBackground(unselectedBackground);
+    }
+
+    public ProfileKey getProfileKey() {
+        return profileKey;
     }
 
 }
