@@ -2,13 +2,17 @@ package seng202.team4.Model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 enum ActivityType{
     Walking, Running
 }
 
 public class Activity {
+    /**
+     * An activity class which consists of attributes detailing
+     */
     private String name;
     private String description;
     private int id;
@@ -19,14 +23,14 @@ public class Activity {
     private double averageSpeed;
     private double caloriesBurned;
     private ActivityType type;
-    private Collection<DataRow> rawData;
+    private List<ActivityRawData> rawActivityList;
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    /**
+     * Constructor for the Activity class
+     * @param name is the name of the activity as a string
+     */
+    public Activity(String name, List<ActivityRawData> rawActivityList) {
         this.name = name;
+        this.rawActivityList = rawActivityList;
     }
 }

@@ -32,8 +32,8 @@ public class Profile {
         this.dateOfBirth = LocalDate.parse(stringDate);
         this.weight = weight;
         this.height = height;
-        goalList = new ArrayList<>();
-        activityList = new ArrayList<>();
+        this.goalList = new ArrayList<>();
+        this.activityList = new ArrayList<>();
     }
 
     /**
@@ -52,18 +52,22 @@ public class Profile {
         this.dateOfBirth = LocalDate.of(year, month, day);
         this.weight = weight;
         this.height = height;
-        goalList = new ArrayList<>();
-        activityList = new ArrayList<>();
+        this.goalList = new ArrayList<>();
+        this.activityList = new ArrayList<>();
     }
 
     /**
      * Calculates the user's bmi based on their current information
-     * @return a double as the user's bmi
+     * @return the user's bmi as a double
      */
     public double calculate_bmi() {
         return (this.weight/(this.height * this.height));
     }
 
+    /**
+     * Calculates the age of the user based on their DoB and current Date
+     * @return the user's age as an integer
+     */
     public int calculateAge() {
         return ((LocalDate.now()).getYear() - dateOfBirth.getYear());
     }
