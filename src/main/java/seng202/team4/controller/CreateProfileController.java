@@ -3,7 +3,7 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import seng202.team4.model.Profile;
+import seng202.team4.model.data.Profile;
 
 import java.time.LocalDate;
 

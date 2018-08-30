@@ -2,7 +2,7 @@ package seng202.team4.controller;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import seng202.team4.model.Profile;
+import seng202.team4.model.data.Profile;
 
 import java.util.HashMap;
 
