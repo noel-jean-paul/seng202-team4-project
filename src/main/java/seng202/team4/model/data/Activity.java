@@ -2,6 +2,7 @@ package seng202.team4.model.data;
 
 import seng202.team4.model.data.enums.ActivityType;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -36,17 +37,17 @@ public class Activity {
         rawData = new ArrayList<>();
     }
 
-//    /**
-//     * Constructor for the Activity class
-//     * @param name is the name of the activity as a string
-//     */
-//    public Activity(String name, ArrayList<ActivityRawData> rawActivityList) {
-//        this.name = name;
-//        //this.rawActivityList = rawActivityList;
-//        //calcTotalDistance();
-//        this.date = (rawActivityList.get(0)).getDate();
-//        this.startTime = (rawActivityList.get(0)).getTime();
-//    }
+    /**
+     * Constructor for the Activity class
+     * @param name is the name of the activity as a string
+     */
+    public Activity(String name, ArrayList<DataRow> rawActivityList) {
+        this.name = name;
+        //this.rawActivityList = rawActivityList;
+        //calcTotalDistance();
+        this.date = (rawActivityList.get(0)).getDate();
+        this.startTime = (rawActivityList.get(0)).getTime();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -145,6 +146,8 @@ public class Activity {
     public Collection<DataRow> getRawData() {
         return rawData;
     }
+
+
 
     //The functions detailed below will likely be moved to DataProcessor -Matt M
 

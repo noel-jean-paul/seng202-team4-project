@@ -34,7 +34,7 @@ public class DataStorerTest extends DataAccesser {
         DataStorer.insertProfile(profile2);
 
         activity1 = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 18, 7.7);
+                "12:15:01", "00:40:00", 5.13, 18, 7.7, null);
     }
 
     @AfterClass

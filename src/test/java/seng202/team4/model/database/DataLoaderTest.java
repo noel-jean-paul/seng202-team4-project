@@ -43,7 +43,7 @@ public class DataLoaderTest extends DataAccesser {
 
         // Insert test Activities
         activity1 = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 18, 7.7);
+                "12:15:01", "00:40:00", 5.13, 18, 7.7, null);
         DataStorer.insertActivity(activity1, profile1);
 
         // Insert test Goals
