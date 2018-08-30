@@ -1,5 +1,6 @@
 package seng202.team4.model.data;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import seng202.team4.model.data.enums.ActivityType;
@@ -8,6 +9,7 @@ import seng202.team4.model.database.DataTestHelper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -17,6 +19,7 @@ public class ProfileTest {
     private static Activity activity1;
     private static Activity activity2;
     private static Activity activity3;
+    private static List<Activity> expected;
 
     @BeforeClass
     public static void setUp() throws SQLException {
@@ -36,6 +39,13 @@ public class ProfileTest {
 
         activity3 = new Activity("Jog through Uni", "2018-12-12", "Quick walk",
                 ActivityType.Run, "01:28:30", "00:11:19", 1.2, 30);
+
+        expected = new ArrayList<>(Arrays.asList(activity1, activity3, activity2));
+    }
+
+    @Before
+    public void setUpReccuring() {
+        profile1.getActivityList().clear();
     }
 
     @Test
@@ -45,19 +55,20 @@ public class ProfileTest {
         profile1.addActivity(activity2);
         profile1.addActivity(activity3);
 
-        // Create the expected list
-        List<Activity> expected = new ArrayList<>();
-        // Add in correct date order
-        expected.add(activity1);
-        expected.add(activity3);
-        expected.add(activity2);
-
         assertEquals(expected, profile1.getActivityList());
     }
 
     @Test
-    public void addAllActivities() throws SQLException {
+    public void addAllActivities() {
         // Add an activity to the profile activityList
-        profile1.getActivityList().add(activity1);
+        profile1.getActivityList().add(activity3);
+
+        // Create a list of activitities to be added - list is out of order
+        List<Activity> activities = new ArrayList<>(Arrays.asList(activity2, activity1));
+
+        // Add activitities to the activityList
+        profile1.addAllActivities(activities);
+
+        assertEquals(expected, profile1.getActivityList());
     }
 }

@@ -26,8 +26,8 @@ public class Profile {
     private LocalDate dateOfBirth;
     private double weight;
     private double height;
-    private List<Activity> activityList;
-    private List<Goal> goalList;
+    private List<Activity> activityList;    // sorted collection - use addActivity to update
+    private List<Goal> goalList;    // sorted collection - use addGoal to update
 
     /**
      *Constructor for profile class taking in the date of birth in string format
