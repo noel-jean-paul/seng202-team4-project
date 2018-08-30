@@ -7,6 +7,7 @@ import javafx.scene.layout.*;
 import seng202.team4.Utilities;
 import seng202.team4.model.data.utilities.ProfileKey;
 import seng202.team4.model.database.DataLoader;
+import seng202.team4.view.ProfileListItem;
 
 import java.net.URL;
 import java.util.List;
@@ -42,8 +43,8 @@ public class LoginController extends Controller {
 
         for (ProfileKey profileKey: profileKeys) {
             ProfileListItemController controller = new ProfileListItemController(applicationStateManager);
-            Pane profileItemPane = Utilities.loadPane("ProfileListItem.fxml", controller);
-            profileListVbox.getChildren().add(profileItemPane);
+            ProfileListItem profileListItem = new ProfileListItem(controller);
+            profileListVbox.getChildren().add(profileListItem);
 
             controller.setNameText(String.format("%s %s", profileKey.getFirstName(), profileKey.getLastName()));
         }
