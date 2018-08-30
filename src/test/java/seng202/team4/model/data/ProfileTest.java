@@ -39,7 +39,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void addActivity() throws SQLException {
+    public void addActivity_checkList() throws SQLException {
         // Add the activities to the profile.
         profile1.addActivity(activity1);
         profile1.addActivity(activity2);
@@ -53,5 +53,11 @@ public class ProfileTest {
         expected.add(activity2);
 
         assertEquals(expected, profile1.getActivityList());
+    }
+
+    @Test
+    public void addAllActivities() throws SQLException {
+        // Add an activity to the profile activityList
+        profile1.getActivityList().add(activity1);
     }
 }

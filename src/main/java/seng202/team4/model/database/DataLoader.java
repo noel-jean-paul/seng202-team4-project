@@ -74,7 +74,7 @@ abstract public class DataLoader extends DataAccesser {
      */
     public static void loadProfileActivities(Profile profile) throws SQLException {
         //Initialise list
-        List<Activity> activities = profile.getActivityList();
+        List<Activity> activities = new ArrayList<>();
 
         // Select all activities for the profile
         String select = "SELECT * FROM activity where firstName = (?) and lastName = (?)";
@@ -98,8 +98,10 @@ abstract public class DataLoader extends DataAccesser {
                     set.getDouble("distance"),
                     set.getInt("caloriesBurned")
                     );
-            profile.addActivity(activity);
+            activities.add(activity);
         }
+        // Add all activities to the activity list
+        profile.addAllActivities(activities);
     }
 
     /** Load all goals belonging to a profile from the database

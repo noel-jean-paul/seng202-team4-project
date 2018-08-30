@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -136,11 +137,11 @@ public class Profile {
      * Calculates the user's bmi based on their current information
      * @return a double as the user's bmi
      */
-    public double calculate_bmi() {
+    public double getBmi() {
         return (this.weight/(this.height * this.height));
     }
 
-    public int calculateAge() {
+    public int getAge() {
         return ((LocalDate.now()).getYear() - dateOfBirth.getYear());
     }
 
@@ -192,5 +193,15 @@ public class Profile {
         activityList.add(activity);
         java.util.Collections.sort(activityList);
         DataStorer.insertActivity(activity, this);
+    }
+
+    /** Adds all activities of the specified collection and sorts the activityList
+     *  Intended for use by DataLoader
+     *
+     * @param activities the collection to be added
+     */
+    public void addAllActivities(Collection<Activity> activities) {
+        activityList.addAll(activities);
+        java.util.Collections.sort(activityList);
     }
 }
