@@ -7,10 +7,13 @@ import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
+import seng202.team4.model.data.utilities.ProfileKey;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -84,8 +87,16 @@ public class DataLoaderTest extends DataAccesser {
     }
 
     @Test
-    public void fetchAllProfileNames() {
+    public void fetchAllProfileKeys() {
+        // Get the returned list
+        List<ProfileKey> profileKeys = DataLoader.fetchAllProfileKeys();
 
+        // Create the expected list
+        List<ProfileKey> expectedKeys = new ArrayList<>();
+        expectedKeys.add(new ProfileKey(profile1.getFirstName(), profile1.getLastName()));
+        expectedKeys.add(new ProfileKey(profile2.getFirstName(), profile2.getLastName()));
+
+        assertTrue(profileKeys.equals(expectedKeys));
     }
 
 

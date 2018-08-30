@@ -2,9 +2,11 @@ package seng202.team4.model.database;
 
 import javafx.util.Pair;
 import seng202.team4.model.data.*;
+import seng202.team4.model.data.utilities.ProfileKey;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 abstract public class DataLoader extends DataAccesser {
@@ -71,10 +73,12 @@ abstract public class DataLoader extends DataAccesser {
     }
 
 
-    /** Return a List of tuples of (firstName, lastName) for each profile in the database */
-    public static List<String> fetchAllProfileNames() {
+    /** Return a List of tuples of (firstName, lastName) for each profile in the database
+     *
+     *  */
+    public static List<ProfileKey> fetchAllProfileKeys() {
         // TODO: 28/08/18
-        return null;
+        return new ArrayList<>();
     }
 
     public static Profile loadProfile(int profileId) {
