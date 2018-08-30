@@ -36,9 +36,9 @@
                </VBox.margin>
             </HBox>
             <ScrollPane prefHeight="200.0" prefWidth="200.0">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-              </content>
+               <content>
+                  <VBox fx:id="profileListVbox" />
+               </content>
             </ScrollPane>
             <Button alignment="CENTER" mnemonicParsing="false" onAction="#createProfile" text="Create New Profile">
                <VBox.margin>

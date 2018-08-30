@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import seng202.team4.controller.*;
+import seng202.team4.model.database.DataAccesser;
 
 import static javafx.application.Application.launch;
 
@@ -19,6 +20,15 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
+        try {
+            DataAccesser.initialiseConnection();
+        } catch (java.sql.SQLException e) {
+            System.out.println("Error: Could not establish connection with the data base.");
+            System.out.print(e.getMessage());
+            System.exit(1);
+        }
+
 
         Scene baseScene = new Scene(new Group(), 600, 400);
         ApplicationStateManager applicationStateManager = new ApplicationStateManager(baseScene);
