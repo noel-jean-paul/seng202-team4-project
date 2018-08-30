@@ -42,7 +42,7 @@ public class FileImporter {
                         System.out.println("Activity Name: " + activityName + " Heart rate: " + row.getHeartRate()); //this for loop was use purely for testing purposes and can be removed
                     }
                     allActivities.add(new Activity(activityName, rows));   //add each of the raw activity data for that specific activity, along with the activity name into an Activity object
-                    rows.clear();    //clear the arrayList of rows in preparation for the next lot of data for the next activity
+                    rows.clear();    //clear the arrWayList of rows in preparation for the next lot of data for the next activity
                 }
             }
 

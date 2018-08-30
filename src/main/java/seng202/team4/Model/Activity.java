@@ -17,7 +17,7 @@ public class Activity {
     private String name;
     private String description;
     private int id;
-    private LocalDate Date;
+    private LocalDate date;
     private LocalTime startTime;
     private LocalTime duration;
     private double distance;
@@ -34,7 +34,7 @@ public class Activity {
         this.name = name;
         this.rawActivityList = rawActivityList;
         calcTotalDistance();
-        this.Date = (rawActivityList.get(0)).getDate();
+        this.date = (rawActivityList.get(0)).getDate();
         this.startTime = (rawActivityList.get(0)).getTime();
     }
 
@@ -42,13 +42,94 @@ public class Activity {
         return name;
     }
 
+    public void setName(String nameSet) {
+        this.name = nameSet;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String descriptionSet) {
+        this.description = descriptionSet;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int idSet) {
+        this.id = idSet;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate dateSet) {
+        this.date = dateSet;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTimeSet) {
+        this.startTime = startTimeSet;
+    }
+
+    public LocalTime getDuration() {
+        return duration;
+    }
+
+    public void setDuration(LocalTime durationSet) {
+        this.duration = durationSet;
+    }
+
     public double getDistance() {
         return distance;
+    }
+
+    public void setDistance(double distanceSet) {
+        this.distance = distanceSet;
+    }
+
+    public double getAverageSpeed() {
+        return averageSpeed;
+    }
+
+    public void setAverageSpeed(double averageSpeedSet) {
+        this.averageSpeed = averageSpeedSet;
+    }
+
+    public double getCaloriesBurned() {
+        return caloriesBurned;
+    }
+
+    public void setCaloriesBurned(double caloriesBurnedSet) {
+        this.caloriesBurned = caloriesBurnedSet;
+    }
+
+    public ActivityType getType() {
+        return type;
+    }
+
+    public void setType(ActivityType type) {
+        this.type = type;
     }
 
     public ArrayList getRawActivityList() {
         return rawActivityList;
     }
+
+    public void setRawActivityList(ArrayList rawActivityListSet) {
+        this.rawActivityList = rawActivityListSet;
+    }
+
+
+
+    //The functions detailed below will likely be moved to DataProcessor -Matt M
+
 
     /**
      * A function to calculate the distance between two points
