@@ -11,16 +11,27 @@ public class DataRow {
     private int heartRate;
     private double latitude;    // values in range -90 to 90 inclusive
     private double longitude;   // values in range -180 to 180 inclusive
-    private double altitude;
+    private double elevation;
 
-    public DataRow(int number, String date, String time, int heartRate, double latitude, double longitude, double altitude) {
+
+    /**
+     * Constructor for the ActivityRawData class
+     * @param date is a date in dd/mm/yyyy format
+     * @param time is a time in hh/mm/ss format
+     * @param heartRate is the heart rate as an integer(BPM)
+     * @param latitude is the latitude as a double
+     * @param longitude is the longitude as a double
+     * @param elevation is the elevation as a double
+     */
+    public DataRow(int number, String date, String time, int heartRate, double latitude, double longitude,
+                   double elevation) {
         this.number = number;
         this.date = LocalDate.parse(date);
         this.time = LocalTime.parse(time);
         this.heartRate = heartRate;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.altitude = altitude;
+        this.elevation = elevation;
     }
 
     @Override
@@ -32,7 +43,7 @@ public class DataRow {
                 getHeartRate() == dataRow.getHeartRate() &&
                 Double.compare(dataRow.getLatitude(), getLatitude()) == 0 &&
                 Double.compare(dataRow.getLongitude(), getLongitude()) == 0 &&
-                Double.compare(dataRow.getAltitude(), getAltitude()) == 0 &&
+                Double.compare(dataRow.getElevation(), getElevation()) == 0 &&
                 Objects.equals(getDate(), dataRow.getDate()) &&
                 Objects.equals(getTime(), dataRow.getTime());
     }
@@ -40,7 +51,7 @@ public class DataRow {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getNumber(), getDate(), getTime(), getHeartRate(), getLatitude(), getLongitude(), getAltitude());
+        return Objects.hash(getNumber(), getDate(), getTime(), getHeartRate(), getLatitude(), getLongitude(), getElevation());
     }
 
     public int getNumber() {
@@ -91,11 +102,11 @@ public class DataRow {
         this.longitude = longitude;
     }
 
-    public double getAltitude() {
-        return altitude;
+    public double getElevation() {
+        return elevation;
     }
 
-    public void setAltitude(double altitude) {
-        this.altitude = altitude;
+    public void setElevation(double elevation) {
+        this.elevation = elevation;
     }
 }
