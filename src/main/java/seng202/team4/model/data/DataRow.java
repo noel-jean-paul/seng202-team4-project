@@ -2,6 +2,7 @@ package seng202.team4.model.data;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class DataRow implements Comparable<DataRow> {
@@ -25,6 +26,7 @@ public class DataRow implements Comparable<DataRow> {
      */
     public DataRow(int number, String date, String time, int heartRate, double latitude, double longitude,
                    double elevation) {
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy"); //formats the date correctly
         this.number = number;
         this.date = LocalDate.parse(date);
         this.time = LocalTime.parse(time);
