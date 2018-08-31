@@ -18,6 +18,7 @@ public class Goal implements Comparable<Goal> {
     private double goalDistance;
     private double goalDuration;
 
+    /** Constructor for creating new goals */
     public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
                 double goalDistance, double goalDuration) {
         this.number = number;
@@ -28,6 +29,21 @@ public class Goal implements Comparable<Goal> {
         // TODO: 31/08/18 create a description based on type, distance and duration describing the goal
         this.goalDistance = goalDistance;
         this.goalDuration = goalDuration;
+    }
+
+    /** Constructor for loading goals from the database */
+    public Goal(int number, double progress, GoalType type, String description, String creationDate, String expiryDate,
+                String completionDate, double goalDuration, double goalDistance) {
+        this.number = number;
+        this.progress = progress;
+        this.type = type;
+        this.description = description;
+        this.creationDate = LocalDate.parse(creationDate);
+        this.expiryDate = LocalDate.parse(expiryDate);
+        this.completionDate = LocalDate.parse(completionDate);
+        this.goalDuration = goalDuration;
+        this.goalDistance = goalDistance;
+
     }
 
     @Override

@@ -92,19 +92,19 @@ public class DataLoaderTest extends DataAccesser {
         assertEquals(profile1.getActivityList(), expectedActivities);
     }
 
-//    @Test
-//    public void loadProfileGoals() throws SQLException {
-//        // Get the returned list
-//        DataLoader.loadProfileGoals(profile1);
-//
-//        // Create the expected list
-//        List<Goal> expectedGoals = new ArrayList<>();
-//        expectedGoals.add(goal1);
-//        expectedGoals.add(goal2);
-//        java.util.Collections.sort(expectedGoals);
-//
-//        assertEquals(profile1.getActivityList(), expectedGoals);
-//    }
+    @Test
+    public void loadProfileGoals() throws SQLException {
+        // Get the returned list
+        DataLoader.loadProfileGoals(profile1);
+
+        // Create the expected list
+        List<Goal> expectedGoals = new ArrayList<>();
+        expectedGoals.add(goal1);
+        expectedGoals.add(goal2);
+        java.util.Collections.sort(expectedGoals);
+
+        assertEquals(profile1.getGoalList(), expectedGoals);
+    }
 //
 //    @Test
 //    public void loadActivity() throws SQLException {

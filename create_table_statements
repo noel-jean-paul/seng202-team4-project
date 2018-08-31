@@ -44,16 +44,16 @@ on delete cascade on update no action
 
 
 create table dataRow (
-rowNumber integer,
-rowDate character(10),
-time character(8) not null,
-heartRate integer constraint check_heartRate check (heartRate between 60 and 250),
-latitude double constraint check_latitude check (latitude between -90 and 90),
-longitude double constraint check_longitude check (longitude between -180 and 180),
-altitude double constraint check_altitude check (altitude between 0 and 4000),
-name text,
-activityDate character(10),
-primary key (name, activityDate, rowNumber),
-foreign key (name, activityDate) references activity
-on delete cascade on update no action
+  rowNumber integer,
+  rowDate character(10),
+  time character(8) not null,
+  heartRate integer constraint check_heartRate check (heartRate between 60 and 250),
+  latitude double constraint check_latitude check (latitude between -90 and 90),
+  longitude double constraint check_longitude check (longitude between -180 and 180),
+  elevation double constraint check_elevation check (elevation between 0 and 4000),
+  name text,
+  activityDate character(10),
+  primary key (name, activityDate, rowNumber),
+  foreign key (name, activityDate) references activity
+    on delete cascade on update no action
 );
