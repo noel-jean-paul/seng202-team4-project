@@ -195,7 +195,7 @@ public class Profile {
         DataStorer.insertActivity(activity, this);
     }
 
-    /** Adds all activities of the specified collection and sorts the activityList
+    /** Adds all activities of the specified collection to the profile activityList and sorts the activityList
      *  Intended for use by DataLoader
      *
      * @param activities the collection to be added
@@ -205,7 +205,7 @@ public class Profile {
         java.util.Collections.sort(activityList);
     }
 
-    /** Adds all goals of the specified collection and sorts the goalList
+    /** Adds all goals of the specified collection to the goalList and sorts the goalList
      *  Intended for use by DataLoader
      *
      * @param goals the collection to be added

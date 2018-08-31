@@ -25,6 +25,7 @@ public class DataLoaderTest extends DataAccesser {
     private static Goal goal1;
     private static Goal goal2;
     private static DataRow row1;
+    private static DataRow row2;
 
     @BeforeClass
     public static void setUp() throws SQLException {
@@ -65,6 +66,10 @@ public class DataLoaderTest extends DataAccesser {
         row1 = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
                 178.4352, 203);
         DataStorer.insertDataRow(row1, activity1);
+
+        row2 = new DataRow(2, "2018-07-18", "14:02:25", 182, -87.01902489,
+                178.4352, 203);
+        DataStorer.insertDataRow(row2, activity1);
     }
 
     @AfterClass
@@ -105,24 +110,19 @@ public class DataLoaderTest extends DataAccesser {
 
         assertEquals(profile1.getGoalList(), expectedGoals);
     }
-//
-//    @Test
-//    public void loadActivity() throws SQLException {
-//        Activity loadedActivity = DataLoader.loadActivity(activity1.getName(), activity1.getDate(), profile1);
-//        assertTrue(activity1.equals(loadedActivity));
-//    }
-//
-//    @Test
-//    public void loadGoal() throws SQLException {
-//        Goal loadedGoal = DataLoader.loadGoal(goal1.getNumber(), profile1);
-//        assertTrue(goal1.equals(loadedGoal));
-//    }
-//
-//    @Test
-//    public void loadDataRow() throws SQLException {
-//        DataRow loadedDataRow = DataLoader.loadDataRow(row1.getNumber(), activity1);
-//        assertTrue(row1.equals(loadedDataRow));
-//    }
+
+    @Test
+    public void loadActivtyDataRows() throws SQLException {
+        // Load the list into the activity
+        DataLoader.loadActivityDataRows(activity1);
+
+        // Create the expected list
+        List<DataRow> expectedRows = new ArrayList<>();
+        expectedRows.add(row1);
+        expectedRows.add(row2);
+
+        assertEquals(expectedRows, activity1.getRawData());
+    }
 
     @Test
     public void fetchAllProfileKeys() throws SQLException {
@@ -136,10 +136,5 @@ public class DataLoaderTest extends DataAccesser {
         java.util.Collections.sort(expectedKeys);
 
         assertEquals(profileKeys, expectedKeys);
-    }
-
-
-    @Test
-    public void fetchAllActivityKeys() {
     }
 }

@@ -142,12 +142,39 @@ abstract public class DataLoader extends DataAccesser {
         profile.addAllGoals(goals);
     }
 
-    /** Load all dataRows belonging to an activity from the database
+    /** Load all dataRows belonging to an activity from the database into the activity
      *
      * @param activity the activity owning the dataRows (must be in database already)
      */
-    public static void loadActivityDataRows(Activity activity) {
-        // TODO: 31/08/18
+    public static void loadActivityDataRows(Activity activity) throws SQLException {
+        //Initialise list
+        List<DataRow> rows = new ArrayList<>();
+
+        // Select all activities for the profile
+        String select = "SELECT * FROM dataRow where name = (?) and activityDate = (?)";
+        PreparedStatement statement = connection.prepareStatement(select);
+
+        // Set the wildcards (indexed from 1)
+        statement.setString(1, activity.getName());
+        statement.setString(2, String.valueOf(activity.getDate()));
+
+        ResultSet set = statement.executeQuery();
+
+        // Parse the result set into a list - ResultSet cursor starts 1 before the first row
+        while (set.next()) {
+            DataRow row = new DataRow(
+                    set.getInt("rowNumber"),
+                    set.getString("rowDate"),
+                    set.getString("time"),
+                    set.getInt("heartRate"),
+                    set.getDouble("latitude"),
+                    set.getDouble("longitude"),
+                    set.getDouble("elevation")
+            );
+            rows.add(row);
+        }
+        // Add all activities to the activity list
+        activity.addAllDataRows(rows);
     }
 
 //    /** Return the goal in the database matching the number/profile
@@ -200,11 +227,4 @@ abstract public class DataLoader extends DataAccesser {
 
         return profileKeys;
     }
-
-    
-    public static List<String> fetchAllActivityKeys(Profile profile) {
-        // TODO: 29/08/18  
-        return null;
-    }
-
 }

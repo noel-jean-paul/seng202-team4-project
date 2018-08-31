@@ -34,6 +34,7 @@ public class Activity implements Comparable<Activity> {
         this.distance = distance;
         this.caloriesBurned = caloriesBurned;
         this.averageSpeed = 5;  // TODO calculate average speed here in km/hr
+        this.rawData = new ArrayList<>();
     }
 
     /**
@@ -166,6 +167,15 @@ public class Activity implements Comparable<Activity> {
         return rawData;
     }
 
+    /** Adds all dataRows of the specified collection to rawData and sorts the rawData list
+     *  Intended for use by DataLoader as it does not insert into the database
+     *
+     * @param rows the collection to be added
+     */
+    public void addAllDataRows(Collection<DataRow> rows) {
+        rawData.addAll(rows);
+        java.util.Collections.sort(rawData);
+    }
 
 
     //The functions detailed below will likely be moved to DataProcessor -Matt M

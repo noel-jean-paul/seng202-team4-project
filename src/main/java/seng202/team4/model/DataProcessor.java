@@ -2,10 +2,10 @@ package seng202.team4.model;
 
 import seng202.team4.model.data.enums.ActivityType;
 
-public class CalorieCalculator {
+public class DataProcessor {
 
     public static double calculateCalories(double speed, double weight, double duration, ActivityType activity) {
-        double MET = 0;
+        double MET;
         if (activity == ActivityType.Walk) {
             MET = walkingMETCalculator(speed);
         } else {
