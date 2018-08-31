@@ -3,11 +3,12 @@ import seng202.team4.model.data.enums.GoalType;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
 
 
-public class Goal {
+public class Goal implements Comparable<Goal> {
     private int number;
     private double progress;
     private GoalType type;
@@ -18,17 +19,33 @@ public class Goal {
     private double goalDistance;
     private double goalDuration;
 
+    /** Constructor for creating new goals */
     public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
-                String completionDate, String description, double goalDistance, double goalDuration) {
+                double goalDistance, double goalDuration) {
         this.number = number;
         this.progress = progress;
         this.type = type;
         this.creationDate = LocalDate.parse(creationDate);
+        this.completionDate = LocalDate.MAX;
         this.expiryDate = LocalDate.parse(expiryDate);
-        this.completionDate = LocalDate.parse(completionDate);
-        this.description = description;
+        // TODO: 31/08/18 create a description based on type, distance and duration describing the goal
         this.goalDistance = goalDistance;
         this.goalDuration = goalDuration;
+    }
+
+    /** Constructor for loading goals from the database */
+    public Goal(int number, double progress, GoalType type, String description, String creationDate, String expiryDate,
+                String completionDate, double goalDuration, double goalDistance) {
+        this.number = number;
+        this.progress = progress;
+        this.type = type;
+        this.description = description;
+        this.creationDate = LocalDate.parse(creationDate);
+        this.expiryDate = LocalDate.parse(expiryDate);
+        this.completionDate = LocalDate.parse(completionDate);
+        this.goalDuration = goalDuration;
+        this.goalDistance = goalDistance;
+
     }
 
     @Override
@@ -51,6 +68,18 @@ public class Goal {
     public int hashCode() {
 
         return Objects.hash(getNumber(), getProgress(), getType(), getCreationDate(), getExpiryDate(), getCompletionDate(), getDescription(), getGoalDistance(), getGoalDuration());
+    }
+
+    /** Compare to another Goal based on goalNumber
+     *  Consistent with equals as defined by Comparable
+     *
+     * @param o the Goal to compare to
+     * @return a negative integer, zero, or a positive integer as this object
+     *          is less than, equal to, or greater than the specified object.
+     */
+    @Override
+    public int compareTo(Goal o) {
+        return Integer.compare(this.getNumber(), o.getNumber());
     }
 
     public int getNumber() {
@@ -132,7 +161,4 @@ public class Goal {
     public int getTimeRemaining() {
         return Period.between(expiryDate, LocalDate.now()).getDays();
     }
-
-
-
 }

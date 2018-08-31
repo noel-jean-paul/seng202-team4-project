@@ -2,6 +2,8 @@ package seng202.team4.model.database;
 
 import javafx.util.Pair;
 import seng202.team4.model.data.*;
+import seng202.team4.model.data.enums.ActivityType;
+import seng202.team4.model.data.enums.GoalType;
 import seng202.team4.model.data.utilities.ProfileKey;
 
 import java.sql.*;
@@ -67,31 +69,85 @@ abstract public class DataLoader extends DataAccesser {
 ////    }
 
 
-    /** Load all activities belonging to a profile from the database
+    /** Load all activities belonging to a profile from the database into that profile's activity list.
      *
-     * @param profile the profile owning the activities
-     * @return a list of the activities ordered from newest to oldest by date.
+     * @param profile the profile owning the activities (must be in the database already)
      */
-    public static List<Activity> loadProfileActivities(Profile profile) throws SQLException {
-        return new ArrayList<>();
+    public static void loadProfileActivities(Profile profile) throws SQLException {
+        //Initialise list
+        List<Activity> activities = new ArrayList<>();
+
+        // Select all activities for the profile
+        String select = "SELECT * FROM activity where firstName = (?) and lastName = (?)";
+        PreparedStatement statement = connection.prepareStatement(select);
+
+        // Set the wildcards (indexed from 1)
+        statement.setString(1, profile.getFirstName());
+        statement.setString(2, profile.getLastName());
+
+        ResultSet set = statement.executeQuery();
+
+        // Parse the result set into a list - ResultSet cursor starts 1 before the first row
+        while (set.next()) {
+            Activity activity = new Activity(
+                    set.getString("name"),
+                    set.getString("activityDate"),
+                    set.getString("description"),
+                    ActivityType.valueOf(set.getString("type")),
+                    set.getString("startTime"),
+                    set.getString("duration"),
+                    set.getDouble("distance"),
+                    set.getInt("caloriesBurned")
+                    );
+            activities.add(activity);
+        }
+        // Add all activities to the activity list
+        profile.addAllActivities(activities);
     }
 
-    /** Load all goals belonging to a profile from the database
+    /** Load all goals belonging to a profile from the database into that profile's goal list
      *
-     * @param profile the profile owning the goals
-     * @return a list of the goals ordered from newest to oldest by date.
+     * @param profile the profile owning the goals (must be in the database already)
      */
-    public static List<Goal> loadProfileGoals(Profile profile) {
-        return new ArrayList<>();
+    public static void loadProfileGoals(Profile profile) throws SQLException {
+        //Initialise list
+        List<Goal> goals = new ArrayList<>();
+
+        // Select all activities for the profile
+        String select = "SELECT * FROM goal where firstName = (?) and lastName = (?)";
+        PreparedStatement statement = connection.prepareStatement(select);
+
+        // Set the wildcards (indexed from 1)
+        statement.setString(1, profile.getFirstName());
+        statement.setString(2, profile.getLastName());
+
+        ResultSet set = statement.executeQuery();
+
+        // Parse the result set into a list - ResultSet cursor starts 1 before the first row
+        while (set.next()) {
+            Goal goal = new Goal(
+                    set.getInt("goalNumber"),
+                    set.getDouble("progress"),
+                    GoalType.valueOf(set.getString("type")),
+                    set.getString("description"),
+                    set.getString("creationDate"),
+                    set.getString("expiryDate"),
+                    set.getString("completionDate"),
+                    set.getDouble("goalDuration"),
+                    set.getDouble("goalDistance")
+                    );
+            goals.add(goal);
+        }
+        // Add all activities to the activity list
+        profile.addAllGoals(goals);
     }
 
-    /** Load all goals belonging to a profile from the database
+    /** Load all dataRows belonging to an activity from the database
      *
-     * @param activity the activity owning the dataRows
-     * @return a list of the dataRows in ascending order by number
+     * @param activity the activity owning the dataRows (must be in database already)
      */
-    public static List<DataRow> loadActivityDataRows(Activity activity) {
-        return new ArrayList<>();
+    public static void loadActivityDataRows(Activity activity) {
+        // TODO: 31/08/18
     }
 
 //    /** Return the goal in the database matching the number/profile

@@ -23,6 +23,7 @@ public class DataLoaderTest extends DataAccesser {
     private static Activity activity1;
     private static Activity activity2;
     private static Goal goal1;
+    private static Goal goal2;
     private static DataRow row1;
 
     @BeforeClass
@@ -53,8 +54,12 @@ public class DataLoaderTest extends DataAccesser {
 
         // Insert test Goals
         goal1 = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
-                "2019-01-15", "Go for a walk", 2.00, 0);
+                2.00, 0);
         DataStorer.insertGoal(goal1, profile1);
+
+        goal2 = new Goal(2, 100, GoalType.Run, "2017-05-21", "2020-01-02",
+                5.00, 60);
+        DataStorer.insertGoal(goal2, profile1);
 
         // Insert test DataRows
         row1 = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
@@ -72,20 +77,34 @@ public class DataLoaderTest extends DataAccesser {
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertTrue(profile1.equals(loadedProfile));
     }
-//
-//    @Test
-//    public void loadProfileActivities() throws SQLException {
-//        // Get the returned list
-//        List<Activity> profileKeys = DataLoader.loadProfileActivities(profile1);
-//
-//        // Create the expected list
-//        List<Activity> expectedActivities = new ArrayList<>();
-//        expectedActivities.add(activity1);
-//        expectedActivities.add(activity2);
-//        java.util.Collections.sort(expectedActivities);
-//
-//        assertEquals(profileKeys, expectedActivities);
-//    }
+
+    @Test
+    public void loadProfileActivities() throws SQLException {
+        // Load the list into the profile
+        DataLoader.loadProfileActivities(profile1);
+
+        // Create the expected list
+        List<Activity> expectedActivities = new ArrayList<>();
+        expectedActivities.add(activity1);
+        expectedActivities.add(activity2);
+        java.util.Collections.sort(expectedActivities);
+
+        assertEquals(profile1.getActivityList(), expectedActivities);
+    }
+
+    @Test
+    public void loadProfileGoals() throws SQLException {
+        // Load the list into the profile
+        DataLoader.loadProfileGoals(profile1);
+
+        // Create the expected list
+        List<Goal> expectedGoals = new ArrayList<>();
+        expectedGoals.add(goal2);
+        expectedGoals.add(goal1);
+        java.util.Collections.sort(expectedGoals);
+
+        assertEquals(profile1.getGoalList(), expectedGoals);
+    }
 //
 //    @Test
 //    public void loadActivity() throws SQLException {

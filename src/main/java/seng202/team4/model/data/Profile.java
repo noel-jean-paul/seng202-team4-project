@@ -1,7 +1,11 @@
 package seng202.team4.model.data;
+import seng202.team4.model.database.DataStorer;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,8 +26,8 @@ public class Profile {
     private LocalDate dateOfBirth;
     private double weight;
     private double height;
-    private List<Activity> activityList;
-    private List<Goal> goalList;
+    private List<Activity> activityList;    // sorted collection - use addActivity to update
+    private List<Goal> goalList;    // sorted collection - use addGoal to update
 
     /**
      *Constructor for profile class taking in the date of birth in string format
@@ -133,11 +137,11 @@ public class Profile {
      * Calculates the user's bmi based on their current information
      * @return a double as the user's bmi
      */
-    public double calculate_bmi() {
+    public double getBmi() {
         return (this.weight/(this.height * this.height));
     }
 
-    public int calculateAge() {
+    public int getAge() {
         return ((LocalDate.now()).getYear() - dateOfBirth.getYear());
     }
 
@@ -148,7 +152,7 @@ public class Profile {
      * @return true if the name is valid, false otherwise.
      */
     public static boolean isValidName(String name) {
-        return (name.length() >= MIN_NAME_SIZE && name.length() <= MAX_NAME_SIZE);
+        return !(name.length() < MIN_NAME_SIZE || name.length() > MAX_NAME_SIZE);
     }
 
     /**
@@ -181,5 +185,33 @@ public class Profile {
         return (date.compareTo(MIN_DOB) > 0 && date.compareTo(LocalDate.now()) < 0);
     }
 
+    /** Add an activity to the activity list in correct date position and save the activity in the database.
+     *
+     * @param activity the activity to be added
+     */
+    public void addActivity(Activity activity) throws SQLException {
+        activityList.add(activity);
+        java.util.Collections.sort(activityList);
+        DataStorer.insertActivity(activity, this);
+    }
 
+    /** Adds all activities of the specified collection and sorts the activityList
+     *  Intended for use by DataLoader
+     *
+     * @param activities the collection to be added
+     */
+    public void addAllActivities(Collection<Activity> activities) {
+        activityList.addAll(activities);
+        java.util.Collections.sort(activityList);
+    }
+
+    /** Adds all goals of the specified collection and sorts the goalList
+     *  Intended for use by DataLoader
+     *
+     * @param goals the collection to be added
+     */
+    public void addAllGoals(Collection<Goal> goals) {
+        goalList.addAll(goals);
+        java.util.Collections.sort(goalList);
+    }
 }

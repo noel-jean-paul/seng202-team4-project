@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class DataRow {
+public class DataRow implements Comparable<DataRow> {
     private int number;
     private LocalDate date;
     private LocalTime time;
@@ -54,6 +54,18 @@ public class DataRow {
     public int hashCode() {
 
         return Objects.hash(getNumber(), getDate(), getTime(), getHeartRate(), getLatitude(), getLongitude(), getElevation());
+    }
+
+    /** Compare to another DataRow based on rowNumber
+     *  Consistent with equals as defined by Comparable
+     *
+     * @param o the DataRow to compare to
+     * @return a negative integer, zero, or a positive integer as this object
+     *          is less than, equal to, or greater than the specified object.
+     */
+    @Override
+    public int compareTo(DataRow o) {
+        return Integer.compare(this.getNumber(), o.getNumber());
     }
 
     public int getNumber() {

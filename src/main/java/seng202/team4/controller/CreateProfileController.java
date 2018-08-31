@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import seng202.team4.model.data.Profile;
-import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
 
 import java.time.LocalDate;
@@ -80,9 +79,9 @@ public class CreateProfileController extends Controller {
         }
 
         // Check that the given values are valid. If they are not, the user is displayed an appropriate error message.
-        if (!Profile.isValidName(firstName)) {
+        if (Profile.isValidName(firstName)) {
             errorText.setText(String.format("First name must be between %s and %s characters.", Profile.MIN_NAME_SIZE, Profile.MAX_NAME_SIZE));
-        } else if (!Profile.isValidName(lastName)){
+        } else if (Profile.isValidName(lastName)){
             errorText.setText(String.format("Last name must be between %s and %s characters.", Profile.MIN_NAME_SIZE, Profile.MAX_NAME_SIZE));
         } else if (!isValidDateFormat) {
             errorText.setText("Date should be in the form dd/mm/yyyy.");
