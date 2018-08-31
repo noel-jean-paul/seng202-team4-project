@@ -26,6 +26,8 @@ public class DataRowTest {
 
     @Test
     public void compareTo__differentNumber_checkComesAfter() {
+        row1.setNumber(3);
+        row2.setNumber(4);
         assert row2.compareTo(row1) > 0;
     }
 

@@ -28,6 +28,8 @@ public class GoalTest {
 
     @Test
     public void compareTo__differentNumber_checkComesAfter() {
+        goal1.setNumber(3);
+        goal2.setNumber(4);
         assert goal2.compareTo(goal1) > 0;
     }
 
