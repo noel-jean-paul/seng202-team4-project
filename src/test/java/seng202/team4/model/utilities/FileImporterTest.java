@@ -1,15 +1,15 @@
-package seng202.team4.model;
+package seng202.team4.model.utilities;
 
 import org.junit.Before;
 import org.junit.Test;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
+import seng202.team4.model.utilities.FileImporter;
+
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 public class FileImporterTest {
 

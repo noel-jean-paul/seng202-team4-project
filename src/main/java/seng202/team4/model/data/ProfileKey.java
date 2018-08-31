@@ -1,4 +1,4 @@
-package seng202.team4.model.data.utilities;
+package seng202.team4.model.data;
 
 import java.util.Objects;
 

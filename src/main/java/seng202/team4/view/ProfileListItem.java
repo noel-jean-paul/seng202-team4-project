@@ -1,6 +1,5 @@
 package seng202.team4.view;
 
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.layout.AnchorPane;
@@ -9,10 +8,8 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import seng202.team4.App;
-import seng202.team4.controller.ApplicationStateManager;
-import seng202.team4.controller.Controller;
 import seng202.team4.controller.ProfileListItemController;
-import seng202.team4.model.data.utilities.ProfileKey;
+import seng202.team4.model.data.ProfileKey;
 
 public class ProfileListItem extends AnchorPane {
 

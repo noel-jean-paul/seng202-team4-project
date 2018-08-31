@@ -1,4 +1,4 @@
-package seng202.team4.model;
+package seng202.team4.model.utilities;
 
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
@@ -6,9 +6,7 @@ import seng202.team4.model.data.DataRow;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.FileReader;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 

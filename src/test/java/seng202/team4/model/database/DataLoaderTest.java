@@ -7,10 +7,8 @@ import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
-import seng202.team4.model.data.utilities.ProfileKey;
+import seng202.team4.model.data.ProfileKey;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;

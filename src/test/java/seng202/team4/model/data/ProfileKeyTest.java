@@ -1,8 +1,7 @@
-package seng202.team4.model.data.utilities;
+package seng202.team4.model.data;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
+import seng202.team4.model.data.ProfileKey;
 
 public class ProfileKeyTest {
     private static ProfileKey key1;

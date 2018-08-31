@@ -1,17 +1,13 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
-import seng202.team4.Utilities;
-import seng202.team4.model.data.utilities.ProfileKey;
+import seng202.team4.model.data.ProfileKey;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.view.ProfileListItem;
 
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /** Controller for the login screen. */
 public class LoginController extends Controller {
