@@ -7,6 +7,7 @@ import seng202.team4.model.data.DataRow;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -25,7 +26,7 @@ public class FileImporterTest {
     @Before
     public void init() {
         testImport = new FileImporter();
-        testImport.readFile(filename, testRows, testAllActivities);
+        testImport.readFile(new File(filename), testRows, testAllActivities);
     }
 
     /**
@@ -33,7 +34,7 @@ public class FileImporterTest {
      */
     @Test
     public void activityListEqualTest() {
-        ArrayList<Activity> expected = testImport.readFile(filename, testRows, testAllActivities);
+        ArrayList<Activity> expected = testImport.readFile(new File(filename), testRows, testAllActivities);
         assertThat(testAllActivities, is(expected));
     }
 

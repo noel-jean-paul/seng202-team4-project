@@ -5,6 +5,14 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import seng202.team4.Utilities;
+import seng202.team4.model.FileImporter;
+import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.DataRow;
+import seng202.team4.view.ActivityConfirmationRow;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImportActivitiesPreviewScreenController extends Controller {
 
@@ -23,12 +31,25 @@ public class ImportActivitiesPreviewScreenController extends Controller {
 
     }
 
-    public void loadActivities() {
-        for (int i=0; i < 100; i++) {
-            Pane activityListItem = Utilities.loadPane("ActivityConfirmationRow.fxml", new Controller(applicationStateManager));
-            activityListVbox.getChildren().add(activityListItem);
+    @FXML
+    public void importActivities() {
+
+    }
+
+    public void loadActivities(File csvFile) {
+        FileImporter fileImporter = new FileImporter();
+        ArrayList<Activity> activities = new ArrayList<Activity>();
+        ArrayList<DataRow> rows = new ArrayList<DataRow>();
+
+        fileImporter.readFile(csvFile, rows, activities);
+        for (int i=0; i < activities.size(); i++) {
+            ActivityConfirmationRowController activityRowController = new ActivityConfirmationRowController(applicationStateManager);
+            ActivityConfirmationRow activityConfirmationRow = new ActivityConfirmationRow(activityRowController, activities.get(i));
+            activityListVbox.getChildren().add(activityConfirmationRow);
+
+
             if (i % 2 == 0) {
-                activityListItem.setBackground(shadedBackground);
+                activityConfirmationRow.setBackground(shadedBackground);
             }
         }
     }

@@ -36,9 +36,11 @@ public class ActivityImportTypePromptController extends Controller {
             closePopup();
             ImportActivitiesPreviewScreenController previewContoller = new ImportActivitiesPreviewScreenController(applicationStateManager);
             Pane importPreviewPane = Utilities.loadPane("ImportActivitesPreviewScreen.fxml", previewContoller);
-            previewContoller.loadActivities();
+
             applicationStateManager.addScreen("ImportActivitesPreviewScreen", importPreviewPane);
             applicationStateManager.switchToScreen("ImportActivitesPreviewScreen");
+
+            previewContoller.loadActivities(file);
         }
     }
 

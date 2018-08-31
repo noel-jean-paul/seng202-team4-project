@@ -4,6 +4,7 @@ import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
@@ -15,14 +16,14 @@ import java.util.ArrayList;
 
 public class FileImporter {
 
-    public ArrayList readFile(String filename, ArrayList<DataRow> rows, ArrayList<Activity> allActivities) {
+    public ArrayList readFile(File file, ArrayList<DataRow> rows, ArrayList<Activity> allActivities) {
 
         String line;   //empty line into which data will be read
         String csvSplitBy = ",";    //split on the comma
         String[] dataPoint; //create the string array to hold the line
         String activityName;    //Creates a string to hold the name of the activity being performed
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             line = bufferedReader.readLine();
             while (line != null) {  //while end of file has not been reached
                 if (line.contains("#")) {   //if the line contains a hash then we know it is a line with the activity name on it
@@ -68,7 +69,7 @@ public class FileImporter {
         FileImporter fileImporter = new FileImporter();
         ArrayList<Activity> allActivities = new ArrayList<>(); // Creates a list of all activities parsed in the file
         ArrayList<DataRow> rows = new ArrayList<>();
-        fileImporter.readFile(filename, rows, allActivities);
+        fileImporter.readFile(new File(filename), rows, allActivities);
 
         for(Activity oneActivity : allActivities) {     //print out each activity's name. Purely for testing purposes
             System.out.println(oneActivity.getName());
