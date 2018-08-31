@@ -19,6 +19,8 @@ public class DataRowTest {
 
     @Test
     public void compareTo_differentNumber_checkComesBefore() {
+        row1.setNumber(3);
+        row2.setNumber(4);
         assert row1.compareTo(row2) < 0;
     }
 
@@ -29,6 +31,7 @@ public class DataRowTest {
 
     @Test
     public void compareTo_sameNumber() {
+        row1.setNumber(1);
         row2.setNumber(1);
         assert row1.compareTo(row2) == 0;
     }

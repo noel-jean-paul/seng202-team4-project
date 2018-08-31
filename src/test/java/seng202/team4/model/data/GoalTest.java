@@ -21,6 +21,8 @@ public class GoalTest {
 
     @Test
     public void compareTo_differentNumber_checkComesBefore() {
+        goal1.setNumber(3);
+        goal2.setNumber(4);
         assert goal1.compareTo(goal2) < 0;
     }
 
@@ -31,6 +33,7 @@ public class GoalTest {
 
     @Test
     public void compareTo_sameNumber() {
+        goal1.setNumber(1);
         goal2.setNumber(1);
         assert goal1.compareTo(goal2) == 0;
     }
