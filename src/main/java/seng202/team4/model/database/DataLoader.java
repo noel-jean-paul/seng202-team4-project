@@ -107,19 +107,17 @@ abstract public class DataLoader extends DataAccesser {
     /** Load all goals belonging to a profile from the database
      *
      * @param profile the profile owning the goals (must be in the database already)
-     * @return a list of the goals ordered from newest to oldest by date.
      */
-    public static List<Goal> loadProfileGoals(Profile profile) {
-        return new ArrayList<>();
+    public static void loadProfileGoals(Profile profile) {
+        // TODO: 31/08/18
     }
 
     /** Load all dataRows belonging to an activity from the database
      *
      * @param activity the activity owning the dataRows (must be in database already)
-     * @return a list of the dataRows in ascending order by number
      */
-    public static List<DataRow> loadActivityDataRows(Activity activity) {
-        return new ArrayList<>();
+    public static void loadActivityDataRows(Activity activity) {
+        // TODO: 31/08/18
     }
 
 //    /** Return the goal in the database matching the number/profile
