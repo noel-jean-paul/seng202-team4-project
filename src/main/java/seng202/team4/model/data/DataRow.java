@@ -26,9 +26,9 @@ public class DataRow {
      */
     public DataRow(int number, String date, String time, int heartRate, double latitude, double longitude,
                    double elevation) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy"); //formats the date correctly
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy"); //formats the date correctly
         this.number = number;
-        this.date = LocalDate.parse(date, formatter);
+        this.date = LocalDate.parse(date);
         this.time = LocalTime.parse(time);
         this.heartRate = heartRate;
         this.latitude = latitude;

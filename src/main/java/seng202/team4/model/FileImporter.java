@@ -6,6 +6,7 @@ import seng202.team4.model.data.DataRow;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -15,8 +16,7 @@ import java.util.ArrayList;
 public class FileImporter {
 
     public ArrayList readFile(String filename, ArrayList<DataRow> rows, ArrayList<Activity> allActivities) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");    //Formats the date correctly
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");  //Formats the time correctly
+
         String line;   //empty line into which data will be read
         String csvSplitBy = ",";    //split on the comma
         String[] dataPoint; //create the string array to hold the line
@@ -33,7 +33,13 @@ public class FileImporter {
                         //the next lines split the line by comma into its unique fields
                         counter++;  //update the line counter
                         dataPoint = line.split(csvSplitBy);
-                        String date = (dataPoint[0]);
+
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+                        String unformattedDate = (dataPoint[0]);   //grabs date from line
+                        LocalDate localDate = LocalDate.parse(unformattedDate, formatter);     //converts to LocalDate format
+                        DateTimeFormatter format1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        String date = localDate.format(format1);   //converts this back to a string
+
                         String time = (dataPoint[1]);
                         int heartRate = (Integer.parseInt(dataPoint[2]));
                         double latitude = (Double.parseDouble(dataPoint[3]));
@@ -64,11 +70,10 @@ public class FileImporter {
         ArrayList<DataRow> rows = new ArrayList<>();
         fileImporter.readFile(filename, rows, allActivities);
 
-        for(Activity oneActivity : allActivities) {     //print out each activities name (also need to print out each row of data for each activity)
+        for(Activity oneActivity : allActivities) {     //print out each activity's name. Purely for testing purposes
             System.out.println(oneActivity.getName());
             System.out.println(oneActivity.getRawData().size());
             System.out.println(oneActivity.getStartTime());
-            System.out.println(oneActivity.getRawData().get(0).getNumber());
         }
     }
 
