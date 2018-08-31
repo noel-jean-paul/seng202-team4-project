@@ -204,4 +204,14 @@ public class Profile {
         activityList.addAll(activities);
         java.util.Collections.sort(activityList);
     }
+
+    /** Adds all goals of the specified collection and sorts the goalList
+     *  Intended for use by DataLoader
+     *
+     * @param goals the collection to be added
+     */
+    public void addAllGoals(Collection<Goal> goals) {
+        goalList.addAll(goals);
+        java.util.Collections.sort(goalList);
+    }
 }

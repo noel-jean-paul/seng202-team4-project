@@ -80,7 +80,7 @@ public class DataLoaderTest extends DataAccesser {
 
     @Test
     public void loadProfileActivities() throws SQLException {
-        // Get the returned list
+        // Load the list into the profile
         DataLoader.loadProfileActivities(profile1);
 
         // Create the expected list
@@ -94,13 +94,13 @@ public class DataLoaderTest extends DataAccesser {
 
     @Test
     public void loadProfileGoals() throws SQLException {
-        // Get the returned list
+        // Load the list into the profile
         DataLoader.loadProfileGoals(profile1);
 
         // Create the expected list
         List<Goal> expectedGoals = new ArrayList<>();
-        expectedGoals.add(goal1);
         expectedGoals.add(goal2);
+        expectedGoals.add(goal1);
         java.util.Collections.sort(expectedGoals);
 
         assertEquals(profile1.getGoalList(), expectedGoals);
