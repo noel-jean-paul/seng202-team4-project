@@ -70,15 +70,4 @@ public class ActivityTest {
 
         assert activity1.compareTo(activity2) == 0;
     }
-
-    @Test
-    public void compareTo_SameDate_SameTime_checkReverse() {
-        activity1.setDate(LocalDate.parse("2018-06-01"));
-        activity2.setDate(LocalDate.parse("2018-06-01"));   // Same Date
-
-        activity1.setStartTime(LocalTime.parse("12:00:00"));
-        activity2.setStartTime(LocalTime.parse("12:00:00"));    // Same time
-
-        assert activity2.compareTo(activity1) == 0;
-    }
 }

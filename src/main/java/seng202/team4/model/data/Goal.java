@@ -25,6 +25,7 @@ public class Goal implements Comparable<Goal> {
         this.progress = progress;
         this.type = type;
         this.creationDate = LocalDate.parse(creationDate);
+        this.completionDate = LocalDate.MAX;
         this.expiryDate = LocalDate.parse(expiryDate);
         // TODO: 31/08/18 create a description based on type, distance and duration describing the goal
         this.goalDistance = goalDistance;

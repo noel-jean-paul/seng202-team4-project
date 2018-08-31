@@ -56,5 +56,4 @@ public class ProfileKeyTest {
 
         assert key2.compareTo(key1) == 0;
     }
-
 }
