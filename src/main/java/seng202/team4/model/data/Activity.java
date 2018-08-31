@@ -2,6 +2,7 @@ package seng202.team4.model.data;
 
 import seng202.team4.model.data.enums.ActivityType;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-public class Activity {
+public class Activity implements Comparable<Activity> {
     /* The combination of name and date must be unique for a profile */
     private String name;
     private LocalDate date;
@@ -23,7 +24,7 @@ public class Activity {
     private List<DataRow> rawData;
 
     public Activity(String name, String date, String description, ActivityType type, String startTime,
-                    String duration, double distance, double caloriesBurned, double averageSpeed) {
+                    String duration, double distance, double caloriesBurned) {
         this.name = name;
         this.date = LocalDate.parse(date);
         this.description = description;
@@ -32,21 +33,19 @@ public class Activity {
         this.duration = LocalTime.parse(duration);
         this.distance = distance;
         this.caloriesBurned = caloriesBurned;
-        this.averageSpeed = averageSpeed;
-        rawData = new ArrayList<>();
+        this.averageSpeed = 5;  // TODO calculate average speed here in km/hr
     }
 
-//    /**
-//     * Constructor for the Activity class
-//     * @param name is the name of the activity as a string
-//     */
-//    public Activity(String name, ArrayList<ActivityRawData> rawActivityList) {
-//        this.name = name;
-//        //this.rawActivityList = rawActivityList;
-//        //calcTotalDistance();
-//        this.date = (rawActivityList.get(0)).getDate();
-//        this.startTime = (rawActivityList.get(0)).getTime();
-//    }
+    /**
+     * Constructor for the Activity class
+     * @param name is the name of the activity as a string
+     */
+    public Activity(String name, ArrayList<DataRow> rawActivityList) {
+        this.name = name;
+        this.rawData = rawActivityList;
+        this.date = (rawActivityList.get(0)).getDate();
+        this.startTime = (rawActivityList.get(0)).getTime();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -67,7 +66,28 @@ public class Activity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getName(), getDate(), getDescription(), getType(), getStartTime(), getDuration(), getDistance(), getCaloriesBurned(), getAverageSpeed());
+        return Objects.hash(getName(), getDate(), getDescription(), getType(), getStartTime(), getDuration(),
+                getDistance(), getCaloriesBurned(), getAverageSpeed());
+    }
+
+    /** Compare an Activity to another based on Date and then based on Time in case of ties.
+     *  Consistent with equals as defined by Comparable
+     *
+     * @param o the ProfileKey to compare to
+     * @return a negative integer, zero, or a positive integer as this object
+     *          is less than, equal to, or greater than the specified object.
+     */
+    @Override
+    public int compareTo(Activity o) {
+        int dateCompare;
+        int timeCompare;
+         if ((dateCompare = this.getDate().compareTo(o.getDate())) != 0) {
+             return dateCompare;
+         } else if ((timeCompare = this.getStartTime().compareTo(o.getStartTime())) != 0) {
+             return timeCompare;
+         } else {
+             return 0;  // Same date and startTime
+         }
     }
 
     public String getName() {
@@ -142,9 +162,11 @@ public class Activity {
         this.type = type;
     }
 
-    public Collection<DataRow> getRawData() {
+    public List<DataRow> getRawData() {
         return rawData;
     }
+
+
 
     //The functions detailed below will likely be moved to DataProcessor -Matt M
 

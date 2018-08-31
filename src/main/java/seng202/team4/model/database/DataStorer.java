@@ -121,7 +121,7 @@ abstract public class DataStorer extends DataAccesser {
     public static void insertDataRow(DataRow dataRow, Activity activity) throws SQLException {
         assert dataRow != null;
 
-        String insert = "insert into dataRow(rowNumber, rowDate, time, heartRate, latitude, longitude, altitude, " +
+        String insert = "insert into dataRow(rowNumber, rowDate, time, heartRate, latitude, longitude, elevation, " +
                 "name, activityDate) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
