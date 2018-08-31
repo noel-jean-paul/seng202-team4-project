@@ -3,6 +3,7 @@ import seng202.team4.model.data.enums.GoalType;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
 
@@ -160,7 +161,4 @@ public class Goal implements Comparable<Goal> {
     public int getTimeRemaining() {
         return Period.between(expiryDate, LocalDate.now()).getDays();
     }
-
-
-
 }
