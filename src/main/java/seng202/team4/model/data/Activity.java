@@ -34,7 +34,6 @@ public class Activity implements Comparable<Activity> {
         this.distance = distance;
         this.caloriesBurned = caloriesBurned;
         this.averageSpeed = 5;  // TODO calculate average speed here in km/hr
-        rawData = new ArrayList<>();
     }
 
     /**
@@ -43,8 +42,7 @@ public class Activity implements Comparable<Activity> {
      */
     public Activity(String name, ArrayList<DataRow> rawActivityList) {
         this.name = name;
-        //this.rawActivityList = rawActivityList;
-        //calcTotalDistance();
+        this.rawData = rawActivityList;
         this.date = (rawActivityList.get(0)).getDate();
         this.startTime = (rawActivityList.get(0)).getTime();
     }
@@ -151,7 +149,7 @@ public class Activity implements Comparable<Activity> {
         this.type = type;
     }
 
-    public Collection<DataRow> getRawData() {
+    public List<DataRow> getRawData() {
         return rawData;
     }
 

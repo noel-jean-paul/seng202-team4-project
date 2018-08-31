@@ -31,7 +31,7 @@ public class FileImporter {
                     int counter = 0;
                     while ((line != null) && (!(line.contains("#")))) { //read up until the next # symbol, signifying the start of a new activity
                         //the next lines split the line by comma into its unique fields
-                        counter++;
+                        counter++;  //update the line counter
                         dataPoint = line.split(csvSplitBy);
                         String date = (dataPoint[0]);
                         String time = (dataPoint[1]);
@@ -43,11 +43,10 @@ public class FileImporter {
                         rows.add(new DataRow(counter, date, time, heartRate, latitude, longitude, elevation));   //add the data to a new ActivityRawData element
                         line = bufferedReader.readLine();
                     }
-                    for(DataRow row : rows) {
-                        System.out.println("Activity Name: " + activityName + " Heart rate: " + row.getHeartRate()); //this for loop was use purely for testing purposes and can be removed
-                    }
-                    allActivities.add(new Activity(activityName, rows));   //add each of the raw activity data for that specific activity, along with the activity name into an Activity object
-                    rows.clear();    //clear the arrWayList of rows in preparation for the next lot of data for the next activity
+
+                    ArrayList<DataRow> rowCopy = new ArrayList<>(rows);     //create a copy of the row list
+                    allActivities.add(new Activity(activityName, rowCopy));   //add each of the raw activity data for that specific activity, along with the activity name into an Activity object
+                    rows.clear();    //clear the arrayList of rows in preparation for the next lot of data for the next activity
                 }
             }
 
@@ -67,7 +66,9 @@ public class FileImporter {
 
         for(Activity oneActivity : allActivities) {     //print out each activities name (also need to print out each row of data for each activity)
             System.out.println(oneActivity.getName());
-            System.out.println(Math.round(oneActivity.getDistance())); // prints out the activity total distance covered rounded to int
+            System.out.println(oneActivity.getRawData().size());
+            System.out.println(oneActivity.getStartTime());
+            System.out.println(oneActivity.getRawData().get(0).getNumber());
         }
     }
 
