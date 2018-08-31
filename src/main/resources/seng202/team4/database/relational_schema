@@ -1,9 +1,0 @@
-Profile(FirstName, LastName, DateofBirth, Height, Weight)
-
-Goal(number, Progress, Type, Description, CreationDate, ExpiryDate, CompletionDate, GoalDuration, GoalDistance, firstName, lastName)
-
-Activity(Name, Date, Description, Type, StartTime, Duration, Distance, CaloriesBurned, firstName, LastName)
-
-DataRow(name, date, RowNumber, Date, time, HeartRate, Latitude, Longitude, Altitude)
-
-

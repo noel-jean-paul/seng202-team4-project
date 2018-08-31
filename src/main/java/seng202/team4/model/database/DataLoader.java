@@ -39,40 +39,83 @@ abstract public class DataLoader extends DataAccesser {
                 set.getDouble("height"));
     }
 
-    /** Return the Activity in the database matching the name/date/profile
+//    /** Return the Activity in the database matching the name/date/profile
+//     *
+//     * @param name the name of the activty to be fetched as a String
+//     * @param date the date of the activity to be fetched as a LocalDate
+//     * @param activityOwner the profile owning the activity to be fetched
+//     * @return the activity matching the name/date as an Activity object
+//     * @throws SQLException if an error occurred regarding the database
+//     */
+////    public static Activity loadActivity(String name, LocalDate date, Profile activityOwner) throws SQLException {
+////        // Select profile matching first name and last name
+////        String select = "SELECT * FROM activity WHERE name = (?) AND activityDate = (?) " +
+////                "AND firstName = (?) AND lastName = (?)";
+////        PreparedStatement statement = connection.prepareStatement(select);
+////
+////        // set the wildcards (indexed from 1)
+////        statement.setString(1, name);
+////        statement.setString(2, String.toStringdate);
+////        ResultSet set = statement.executeQuery();
+////
+////        return new Profile(
+////                set.getString("firstName"),
+////                set.getString("lastName"),
+////                set.getString("dateOfBirth"),
+////                set.getDouble("weight"),
+////                set.getDouble("height"));
+////    }
+
+
+    /** Load all activities belonging to a profile from the database
      *
-     * @param name the name of the activty to be fetched as a String
-     * @param date the date of the activity to be fetched as a LocalDate
-     * @param activityOwner the profile owning the activity to be fetched
-     * @return the activity matching the name/date as an Activity object
-     * @throws SQLException if an error occurred regarding the database
+     * @param profile the profile owning the activities
+     * @return a list of the activities ordered from newest to oldest by date.
      */
-    public static Activity loadActivity(String name, LocalDate date, Profile activityOwner) throws SQLException {
-        return null;
+    public static List<Activity> loadProfileActivities(Profile profile) throws SQLException {
+        return new ArrayList<>();
     }
 
-    /** Return the goal in the database matching the number/profile
+    /** Load all goals belonging to a profile from the database
      *
-     * @param goalNumber the number of the goal
-     * @param goalOwner the Profile which owns the goal
-     * @return the Goal object matching the parameters
-     * @throws SQLException if an error occurred regarding the database
+     * @param profile the profile owning the goals
+     * @return a list of the goals ordered from newest to oldest by date.
      */
-    public static Goal loadGoal(int goalNumber, Profile goalOwner) throws SQLException {
-        return null;
+    public static List<Goal> loadProfileGoals(Profile profile) {
+        return new ArrayList<>();
     }
 
-    /** Return the DataRow matching the rowNumber and activity
+    /** Load all goals belonging to a profile from the database
      *
-     * @param rowNumber the rowNumber of the row
-     * @param activity the Activity which the row belongs to
-     * @return the DataRow in the database matching the parameters
-     * @throws SQLException if an error occurred regarding the database
+     * @param activity the activity owning the dataRows
+     * @return a list of the dataRows in ascending order by number
      */
-    public static DataRow loadDataRow(int rowNumber, Activity activity) throws SQLException {
-
-        return null;
+    public static List<DataRow> loadActivityDataRows(Activity activity) {
+        return new ArrayList<>();
     }
+
+//    /** Return the goal in the database matching the number/profile
+//     *
+//     * @param goalNumber the number of the goal
+//     * @param goalOwner the Profile which owns the goal
+//     * @return the Goal object matching the parameters
+//     * @throws SQLException if an error occurred regarding the database
+//     */
+//    public static Goal loadGoal(int goalNumber, Profile goalOwner) throws SQLException {
+//        return null;
+//    }
+//
+//    /** Return the DataRow matching the rowNumber and activity
+//     *
+//     * @param rowNumber the rowNumber of the row
+//     * @param activity the Activity which the row belongs to
+//     * @return the DataRow in the database matching the parameters
+//     * @throws SQLException if an error occurred regarding the database
+//     */
+//    public static DataRow loadDataRow(int rowNumber, Activity activity) throws SQLException {
+//
+//        return null;
+//    }
 
 
     /** Return a List of ProfileKeys - 1 key for each profile in the database. The list is sorted alphabetically
@@ -102,10 +145,6 @@ abstract public class DataLoader extends DataAccesser {
         return profileKeys;
     }
 
-    public static Profile loadProfile(int profileId) {
-        // TODO: 28/08/18
-        return null;
-    }
     
     public static List<String> fetchAllActivityKeys(Profile profile) {
         // TODO: 29/08/18  

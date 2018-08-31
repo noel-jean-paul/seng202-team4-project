@@ -16,9 +16,6 @@ import java.util.ResourceBundle;
 
 public class ProfileListItemController extends Controller {
 
-    private final Background focusBackground = new Background( new BackgroundFill( Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY ) );
-    private final Background unfocusBackground = new Background( new BackgroundFill( Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY ) );
-
     @FXML
     private AnchorPane profileListItemPane;
 
@@ -31,12 +28,7 @@ public class ProfileListItemController extends Controller {
 
     @FXML
     public void initialize() {
-        profileListItemPane.setOnMouseClicked(event -> {profileListItemPane.requestFocus();});
-        profileListItemPane.backgroundProperty().bind( Bindings
-                .when( profileListItemPane.focusedProperty() )
-                .then( focusBackground )
-                .otherwise( unfocusBackground )
-        );
+
     }
 
     public void setNameText(String text) {

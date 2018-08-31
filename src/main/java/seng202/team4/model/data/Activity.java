@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-public class Activity {
+public class Activity implements Comparable<Activity> {
     /* The combination of name and date must be unique for a profile */
     private String name;
     private LocalDate date;
@@ -24,7 +24,7 @@ public class Activity {
     private List<DataRow> rawData;
 
     public Activity(String name, String date, String description, ActivityType type, String startTime,
-                    String duration, double distance, double caloriesBurned, double averageSpeed) {
+                    String duration, double distance, double caloriesBurned) {
         this.name = name;
         this.date = LocalDate.parse(date);
         this.description = description;
@@ -33,7 +33,7 @@ public class Activity {
         this.duration = LocalTime.parse(duration);
         this.distance = distance;
         this.caloriesBurned = caloriesBurned;
-        this.averageSpeed = averageSpeed;
+        this.averageSpeed = 5;  // TODO calculate average speed here in km/hr
         rawData = new ArrayList<>();
     }
 
@@ -68,7 +68,15 @@ public class Activity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getName(), getDate(), getDescription(), getType(), getStartTime(), getDuration(), getDistance(), getCaloriesBurned(), getAverageSpeed());
+        return Objects.hash(getName(), getDate(), getDescription(), getType(), getStartTime(), getDuration(),
+                getDistance(), getCaloriesBurned(), getAverageSpeed());
+    }
+
+    @Override
+    public int compareTo(Activity o) {
+//        if (this == o) {
+            return 0;
+//        } else if (this.getDate) //TODO comparison of Local Dates
     }
 
     public String getName() {

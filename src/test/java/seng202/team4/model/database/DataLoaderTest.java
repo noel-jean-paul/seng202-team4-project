@@ -21,6 +21,7 @@ public class DataLoaderTest extends DataAccesser {
     private static Profile profile1;
     private static Profile profile2;
     private static Activity activity1;
+    private static Activity activity2;
     private static Goal goal1;
     private static DataRow row1;
 
@@ -43,8 +44,12 @@ public class DataLoaderTest extends DataAccesser {
 
         // Insert test Activities
         activity1 = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 18, 7.7);
+                "12:15:01", "00:40:00", 5.13, 187);
         DataStorer.insertActivity(activity1, profile1);
+
+        activity2 = new Activity("Walk around the block", "2018-09-01", "Quick walk",
+                ActivityType.Walk, "01:28:30", "00:11:19", 1.2, 30);
+        DataStorer.insertActivity(activity2, profile1);
 
         // Insert test Goals
         goal1 = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
@@ -67,7 +72,21 @@ public class DataLoaderTest extends DataAccesser {
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertTrue(profile1.equals(loadedProfile));
     }
-
+//
+//    @Test
+//    public void loadProfileActivities() throws SQLException {
+//        // Get the returned list
+//        List<Activity> profileKeys = DataLoader.loadProfileActivities(profile1);
+//
+//        // Create the expected list
+//        List<Activity> expectedActivities = new ArrayList<>();
+//        expectedActivities.add(activity1);
+//        expectedActivities.add(activity2);
+//        java.util.Collections.sort(expectedActivities);
+//
+//        assertEquals(profileKeys, expectedActivities);
+//    }
+//
 //    @Test
 //    public void loadActivity() throws SQLException {
 //        Activity loadedActivity = DataLoader.loadActivity(activity1.getName(), activity1.getDate(), profile1);
