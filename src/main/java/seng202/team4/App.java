@@ -32,7 +32,7 @@ public class App extends Application {
 
         Scene baseScene = new Scene(new Group(), 600, 400);
 
-        ApplicationStateManager applicationStateManager = new ApplicationStateManager(baseScene);
+        ApplicationStateManager applicationStateManager = new ApplicationStateManager(baseScene, primaryStage);
 
         Pane loginScreen = Utilities.loadPane("LoginScreen.fxml", new LoginController(applicationStateManager));
         Pane createProfileScreen = Utilities.loadPane("CreateProfileScreen.fxml", new CreateProfileController(applicationStateManager));

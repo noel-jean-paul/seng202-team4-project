@@ -71,13 +71,15 @@ public class LoginController extends Controller {
 
     @FXML
     public void login() {
-        ProfileKey profileKey = selectedProfileItem.getProfileKey();
-        try {
-            applicationStateManager.setCurrentProfile(DataLoader.loadProfile(profileKey.getFirstName(), profileKey.getLastName()));
-            applicationStateManager.switchToScreen("MainScreen");
-            System.out.println(String.format("%s %s has logged in!", profileKey.getFirstName(), profileKey.getLastName()));
-        } catch (java.sql.SQLException e) {
-            System.out.println("Error: Failed to load profile.");
+        if (selectedProfileItem != null) {
+            ProfileKey profileKey = selectedProfileItem.getProfileKey();
+            try {
+                applicationStateManager.setCurrentProfile(DataLoader.loadProfile(profileKey.getFirstName(), profileKey.getLastName()));
+                applicationStateManager.switchToScreen("MainScreen");
+                System.out.println(String.format("%s %s has logged in!", profileKey.getFirstName(), profileKey.getLastName()));
+            } catch (java.sql.SQLException e) {
+                System.out.println("Error: Failed to load profile.");
+            }
         }
     }
 

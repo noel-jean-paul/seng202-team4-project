@@ -1,7 +1,11 @@
 package seng202.team4.controller;
 
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import seng202.team4.model.data.Profile;
 
 import java.util.HashMap;
@@ -17,11 +21,16 @@ public class ApplicationStateManager {
     /** The root Scene that the screens of the application belong to. */
     private Scene rootScene;
 
+    private Stage primaryStage;
+
+    private StackPane stackPane = new StackPane();
+
     private Profile userProfile;
 
     /** Creates a new ApplicationStateManager for the given root Scene. */
-    public ApplicationStateManager(Scene root) {
+    public ApplicationStateManager(Scene root, Stage stage) {
         this.rootScene = root;
+        this.primaryStage = stage;
     }
 
     /**
@@ -41,6 +50,21 @@ public class ApplicationStateManager {
      */
     public void switchToScreen(String name) {
         rootScene.setRoot(paneMap.get(name));
+    }
+
+
+    public void displayPopUp(Pane popUp) {
+        stackPane.getChildren().add(rootScene.getRoot());
+        stackPane.getChildren().add(popUp);
+        rootScene.setRoot(stackPane);
+    }
+
+    public void closePopUP(Pane popUp) {
+        Pane newRoot = (Pane) stackPane.getChildren().get(0);
+        stackPane.getChildren().remove(popUp);
+        stackPane.getChildren().remove(newRoot);
+        rootScene.setRoot(newRoot);
+
     }
 
     /**
@@ -79,6 +103,10 @@ public class ApplicationStateManager {
      */
     public void setCurrentProfile(Profile profile) {
         this.userProfile = profile;
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 
 }
