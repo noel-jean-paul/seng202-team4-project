@@ -55,7 +55,7 @@ public class DataStorerTest extends DataAccesser {
         // Use the profile stored in the database in the @BeforeClass
         DataStorer.insertActivity(activity1, profile2);
         //Activity loadedActivity = DataLoader.loadActivity(activity1.getFirstName(), profile2.getLastName());
-
+        // TODO: 31/08/18  
         //assertTrue(activity1.equals(loadedActivity));
     }
 
@@ -64,12 +64,13 @@ public class DataStorerTest extends DataAccesser {
         // Use the profile stored in the database in the @BeforeClass
 //        DataStorer.insertGoal(goal1, profile2);
 //        Profile loadedProfile = DataLoader.loadProfile(profile2.getFirstName(), profile2.getLastName());
-//
+        // TODO: 31/08/18 
 //        assertTrue(profile2.equals(loadedProfile));
     }
 
     @Test
     public void insertDataRow() {
         //fail("not implemented");
+        // TODO: 31/08/18  
     }
 }
