@@ -6,7 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import seng202.team4.Utilities;
-import seng202.team4.model.FileImporter;
+import seng202.team4.model.utilities.FileImporter;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.view.ActivityConfirmationRow;

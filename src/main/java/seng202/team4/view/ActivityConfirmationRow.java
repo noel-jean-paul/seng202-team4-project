@@ -22,7 +22,6 @@ public class ActivityConfirmationRow extends AnchorPane {
         controller.setActivityNameText(activity.getName());
         controller.setActivityDateText(activity.getDate().toString());
         controller.setActivityDistanceText("TODO");
-        System.out.println(activity.getDuration());
        // controller.setActivityDurationText(activity.getDuration().toString());
         //controller.setActivityTypeText(activity.getType().toString());
     }
