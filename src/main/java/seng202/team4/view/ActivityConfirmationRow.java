@@ -16,12 +16,14 @@ public class ActivityConfirmationRow extends AnchorPane {
             loader.load();
         } catch (java.io.IOException e) {
             System.out.println(String.format("Error: Could not load %s", loader.getLocation()));
+            e.printStackTrace();
         }
 
         controller.setActivityNameText(activity.getName());
         controller.setActivityDateText(activity.getDate().toString());
         controller.setActivityDistanceText("TODO");
-        controller.setActivityDurationText(activity.getDuration().toString());
-        controller.setActivityTypeText(activity.getType().toString());
+        System.out.println(activity.getDuration());
+       // controller.setActivityDurationText(activity.getDuration().toString());
+        //controller.setActivityTypeText(activity.getType().toString());
     }
 }

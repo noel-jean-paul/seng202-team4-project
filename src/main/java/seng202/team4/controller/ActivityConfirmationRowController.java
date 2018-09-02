@@ -19,7 +19,7 @@ public class ActivityConfirmationRowController extends Controller {
     private Text activityName;
 
     @FXML
-    private Text actvityDuration;
+    private Text activityDuration;
 
     @FXML
     private Text activityType;
@@ -38,7 +38,7 @@ public class ActivityConfirmationRowController extends Controller {
     }
 
     public void setActivityDurationText(String text) {
-        actvityDuration.setText(text);
+        activityDuration.setText(text);
     }
 
     public void setActivityTypeText(String text) {
