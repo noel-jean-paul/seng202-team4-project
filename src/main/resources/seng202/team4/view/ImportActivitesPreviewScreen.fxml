@@ -19,7 +19,7 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="60.0" prefHeight="80.0" vgrow="NEVER" />
-          <RowConstraints fx:id="scollPaneRow" vgrow="ALWAYS" />
+          <RowConstraints vgrow="ALWAYS" />
             <RowConstraints maxHeight="30.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>

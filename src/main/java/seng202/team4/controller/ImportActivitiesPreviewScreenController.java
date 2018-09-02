@@ -31,11 +31,8 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     private GridPane gridPane;
 
     @FXML
-    private RowConstraints scollPaneRow;
-
-    @FXML
     public void initialize() {
-        scollPaneRow.setVgrow(Priority.ALWAYS);
+
     }
 
     @FXML
