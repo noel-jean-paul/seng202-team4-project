@@ -30,7 +30,7 @@ public class MainScreenController extends Controller {
     @FXML
     public void initialize() {
         Pane Pane = new Pane();
-        Pane = Utilities.loadPane("ActivityTab.fxml", new Controller(applicationStateManager));
+        Pane = Utilities.loadPane("ActivityTab.fxml", new ActivityTabController(applicationStateManager));
         activityPane.getChildren().setAll(Pane);
     }
 

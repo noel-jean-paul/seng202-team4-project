@@ -1,7 +1,12 @@
 package seng202.team4.controller;
 
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import seng202.team4.model.data.Profile;
 
 import java.util.HashMap;
@@ -17,11 +22,18 @@ public class ApplicationStateManager {
     /** The root Scene that the screens of the application belong to. */
     private Scene rootScene;
 
+    private Stage primaryStage;
+
+    private StackPane stackPane = new StackPane();
+
     private Profile userProfile;
 
     /** Creates a new ApplicationStateManager for the given root Scene. */
-    public ApplicationStateManager(Scene root) {
+    public ApplicationStateManager(Scene root, Stage stage) {
         this.rootScene = root;
+        this.primaryStage = stage;
+        this.rootScene.setRoot(stackPane);
+        this.stackPane.getChildren().add(new Pane());
     }
 
     /**
@@ -40,7 +52,18 @@ public class ApplicationStateManager {
      * @param name The name of the screen to switch to.
      */
     public void switchToScreen(String name) {
-        rootScene.setRoot(paneMap.get(name));
+        stackPane.getChildren().set(0, paneMap.get(name));
+        paneMap.get(name).prefWidthProperty().bind(stackPane.widthProperty());
+        paneMap.get(name).prefHeightProperty().bind(stackPane.heightProperty());
+    }
+
+
+    public void displayPopUp(Pane popUp) {
+        stackPane.getChildren().add(popUp);
+    }
+
+    public void closePopUP(Pane popUp) {
+        stackPane.getChildren().remove(popUp);
     }
 
     /**
@@ -79,6 +102,10 @@ public class ApplicationStateManager {
      */
     public void setCurrentProfile(Profile profile) {
         this.userProfile = profile;
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 
 }
