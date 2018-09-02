@@ -28,15 +28,12 @@ public class ApplicationStateManager {
 
     private Profile userProfile;
 
-    private final Background selectedBackground = new Background( new BackgroundFill( Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY ) );
-
     /** Creates a new ApplicationStateManager for the given root Scene. */
     public ApplicationStateManager(Scene root, Stage stage) {
         this.rootScene = root;
         this.primaryStage = stage;
         this.rootScene.setRoot(stackPane);
         this.stackPane.getChildren().add(new Pane());
-        stackPane.setBackground(selectedBackground);
     }
 
     /**

@@ -1,5 +1,6 @@
 package seng202.team4.controller;
 
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.layout.*;
@@ -10,6 +11,7 @@ import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.view.ActivityConfirmationRow;
 
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +27,20 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     @FXML
     private VBox activityListVbox;
 
+    @FXML
+    private GridPane gridPane;
+
+    @FXML
+    private RowConstraints scollPaneRow;
 
     @FXML
     public void initialize() {
-
+        scollPaneRow.setVgrow(Priority.ALWAYS);
     }
 
     @FXML
     public void importActivities() {
+        applicationStateManager.switchToScreen("MainScreen");
 
     }
 
@@ -45,6 +53,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         for (int i=0; i < activities.size(); i++) {
             ActivityConfirmationRowController activityRowController = new ActivityConfirmationRowController(applicationStateManager);
             ActivityConfirmationRow activityConfirmationRow = new ActivityConfirmationRow(activityRowController, activities.get(i));
+            activityConfirmationRow.prefWidthProperty().bind(gridPane.widthProperty());
             activityListVbox.getChildren().add(activityConfirmationRow);
 
 
