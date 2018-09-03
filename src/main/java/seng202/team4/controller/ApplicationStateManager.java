@@ -26,7 +26,7 @@ public class ApplicationStateManager {
 
     private StackPane stackPane = new StackPane();
 
-    private Profile userProfile;
+    private Profile currentUserProfile;
 
     /** Creates a new ApplicationStateManager for the given root Scene. */
     public ApplicationStateManager(Scene root, Stage stage) {
@@ -101,7 +101,11 @@ public class ApplicationStateManager {
      * @param profile
      */
     public void setCurrentProfile(Profile profile) {
-        this.userProfile = profile;
+        this.currentUserProfile = profile;
+    }
+
+    public Profile getCurrentProfile() {
+        return currentUserProfile;
     }
 
     public Stage getPrimaryStage() {
