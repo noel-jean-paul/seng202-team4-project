@@ -76,13 +76,14 @@ public class Profile {
                 Double.compare(profile.getHeight(), getHeight()) == 0 &&
                 Objects.equals(getFirstName(), profile.getFirstName()) &&
                 Objects.equals(getLastName(), profile.getLastName()) &&
-                Objects.equals(getDateOfBirth(), profile.getDateOfBirth());
+                Objects.equals(getDateOfBirth(), profile.getDateOfBirth()) &&
+                Objects.equals(getActivityList(), profile.getActivityList()) &&
+                Objects.equals(getGoalList(), profile.getGoalList());
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(getFirstName(), getLastName(), getDateOfBirth(), getWeight(), getHeight());
+        return Objects.hash(getFirstName(), getLastName(), getDateOfBirth(), getWeight(), getHeight(), getActivityList(), getGoalList());
     }
 
     public String getFirstName() {

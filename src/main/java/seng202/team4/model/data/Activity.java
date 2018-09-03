@@ -44,6 +44,7 @@ public class Activity implements Comparable<Activity> {
     public Activity(String name, ArrayList<DataRow> rawActivityList) {
         this.name = name;
         this.rawData = rawActivityList;
+        java.util.Collections.sort(this.rawData);   // ensure the data is in order
         this.date = (rawActivityList.get(0)).getDate();
         this.startTime = (rawActivityList.get(0)).getTime();
     }
@@ -61,14 +62,13 @@ public class Activity implements Comparable<Activity> {
                 Objects.equals(getDescription(), activity.getDescription()) &&
                 getType() == activity.getType() &&
                 Objects.equals(getStartTime(), activity.getStartTime()) &&
-                Objects.equals(getDuration(), activity.getDuration());
+                Objects.equals(getDuration(), activity.getDuration()) &&
+                Objects.equals(getRawData(), activity.getRawData());
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(getName(), getDate(), getDescription(), getType(), getStartTime(), getDuration(),
-                getDistance(), getCaloriesBurned(), getAverageSpeed());
+        return Objects.hash(getName(), getDate(), getDescription(), getType(), getStartTime(), getDuration(), getDistance(), getCaloriesBurned(), getAverageSpeed(), getRawData());
     }
 
     /** Compare an Activity to another based on Date and then based on Time in case of ties.

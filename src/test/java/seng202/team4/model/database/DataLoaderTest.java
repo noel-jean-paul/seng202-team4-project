@@ -78,7 +78,7 @@ public class DataLoaderTest extends DataAccesser {
     @Test
     public void loadProfile() throws SQLException {
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-        assertTrue(profile1.equals(loadedProfile));
+        assertEquals(profile1, loadedProfile);
     }
 
     @Test
