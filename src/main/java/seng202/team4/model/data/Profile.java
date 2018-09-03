@@ -190,10 +190,9 @@ public class Profile {
      *
      * @param activity the activity to be added
      */
-    public void addActivity(Activity activity) throws SQLException {
+    public void addActivity(Activity activity) {
         activityList.add(activity);
         java.util.Collections.sort(activityList);
-        DataStorer.insertActivity(activity, this);
     }
 
     /** Adds all activities of the specified collection to the profile activityList and sorts the activityList
