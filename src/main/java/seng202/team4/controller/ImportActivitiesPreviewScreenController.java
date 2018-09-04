@@ -22,8 +22,8 @@ import java.util.List;
 /** Controller for the import activities preview screen. */
 public class ImportActivitiesPreviewScreenController extends Controller {
 
-    /** ArrayList of Activities that are to be imported. */
-    private ArrayList<Activity> activitiesToImport = new ArrayList<Activity>();
+    /** ArrayList of activityConfirmationRows that listed */
+    private ArrayList<ActivityConfirmationRow> activityConfirmationRows = new ArrayList<ActivityConfirmationRow>();
 
     /** VBox that holds the rows of activities. */
     @FXML
@@ -50,14 +50,16 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     @FXML
     public void importActivities() {
         applicationStateManager.switchToScreen("MainScreen");
-        for (Activity activity: activitiesToImport) {
-            activity.setDistance(0);
-            activity.setType(ActivityType.Walk);
-            activity.setDuration(LocalTime.MIDNIGHT);
-            try {
-                DataStorer.insertActivity(activity, applicationStateManager.getCurrentProfile());
-            } catch (java.sql.SQLException e) {
-                System.out.println("Error importing activities.");
+        for (ActivityConfirmationRow activityConfirmationRow: activityConfirmationRows) {
+            Activity activity = activityConfirmationRow.getActivity();
+
+            if (activityConfirmationRow.isSelected()) {
+                try {
+                    DataStorer.insertActivity(activity, applicationStateManager.getCurrentProfile());
+                } catch (java.sql.SQLException e) {
+                    System.out.println("Error importing activities.");
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -84,7 +86,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
                 activityConfirmationRow.applyShadedBackground();
             }
 
-            activitiesToImport.add(activities.get(i));
+            activityConfirmationRows.add(activityConfirmationRow);
         }
     }
 }

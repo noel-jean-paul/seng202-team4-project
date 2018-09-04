@@ -1,21 +1,16 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.text.Text;
+
+import java.awt.*;
 
 /**
  * The controller for an activityConfirmationRow.
  */
 public class ActivityConfirmationRowController extends Controller {
-
-    /**
-     * Constructor of the ActivityConfirmationRowController.
-     *
-     * @param applicationStateManager The ApplicationStateManager of the application.
-     */
-    public ActivityConfirmationRowController(ApplicationStateManager applicationStateManager) {
-        super(applicationStateManager);
-    }
 
     /** The Text that displays the date of the Activity. */
     @FXML
@@ -33,10 +28,29 @@ public class ActivityConfirmationRowController extends Controller {
     @FXML
     private Text activityDuration;
 
-    /** The Text that displays the type of the Activity, */
+    /** The ChoiceBox that lets the user choose the type of the Activity. */
     @FXML
-    private Text activityType;
+    private ChoiceBox activityTypeChoiceBox;
 
+    /** The CheckBox that allows the user to pick which activities they want to import. */
+    @FXML
+    private CheckBox selectedCheckBox;
+
+    /**
+     * Constructor of the ActivityConfirmationRowController.
+     *
+     * @param applicationStateManager The ApplicationStateManager of the application.
+     */
+    public ActivityConfirmationRowController(ApplicationStateManager applicationStateManager) {
+        super(applicationStateManager);
+    }
+
+    @FXML
+    public void initialize() {
+        activityTypeChoiceBox.getItems().addAll("Other", "Walk", "Run");
+        activityTypeChoiceBox.setValue("Other");
+        selectedCheckBox.setSelected(true);
+    }
 
     public void setActivityDateText(String text) {
         activityDate.setText(text);
@@ -58,7 +72,7 @@ public class ActivityConfirmationRowController extends Controller {
     }
 
 
-    public void setActivityTypeText(String text) {
-        activityType.setText(text);
+    public boolean isSelected() {
+        return selectedCheckBox.isSelected();
     }
 }
