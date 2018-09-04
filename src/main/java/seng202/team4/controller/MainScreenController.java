@@ -15,17 +15,23 @@ import java.util.ResourceBundle;
 /** Controller for the main screen of the App. */
 public class MainScreenController extends Controller {
 
+    /** The AnchorPane of the main screen. */
     @FXML
     private AnchorPane activityPane;
 
-    /** Creates a new LoginController with the given ApplicationStateManager. */
+
+    /**
+     * Constructor of the MainScreenController.
+     *
+     * @param applicationStateManager The ApplicationStateManager of the application.
+     */
     public MainScreenController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
 
     }
 
     /**
-     * Creates loads and intializes the different tabs of the main screen.
+     * Creates, loads and initializes the different tabs of the main screen.
      */
     @FXML
     public void initialize() {
@@ -35,8 +41,10 @@ public class MainScreenController extends Controller {
     }
 
     /**
+     * Action performed when the user clicks the switch profile menu button.
      * Takes the user to the login is screen where they may switch their profile.
      */
+    @FXML
     public void switchProfile() {
         applicationStateManager.switchToScreen("LoginScreen");
     }

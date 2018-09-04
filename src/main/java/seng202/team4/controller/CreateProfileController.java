@@ -8,39 +8,58 @@ import seng202.team4.model.database.DataStorer;
 
 import java.time.LocalDate;
 
+/**
+ * Controller for the create profile screen.
+ */
 public class CreateProfileController extends Controller {
 
+    /** TextField for the first name. */
     @FXML
     private TextField firstNameField;
 
+    /** TextField for the last name. */
     @FXML
     private TextField lastNameField;
 
+    /** TextField for the day of the date of birth. */
     @FXML
     private TextField dayField;
 
+    /** TextField for the month of the date of birth. */
     @FXML
     private TextField monthField;
 
+    /** TextField for the year of the date of birth. */
     @FXML
     private TextField yearField;
 
+    /** TextField for the weight. */
     @FXML
     private TextField weightField;
 
+    /** TextField for the height. */
     @FXML
     private TextField heightField;
 
+    /** The Text that displays an error message to the user. */
     @FXML
     private Text errorText;
+
 
     /** Creates a new CreateProfileController with the given ApplicationStateManager. */
     public CreateProfileController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
 
+
     /**
      * Action performed when the user clicks the create profile button.
+     * Creates a new profile with the provided information in the TextFields.
+     * If any of this information is incorrect then the user is displayed an
+     * error message. Otherwise the new profile is stored in the database and
+     * the application changes to the main screen.
+     *
+     * TODO: Check that the new profile does not have the same name as an existing profile.
      */
     public void createProfile() {
         // Get string values from the text fields.

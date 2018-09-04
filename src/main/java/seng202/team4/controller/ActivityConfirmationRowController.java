@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 public class ActivityConfirmationRowController extends Controller {
 
     /**
-     * Constructor of the ActivityConfirmationRow.
+     * Constructor of the ActivityConfirmationRowController.
      *
      * @param applicationStateManager The ApplicationStateManager of the application.
      */

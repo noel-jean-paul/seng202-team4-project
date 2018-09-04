@@ -19,27 +19,34 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Controller for the import activities preview screen. */
 public class ImportActivitiesPreviewScreenController extends Controller {
 
-    private final Background shadedBackground = new Background( new BackgroundFill( Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY ) );
-
+    /** ArrayList of Activities that are to be imported. */
     private ArrayList<Activity> activitiesToImport = new ArrayList<Activity>();
 
+    /** VBox that holds the rows of activities. */
     @FXML
     private VBox activityListVbox;
 
+    /** GridPane of the import actviities preview screen. */
     @FXML
     private GridPane gridPane;
 
-    @FXML
-    public void initialize() {
-
-    }
-
+    /**
+     * Constructor of the ImportActivitiesPreviewScreenController.
+     *
+     * @param applicationStateManager The ApplicationStateManager of the application.
+     */
     public ImportActivitiesPreviewScreenController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
 
+
+    /**
+     * Action performed when the import activities button is pressed.
+     * Stores all the activities to be imported in the database.
+     */
     @FXML
     public void importActivities() {
         applicationStateManager.switchToScreen("MainScreen");
@@ -55,6 +62,12 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         }
     }
 
+
+    /**
+     * Loads all activities from the given csv file.
+     *
+     * @param csvFile The csv file that contains the data of the activities.
+     */
     public void loadActivities(File csvFile) {
         FileImporter fileImporter = new FileImporter();
         ArrayList<Activity> activities = new ArrayList<Activity>();
@@ -68,7 +81,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             activityListVbox.getChildren().add(activityConfirmationRow);
 
             if (i % 2 == 0) {
-                activityConfirmationRow.setBackground(shadedBackground);
+                activityConfirmationRow.applyShadedBackground();
             }
 
             activitiesToImport.add(activities.get(i));

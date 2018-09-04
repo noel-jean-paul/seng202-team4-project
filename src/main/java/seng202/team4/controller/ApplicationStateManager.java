@@ -135,6 +135,7 @@ public class ApplicationStateManager {
         return currentUserProfile;
     }
 
+
     /**
      * Gets the primary Stage of the application.
      *
