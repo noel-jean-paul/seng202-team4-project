@@ -29,12 +29,17 @@ abstract public class DataLoader extends DataAccesser {
         statement.setString(2, lastName);
         ResultSet set = statement.executeQuery();
 
-        return new Profile(
+        Profile profile = new Profile(
                 set.getString("firstName"),
                 set.getString("lastName"),
                 set.getString("dateOfBirth"),
                 set.getDouble("weight"),
                 set.getDouble("height"));
+
+        loadProfileActivities(profile);
+        loadProfileGoals(profile);
+
+        return profile;
     }
 
 //    /** Return the Activity in the database matching the name/date/profile
@@ -69,7 +74,7 @@ abstract public class DataLoader extends DataAccesser {
      *
      * @param profile the profile owning the activities (must be in the database already)
      */
-    public static void loadProfileActivities(Profile profile) throws SQLException {
+    private static void loadProfileActivities(Profile profile) throws SQLException {
         //Initialise list
         List<Activity> activities = new ArrayList<>();
 
@@ -95,6 +100,7 @@ abstract public class DataLoader extends DataAccesser {
                     set.getDouble("distance"),
                     set.getInt("caloriesBurned")
                     );
+            loadActivityDataRows(activity);
             activities.add(activity);
         }
         // Add all activities to the activity list
@@ -105,7 +111,7 @@ abstract public class DataLoader extends DataAccesser {
      *
      * @param profile the profile owning the goals (must be in the database already)
      */
-    public static void loadProfileGoals(Profile profile) throws SQLException {
+    private static void loadProfileGoals(Profile profile) throws SQLException {
         //Initialise list
         List<Goal> goals = new ArrayList<>();
 
@@ -142,7 +148,7 @@ abstract public class DataLoader extends DataAccesser {
      *
      * @param activity the activity owning the dataRows (must be in database already)
      */
-    public static void loadActivityDataRows(Activity activity) throws SQLException {
+    private static void loadActivityDataRows(Activity activity) throws SQLException {
         //Initialise list
         List<DataRow> rows = new ArrayList<>();
 

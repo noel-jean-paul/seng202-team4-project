@@ -76,13 +76,14 @@ public class Profile {
                 Double.compare(profile.getHeight(), getHeight()) == 0 &&
                 Objects.equals(getFirstName(), profile.getFirstName()) &&
                 Objects.equals(getLastName(), profile.getLastName()) &&
-                Objects.equals(getDateOfBirth(), profile.getDateOfBirth());
+                Objects.equals(getDateOfBirth(), profile.getDateOfBirth()) &&
+                Objects.equals(getActivityList(), profile.getActivityList()) &&
+                Objects.equals(getGoalList(), profile.getGoalList());
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(getFirstName(), getLastName(), getDateOfBirth(), getWeight(), getHeight());
+        return Objects.hash(getFirstName(), getLastName(), getDateOfBirth(), getWeight(), getHeight(), getActivityList(), getGoalList());
     }
 
     public String getFirstName() {
@@ -189,10 +190,9 @@ public class Profile {
      *
      * @param activity the activity to be added
      */
-    public void addActivity(Activity activity) throws SQLException {
+    public void addActivity(Activity activity) {
         activityList.add(activity);
         java.util.Collections.sort(activityList);
-        DataStorer.insertActivity(activity, this);
     }
 
     /** Adds all activities of the specified collection to the profile activityList and sorts the activityList
