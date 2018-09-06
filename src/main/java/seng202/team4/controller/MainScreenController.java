@@ -8,12 +8,15 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import seng202.team4.Utilities;
+import seng202.team4.model.data.Activity;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /** Controller for the main screen of the App. */
 public class MainScreenController extends Controller {
+
+    private ActivityTabController activityTabController;
 
     /** The AnchorPane of the main screen. */
     @FXML
@@ -36,7 +39,8 @@ public class MainScreenController extends Controller {
     @FXML
     public void initialize() {
         Pane Pane = new Pane();
-        Pane = Utilities.loadPane("ActivityTab.fxml", new ActivityTabController(applicationStateManager));
+        activityTabController = new ActivityTabController(applicationStateManager);
+        Pane = Utilities.loadPane("ActivityTab.fxml", activityTabController);
         activityPane.getChildren().setAll(Pane);
     }
 
@@ -47,5 +51,11 @@ public class MainScreenController extends Controller {
     @FXML
     public void switchProfile() {
         applicationStateManager.switchToScreen("LoginScreen");
+    }
+
+
+    @FXML
+    void activityTabSelected() {
+        activityTabController.updateTable();
     }
 }

@@ -75,6 +75,8 @@ public class ApplicationStateManager {
      * @param popUp The pop up (pane) to be displayed
      */
     public void displayPopUp(Pane popUp) {
+        popUp.prefWidthProperty().bind(primaryStage.widthProperty());
+        popUp.prefHeightProperty().bind(primaryStage.heightProperty());
         stackPane.getChildren().add(popUp);
     }
 

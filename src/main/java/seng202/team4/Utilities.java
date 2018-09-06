@@ -1,8 +1,11 @@
 package seng202.team4;
 
+import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import seng202.team4.controller.Controller;
+
+import javax.swing.text.TableView;
 
 /**
  * Class for utility functions.
@@ -26,6 +29,7 @@ public abstract class Utilities {
             pane = loader.load();
         } catch (java.io.IOException e) {
             System.out.println(String.format("Error: Could not load %s", loader.getLocation()));
+            e.printStackTrace();
         }
 
         return pane;
