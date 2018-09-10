@@ -8,19 +8,27 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class DataProcessor {
+
+    /**
+     * Calculates the total distance travelled over the activity data set provided. The returned value is in meters.
+     * @param dataList the data set of the activity, must have size > 1.
+     * @return the total distance travelled over the duration in meters.
+     */
     public static double totalDistance(ArrayList<DataRow> dataList) {
         final double earthRadius = earthRadiusCalculation(dataList.get(0).getLatitude());
         double totalDistance = 0;
-        int j = 0;
-
-        for (int i = 1; i < dataList.size(); i++) {
-            double lat1 = dataList.get(j).getLatitude();
-            double lat2 = dataList.get(i).getLatitude();
-            double long1 = dataList.get(j).getLongitude();
-            double long2 = dataList.get(i).getLongitude();
-            double distance = haversineCalculation(earthRadius, lat1, lat2, long1, long2);
-            totalDistance += distance;
-            j++;
+        int i = 0;
+        for (int j = 1; j < dataList.size(); j++) {
+            double lat1 = dataList.get(i).getLatitude();
+            double lat2 = dataList.get(j).getLatitude();
+            double long1 = dataList.get(i).getLongitude();
+            double long2 = dataList.get(j).getLongitude();
+            double height1 = dataList.get(i).getElevation();
+            double height2 = dataList.get(j).getElevation();
+            double vertDistance = height2 - height1;
+            double horizDistance = haversineCalculation(earthRadius, lat1, lat2, long1, long2);
+            totalDistance += Math.sqrt(Math.pow(horizDistance, 2) + Math.pow(vertDistance, 2));
+            i++;
 
         }
         return totalDistance;
