@@ -13,14 +13,25 @@ import static org.junit.Assert.*;
 public class DataProcessorTest {
 
     @Test
-    public void totalDistance() {
+    public void totalDistanceLevel() {
         ArrayList<DataRow> dataList = new ArrayList<>();
-        dataList.add(new DataRow(0, "2015-04-10", "23:42:28", 69, 30.2553368, -97.83891084, 239.5));
+        dataList.add(new DataRow(0, "2015-04-10", "23:42:28", 69, 30.2553368, -97.83891084, 239));
         dataList.add(new DataRow(0, "2015-04-10","23:43:05",87,30.25499189,-97.83913958,239));
         dataList.add(new DataRow(0, "2015-04-10","23:43:15",132,30.25469617,-97.83931962,239));
-        dataList.add(new DataRow(0, "2015-04-10","23:43:34",156,30.2541537,-97.83977501,239.5));
+        dataList.add(new DataRow(0, "2015-04-10","23:43:34",156,30.2541537,-97.83977501,239));
         double distance = DataProcessor.totalDistance(dataList);
         assertEquals(156, distance, 10);    // Expected value taken from google maps distance feature
+    }
+
+    @Test
+    public void totalDistanceElevation() {
+        ArrayList<DataRow> dataList = new ArrayList<>();
+        dataList.add(new DataRow(0, "2015-04-10", "23:42:28", 69, 30.2553368, -97.83891084, 12));
+        dataList.add(new DataRow(0, "2015-04-10","23:43:05",87,30.25499189,-97.83913958,315));
+        dataList.add(new DataRow(0, "2015-04-10","23:43:15",132,30.25469617,-97.83931962,259));
+        dataList.add(new DataRow(0, "2015-04-10","23:43:34",156,30.2541537,-97.83977501,364));
+        double distance = DataProcessor.totalDistance(dataList);
+        assertEquals(502, distance, 10);
     }
 
     @Test
