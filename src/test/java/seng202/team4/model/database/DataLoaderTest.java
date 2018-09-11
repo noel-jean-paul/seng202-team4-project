@@ -92,9 +92,29 @@ public class DataLoaderTest extends DataAccesser {
     }
 
     @Test
-    public void loadProfile() throws SQLException {
+    public void loadProfile_allListsFilled() throws SQLException {
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(profile1, loadedProfile);
+    }
+
+    @Test
+    public void loadProfile_allListsEmpty() throws SQLException {
+        // Create a new profile with its goal/activity lists empty
+        Profile profile = new Profile("Ghengis", "Khan", "1998-03-06", 85.0,
+                1.83);
+        DataStorer.insertProfile(profile);
+
+        Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
+        assertEquals(profile, loadedProfile);
+
+        // Cleanup
+        DataStorer.deleteProfile(profile);
+    }
+
+    @Test
+    public void loadProfile_profileDoesNotExist() throws SQLException {
+        Profile loadedProfile = DataLoader.loadProfile("@#&*@", "$#&*$*#");
+        assertEquals(null, loadedProfile);
     }
 
 
