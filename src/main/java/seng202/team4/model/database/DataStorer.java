@@ -142,6 +142,16 @@ abstract public class DataStorer extends DataAccesser {
 
         statement.executeUpdate();
 
+        // Delete activities belonging to the profile
+        for (Activity activity : profile.getActivityList()) {
+            deleteActivity(activity, profile);
+        }
+
+        // Delete goals belonging to the profile
+        for (Goal goal : profile.getGoalList()) {
+            deleteGoal(goal, profile);
+        }
+
     }
 
     /** Delete an activity from the database along with its associated data rows
