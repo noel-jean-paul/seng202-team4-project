@@ -52,7 +52,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         applicationStateManager.switchToScreen("MainScreen");
         for (ActivityConfirmationRow activityConfirmationRow: activityConfirmationRows) {
             Activity activity = activityConfirmationRow.getActivity();
-
+            activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             if (activityConfirmationRow.isSelected()) {
                 try {
                     DataStorer.insertActivity(activity, applicationStateManager.getCurrentProfile());

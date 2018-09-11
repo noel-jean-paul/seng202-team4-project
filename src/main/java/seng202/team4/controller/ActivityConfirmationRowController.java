@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.text.Text;
+import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.enums.ActivityType;
 
 import java.awt.*;
 
@@ -47,8 +49,8 @@ public class ActivityConfirmationRowController extends Controller {
 
     @FXML
     public void initialize() {
-        activityTypeChoiceBox.getItems().addAll("Other", "Walk", "Run");
-        activityTypeChoiceBox.setValue("Other");
+        activityTypeChoiceBox.getItems().addAll(ActivityType.Other, ActivityType.Walk, ActivityType.Run);
+        activityTypeChoiceBox.setValue(ActivityType.Other);
         selectedCheckBox.setSelected(true);
     }
 
@@ -74,5 +76,9 @@ public class ActivityConfirmationRowController extends Controller {
 
     public boolean isSelected() {
         return selectedCheckBox.isSelected();
+    }
+
+    public ActivityType getSelectedActvityType() {
+        return (ActivityType) activityTypeChoiceBox.getSelectionModel().getSelectedItem();
     }
 }
