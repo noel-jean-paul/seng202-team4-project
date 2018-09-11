@@ -68,17 +68,24 @@ public class ProfileTest {
     }
 
     @Test
-    public void addActivity_checkList() throws SQLException {
+    public void addActivity_checkList() {
+        // Clear the activity list
+        profile1.getActivityList().clear();
+
         // Add the activities to the profile.
         profile1.addActivity(activity1);
         profile1.addActivity(activity2);
         profile1.addActivity(activity3);
+        System.out.println(profile1.getActivityList());
 
         assertEquals(expected, profile1.getActivityList());
     }
 
     @Test
     public void addAllActivities() {
+        // Clear the activity list
+        profile1.getActivityList().clear();
+
         // Add an activity to the profile activityList
         profile1.getActivityList().add(activity3);
 
@@ -88,12 +95,29 @@ public class ProfileTest {
         // Add activitities to the activityList
         profile1.addAllActivities(activities);
 
+        System.out.println(profile1.getActivityList());
         assertEquals(expected, profile1.getActivityList());
     }
 
     @Test
+    public void addGoal() {
+        // Clear goal list
+        profile1.getGoalList().clear();
+
+        // Add goals to profile
+        profile1.addGoal(goal3);
+        profile1.addGoal(goal1);
+        profile1.addGoal(goal2);
+
+        assertEquals(expectedGoals, profile1.getGoalList());
+    }
+
+    @Test
     public void addAllGoals() {
-        // Add an goal to the profile goalList
+        // Clear goal list
+        profile1.getGoalList().clear();
+
+        // Add a goal to the profile goalList
         profile1.getGoalList().add(goal3);
 
         // Create a list of goals to be added - list is out of order
