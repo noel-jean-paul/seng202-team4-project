@@ -50,7 +50,7 @@ public class ActivityConfirmationRow extends AnchorPane {
 
         //TODO: Remove the following temp values.
         activity.setDistance(0);
-        activity.setType(ActivityType.Walk);
+        activity.setType(ActivityType.Other);
         activity.setDuration(LocalTime.MIDNIGHT);
 
 
@@ -78,5 +78,9 @@ public class ActivityConfirmationRow extends AnchorPane {
 
     public boolean isSelected() {
         return controller.isSelected();
+    }
+
+    public ActivityConfirmationRowController getController() {
+        return controller;
     }
 }
