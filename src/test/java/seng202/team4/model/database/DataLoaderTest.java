@@ -84,9 +84,6 @@ public class DataLoaderTest extends DataAccesser {
         DataStorer.insertDataRow(row2, activity2);
         DataStorer.insertGoal(goal1, profile1);
         DataStorer.insertGoal(goal2, profile1);
-
-
-
     }
 
     @AfterClass
