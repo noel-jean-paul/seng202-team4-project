@@ -7,6 +7,8 @@ import java.sql.*;
 
 
 abstract public class DataStorer extends DataAccesser {
+    /* Class to handle inserting and deleting of objects from the database */
+
     /** Add a profile to the database.
      *  If the combination of profile firstName and lastName is not unique, the profile will not be added.
      *  It is assumed that all profile fields are correctly formatted.
@@ -209,8 +211,9 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(3, String.valueOf(activity.getDate()));
 
         statement.executeUpdate();
-
     }
+
+
 
 
     public static void main(String[] args) throws SQLException {
