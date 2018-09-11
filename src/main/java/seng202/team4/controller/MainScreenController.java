@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -57,5 +58,16 @@ public class MainScreenController extends Controller {
     @FXML
     void activityTabSelected() {
         activityTabController.updateTable();
+    }
+
+    @FXML
+    private Button distanceChartButton;
+
+
+    /* Test to open up the distance chart on click*/
+    @FXML
+    public void openChart() {
+        Pane chart = Utilities.loadPane("DistanceChartScreen.fxml", new ActivityImportTypePromptController(applicationStateManager));
+        applicationStateManager.displayPopUp(chart);
     }
 }
