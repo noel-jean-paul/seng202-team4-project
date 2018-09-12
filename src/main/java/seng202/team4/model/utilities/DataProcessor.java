@@ -1,5 +1,6 @@
 package seng202.team4.model.utilities;
 
+import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.data.enums.ActivityType;
 
@@ -96,19 +97,19 @@ public class DataProcessor {
     /**
      * Calculates the calories burned by the user over the given duration.
      * @param speed the average speed of the user over the duration - in kilometers per hour.
-     * @param weight the weight of the user - in kilograms.
+     * @param user the profile of the user who performed the activity.
      * @param duration the time taken for the specific leg of the activity - in seconds.
      * @param activity the type of activity which the user participated in - Run or Walk.
      * @return the approximate number of calories burned by the user for the given activity over the given period of time.
      */
-    public static double calculateCalories(double speed, double weight, double duration, ActivityType activity) {
+    public static double calculateCalories(double speed, double duration, ActivityType activity, Profile user) {
         double MET;
         if (activity == ActivityType.Walk) {
             MET = walkingMETCalculator(speed);
         } else {
             MET = runningMETCalculator(speed);
         }
-        return (duration / 60) * MET * 3.5 * weight / 200;
+        return (duration / 60) * MET * 3.5 * user.getWeight() / 200;
     }
 
     /**
