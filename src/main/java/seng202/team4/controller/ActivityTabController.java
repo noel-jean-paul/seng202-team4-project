@@ -66,6 +66,7 @@ public class ActivityTabController extends Controller {
     @FXML
     public void initialize() {
         activityTable.setPlaceholder(new Text("No activates have been added yet."));
+        activityTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         nameColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
         dateColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
