@@ -44,7 +44,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Calender View">
+                        <Button mnemonicParsing="false" onAction="#calenderView" text="Calender View">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
@@ -98,16 +98,20 @@
             </GridPane>
          </children>
       </AnchorPane>
-      <TableView fx:id="activityTable" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-        <columns>
-          <TableColumn fx:id="nameColumn" editable="false" prefWidth="75.0" text="Name" />
-          <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Date" />
-            <TableColumn fx:id="distanceColumn" prefWidth="75.0" text="Distance" />
-            <TableColumn fx:id="timeColumn" prefWidth="75.0" text="Time" />
-            <TableColumn fx:id="averageSpeedColumn" prefWidth="100.0" text="Avg speed" />
-            <TableColumn fx:id="caloriesColumn" prefWidth="111.0" text="Calories burned" />
-            <TableColumn fx:id="typeColumn" prefWidth="88.0" text="Type" />
-        </columns>
-      </TableView>
+      <AnchorPane fx:id="centerContentPane" GridPane.rowIndex="1">
+         <children>
+            <TableView fx:id="activityTable" prefHeight="200.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn fx:id="nameColumn" editable="false" prefWidth="75.0" text="Name" />
+                <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Date" />
+                  <TableColumn fx:id="distanceColumn" prefWidth="75.0" text="Distance" />
+                  <TableColumn fx:id="timeColumn" prefWidth="75.0" text="Time" />
+                  <TableColumn fx:id="averageSpeedColumn" prefWidth="100.0" text="Avg speed" />
+                  <TableColumn fx:id="caloriesColumn" prefWidth="111.0" text="Calories burned" />
+                  <TableColumn fx:id="typeColumn" prefWidth="88.0" text="Type" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
    </children>
 </GridPane>

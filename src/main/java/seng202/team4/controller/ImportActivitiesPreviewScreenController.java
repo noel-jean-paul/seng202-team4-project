@@ -25,11 +25,14 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     /** ArrayList of activityConfirmationRows that listed */
     private ArrayList<ActivityConfirmationRow> activityConfirmationRows = new ArrayList<>();
 
+    /** ActivityTabController of the activity tab. */
+    private ActivityTabController activityTabController;
+
     /** VBox that holds the rows of activities. */
     @FXML
     private VBox activityListVbox;
 
-    /** GridPane of the import actviities preview screen. */
+    /** GridPane of the import activities preview screen. */
     @FXML
     private GridPane gridPane;
 
@@ -38,8 +41,9 @@ public class ImportActivitiesPreviewScreenController extends Controller {
      *
      * @param applicationStateManager The ApplicationStateManager of the application.
      */
-    public ImportActivitiesPreviewScreenController(ApplicationStateManager applicationStateManager) {
+    public ImportActivitiesPreviewScreenController(ApplicationStateManager applicationStateManager, ActivityTabController activityTabController) {
         super(applicationStateManager);
+        this.activityTabController = activityTabController;
     }
 
 
@@ -57,11 +61,13 @@ public class ImportActivitiesPreviewScreenController extends Controller {
                 try {
                     DataStorer.insertActivity(activity, applicationStateManager.getCurrentProfile());
                 } catch (java.sql.SQLException e) {
-                    System.out.println("Error importing activities.");
-                    e.printStackTrace();
+                    System.out.println("Error adding activity to profile.");
                 }
+
             }
         }
+        activityTabController.updateTable();
+
     }
 
 
