@@ -40,7 +40,7 @@
          <children>
             <MenuButton alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="140.0" text="Profile">
               <items>
-                <MenuItem mnemonicParsing="false" text="View Profile" />
+                <MenuItem mnemonicParsing="false" onAction="#viewProfile" text="View Profile" />
                 <MenuItem mnemonicParsing="false" onAction="#switchProfile" text="Switch Profile" />
               </items>
             </MenuButton>
