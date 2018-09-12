@@ -140,6 +140,16 @@ abstract public class DataStorer extends DataAccesser {
 
         statement.executeUpdate();
 
+        // Delete all activities belonging to the profile
+        for (Activity activity : profile.getActivityList()) {
+            deleteActivity(activity, profile);
+        }
+
+        // Delete all goals belonging to a profile
+        for (Goal goal: profile.getGoalList()) {
+            deleteGoal(goal, profile);
+        }
+
     }
 
     /** Delete an activity from the database along with its associated data rows
@@ -154,10 +164,14 @@ abstract public class DataStorer extends DataAccesser {
         // Delete Activity
         String select = "delete from activity where " +
                 "name = (?) " +
-                "and activityDate = (?)";
+                "and activityDate = (?)" +
+                "and firstName = (?)" +
+                "and lastName = (?)";
         PreparedStatement statement = connection.prepareStatement(select);
         statement.setString(1, activity.getName());
         statement.setString(2, String.valueOf(activity.getDate()));
+        statement.setString(3, profile.getFirstName());
+        statement.setString(4, profile.getLastName());
 
         statement.executeUpdate();
 
