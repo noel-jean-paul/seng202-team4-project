@@ -60,6 +60,7 @@ public class DataStorerTest extends DataAccesser {
         DataStorer.insertProfile(profile1);
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
+
         assertEquals(loadedProfile, profile1);
     }
 
@@ -67,6 +68,7 @@ public class DataStorerTest extends DataAccesser {
     public void insertActivity() throws SQLException {
         // Use the profile stored in the database in the @BeforeClass
         DataStorer.insertActivity(activity1, profile1);
+        profile1.addActivity(activity1);
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(profile1, loadedProfile);
@@ -76,6 +78,7 @@ public class DataStorerTest extends DataAccesser {
     public void insertGoal() throws SQLException {
         // Use the profile stored in the database in the @BeforeClass
         DataStorer.insertGoal(goal1, profile1);
+        profile1.addGoal(goal1);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(profile1, loadedProfile);
@@ -84,6 +87,7 @@ public class DataStorerTest extends DataAccesser {
     @Test
     public void insertDataRow() throws SQLException {
         DataStorer.insertDataRow(row1, activity1);
+        activity1.addDataRow(row1);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(profile1, loadedProfile);
@@ -117,7 +121,9 @@ public class DataStorerTest extends DataAccesser {
                 "12:15:01", "00:40:00", 5.13, 187);
 
         DataStorer.insertActivity(activity2, profile);
+        profile.addActivity(activity2);
         DataStorer.insertActivity(activity3, profile);
+        profile.addActivity(activity3);
 
         // Delete the profile
         DataStorer.deleteProfile(profile);
@@ -146,7 +152,9 @@ public class DataStorerTest extends DataAccesser {
                 5.00, 60);
 
         DataStorer.insertGoal(goal2, profile);
+        profile.addGoal(goal2);
         DataStorer.insertGoal(goal3, profile);
+        profile.addGoal(goal3);
 
         // Delete the profile
         DataStorer.deleteProfile(profile);

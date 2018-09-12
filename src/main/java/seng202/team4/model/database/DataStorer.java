@@ -31,7 +31,7 @@ abstract public class DataStorer extends DataAccesser {
         statement.executeUpdate();
     }
 
-    /** Add an activity to the database and to the activity list of the profile.
+    /** Add an activity to the database
      *  If the combination of activity name/date and profile first/last name is not unique, the activity will not be added.
      *  It is assumed that all object fields are correctly formatted.
      *
@@ -59,12 +59,9 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(10, activityOwner.getLastName());
 
         statement.executeUpdate();
-
-        // Add the activity to the activity list
-        activityOwner.addActivity(activity);
     }
 
-    /** Add an goal to the database and to the goal to the goalList of a Profile.
+    /** Add an goal to the database
      *  If the combination of goal name/date and profile first/last name is not unique, the goal will not be added.
      *  It is assumed that all object fields are correctly formatted.
      *
@@ -93,12 +90,9 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(11, goalOwner.getLastName());
 
         statement.executeUpdate();
-
-        // Add the goal to the goalList
-        goalOwner.addGoal(goal);
     }
 
-    /** Add a dataRow to the database and to the activity's list of dataRows.
+    /** Add a dataRow to the database
      *  If the combination of dataRow number and activty name/date is not unique, the dataRow will not be added.
      *  It is assumed that all dataRow fields are correctly formatted.
      *
@@ -124,9 +118,6 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(9, String.valueOf(activity.getDate()));
 
         statement.executeUpdate();
-
-        // Add the dataRow to the activity's raw data
-        activity.addDataRow(dataRow);
     }
 
     //
