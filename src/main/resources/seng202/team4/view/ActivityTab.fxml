@@ -44,7 +44,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#calenderView" text="Calender View">
+                        <Button mnemonicParsing="false" text="Calender View">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
