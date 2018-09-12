@@ -235,7 +235,6 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(3, String.valueOf(activity.getDate()));
 
         statement.executeUpdate();
-
     }
 
 
