@@ -186,13 +186,15 @@ public class Profile {
         return (date.compareTo(MIN_DOB) > 0 && date.compareTo(LocalDate.now()) < 0);
     }
 
-    /** Add an activity to the activity list in correct date position.
+    /** Add an activity to the activity list in correct date position and insert it into the database.
      *
      * @param activity the activity to be added
      */
-    public void addActivity(Activity activity) {
+    public void addActivity(Activity activity) throws SQLException {
         activityList.add(activity);
         java.util.Collections.sort(activityList);
+
+        DataStorer.insertActivity(activity, this);
     }
 
     /** Adds all activities of the specified collection to the profile activityList and sorts the activityList

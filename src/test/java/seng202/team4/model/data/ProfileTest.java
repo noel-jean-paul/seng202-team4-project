@@ -68,7 +68,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void addActivity_checkList() {
+    public void addActivity_checkList() throws SQLException {
         // Clear the activity list
         profile1.getActivityList().clear();
 

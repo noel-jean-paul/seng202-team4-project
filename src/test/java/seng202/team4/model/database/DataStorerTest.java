@@ -67,7 +67,6 @@ public class DataStorerTest extends DataAccesser {
     @Test
     public void insertActivity() throws SQLException {
         // Use the profile stored in the database in the @BeforeClass
-        DataStorer.insertActivity(activity1, profile1);
         profile1.addActivity(activity1);
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -120,9 +119,7 @@ public class DataStorerTest extends DataAccesser {
         Activity activity3 = new Activity("Other", "2018-08-29", "", ActivityType.Run,
                 "12:15:01", "00:40:00", 5.13, 187);
 
-        DataStorer.insertActivity(activity2, profile);
         profile.addActivity(activity2);
-        DataStorer.insertActivity(activity3, profile);
         profile.addActivity(activity3);
 
         // Delete the profile
