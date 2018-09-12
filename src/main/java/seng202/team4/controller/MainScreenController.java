@@ -55,9 +55,11 @@ public class MainScreenController extends Controller {
 
     @FXML
     public void viewProfile() {
-        Pane profileScreen = Utilities.loadPane("ProfileScreen.fxml", new ProfileScreenController(applicationStateManager));
+        ProfileScreenController profileScreenController = new ProfileScreenController(applicationStateManager);
+        Pane profileScreen = Utilities.loadPane("ProfileScreen.fxml", profileScreenController);
         applicationStateManager.addScreen("ProfileScreen", profileScreen);
         applicationStateManager.switchToScreen("ProfileScreen");
+        profileScreenController.updateInformation();
     }
 
 
