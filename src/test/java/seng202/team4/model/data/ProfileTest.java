@@ -76,7 +76,6 @@ public class ProfileTest {
         profile1.addActivity(activity1);
         profile1.addActivity(activity2);
         profile1.addActivity(activity3);
-        System.out.println(profile1.getActivityList());
 
         assertEquals(expected, profile1.getActivityList());
     }
@@ -95,7 +94,6 @@ public class ProfileTest {
         // Add activitities to the activityList
         profile1.addAllActivities(activities);
 
-        System.out.println(profile1.getActivityList());
         assertEquals(expected, profile1.getActivityList());
     }
 

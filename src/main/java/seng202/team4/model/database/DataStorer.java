@@ -31,7 +31,7 @@ abstract public class DataStorer extends DataAccesser {
         statement.executeUpdate();
     }
 
-    /** Add an activity to the database.
+    /** Add an activity to the database and to the activity list of the profile.
      *  If the combination of activity name/date and profile first/last name is not unique, the activity will not be added.
      *  It is assumed that all object fields are correctly formatted.
      *
@@ -59,9 +59,12 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(10, activityOwner.getLastName());
 
         statement.executeUpdate();
+
+        // Add the activity to the activity list
+        activityOwner.addActivity(activity);
     }
 
-    /** Add an goal to the database.
+    /** Add an goal to the database and to the goal to the goalList of a Profile.
      *  If the combination of goal name/date and profile first/last name is not unique, the goal will not be added.
      *  It is assumed that all object fields are correctly formatted.
      *
@@ -90,9 +93,12 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(11, goalOwner.getLastName());
 
         statement.executeUpdate();
+
+        // Add the goal to the goalList
+        goalOwner.addGoal(goal);
     }
 
-    /** Add a dataRow to the database.
+    /** Add a dataRow to the database and to the activity's list of dataRows.
      *  If the combination of dataRow number and activty name/date is not unique, the dataRow will not be added.
      *  It is assumed that all dataRow fields are correctly formatted.
      *
@@ -118,6 +124,9 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(9, String.valueOf(activity.getDate()));
 
         statement.executeUpdate();
+
+        // Add the dataRow to the activity's raw data
+        activity.addDataRow(dataRow);
     }
 
     //
@@ -179,6 +188,7 @@ abstract public class DataStorer extends DataAccesser {
 
         // Delete all dataRows belonging to the activity
         for (DataRow row : activity.getRawData()) {
+            System.out.println("deleting row");
             deleteDataRow(row, activity);
         }
     }
@@ -232,23 +242,36 @@ abstract public class DataStorer extends DataAccesser {
     public static void main(String[] args) throws SQLException {
         DataAccesser.initialiseConnection();
 
-//        Profile profile = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
-//                1.83);
-//        insertProfile(profile);
-//
-//        Activity activity = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
-//                "12:15:01", "00:40:00", 5.13, 18, 7.7);
-//
-//        insertActivity(activity, profile);
-//
+
+
+//        // Delete all dataRows from the database
+//        String select = "delete from dataRow";
+//        PreparedStatement statement = connection.prepareStatement(select);
+//        statement.executeUpdate();
+
+        Profile profile = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
+                1.83);
+        deleteProfile(profile);
+        insertProfile(profile);
+
+        Activity activity = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
+                "12:15:01", "00:40:00", 5.13, 18);
+
+        deleteActivity(activity, profile);
+        insertActivity(activity, profile);
+
 //        Goal goal = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
 //                "2019-01-15", "Go for a walk", 2.00, 0);
 //
 //        insertGoal(goal, profile);
 //
-//        DataRow row = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
-//                178.4352, 203);
+        DataRow row = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
+                178.4352, 203);
 //
-//        insertDataRow(row, activity);
+        deleteDataRow(row, activity);
+        insertDataRow(row, activity);
+        activity.addDataRow(row);
+
+        deleteActivity(activity, profile);
     }
 }

@@ -63,15 +63,6 @@ public class DataLoaderTest extends DataAccesser {
         profile2 = new Profile("Matthew", "Michewski", "1997-06-23", 76,
                 1.85);
 
-        // Add activities/ goals to profile1
-        activity1.addAllDataRows(new ArrayList<>(Arrays.asList(row2, row1)));
-        activity2.addAllDataRows(new ArrayList<>(Arrays.asList(row1, row2)));
-        profile1.addActivity(activity1);
-        profile1.addActivity(activity2);
-
-        profile1.addAllGoals(new ArrayList<>(Arrays.asList(goal1, goal2)));
-
-
         // Insert objects
         DataStorer.insertProfile(profile1);
         DataStorer.insertProfile(profile2);
