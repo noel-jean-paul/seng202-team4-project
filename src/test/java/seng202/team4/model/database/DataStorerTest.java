@@ -76,7 +76,6 @@ public class DataStorerTest extends DataAccesser {
     @Test
     public void insertGoal() throws SQLException {
         // Use the profile stored in the database in the @BeforeClass
-        DataStorer.insertGoal(goal1, profile1);
         profile1.addGoal(goal1);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -148,9 +147,7 @@ public class DataStorerTest extends DataAccesser {
         Goal goal3 = new Goal(2, 100, GoalType.Run, "2017-05-21", "2020-01-02",
                 5.00, 60);
 
-        DataStorer.insertGoal(goal2, profile);
         profile.addGoal(goal2);
-        DataStorer.insertGoal(goal3, profile);
         profile.addGoal(goal3);
 
         // Delete the profile

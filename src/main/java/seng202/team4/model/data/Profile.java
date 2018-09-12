@@ -211,9 +211,11 @@ public class Profile {
      *
      * @param goal the Goal to be added
      */
-    public void addGoal(Goal goal) {
+    public void addGoal(Goal goal) throws SQLException {
         goalList.add(goal);
         java.util.Collections.sort(goalList);
+
+        DataStorer.insertGoal(goal, this);
     }
 
     /** Adds all goals of the specified collection to the goalList and sorts the goalList

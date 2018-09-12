@@ -98,7 +98,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void addGoal() {
+    public void addGoal() throws SQLException {
         // Clear goal list
         profile1.getGoalList().clear();
 

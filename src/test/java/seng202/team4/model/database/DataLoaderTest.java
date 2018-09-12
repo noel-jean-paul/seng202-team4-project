@@ -79,9 +79,7 @@ public class DataLoaderTest extends DataAccesser {
         DataStorer.insertDataRow(row2, activity2);
         activity2.addDataRow(row2);
 
-        DataStorer.insertGoal(goal1, profile1);
         profile1.addGoal(goal1);
-        DataStorer.insertGoal(goal2, profile1);
         profile1.addGoal(goal2);
     }
 
