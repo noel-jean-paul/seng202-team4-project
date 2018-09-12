@@ -1,3 +1,8 @@
+drop table profile;
+drop table goal;
+drop table activity;
+drop table dataRow;
+
 create table profile (
 firstName text not null,
 lastName text not null,
@@ -11,7 +16,7 @@ primary key (firstName, lastName)
 create table goal (
 goalNumber integer,
 progress integer constraint check_progress check (progress between 0 and 100),
-type character(3) constraint check_type check (type in ("Run", "Walk")),
+type character(3) constraint check_type check (type in ("Run", "Walk", "Other")),
 description text,
 creationDate character(10) not null,
 expiryDate character(10),
@@ -30,7 +35,7 @@ create table activity (
 name text,
 activityDate character(10),
 description text,
-type character(3) constraint check_type check (type in ("Run", "Walk")),
+type character(3) constraint check_type check (type in ("Run", "Walk", "Other")),
 startTime character(8) not null,
 duration character(8) not null,
 distance real not null,
@@ -55,5 +60,5 @@ create table dataRow (
   activityDate character(10),
   primary key (name, activityDate, rowNumber),
   foreign key (name, activityDate) references activity
-    on delete cascade on update no action
+  on delete cascade on update no action
 );

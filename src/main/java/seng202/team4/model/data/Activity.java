@@ -167,6 +167,15 @@ public class Activity implements Comparable<Activity> {
         return rawData;
     }
 
+    /** Add a dataRow to the rawData list in order
+     *
+     * @param row the DataRow to be added
+     */
+    public void addDataRow(DataRow row) {
+        rawData.add(row);
+        java.util.Collections.sort(rawData);
+    }
+
     /** Adds all dataRows of the specified collection to rawData and sorts the rawData list
      *  Intended for use by DataLoader as it does not insert into the database
      *

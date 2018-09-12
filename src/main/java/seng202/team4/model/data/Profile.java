@@ -186,7 +186,7 @@ public class Profile {
         return (date.compareTo(MIN_DOB) > 0 && date.compareTo(LocalDate.now()) < 0);
     }
 
-    /** Add an activity to the activity list in correct date position and save the activity in the database.
+    /** Add an activity to the activity list in correct date position.
      *
      * @param activity the activity to be added
      */
@@ -203,6 +203,15 @@ public class Profile {
     public void addAllActivities(Collection<Activity> activities) {
         activityList.addAll(activities);
         java.util.Collections.sort(activityList);
+    }
+
+    /** Add a goal to the goal list in order
+     *
+     * @param goal the Goal to be added
+     */
+    public void addGoal(Goal goal) {
+        goalList.add(goal);
+        java.util.Collections.sort(goalList);
     }
 
     /** Adds all goals of the specified collection to the goalList and sorts the goalList
