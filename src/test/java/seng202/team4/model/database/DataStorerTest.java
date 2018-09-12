@@ -102,7 +102,7 @@ public class DataStorerTest extends DataAccesser {
         DataStorer.deleteProfile(profile);
         Profile loaded = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
 
-        assertEquals(null, loaded);
+        assertNull(loaded);
     }
 
     @Test
