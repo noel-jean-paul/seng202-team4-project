@@ -7,9 +7,9 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.ActivityInfoController">
+<AnchorPane fx:id="popUpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.ActivityInfoController">
    <children>
-      <Rectangle fx:id="popUpRectangle" arcHeight="20.0" arcWidth="20.0" height="200.0" layoutX="150.0" layoutY="107.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.5" width="300.0">
+      <Rectangle fx:id="popUpRectangle" arcHeight="20.0" arcWidth="20.0" height="200.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.5" width="300.0">
          <fill>
             <LinearGradient endX="0.5769230769230769" endY="0.08173076923076923" startX="0.5769230769230769" startY="0.8461538461538463">
                <stops>
@@ -19,7 +19,7 @@
             </LinearGradient>
          </fill>
       </Rectangle>
-      <Text fx:id="testText" layoutX="289.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+      <Text fx:id="testText" layoutX="139.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
       <ButtonBar layoutX="39.0" layoutY="35.0" prefHeight="40.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

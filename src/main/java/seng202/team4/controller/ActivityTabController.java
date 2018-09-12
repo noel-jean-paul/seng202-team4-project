@@ -120,8 +120,6 @@ public class ActivityTabController extends Controller {
             });
             isTableReorderable = false;
         }
-
-
     }
 
     /**
@@ -130,7 +128,7 @@ public class ActivityTabController extends Controller {
      */
     @FXML
     public void addActivities() {
-        Pane popUp = Utilities.loadPane("ActivityImportTypePrompt.fxml", new ActivityImportTypePromptController(applicationStateManager));
+        Pane popUp = Utilities.loadPane("ActivityImportTypePrompt.fxml", new ActivityImportTypePromptController(applicationStateManager, this));
         applicationStateManager.displayPopUp(popUp);
     }
 }

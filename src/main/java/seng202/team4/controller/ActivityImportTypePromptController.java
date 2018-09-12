@@ -13,6 +13,9 @@ import java.io.File;
  */
 public class ActivityImportTypePromptController extends Controller {
 
+    /** ActivityTabController of the activity tab. */
+    private ActivityTabController activityTabController;
+
     /** The main AnchorPane of the prompt. */
     @FXML
     private AnchorPane popupPrompt;
@@ -23,8 +26,9 @@ public class ActivityImportTypePromptController extends Controller {
      *
      * @param applicationStateManager The ApplicationStateManager of the application.
      */
-    public ActivityImportTypePromptController(ApplicationStateManager applicationStateManager) {
+    public ActivityImportTypePromptController(ApplicationStateManager applicationStateManager, ActivityTabController activityTabController) {
         super(applicationStateManager);
+        this.activityTabController = activityTabController;
     }
 
 
@@ -53,7 +57,7 @@ public class ActivityImportTypePromptController extends Controller {
         File file = fileChooser.showOpenDialog(applicationStateManager.getPrimaryStage());
         if (file != null) {
             closePopup();
-            ImportActivitiesPreviewScreenController previewContoller = new ImportActivitiesPreviewScreenController(applicationStateManager);
+            ImportActivitiesPreviewScreenController previewContoller = new ImportActivitiesPreviewScreenController(applicationStateManager, activityTabController);
             Pane importPreviewPane = Utilities.loadPane("ImportActivitesPreviewScreen.fxml", previewContoller);
 
             applicationStateManager.addScreen("ImportActivitesPreviewScreen", importPreviewPane);
