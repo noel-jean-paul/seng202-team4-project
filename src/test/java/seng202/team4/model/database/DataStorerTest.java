@@ -103,63 +103,63 @@ public class DataStorerTest extends DataAccesser {
         assertNull(loaded);
     }
 
-//    @Test
-//    public void deleteProfile_checkActivitiesDeleted() throws SQLException {
-//        // Insert a profile
-//        Profile profile = new Profile("Noel", "Jean-Paul", "1998-03-06", 85.0,
-//                1.83);
-//        DataStorer.insertProfile(profile);
-//
-//        // Add 2 activities to the profile
-//        Activity activity2 = new Activity("Jog", "2018-08-29", "", ActivityType.Run,
-//                "12:15:01", "00:40:00", 5.13, 187);
-//        Activity activity3 = new Activity("Other", "2018-08-29", "", ActivityType.Run,
-//                "12:15:01", "00:40:00", 5.13, 187);
-//
-//        DataStorer.insertActivity(activity2, profile);
-//        DataStorer.insertActivity(activity3, profile);
-//
-//        // Delete the profile
-//        DataStorer.deleteProfile(profile);
-//
-//        // Reinsert the profile so the activities can be accessed
-//        DataStorer.insertProfile(profile);
-//
-//        // Load the profile
-//        Profile loaded = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
-//
-//        // Check the activities have been removed from the database
-//        assertEquals(0, loaded.getActivityList().size());
-//    }
+    @Test
+    public void deleteProfile_checkActivitiesDeleted() throws SQLException {
+        // Insert a profile
+        Profile profile = new Profile("Noel", "Jean-Paul", "1998-03-06", 85.0,
+                1.83);
+        DataStorer.insertProfile(profile);
 
-//    @Test
-//    public void deleteProfile_checkGoalsDeleted() throws SQLException {
-//        // Insert a profile
-//        Profile profile = new Profile("Bis", "Jean-Paul", "1998-03-06", 85.0,
-//                1.83);
-//        DataStorer.insertProfile(profile);
-//
-//        // Add 2 goals to the profile
-//        Goal goal2 = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
-//                2.00, 0);
-//        Goal goal3 = new Goal(2, 100, GoalType.Run, "2017-05-21", "2020-01-02",
-//                5.00, 60);
-//
-//        DataStorer.insertGoal(goal2, profile);
-//        DataStorer.insertGoal(goal3, profile);
-//
-//        // Delete the profile
-//        DataStorer.deleteProfile(profile);
-//
-//        // Reinsert the profile so the goals can be accessed
-//        DataStorer.insertProfile(profile);
-//
-//        // Load the profile
-//        Profile loaded = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
-//
-//        // Check the goals have been removed from the database
-//        assertEquals(0, loaded.getGoalList().size());
-//    }
+        // Add 2 activities to the profile
+        Activity activity2 = new Activity("Jog", "2018-08-29", "", ActivityType.Run,
+                "12:15:01", "00:40:00", 5.13, 187);
+        Activity activity3 = new Activity("Other", "2018-08-29", "", ActivityType.Run,
+                "12:15:01", "00:40:00", 5.13, 187);
+
+        DataStorer.insertActivity(activity2, profile);
+        DataStorer.insertActivity(activity3, profile);
+
+        // Delete the profile
+        DataStorer.deleteProfile(profile);
+
+        // Reinsert the profile so the activities can be accessed
+        DataStorer.insertProfile(profile);
+
+        // Load the profile
+        Profile loaded = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
+
+        // Check the activities have been removed from the database
+        assertEquals(0, loaded.getActivityList().size());
+    }
+
+    @Test
+    public void deleteProfile_checkGoalsDeleted() throws SQLException {
+        // Insert a profile
+        Profile profile = new Profile("Bis", "Jean-Paul", "1998-03-06", 85.0,
+                1.83);
+        DataStorer.insertProfile(profile);
+
+        // Add 2 goals to the profile
+        Goal goal2 = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
+                2.00, 0);
+        Goal goal3 = new Goal(2, 100, GoalType.Run, "2017-05-21", "2020-01-02",
+                5.00, 60);
+
+        DataStorer.insertGoal(goal2, profile);
+        DataStorer.insertGoal(goal3, profile);
+
+        // Delete the profile
+        DataStorer.deleteProfile(profile);
+
+        // Reinsert the profile so the goals can be accessed
+        DataStorer.insertProfile(profile);
+
+        // Load the profile
+        Profile loaded = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
+
+        // Check the goals have been removed from the database
+        assertEquals(0, loaded.getGoalList().size());
+    }
 
     @Test
     public void deleteActivity_checkActivityGone() throws SQLException {
