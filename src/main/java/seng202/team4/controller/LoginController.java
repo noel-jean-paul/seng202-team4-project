@@ -12,12 +12,15 @@ import java.util.List;
 /** Controller for the login screen. */
 public class LoginController extends Controller {
 
+    /** The VBox that holds the list of profiles. */
     @FXML
     private VBox profileListVbox;
 
+    /** The ScrollPane that holds the profileListVbox. */
     @FXML
     private ScrollPane profileListScrollPane;
 
+    /** The currently selected ProfileListItem. */
     private ProfileListItem selectedProfileItem = null;
 
     /** Creates a new LoginController with the given ApplicationStateManager. */
@@ -25,11 +28,15 @@ public class LoginController extends Controller {
         super(applicationStateManager);
     }
 
+
+    /** Initializes the LoginController by updating the profile list. */
     @FXML
     public void initialize() {
         updateProfileList();
     }
 
+
+    /** Updates the list of profiles displayed by loading all the profiles from the database. */
     public void updateProfileList() {
         List<ProfileKey> profileKeys = null;
         try {
@@ -47,6 +54,11 @@ public class LoginController extends Controller {
         }
     }
 
+    /**
+     * Changes the selected ProfileListItem.
+     *
+     * @param profileListItem The new selected profileListItem.
+     */
     public void changeSelectedProfile(ProfileListItem profileListItem) {
         if (selectedProfileItem != null) {
             selectedProfileItem.deselect();
@@ -65,6 +77,11 @@ public class LoginController extends Controller {
         applicationStateManager.switchToScreen("CreateProfileScreen");
     }
 
+    /**
+     * Action that is performed when the user clicks the login button.
+     * The user is logged into the currently selected profile and
+     * the application changes to the main screen.
+     */
     @FXML
     public void login() {
         if (selectedProfileItem != null) {

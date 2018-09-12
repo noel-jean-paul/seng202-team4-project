@@ -7,26 +7,6 @@ import java.sql.*;
 
 
 abstract public class DataStorer extends DataAccesser {
-
-//    /** Count the number of rows in the database with the given firstName and lastName
-//     *
-//     * @param firstName a non-null firstName to match to profiles in the database
-//     * @param lastName   a non-null lastName to match to profiles in the database
-//     * @return the number of rows in the database with the given firstName and lastName as an Integer
-//     * @throws SQLException if an error occurred regarding the database
-//     */
-//    public static int countRows(String firstName, String lastName) throws SQLException {
-//        // Execute a count query
-//        String select = "select count(*) from profile where firstName = (?) and lastName = (?)";
-//        PreparedStatement statement = connection.prepareStatement(select);
-//        // set the wildcards (indexed from 1)
-//        statement.setString(1, firstName);
-//        statement.setString(1, lastName);
-//        ResultSet count = statement.executeQuery();
-//        // return the count stored in the result set
-//        return count.getInt(1);
-//    }
-
     /** Add a profile to the database.
      *  If the combination of profile firstName and lastName is not unique, the profile will not be added.
      *  It is assumed that all profile fields are correctly formatted.
@@ -138,6 +118,100 @@ abstract public class DataStorer extends DataAccesser {
         statement.executeUpdate();
     }
 
+    //
+    //  Delete Methods
+    //
+
+    /** Delete a profile from the database along with its associated activities and goals
+     *
+     * @param profile the profile to be deleted
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public static void deleteProfile(Profile profile) throws SQLException {
+        assert profile != null;
+
+        // Delete Profile
+        String select = "delete from profile where " +
+                "firstName = (?) " +
+                "and lastName = (?)";
+        PreparedStatement statement = connection.prepareStatement(select);
+        statement.setString(1, profile.getFirstName());
+        statement.setString(2, profile.getLastName());
+
+        statement.executeUpdate();
+
+    }
+
+    /** Delete an activity from the database along with its associated data rows
+     *
+     * @param activity the activity to be deleted
+     * @param profile the profile which the activity belongs to
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public static void deleteActivity(Activity activity, Profile profile) throws SQLException {
+        assert activity != null;
+
+        // Delete Activity
+        String select = "delete from activity where " +
+                "name = (?) " +
+                "and activityDate = (?)";
+        PreparedStatement statement = connection.prepareStatement(select);
+        statement.setString(1, activity.getName());
+        statement.setString(2, String.valueOf(activity.getDate()));
+
+        statement.executeUpdate();
+
+        // Delete all dataRows belonging to the activity
+        for (DataRow row : activity.getRawData()) {
+            deleteDataRow(row, activity);
+        }
+    }
+
+    /** Delete a goal from the database
+     *
+     * @param goal the goal to be deleted
+     * @param profile the profile which the goal belongs to
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public static void deleteGoal(Goal goal, Profile profile) throws SQLException {
+        assert goal != null;
+
+        //Delete Goal
+        String select = "delete from goal where " +
+                "goalNumber = (?) " +
+                "and firstName = (?) " +
+                "and lastName = (?)";
+        PreparedStatement statement = connection.prepareStatement(select);
+        statement.setString(1, String.valueOf(goal.getNumber()));
+        statement.setString(2, profile.getFirstName());
+        statement.setString(3, profile.getLastName());
+
+        statement.executeUpdate();
+    }
+
+    /** Delete a dataRow from the database
+     *
+     * @param row the dataRow to be deleted
+     * @param activity the activity which the dataRow belongs to
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public static void deleteDataRow(DataRow row, Activity activity) throws SQLException {
+        assert row != null;
+
+        // Delete dataRow
+        String select = "delete from dataRow where " +
+                "rowNumber = (?) " +
+                "and name = (?) " +
+                "and activityDate = (?)";
+        PreparedStatement statement = connection.prepareStatement(select);
+        statement.setString(1, String.valueOf(row.getNumber()));
+        statement.setString(2, activity.getName());
+        statement.setString(3, String.valueOf(activity.getDate()));
+
+        statement.executeUpdate();
+
+    }
+
 
     public static void main(String[] args) throws SQLException {
         DataAccesser.initialiseConnection();
@@ -160,11 +234,5 @@ abstract public class DataStorer extends DataAccesser {
 //                178.4352, 203);
 //
 //        insertDataRow(row, activity);
-
-
-
     }
-
-
-
 }

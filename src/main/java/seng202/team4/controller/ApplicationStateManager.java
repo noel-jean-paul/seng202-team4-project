@@ -16,25 +16,35 @@ import java.util.HashMap;
  * It can be used to change between and keep track of the different screens of the application.
  */
 public class ApplicationStateManager {
+
     /** A HashMap that stores the screens (Pane) with a particular screen key. */
     private HashMap<String, Pane> paneMap = new HashMap<String, Pane>();
 
     /** The root Scene that the screens of the application belong to. */
     private Scene rootScene;
 
+    /** The primary Stage of the application. */
     private Stage primaryStage;
 
+    /** The StackPane that contains the various layers of the application. */
     private StackPane stackPane = new StackPane();
 
+    /** Tje currently loaded user profile. */
     private Profile currentUserProfile;
 
-    /** Creates a new ApplicationStateManager for the given root Scene. */
+    /**
+     * Constructor of the ApplicationStateManager.
+     *
+     * @param root The root scene of the application.
+     * @param stage The primary Stage of the application.
+     */
     public ApplicationStateManager(Scene root, Stage stage) {
         this.rootScene = root;
         this.primaryStage = stage;
         this.rootScene.setRoot(stackPane);
         this.stackPane.getChildren().add(new Pane());
     }
+
 
     /**
      * Adds a screen to the ApplicationStateManager.
@@ -46,8 +56,9 @@ public class ApplicationStateManager {
         paneMap.put(name, pane);
     }
 
+
     /**
-     * Switch to a particular screen.
+     * Switches to a particular screen of the ApplicationStateManager.
      *
      * @param name The name of the screen to switch to.
      */
@@ -58,16 +69,29 @@ public class ApplicationStateManager {
     }
 
 
+    /**
+     * Displays a pop up over the current screen.
+     *
+     * @param popUp The pop up (pane) to be displayed
+     */
     public void displayPopUp(Pane popUp) {
         stackPane.getChildren().add(popUp);
     }
 
+
+    /**
+     * Closes a pop up that is currently being displayed.
+     *
+     * @param popUp The pop up to be closed.
+     */
     public void closePopUP(Pane popUp) {
         stackPane.getChildren().remove(popUp);
     }
 
+
     /**
      * Removes a screen from the ApplicationStateManager.
+     *
      * @param name The name of the screen to be removed, if no screen of that name
      *             is found then the function has no effect.
      */
@@ -75,30 +99,33 @@ public class ApplicationStateManager {
         paneMap.remove(name);
     }
 
+
     /**
      * Checks whether the ApplicationStateManager contains a screen of the given name.
      *
      * @param name The name of the screen to be checked.
-     * @return
+     * @return true if the ApplicationStateManager contains the screen. false otherwise.
      */
     public boolean containsScreen(String name) {
         return paneMap.containsKey(name);
     }
 
+
     /**
      * Checks whether the ApplicationStateManager contains the given screen.
      *
      * @param pane The screen to checked.
-     * @return
+     * @return true if the ApplicationStateManager contains the screen. false otherwise.
      */
     public  boolean containsScreen(Pane pane) {
         return paneMap.containsValue(pane);
     }
 
+
     /**
      * Sets the current profile of the application.
      *
-     * @param profile
+     * @param profile The new current profile.
      */
     public void setCurrentProfile(Profile profile) {
         this.currentUserProfile = profile;
@@ -108,6 +135,12 @@ public class ApplicationStateManager {
         return currentUserProfile;
     }
 
+
+    /**
+     * Gets the primary Stage of the application.
+     *
+     * @return The primary Stage of the application.
+     */
     public Stage getPrimaryStage() {
         return primaryStage;
     }
