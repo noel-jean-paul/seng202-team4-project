@@ -40,7 +40,25 @@ public abstract class DataUpdater extends DataAccesser {
      * @param value the new value for the field
      * @throws SQLException if an error occurred regarding the database
      */
-    public static void updateActivity(Activity activity, String field, String value) throws SQLException {
+    public static void updateActivity(Activity activity, Profile profile, String field, String value) throws SQLException {
+        update = "update activity set " + field + " = (?) where " +
+                "name = (?) and " +
+                "activityDate = (?) and " +
+                "firstName = (?) and " +
+                "lastName = (?) and ";
 
+        statement = connection.prepareStatement(update);
+        // Set wildcards (indexed from 1)
+        statement.setString(1, value);
+        statement.setString(2, activity.getName());
+        statement.setString(3, activity.getDate().toString());
+        statement.setString(4, profile.getFirstName());
+        statement.setString(5, profile.getLastName());
+
+
+        statement.executeUpdate();
+
+        // Cleanup
+        statement.close();
     }
 }

@@ -25,6 +25,7 @@ public class Activity implements Comparable<Activity> {
     private double caloriesBurned;
     private double averageSpeed;
     private List<DataRow> rawData;
+    private Profile owner;
 
     public Activity(String name, String date, String description, ActivityType type, String startTime,
                     String duration, double distance, double caloriesBurned) {
@@ -32,6 +33,7 @@ public class Activity implements Comparable<Activity> {
         this.date = LocalDate.parse(date);
         this.description = description;
         this.type = type;
+
         this.startTime = LocalTime.parse(startTime);
         this.duration = LocalTime.parse(duration);
         this.distance = distance;
@@ -100,7 +102,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setName(String name) throws SQLException {
-        DataUpdater.updateActivity(this, "name", name);
+        DataUpdater.updateActivity(this, owner,"name", name);
         this.name = name;
     }
 
@@ -110,7 +112,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDescription(String description) throws SQLException {
-        DataUpdater.updateActivity(this, "description", description);
+        DataUpdater.updateActivity(this, owner,"description", description);
         this.description = description;
     }
 
@@ -120,7 +122,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDate(String date) throws SQLException {
-        DataUpdater.updateActivity(this, "activityDate", date);
+        DataUpdater.updateActivity(this, owner,"activityDate", date);
         this.date = LocalDate.parse(date);
     }
 
@@ -130,7 +132,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setStartTime(String startTime) throws SQLException {
-        DataUpdater.updateActivity(this, "startTime", startTime);
+        DataUpdater.updateActivity(this, owner,"startTime", startTime);
         this.startTime = LocalTime.parse(startTime);
     }
 
@@ -140,7 +142,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDuration(String duration) throws SQLException {
-        DataUpdater.updateActivity(this, "duration", duration);
+        DataUpdater.updateActivity(this, owner,"duration", duration);
         this.duration = LocalTime.parse(duration);
     }
 
@@ -150,7 +152,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDistance(double distance) throws SQLException {
-        DataUpdater.updateActivity(this, "distance", Double.toString(distance));
+        DataUpdater.updateActivity(this, owner,"distance", Double.toString(distance));
         this.distance = distance;
     }
 
@@ -169,7 +171,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setCaloriesBurned(double caloriesBurned) throws SQLException {
-        DataUpdater.updateActivity(this, "caloriesBurned", Double.toString(caloriesBurned));
+        DataUpdater.updateActivity(this, owner,"caloriesBurned", Double.toString(caloriesBurned));
         this.caloriesBurned = caloriesBurned;
     }
 
@@ -179,12 +181,21 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setType(ActivityType type) throws SQLException {
-        DataUpdater.updateActivity(this, "type", type.toString());
+        DataUpdater.updateActivity(this, owner,"type", type.toString());
         this.type = type;
     }
 
     public List<DataRow> getRawData() {
         return rawData;
+    }
+
+
+    public Profile getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Profile owner) {
+        this.owner = owner;
     }
 
     /** Add a dataRow to the rawData list in order and insert it into the database

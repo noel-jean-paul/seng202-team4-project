@@ -157,7 +157,6 @@ public class ActivityTest {
        String name = "Test activity name";
         DataStorer.insertActivity(activity1, profile1);
         activity1.setName(name);
-
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(name, loadedProfile.getActivityList().get(0).getName());
@@ -168,7 +167,6 @@ public class ActivityTest {
         String description= "I went running";
         DataStorer.insertActivity(activity1, profile1);
         activity1.setDescription(description);
-
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(description, loadedProfile.getActivityList().get(0).getDescription());
@@ -179,7 +177,6 @@ public class ActivityTest {
         String date = "2018-09-13";
         DataStorer.insertActivity(activity1, profile1);
         activity1.setDate(date);
-
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(LocalDate.parse(date), loadedProfile.getActivityList().get(0).getDate());
@@ -190,7 +187,6 @@ public class ActivityTest {
         String time = "16:32:43";
         DataStorer.insertActivity(activity1, profile1);
         activity1.setStartTime(time);
-
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(LocalTime.parse(time), loadedProfile.getActivityList().get(0).getStartTime());
@@ -201,7 +197,6 @@ public class ActivityTest {
         String duration = "01:32:43";
         DataStorer.insertActivity(activity1, profile1);
         activity1.setDuration(duration);
-
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(LocalTime.parse(duration), loadedProfile.getActivityList().get(0).getDuration());
@@ -212,7 +207,6 @@ public class ActivityTest {
         double distance = 21.3;
         DataStorer.insertActivity(activity1, profile1);
         activity1.setDistance(distance);
-
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(distance, loadedProfile.getActivityList().get(0).getDistance());
@@ -223,7 +217,6 @@ public class ActivityTest {
         double calories = 207;
         DataStorer.insertActivity(activity1, profile1);
         activity1.setCaloriesBurned(calories);
-
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(calories, loadedProfile.getActivityList().get(0).getCaloriesBurned());
@@ -234,7 +227,6 @@ public class ActivityTest {
         ActivityType type = ActivityType.Walk;
         DataStorer.insertActivity(activity1, profile1);
         activity1.setType(type);
-
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(type, loadedProfile.getActivityList().get(0).getType());

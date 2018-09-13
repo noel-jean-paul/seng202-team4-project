@@ -203,9 +203,11 @@ public class Profile {
      */
     public void addActivity(Activity activity) throws SQLException {
         activityList.add(activity);
-        java.util.Collections.sort(activityList);
-
+        java.util.Collections.sort(activityList);   // Keep the lsit ordered
         DataStorer.insertActivity(activity, this);
+
+        // Set this as the activity owner
+        activity.setOwner(this);
     }
 
     /** Adds all activities of the specified collection to the profile activityList and sorts the activityList
