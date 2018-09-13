@@ -1,8 +1,11 @@
 package seng202.team4.model.data;
 
 import seng202.team4.model.data.enums.ActivityType;
+import seng202.team4.model.database.DataStorer;
+import seng202.team4.model.database.DataUpdater;
 
 import javax.xml.crypto.Data;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ public class Activity implements Comparable<Activity> {
     private double caloriesBurned;
     private double averageSpeed;
     private List<DataRow> rawData;
+    private Profile owner;
 
     public Activity(String name, String date, String description, ActivityType type, String startTime,
                     String duration, double distance, double caloriesBurned) {
@@ -29,6 +33,7 @@ public class Activity implements Comparable<Activity> {
         this.date = LocalDate.parse(date);
         this.description = description;
         this.type = type;
+
         this.startTime = LocalTime.parse(startTime);
         this.duration = LocalTime.parse(duration);
         this.distance = distance;
@@ -95,7 +100,9 @@ public class Activity implements Comparable<Activity> {
         return name;
     }
 
-    public void setName(String name) {
+    /** Set and update in database */
+    public void setName(String name) throws SQLException {
+        DataUpdater.updateActivity(this, owner,"name", name);
         this.name = name;
     }
 
@@ -103,7 +110,9 @@ public class Activity implements Comparable<Activity> {
         return description;
     }
 
-    public void setDescription(String description) {
+    /** Set and update in database */
+    public void setDescription(String description) throws SQLException {
+        DataUpdater.updateActivity(this, owner,"description", description);
         this.description = description;
     }
 
@@ -111,31 +120,39 @@ public class Activity implements Comparable<Activity> {
         return date;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    /** Set and update in database */
+    public void setDate(String date) throws SQLException {
+        DataUpdater.updateActivity(this, owner,"activityDate", date);
+        this.date = LocalDate.parse(date);
     }
 
     public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
+    /** Set and update in database */
+    public void setStartTime(String startTime) throws SQLException {
+        DataUpdater.updateActivity(this, owner,"startTime", startTime);
+        this.startTime = LocalTime.parse(startTime);
     }
 
     public LocalTime getDuration() {
         return duration;
     }
 
-    public void setDuration(LocalTime duration) {
-        this.duration = duration;
+    /** Set and update in database */
+    public void setDuration(String duration) throws SQLException {
+        DataUpdater.updateActivity(this, owner,"duration", duration);
+        this.duration = LocalTime.parse(duration);
     }
 
     public double getDistance() {
         return distance;
     }
 
-    public void setDistance(double distance) {
+    /** Set and update in database */
+    public void setDistance(double distance) throws SQLException {
+        DataUpdater.updateActivity(this, owner,"distance", Double.toString(distance));
         this.distance = distance;
     }
 
@@ -143,6 +160,7 @@ public class Activity implements Comparable<Activity> {
         return averageSpeed;
     }
 
+    /** Set and update in database */
     public void setAverageSpeed(double averageSpeed) {
         this.averageSpeed = averageSpeed;
     }
@@ -151,7 +169,9 @@ public class Activity implements Comparable<Activity> {
         return caloriesBurned;
     }
 
-    public void setCaloriesBurned(double caloriesBurned) {
+    /** Set and update in database */
+    public void setCaloriesBurned(double caloriesBurned) throws SQLException {
+        DataUpdater.updateActivity(this, owner,"caloriesBurned", Double.toString(caloriesBurned));
         this.caloriesBurned = caloriesBurned;
     }
 
@@ -159,7 +179,9 @@ public class Activity implements Comparable<Activity> {
         return type;
     }
 
-    public void setType(ActivityType type) {
+    /** Set and update in database */
+    public void setType(ActivityType type) throws SQLException {
+        DataUpdater.updateActivity(this, owner,"type", type.toString());
         this.type = type;
     }
 
@@ -167,13 +189,26 @@ public class Activity implements Comparable<Activity> {
         return rawData;
     }
 
-    /** Add a dataRow to the rawData list in order
+
+    public Profile getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Profile owner) {
+        this.owner = owner;
+    }
+
+    /** Add a dataRow to the rawData list in order and insert it into the database
      *
      * @param row the DataRow to be added
      */
-    public void addDataRow(DataRow row) {
+    public void addDataRow(DataRow row) throws SQLException {
         rawData.add(row);
         java.util.Collections.sort(rawData);
+        DataStorer.insertDataRow(row, this);
+
+        // Set the owner
+        row.setOwner(this);
     }
 
     /** Adds all dataRows of the specified collection to rawData and sorts the rawData list
@@ -184,6 +219,15 @@ public class Activity implements Comparable<Activity> {
     public void addAllDataRows(Collection<DataRow> rows) {
         rawData.addAll(rows);
         java.util.Collections.sort(rawData);
+    }
+
+    /** Remove the dataRow from the rawData list and the database
+     *
+     * @param row the dataRow to be removed
+     */
+    public void removeDataRow(DataRow row) throws SQLException {
+        rawData.remove(row);
+        DataStorer.deleteDataRow(row, this);
     }
 
 
