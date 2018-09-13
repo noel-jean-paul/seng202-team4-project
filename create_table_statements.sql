@@ -1,7 +1,7 @@
 drop table profile;
 drop table goal;
 drop table activity;
-drop table dataRow;
+
 
 create table profile (
 firstName text not null,
@@ -44,9 +44,10 @@ firstName text,
 lastName text,
 primary key (name, activityDate, firstName, lastName),
 foreign key (firstName, lastName) references profile
-on delete cascade on update no action
+on delete cascade
 );
 
+drop table dataRow;
 
 create table dataRow (
   rowNumber integer,
@@ -58,7 +59,6 @@ create table dataRow (
   elevation double constraint check_elevation check (elevation between 0 and 4000),
   name text,
   activityDate character(10),
-  primary key (name, activityDate, rowNumber),
-  foreign key (name, activityDate) references activity
-  on delete cascade on update no action
+  foreign key (name, activityDate) references activity,
+  primary key (name, activityDate, rowNumber)
 );

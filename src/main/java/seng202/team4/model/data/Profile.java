@@ -1,5 +1,6 @@
 package seng202.team4.model.data;
 import seng202.team4.model.database.DataStorer;
+import seng202.team4.model.database.DataUpdater;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -90,7 +91,9 @@ public class Profile {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    /** Set and store in database */
+    public void setFirstName(String firstName) throws SQLException {
+        DataUpdater.updateProfile(this, "firstName", firstName);
         this.firstName = firstName;
     }
 
@@ -98,7 +101,9 @@ public class Profile {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    /** Set and store in database */
+    public void setLastName(String lastName) throws SQLException {
+        DataUpdater.updateProfile(this, "lastName", lastName);
         this.lastName = lastName;
     }
 
@@ -106,24 +111,30 @@ public class Profile {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    /** Set and store in database */
+    public void setDateOfBirth(String dateOfBirth) throws SQLException {
+        this.dateOfBirth = LocalDate.parse(dateOfBirth);
+        DataUpdater.updateProfile(this, "dateOfBirth", dateOfBirth);
     }
 
     public double getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    /** Set and store in database */
+    public void setWeight(double weight) throws SQLException {
         this.weight = weight;
+        DataUpdater.updateProfile(this, "weight", Double.toString(weight));
     }
 
     public double getHeight() {
         return height;
     }
 
-    public void setHeight(double height) {
+    /** Set and store in database */
+    public void setHeight(double height) throws SQLException {
         this.height = height;
+        DataUpdater.updateProfile(this, "height", Double.toString(height));
     }
 
     public List<Activity> getActivityList() {
@@ -153,7 +164,7 @@ public class Profile {
      * @return true if the name is valid, false otherwise.
      */
     public static boolean isValidName(String name) {
-        return !(name.length() < MIN_NAME_SIZE || name.length() > MAX_NAME_SIZE);
+        return name.length() >= MIN_NAME_SIZE && name.length() <= MAX_NAME_SIZE;
     }
 
     /**
@@ -186,17 +197,22 @@ public class Profile {
         return (date.compareTo(MIN_DOB) > 0 && date.compareTo(LocalDate.now()) < 0);
     }
 
-    /** Add an activity to the activity list in correct date position.
+    /** Add an activity to the activity list in correct date position and insert it into the database.
      *
      * @param activity the activity to be added
      */
-    public void addActivity(Activity activity) {
+    public void addActivity(Activity activity) throws SQLException {
         activityList.add(activity);
-        java.util.Collections.sort(activityList);
+        java.util.Collections.sort(activityList);   // Keep the lsit ordered
+        DataStorer.insertActivity(activity, this);
+
+        // Set this as the activity owner
+        activity.setOwner(this);
     }
 
     /** Adds all activities of the specified collection to the profile activityList and sorts the activityList
      *  Intended for use by DataLoader
+     *  WARNING: DOES NOT STORE IN THE DATABASE OR SET OWNER
      *
      * @param activities the collection to be added
      */
@@ -205,22 +221,45 @@ public class Profile {
         java.util.Collections.sort(activityList);
     }
 
-    /** Add a goal to the goal list in order
+    /** Add a goal to the goal list in order and insert it into the database
      *
      * @param goal the Goal to be added
      */
-    public void addGoal(Goal goal) {
+    public void addGoal(Goal goal) throws SQLException {
         goalList.add(goal);
         java.util.Collections.sort(goalList);
+        DataStorer.insertGoal(goal, this);
+
+        // Set this as the activity owner
+        goal.setOwner(this);
     }
 
     /** Adds all goals of the specified collection to the goalList and sorts the goalList
-     *  Intended for use by DataLoader
+     *  Intended for use by DataLoader only
+     *  WARNING: DOES NOT STORE IN THE DATABASE OR SET OWNER
      *
      * @param goals the collection to be added
      */
     public void addAllGoals(Collection<Goal> goals) {
         goalList.addAll(goals);
         java.util.Collections.sort(goalList);
+    }
+
+    /** Remove the activity from the activityList and the database
+     *
+     * @param activity the activity to be removed
+     */
+    public void removeActivity(Activity activity) throws SQLException {
+        activityList.remove(activity);
+        DataStorer.deleteActivity(activity, this);
+    }
+
+    /** Remove the goal from the goalList and the database
+     *
+     * @param goal the goal to be removed
+     */
+    public void removeGoal(Goal goal) throws SQLException {
+        goalList.remove(goal);
+        DataStorer.deleteGoal(goal, this);
     }
 }

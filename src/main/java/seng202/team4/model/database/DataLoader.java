@@ -77,6 +77,9 @@ abstract public class DataLoader extends DataAccesser {
                     );
             loadActivityDataRows(activity);
             activities.add(activity);
+
+            // Set the owner of the activity as the profile
+            activity.setOwner(profile);
         }
         // Add all activities to the activity list
         profile.addAllActivities(activities);
@@ -114,6 +117,9 @@ abstract public class DataLoader extends DataAccesser {
                     set.getDouble("goalDistance")
                     );
             goals.add(goal);
+
+            // Set the owner of the activity as the profile
+            goal.setOwner(profile);
         }
         // Add all activities to the activity list
         profile.addAllGoals(goals);
@@ -149,6 +155,9 @@ abstract public class DataLoader extends DataAccesser {
                     set.getDouble("elevation")
             );
             rows.add(row);
+
+            // Set the owner of the DataRow
+            row.setOwner(activity);
         }
         // Add all activities to the activity list
         activity.addAllDataRows(rows);
