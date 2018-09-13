@@ -155,6 +155,9 @@ abstract public class DataLoader extends DataAccesser {
                     set.getDouble("elevation")
             );
             rows.add(row);
+
+            // Set the owner of the DataRow
+            row.setOwner(activity);
         }
         // Add all activities to the activity list
         activity.addAllDataRows(rows);

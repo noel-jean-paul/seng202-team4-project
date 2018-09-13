@@ -105,7 +105,7 @@ public class DataLoaderTest extends DataAccesser {
     @Test
     public void loadProfile_allListsFilled_checkDataRowOwner() throws SQLException {
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-        assertEquals(profile1, loadedProfile.getGoalList().get(0).getOwner());
+        assertEquals(activity1, loadedProfile.getActivityList().get(0).getRawData().get(0).getOwner());
     }
 
     @Test
@@ -114,10 +114,8 @@ public class DataLoaderTest extends DataAccesser {
         Profile profile = new Profile("Ghengis", "Khan", "1998-03-06", 85.0,
                 1.83);
         DataStorer.insertProfile(profile);
-
         Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
         assertEquals(profile, loadedProfile);
-
         // Cleanup
         DataStorer.deleteProfile(profile);
     }
@@ -132,13 +130,12 @@ public class DataLoaderTest extends DataAccesser {
     public void fetchAllProfileKeys() throws SQLException {
         // Get the returned list
         List<ProfileKey> profileKeys = DataLoader.fetchAllProfileKeys();
-
         // Create the expected list
         List<ProfileKey> expectedKeys = new ArrayList<>();
         expectedKeys.add(new ProfileKey(profile1.getFirstName(), profile1.getLastName()));
         expectedKeys.add(new ProfileKey(profile2.getFirstName(), profile2.getLastName()));
         java.util.Collections.sort(expectedKeys);
-
+        
         assertEquals(profileKeys, expectedKeys);
     }
 }
