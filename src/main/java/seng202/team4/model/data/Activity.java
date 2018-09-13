@@ -2,6 +2,7 @@ package seng202.team4.model.data;
 
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.database.DataStorer;
+import seng202.team4.model.database.DataUpdater;
 
 import javax.xml.crypto.Data;
 import java.sql.SQLException;
@@ -97,7 +98,8 @@ public class Activity implements Comparable<Activity> {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws SQLException {
+        DataUpdater.updateActivity(this, "name", name);
         this.name = name;
     }
 
@@ -105,7 +107,8 @@ public class Activity implements Comparable<Activity> {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description) throws SQLException {
+        DataUpdater.updateActivity(this, "description", description);
         this.description = description;
     }
 
@@ -113,31 +116,35 @@ public class Activity implements Comparable<Activity> {
         return date;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDate(String date) throws SQLException {
+        DataUpdater.updateActivity(this, "activityDate", date);
+        this.date = LocalDate.parse(date);
     }
 
     public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
+    public void setStartTime(String startTime) throws SQLException {
+        DataUpdater.updateActivity(this, "startTime", startTime);
+        this.startTime = LocalTime.parse(startTime);
     }
 
     public LocalTime getDuration() {
         return duration;
     }
 
-    public void setDuration(LocalTime duration) {
-        this.duration = duration;
+    public void setDuration(String duration) throws SQLException {
+        DataUpdater.updateActivity(this, "duration", duration);
+        this.duration = LocalTime.parse(duration);
     }
 
     public double getDistance() {
         return distance;
     }
 
-    public void setDistance(double distance) {
+    public void setDistance(double distance) throws SQLException {
+        DataUpdater.updateActivity(this, "distance", Double.toString(distance));
         this.distance = distance;
     }
 
@@ -153,7 +160,8 @@ public class Activity implements Comparable<Activity> {
         return caloriesBurned;
     }
 
-    public void setCaloriesBurned(double caloriesBurned) {
+    public void setCaloriesBurned(double caloriesBurned) throws SQLException {
+        DataUpdater.updateActivity(this, "caloriesBurned", Double.toString(caloriesBurned));
         this.caloriesBurned = caloriesBurned;
     }
 
@@ -161,7 +169,8 @@ public class Activity implements Comparable<Activity> {
         return type;
     }
 
-    public void setType(ActivityType type) {
+    public void setType(ActivityType type) throws SQLException {
+        DataUpdater.updateActivity(this, "type", type.toString());
         this.type = type;
     }
 
