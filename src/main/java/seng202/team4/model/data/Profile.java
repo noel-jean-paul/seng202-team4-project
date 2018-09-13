@@ -228,8 +228,10 @@ public class Profile {
     public void addGoal(Goal goal) throws SQLException {
         goalList.add(goal);
         java.util.Collections.sort(goalList);
-
         DataStorer.insertGoal(goal, this);
+
+        // Set this as the activity owner
+        goal.setOwner(this);
     }
 
     /** Adds all goals of the specified collection to the goalList and sorts the goalList
