@@ -85,9 +85,27 @@ public class DataLoaderTest extends DataAccesser {
     }
 
     @Test
-    public void loadProfile_allListsFilled() throws SQLException {
+    public void loadProfile_allListsFilled_checkFullProfileLoaded() throws SQLException {
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(profile1, loadedProfile);
+    }
+
+    @Test
+    public void loadProfile_allListsFilled_checkActivityOwne() throws SQLException {
+        Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(profile1, loadedProfile.getActivityList().get(0).getOwner());
+    }
+
+    @Test
+    public void loadProfile_allListsFilled_checkGoalOwner() throws SQLException {
+        Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(profile1, loadedProfile.getActivityList().get(0).getOwner());
+    }
+
+    @Test
+    public void loadProfile_allListsFilled_checkDataRowOwner() throws SQLException {
+        Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(profile1, loadedProfile.getGoalList().get(0).getOwner());
     }
 
     @Test
@@ -109,7 +127,6 @@ public class DataLoaderTest extends DataAccesser {
         Profile loadedProfile = DataLoader.loadProfile("@#&*@", "$#&*$*#");
         assertEquals(null, loadedProfile);
     }
-
 
     @Test
     public void fetchAllProfileKeys() throws SQLException {

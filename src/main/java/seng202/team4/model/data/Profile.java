@@ -212,7 +212,7 @@ public class Profile {
 
     /** Adds all activities of the specified collection to the profile activityList and sorts the activityList
      *  Intended for use by DataLoader
-     *  WARNING: DOES NOT STORE IN THE DATABASE
+     *  WARNING: DOES NOT STORE IN THE DATABASE OR SET OWNER
      *
      * @param activities the collection to be added
      */
@@ -236,7 +236,7 @@ public class Profile {
 
     /** Adds all goals of the specified collection to the goalList and sorts the goalList
      *  Intended for use by DataLoader only
-     *  WARNING: DOES NOT STORE IN THE DATABASE
+     *  WARNING: DOES NOT STORE IN THE DATABASE OR SET OWNER
      *
      * @param goals the collection to be added
      */
