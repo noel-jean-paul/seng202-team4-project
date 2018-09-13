@@ -36,10 +36,6 @@ public class DataStorerTest extends DataAccesser {
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
 
-        profile2 = new Profile("Matthew", "Michewski", "1997-06-23", 76,
-                1.85);
-        DataStorer.insertProfile(profile2);
-
         activity1 = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
                 "12:15:01", "00:40:00", 5.13, 187);
 
@@ -52,21 +48,29 @@ public class DataStorerTest extends DataAccesser {
 
     @AfterClass
     public static void tearDown() throws SQLException {
-        connection.close();
+        DataAccesser.closeDatabase();
     }
+
+    @Before
+    public void setUpReccurring() throws SQLException {
+        DataTestHelper.clearDatabase();
+        profile1.getActivityList().clear();
+        profile1.getGoalList().clear();
+        activity1.getRawData().clear();
+    }
+
 
     @Test
     public void insertProfile() throws SQLException {
         DataStorer.insertProfile(profile1);
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-
         assertEquals(loadedProfile, profile1);
     }
 
     @Test
     public void insertActivity() throws SQLException {
-        // Use the profile stored in the database in the @BeforeClass
+        DataStorer.insertProfile(profile1);
         profile1.addActivity(activity1);
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -75,7 +79,7 @@ public class DataStorerTest extends DataAccesser {
 
     @Test
     public void insertGoal() throws SQLException {
-        // Use the profile stored in the database in the @BeforeClass
+        DataStorer.insertProfile(profile1);
         profile1.addGoal(goal1);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -84,6 +88,8 @@ public class DataStorerTest extends DataAccesser {
 
     @Test
     public void insertDataRow() throws SQLException {
+        DataStorer.insertProfile(profile1);
+        profile1.addActivity(activity1);
         activity1.addDataRow(row1);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
