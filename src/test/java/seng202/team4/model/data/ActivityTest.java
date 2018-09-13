@@ -4,6 +4,8 @@ import org.junit.*;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.database.*;
 
+import javax.xml.crypto.Data;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -43,7 +45,7 @@ public class ActivityTest {
         activity1.setOwner(profile1);
         activity2.setOwner(profile1);
 
-        // Insert test DataRows
+        // Initiialise test DataRows
         row1 = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
                 178.4352, 203);
         row2 = new DataRow(2, "2018-07-18", "14:02:25", 182, -87.01902489,
@@ -113,6 +115,32 @@ public class ActivityTest {
 
         assert activity1.compareTo(activity2) == 0;
     }
+    
+    @Test
+    public void addDataRow_checkRawData() throws SQLException {
+        activity1.addDataRow(row3);
+        activity1.addDataRow(row2);
+        activity1.addDataRow(row1);
+
+        List<DataRow> expected = new ArrayList<>(Arrays.asList(row1, row2, row3));
+        assertEquals(expected, activity1.getRawData());
+    }
+
+    @Test
+    public void addDataRow_checkOwner() throws SQLException {
+        activity1.addDataRow(row1);
+        assertEquals(activity1, row1.getOwner());
+    }
+
+    @Test
+    public void addDataRow_checkStoredInDatabase() throws SQLException {
+        activity1.addDataRow(row1);
+        DataStorer.insertProfile(profile1);
+        DataStorer.insertActivity(activity1, profile1);
+        Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(row1, loadedProfile.getActivityList().get(0).getRawData().get(0));
+    }
+
 
     @Test
     public void addAllDataRows() {

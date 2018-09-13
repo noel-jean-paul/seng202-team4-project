@@ -91,6 +91,21 @@ public class ProfileTest {
     }
 
     @Test
+    public void addActivity_checkStoredInDatabase() throws SQLException {
+        DataStorer.insertProfile(profile1);
+        profile1.addActivity(activity1);
+        Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(activity1, loadedProfile.getActivityList().get(0));
+    }
+
+    @Test
+    public void addActivity_checkOwnerSet() throws SQLException {
+        // Add the activity to the profile.
+        profile1.addActivity(activity1);
+        assertEquals(profile1, activity1.getOwner());
+    }
+
+    @Test
     public void addAllActivities() {
         // Clear the activity list
         profile1.getActivityList().clear();
@@ -108,7 +123,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void addGoal() throws SQLException {
+    public void addGoal_checkList() throws SQLException {
         // Clear goal list
         profile1.getGoalList().clear();
 
@@ -118,6 +133,20 @@ public class ProfileTest {
         profile1.addGoal(goal2);
 
         assertEquals(expectedGoals, profile1.getGoalList());
+    }
+
+    @Test
+    public void addGoal_checkStoredInDatabase() throws SQLException {
+        DataStorer.insertProfile(profile1);
+        profile1.addGoal(goal1);
+        Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(goal1, loadedProfile.getGoalList().get(0));
+    }
+
+    @Test
+    public void addGoal_checkOwnerSet() throws SQLException {
+        profile1.addGoal(goal1);
+        assertEquals(profile1, goal1.getOwner());
     }
 
     @Test

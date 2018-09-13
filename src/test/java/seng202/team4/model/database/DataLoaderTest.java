@@ -135,7 +135,7 @@ public class DataLoaderTest extends DataAccesser {
         expectedKeys.add(new ProfileKey(profile1.getFirstName(), profile1.getLastName()));
         expectedKeys.add(new ProfileKey(profile2.getFirstName(), profile2.getLastName()));
         java.util.Collections.sort(expectedKeys);
-        
+
         assertEquals(profileKeys, expectedKeys);
     }
 }
