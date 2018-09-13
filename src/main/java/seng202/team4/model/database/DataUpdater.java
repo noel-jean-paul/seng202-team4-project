@@ -33,24 +33,14 @@ public abstract class DataUpdater extends DataAccesser {
         statement.close();
     }
 
-    public static void main(String[] args) throws SQLException {
-        DataAccesser.initialiseConnection();
-        // Delete all profiles from the database
-        String select = "delete from profile";
-        PreparedStatement statement = connection.prepareStatement(select);
-        statement.executeUpdate();
+    /** Update the field of an activity
+     *
+     * @param activity the activity to be updated
+     * @param field the field of the activity to be updated
+     * @param value the new value for the field
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public static void updateActivity(Activity activity, String field, String value) throws SQLException {
 
-        Profile profile = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
-                1.83);
-        String firstName = "Michael";
-        DataStorer.insertProfile(profile);
-        updateProfile(profile, "", firstName);
-        profile.setFirstName(firstName);
-
-
-        System.out.println(profile.getFirstName());
-        System.out.println(profile.getLastName());
-        Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
-        System.out.println(loadedProfile);
     }
 }
