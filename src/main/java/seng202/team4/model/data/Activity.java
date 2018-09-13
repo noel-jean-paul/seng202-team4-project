@@ -205,8 +205,10 @@ public class Activity implements Comparable<Activity> {
     public void addDataRow(DataRow row) throws SQLException {
         rawData.add(row);
         java.util.Collections.sort(rawData);
-
         DataStorer.insertDataRow(row, this);
+
+        // Set the owner
+        row.setOwner(this);
     }
 
     /** Adds all dataRows of the specified collection to rawData and sorts the rawData list
