@@ -1,5 +1,6 @@
 package seng202.team4.model.data;
 import seng202.team4.model.database.DataStorer;
+import seng202.team4.model.database.DataUpdater;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -90,40 +91,50 @@ public class Profile {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    /** Set and store in database */
+    public void setFirstName(String firstName) throws SQLException {
         this.firstName = firstName;
+        DataUpdater.updateProfile(this, "firstName", firstName);
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    /** Set and store in database */
+    public void setLastName(String lastName) throws SQLException {
         this.lastName = lastName;
+        DataUpdater.updateProfile(this, "lastName", lastName);
     }
 
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+    /** Set and store in database */
+    public void setDateOfBirth(String dateOfBirth) throws SQLException {
+        this.dateOfBirth = LocalDate.parse(dateOfBirth);
+        DataUpdater.updateProfile(this, "dateOfBirth", dateOfBirth);
     }
 
     public double getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    /** Set and store in database */
+    public void setWeight(double weight) throws SQLException {
         this.weight = weight;
+        DataUpdater.updateProfile(this, "weight", Double.toString(weight));
     }
 
     public double getHeight() {
         return height;
     }
 
-    public void setHeight(double height) {
+    /** Set and store in database */
+    public void setHeight(double height) throws SQLException {
         this.height = height;
+        DataUpdater.updateProfile(this, "height", Double.toString(height));
     }
 
     public List<Activity> getActivityList() {
