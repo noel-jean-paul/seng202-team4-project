@@ -164,7 +164,7 @@ public class Profile {
      * @return true if the name is valid, false otherwise.
      */
     public static boolean isValidName(String name) {
-        return !(name.length() < MIN_NAME_SIZE || name.length() > MAX_NAME_SIZE);
+        return name.length() >= MIN_NAME_SIZE && name.length() <= MAX_NAME_SIZE;
     }
 
     /**

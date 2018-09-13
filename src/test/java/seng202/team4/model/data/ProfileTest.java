@@ -184,10 +184,7 @@ public class ProfileTest {
         String firstName = "Michael";
         DataStorer.insertProfile(profile1);
         profile1.setFirstName(firstName);
-        System.out.println(profile1.getFirstName());
-        System.out.println(profile1.getLastName());
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-        System.out.println(loadedProfile);
 
         assertEquals(firstName, loadedProfile.getFirstName());
     }
