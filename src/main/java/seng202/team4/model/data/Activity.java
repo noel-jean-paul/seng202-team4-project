@@ -190,6 +190,15 @@ public class Activity implements Comparable<Activity> {
         java.util.Collections.sort(rawData);
     }
 
+    /** Remove the dataRow from the rawData list and the database
+     *
+     * @param row the dataRow to be removed
+     */
+    public void removeDataRow(DataRow row) throws SQLException {
+        rawData.remove(row);
+        DataStorer.deleteDataRow(row, this);
+    }
+
 
     //The functions detailed below will likely be moved to DataProcessor -Matt M
 

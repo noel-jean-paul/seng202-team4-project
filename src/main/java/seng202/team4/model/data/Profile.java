@@ -229,4 +229,22 @@ public class Profile {
         goalList.addAll(goals);
         java.util.Collections.sort(goalList);
     }
+
+    /** Remove the activity from the activityList and the database
+     *
+     * @param activity the activity to be removed
+     */
+    public void removeActivity(Activity activity) throws SQLException {
+        activityList.remove(activity);
+        DataStorer.deleteActivity(activity, this);
+    }
+
+    /** Remove the goal from the goalList and the database
+     *
+     * @param goal the goal to be removed
+     */
+    public void removeGoal(Goal goal) throws SQLException {
+        goalList.remove(goal);
+        DataStorer.deleteGoal(goal, this);
+    }
 }

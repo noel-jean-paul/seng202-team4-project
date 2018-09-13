@@ -2,8 +2,12 @@ package seng202.team4.model.data;
 
 import org.junit.*;
 import seng202.team4.model.data.enums.ActivityType;
+import seng202.team4.model.database.DataAccesser;
+import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
+import seng202.team4.model.database.DataTestHelper;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -21,7 +25,10 @@ public class ActivityTest {
     private static DataRow row3;
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUp() throws SQLException {
+        DataAccesser.initialiseConnection();
+        DataTestHelper.clearDatabase();
+
         activity1 = new Activity("Run in the park", "2000-12-12", "", ActivityType.Run,
                 "12:15:01", "00:40:00", 5.13, 187);
 
@@ -35,6 +42,16 @@ public class ActivityTest {
                 178.4352, 203);
         row3 = new DataRow(3, "2018-07-18", "14:02:30", 182, -87.01902489,
                 178.4352, 203);
+    }
+
+    @AfterClass
+    public static void tearDown() throws SQLException {
+        DataAccesser.closeDatabase();
+    }
+
+    @Before
+    public void setUpReccurring() {
+        activity1.getRawData().clear();
     }
 
     @Test
@@ -101,5 +118,30 @@ public class ActivityTest {
         List<DataRow> expectedRows = new ArrayList<>(Arrays.asList(row1, row2, row3));
 
         assertEquals(expectedRows, activity1.getRawData());
+    }
+
+    @Test
+    public void removeDataRow_checkRemovedFromList() throws SQLException {
+        activity1.addDataRow(row1);
+        activity1.removeDataRow(row1);
+
+        assertEquals(0, activity1.getRawData().size());
+    }
+
+    @Test
+    public void removeDataRow_checkRemovedFromDatabase() throws SQLException {
+        // Add the goal and profile
+        Profile profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
+                1.83);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
+        DataStorer.insertProfile(profile1);
+
+        // Remove the activity from the list and the database
+        activity1.removeDataRow(row1);
+
+        Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(0, loadedProfile.getActivityList().get(0).getRawData().size());
     }
 }
