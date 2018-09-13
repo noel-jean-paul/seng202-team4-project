@@ -84,7 +84,6 @@ public class DataStorerTest extends DataAccesser {
 
     @Test
     public void insertDataRow() throws SQLException {
-        DataStorer.insertDataRow(row1, activity1);
         activity1.addDataRow(row1);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 

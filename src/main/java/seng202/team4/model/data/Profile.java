@@ -199,6 +199,7 @@ public class Profile {
 
     /** Adds all activities of the specified collection to the profile activityList and sorts the activityList
      *  Intended for use by DataLoader
+     *  WARNING: DOES NOT STORE IN THE DATABASE
      *
      * @param activities the collection to be added
      */
@@ -207,7 +208,7 @@ public class Profile {
         java.util.Collections.sort(activityList);
     }
 
-    /** Add a goal to the goal list in order
+    /** Add a goal to the goal list in order and insert it into the database
      *
      * @param goal the Goal to be added
      */
@@ -219,7 +220,8 @@ public class Profile {
     }
 
     /** Adds all goals of the specified collection to the goalList and sorts the goalList
-     *  Intended for use by DataLoader
+     *  Intended for use by DataLoader only
+     *  WARNING: DOES NOT STORE IN THE DATABASE
      *
      * @param goals the collection to be added
      */

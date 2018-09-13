@@ -1,8 +1,10 @@
 package seng202.team4.model.data;
 
 import seng202.team4.model.data.enums.ActivityType;
+import seng202.team4.model.database.DataStorer;
 
 import javax.xml.crypto.Data;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -167,13 +169,15 @@ public class Activity implements Comparable<Activity> {
         return rawData;
     }
 
-    /** Add a dataRow to the rawData list in order
+    /** Add a dataRow to the rawData list in order and insert it into the database
      *
      * @param row the DataRow to be added
      */
-    public void addDataRow(DataRow row) {
+    public void addDataRow(DataRow row) throws SQLException {
         rawData.add(row);
         java.util.Collections.sort(rawData);
+
+        DataStorer.insertDataRow(row, this);
     }
 
     /** Adds all dataRows of the specified collection to rawData and sorts the rawData list
