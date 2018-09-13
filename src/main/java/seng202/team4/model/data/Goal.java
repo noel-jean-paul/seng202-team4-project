@@ -18,6 +18,7 @@ public class Goal implements Comparable<Goal> {
     private String description;
     private double goalDistance;
     private double goalDuration;
+    private Profile owner;
 
     /** Constructor for creating new goals */
     public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
@@ -160,5 +161,13 @@ public class Goal implements Comparable<Goal> {
 
     public int getTimeRemaining() {
         return Period.between(expiryDate, LocalDate.now()).getDays();
+    }
+
+    public Profile getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Profile owner) {
+        this.owner = owner;
     }
 }
