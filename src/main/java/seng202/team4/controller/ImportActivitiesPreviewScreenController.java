@@ -59,12 +59,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             Activity activity = activityConfirmationRow.getActivity();
             activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             if (activityConfirmationRow.isSelected()) {
-                try {
-                    DataStorer.insertActivity(activity, applicationStateManager.getCurrentProfile());
-                } catch (java.sql.SQLException e) {
-                    System.out.println("Error adding activity to profile.");
-                }
-
+                applicationStateManager.getCurrentProfile().addActivity(activity);
             }
         }
         activityTabController.updateTable();
