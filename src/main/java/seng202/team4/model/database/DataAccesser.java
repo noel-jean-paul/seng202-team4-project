@@ -4,6 +4,8 @@ import java.sql.*;
 
 abstract public class DataAccesser {
     static Connection connection;
+    static ResultSet set;
+    static PreparedStatement statement;
 
     /** Initialise the connection to a the database.
      *

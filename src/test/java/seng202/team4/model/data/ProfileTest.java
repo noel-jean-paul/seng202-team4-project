@@ -6,12 +6,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
-import seng202.team4.model.database.DataAccesser;
-import seng202.team4.model.database.DataLoader;
-import seng202.team4.model.database.DataStorer;
-import seng202.team4.model.database.DataTestHelper;
+import seng202.team4.model.database.*;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -179,5 +177,58 @@ public class ProfileTest {
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(0, loadedProfile.getGoalList().size());
+    }
+
+    @Test
+    public void setFirstName() throws SQLException {
+        String firstName = "Michael";
+        DataStorer.insertProfile(profile1);
+        profile1.setFirstName(firstName);
+        System.out.println(profile1.getFirstName());
+        System.out.println(profile1.getLastName());
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        System.out.println(loadedProfile);
+
+        assertEquals(firstName, loadedProfile.getFirstName());
+    }
+
+    @Test
+    public void setLastName() throws SQLException {
+        String lastName = "MacKay";
+        DataStorer.insertProfile(profile1);
+        profile1.setLastName(lastName);
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(lastName, loadedProfile.getLastName());
+    }
+
+    @Test
+    public void setDateOfBirth() throws SQLException {
+        String dob = "2012-12-12";
+        DataStorer.insertProfile(profile1);
+        profile1.setDateOfBirth(dob);
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(LocalDate.parse(dob), loadedProfile.getDateOfBirth());
+    }
+
+    @Test
+    public void setWeight() throws SQLException {
+        double weight = 100;
+        DataStorer.insertProfile(profile1);
+        profile1.setWeight(weight);
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(weight, loadedProfile.getWeight(), 0.01);
+    }
+
+    @Test
+    public void setHeight() throws SQLException {
+        double height = 1.50;
+        DataStorer.insertProfile(profile1);
+        profile1.setHeight(height);
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(height, loadedProfile.getHeight(), 0.01);
     }
 }

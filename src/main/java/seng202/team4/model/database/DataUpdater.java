@@ -5,43 +5,52 @@ import seng202.team4.model.data.DataRow;
 import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.Profile;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
-public class DataUpdater extends DataAccesser {
-    /** Update the fields of a Profile in the database
-     *
-     * @param profile the profile to update
-     * @param updates the list of Update objects storing the updates
-     */
-    public static void updateProfile(Profile profile, List<Update> updates) {
+public abstract class DataUpdater extends DataAccesser {
+    private static String update;
 
+    /** Update the field of a profile
+     *
+     * @param profile the profile to be updated
+     * @param field the field of the profile to be updated
+     * @param value the new value for the field
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public static void updateProfile(Profile profile, String field, String value) throws SQLException {
+        update = "update profile set " + field + " = (?) where firstName = (?) and lastName = (?)";
+        statement = connection.prepareStatement(update);
+        // Set wildcards (indexed from 1)
+        statement.setString(1, value);
+        statement.setString(2, profile.getFirstName());
+        statement.setString(3, profile.getLastName());
+
+        statement.executeUpdate();
+
+        // Cleanup
+        statement.close();
     }
 
-    /** Update the fields of an Activity in the database
-     *
-     * @param activity the activity to update
-     * @param updates the list of Update objects storing the updates
-     */
-    public static void updateActivity(Activity activity, List<Update> updates) {
+    public static void main(String[] args) throws SQLException {
+        DataAccesser.initialiseConnection();
+        // Delete all profiles from the database
+        String select = "delete from profile";
+        PreparedStatement statement = connection.prepareStatement(select);
+        statement.executeUpdate();
 
+        Profile profile = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
+                1.83);
+        String firstName = "Michael";
+        DataStorer.insertProfile(profile);
+        updateProfile(profile, "", firstName);
+        profile.setFirstName(firstName);
+
+
+        System.out.println(profile.getFirstName());
+        System.out.println(profile.getLastName());
+        Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
+        System.out.println(loadedProfile);
     }
-
-    /** Update the fields of a Goal in the database
-     *
-     * @param goal the goal to update
-     * @param updates the list of Update objects storing the updates
-     */
-    public static void updateGoal(Goal goal, List<Update> updates) {
-
-    }
-
-    /** Update the fields of a dataRow in the database
-     *
-     * @param dataRow the dataRow to update
-     * @param updates the list of Update objects storing the updates
-     */
-    public static void updateDataRow(DataRow dataRow, List<Update> updates) {
-
-    }
-
 }

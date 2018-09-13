@@ -93,8 +93,8 @@ public class Profile {
 
     /** Set and store in database */
     public void setFirstName(String firstName) throws SQLException {
-        this.firstName = firstName;
         DataUpdater.updateProfile(this, "firstName", firstName);
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -103,8 +103,8 @@ public class Profile {
 
     /** Set and store in database */
     public void setLastName(String lastName) throws SQLException {
-        this.lastName = lastName;
         DataUpdater.updateProfile(this, "lastName", lastName);
+        this.lastName = lastName;
     }
 
     public LocalDate getDateOfBirth() {
