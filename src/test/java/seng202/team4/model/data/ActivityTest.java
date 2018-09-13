@@ -115,7 +115,7 @@ public class ActivityTest {
 
         assert activity1.compareTo(activity2) == 0;
     }
-    
+
     @Test
     public void addDataRow_checkRawData() throws SQLException {
         activity1.addDataRow(row3);
