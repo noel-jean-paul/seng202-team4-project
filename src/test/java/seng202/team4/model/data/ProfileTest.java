@@ -1,11 +1,14 @@
 package seng202.team4.model.data;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
 import seng202.team4.model.database.DataAccesser;
+import seng202.team4.model.database.DataLoader;
+import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataTestHelper;
 
 import java.sql.SQLException;
@@ -17,6 +20,7 @@ import static org.junit.Assert.*;
 
 public class ProfileTest {
     private static Profile profile1;
+    private static Profile  loadedProfile;
     private static Activity activity1;
     private static Activity activity2;
     private static Activity activity3;
@@ -63,12 +67,23 @@ public class ProfileTest {
     }
 
     @Before
-    public void setUpReccuring() {
+    public void setUpReccuring() throws SQLException {
+        // clear lists and database
         profile1.getActivityList().clear();
+        profile1.getGoalList().clear();
+        DataTestHelper.clearDatabase();
+    }
+
+    @AfterClass
+    public static void tearDown() throws SQLException {
+        DataAccesser.closeDatabase();
     }
 
     @Test
     public void addActivity_checkList() throws SQLException {
+        // Clear the activity list
+        profile1.getActivityList().clear();
+
         // Add the activities to the profile.
         profile1.addActivity(activity1);
         profile1.addActivity(activity2);
@@ -79,6 +94,9 @@ public class ProfileTest {
 
     @Test
     public void addAllActivities() {
+        // Clear the activity list
+        profile1.getActivityList().clear();
+
         // Add an activity to the profile activityList
         profile1.getActivityList().add(activity3);
 
@@ -92,8 +110,24 @@ public class ProfileTest {
     }
 
     @Test
+    public void addGoal() throws SQLException {
+        // Clear goal list
+        profile1.getGoalList().clear();
+
+        // Add goals to profile
+        profile1.addGoal(goal3);
+        profile1.addGoal(goal1);
+        profile1.addGoal(goal2);
+
+        assertEquals(expectedGoals, profile1.getGoalList());
+    }
+
+    @Test
     public void addAllGoals() {
-        // Add an goal to the profile goalList
+        // Clear goal list
+        profile1.getGoalList().clear();
+
+        // Add a goal to the profile goalList
         profile1.getGoalList().add(goal3);
 
         // Create a list of goals to be added - list is out of order
@@ -103,5 +137,47 @@ public class ProfileTest {
         profile1.addAllGoals(goals);
 
         assertEquals(expectedGoals, profile1.getGoalList());
+    }
+
+    @Test
+    public void removeActivity_checkRemovedFromList() throws SQLException {
+        profile1.addActivity(activity1);
+        profile1.removeActivity(activity1);
+
+        assertEquals(0, profile1.getActivityList().size());
+    }
+
+    @Test
+    public void removeActivity_checkRemovedFromDatabase() throws SQLException {
+        // Add the goal and profile
+        profile1.addActivity(activity1);
+        DataStorer.insertProfile(profile1);
+
+        profile1.removeActivity(activity1);
+
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(0, loadedProfile.getActivityList().size());
+    }
+
+    @Test
+    public void removeGoal_checkRemovedFromList() throws SQLException {
+        profile1.addGoal(goal1);
+        profile1.removeGoal(goal1);
+
+        assertEquals(0, profile1.getGoalList().size());
+    }
+
+    @Test
+    public void removeGoal_checkRemovedFromDatabase() throws SQLException {
+        // Add the goal and profile
+        profile1.addGoal(goal1);
+        DataStorer.insertProfile(profile1);
+
+        profile1.removeGoal(goal1);
+
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(0, loadedProfile.getGoalList().size());
     }
 }

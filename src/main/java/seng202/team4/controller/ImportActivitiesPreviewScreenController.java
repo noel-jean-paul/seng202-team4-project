@@ -23,7 +23,7 @@ import java.util.List;
 public class ImportActivitiesPreviewScreenController extends Controller {
 
     /** ArrayList of activityConfirmationRows that listed */
-    private ArrayList<ActivityConfirmationRow> activityConfirmationRows = new ArrayList<ActivityConfirmationRow>();
+    private ArrayList<ActivityConfirmationRow> activityConfirmationRows = new ArrayList<>();
 
     /** VBox that holds the rows of activities. */
     @FXML
@@ -72,8 +72,8 @@ public class ImportActivitiesPreviewScreenController extends Controller {
      */
     public void loadActivities(File csvFile) {
         FileImporter fileImporter = new FileImporter();
-        ArrayList<Activity> activities = new ArrayList<Activity>();
-        ArrayList<DataRow> rows = new ArrayList<DataRow>();
+        ArrayList<Activity> activities = new ArrayList<>();
+        ArrayList<DataRow> rows = new ArrayList<>();
 
         fileImporter.readFile(csvFile, rows, activities);
         for (int i=0; i < activities.size(); i++) {

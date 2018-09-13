@@ -1,8 +1,6 @@
 package seng202.team4.model.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 abstract public class DataAccesser {
     static Connection connection;
@@ -13,5 +11,14 @@ abstract public class DataAccesser {
     public static void initialiseConnection() throws SQLException {
         String url = "jdbc:sqlite:fitness_tracker.sqlite";
         connection = DriverManager.getConnection(url);
+
+//        // Turn foreign keys on
+//        String update = "PRAGMA foreign_keys = ON;";
+//        PreparedStatement statement = connection.prepareStatement(update);
+//        statement.executeUpdate();
+    }
+
+    public static void closeDatabase() throws SQLException {
+        connection.close();
     }
 }

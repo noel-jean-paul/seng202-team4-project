@@ -186,17 +186,20 @@ public class Profile {
         return (date.compareTo(MIN_DOB) > 0 && date.compareTo(LocalDate.now()) < 0);
     }
 
-    /** Add an activity to the activity list in correct date position and save the activity in the database.
+    /** Add an activity to the activity list in correct date position and insert it into the database.
      *
      * @param activity the activity to be added
      */
-    public void addActivity(Activity activity) {
+    public void addActivity(Activity activity) throws SQLException {
         activityList.add(activity);
         java.util.Collections.sort(activityList);
+
+        DataStorer.insertActivity(activity, this);
     }
 
     /** Adds all activities of the specified collection to the profile activityList and sorts the activityList
      *  Intended for use by DataLoader
+     *  WARNING: DOES NOT STORE IN THE DATABASE
      *
      * @param activities the collection to be added
      */
@@ -205,13 +208,43 @@ public class Profile {
         java.util.Collections.sort(activityList);
     }
 
+    /** Add a goal to the goal list in order and insert it into the database
+     *
+     * @param goal the Goal to be added
+     */
+    public void addGoal(Goal goal) throws SQLException {
+        goalList.add(goal);
+        java.util.Collections.sort(goalList);
+
+        DataStorer.insertGoal(goal, this);
+    }
+
     /** Adds all goals of the specified collection to the goalList and sorts the goalList
-     *  Intended for use by DataLoader
+     *  Intended for use by DataLoader only
+     *  WARNING: DOES NOT STORE IN THE DATABASE
      *
      * @param goals the collection to be added
      */
     public void addAllGoals(Collection<Goal> goals) {
         goalList.addAll(goals);
         java.util.Collections.sort(goalList);
+    }
+
+    /** Remove the activity from the activityList and the database
+     *
+     * @param activity the activity to be removed
+     */
+    public void removeActivity(Activity activity) throws SQLException {
+        activityList.remove(activity);
+        DataStorer.deleteActivity(activity, this);
+    }
+
+    /** Remove the goal from the goalList and the database
+     *
+     * @param goal the goal to be removed
+     */
+    public void removeGoal(Goal goal) throws SQLException {
+        goalList.remove(goal);
+        DataStorer.deleteGoal(goal, this);
     }
 }
