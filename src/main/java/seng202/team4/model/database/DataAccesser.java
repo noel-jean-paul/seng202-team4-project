@@ -17,4 +17,8 @@ abstract public class DataAccesser {
 //        PreparedStatement statement = connection.prepareStatement(update);
 //        statement.executeUpdate();
     }
+
+    public static void closeDatabase() throws SQLException {
+        connection.close();
+    }
 }
