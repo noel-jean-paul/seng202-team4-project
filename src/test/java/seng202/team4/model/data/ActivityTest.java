@@ -55,50 +55,50 @@ public class ActivityTest {
     }
 
     @Test
-    public void compareTo_DifferentDates_checkComesBefore() {
-        activity1.setDate(LocalDate.parse("2018-06-01"));   // Earlier date
-        activity2.setDate(LocalDate.parse("2018-06-02"));   // Later date
+    public void compareTo_DifferentDates_checkComesBefore() throws SQLException {
+        activity1.setDate("2018-06-01");   // Earlier date
+        activity2.setDate("2018-06-02");   // Later date
 
         assert activity1.compareTo(activity2) < 0;
     }
 
     @Test
-    public void compareTo_DifferentDates_checkComesAfter() {
-        activity1.setDate(LocalDate.parse("2018-06-01"));   // Earlier date
-        activity2.setDate(LocalDate.parse("2018-06-02"));   // Later date
+    public void compareTo_DifferentDates_checkComesAfter() throws SQLException {
+        activity1.setDate("2018-06-01");   // Earlier date
+        activity2.setDate("2018-06-02");   // Later date
 
         assert activity2.compareTo(activity1) > 0;
     }
 
     @Test
-    public void compareTo_SameDate_DifferentTime_checkComesBefore() {
-        activity1.setDate(LocalDate.parse("2018-06-01"));
-        activity2.setDate(LocalDate.parse("2018-06-01"));   // Same Date
+    public void compareTo_SameDate_DifferentTime_checkComesBefore() throws SQLException {
+        activity1.setDate("2018-06-01");
+        activity2.setDate("2018-06-01");   // Same Date
 
-        activity1.setStartTime(LocalTime.parse("11:59:59"));    // Earlier time
-        activity2.setStartTime(LocalTime.parse("12:00:00"));    // Later time
+        activity1.setStartTime("11:59:59");    // Earlier time
+        activity2.setStartTime("12:00:00");    // Later time
 
         assert activity1.compareTo(activity2) < 0;
     }
 
     @Test
-    public void compareTo_SameDate_checkComesAfter() {
-        activity1.setDate(LocalDate.parse("2018-06-01"));
-        activity2.setDate(LocalDate.parse("2018-06-01"));   // Same Date
+    public void compareTo_SameDate_checkComesAfter() throws SQLException{
+        activity1.setDate("2018-06-01");
+        activity2.setDate("2018-06-01");   // Same Date
 
-        activity1.setStartTime(LocalTime.parse("11:59:59"));    // Earlier time
-        activity2.setStartTime(LocalTime.parse("12:00:00"));    // Later time
+        activity1.setStartTime("11:59:59");    // Earlier time
+        activity2.setStartTime("12:00:00");    // Later time
 
         assert activity2.compareTo(activity1) > 0;
     }
 
     @Test
-    public void compareTo_SameDate_SameTime() {
-        activity1.setDate(LocalDate.parse("2018-06-01"));
-        activity2.setDate(LocalDate.parse("2018-06-01"));   // Same Date
+    public void compareTo_SameDate_SameTime() throws SQLException {
+        activity1.setDate("2018-06-01");
+        activity2.setDate("2018-06-01");   // Same Date
 
-        activity1.setStartTime(LocalTime.parse("12:00:00"));
-        activity2.setStartTime(LocalTime.parse("12:00:00"));    // Same time
+        activity1.setStartTime("12:00:00");
+        activity2.setStartTime("12:00:00");    // Same time
 
         assert activity1.compareTo(activity2) == 0;
     }
@@ -143,5 +143,38 @@ public class ActivityTest {
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(0, loadedProfile.getActivityList().get(0).getRawData().size());
+    }
+
+    @Test
+    public void setName() {
+       // String name = ""
+    }
+
+    @Test
+    public void setDescription() {
+    }
+
+    @Test
+    public void setDate() {
+    }
+
+    @Test
+    public void setStartTime() {
+    }
+
+    @Test
+    public void setDuration() {
+    }
+
+    @Test
+    public void setDistance() {
+    }
+
+    @Test
+    public void setCaloriesBurned() {
+    }
+
+    @Test
+    public void setType() {
     }
 }

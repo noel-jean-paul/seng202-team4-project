@@ -13,6 +13,7 @@ import seng202.team4.controller.Controller;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.enums.ActivityType;
 
+import java.sql.SQLException;
 import java.time.LocalTime;
 
 /** The confirmation row that is displayed when activities are imported */
@@ -33,7 +34,7 @@ public class ActivityConfirmationRow extends AnchorPane {
      * @param controller The controller of ActivityConfirmationRow.
      * @param activity The activity that the row is displaying.
      */
-    public ActivityConfirmationRow(ActivityConfirmationRowController controller, Activity activity) {
+    public ActivityConfirmationRow(ActivityConfirmationRowController controller, Activity activity) throws SQLException {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("view/ActivityConfirmationRow.fxml"));
         loader.setControllerFactory(c -> {return controller;});
         loader.setRoot(this);
@@ -51,7 +52,7 @@ public class ActivityConfirmationRow extends AnchorPane {
         //TODO: Remove the following temp values.
         activity.setDistance(0);
         activity.setType(ActivityType.Other);
-        activity.setDuration(LocalTime.MIDNIGHT);
+        activity.setDuration(LocalTime.MIDNIGHT.toString());
 
 
        // controller.setActivityDurationText(activity.getDuration().toString());
