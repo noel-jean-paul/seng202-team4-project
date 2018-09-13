@@ -29,7 +29,7 @@ public class ActivityTest {
         DataAccesser.initialiseConnection();
         DataTestHelper.clearDatabase();
 
-        // Initialise profile
+        // Initialise profile and activities
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
 
@@ -38,6 +38,10 @@ public class ActivityTest {
 
         activity2 = new Activity("Walk around the block", "2018-09-01", "Quick walk",
                 ActivityType.Walk, "01:28:30", "00:11:19", 1.2, 30);
+
+        // set the owners as set methods are called so db updates will occur
+        activity1.setOwner(profile1);
+        activity2.setOwner(profile1);
 
         // Insert test DataRows
         row1 = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
@@ -155,16 +159,18 @@ public class ActivityTest {
     @Test
     public void setName() throws SQLException {
        String name = "Test activity name";
-        DataStorer.insertActivity(activity1, profile1);
-        activity1.setName(name);
-        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+       DataStorer.insertProfile(profile1);
+       DataStorer.insertActivity(activity1, profile1);
+       activity1.setName(name);
+       loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(name, loadedProfile.getActivityList().get(0).getName());
+       assertEquals(name, loadedProfile.getActivityList().get(0).getName());
     }
 
     @Test
     public void setDescription() throws SQLException {
         String description= "I went running";
+        DataStorer.insertProfile(profile1);
         DataStorer.insertActivity(activity1, profile1);
         activity1.setDescription(description);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
@@ -175,6 +181,7 @@ public class ActivityTest {
     @Test
     public void setDate() throws SQLException {
         String date = "2018-09-13";
+        DataStorer.insertProfile(profile1);
         DataStorer.insertActivity(activity1, profile1);
         activity1.setDate(date);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
@@ -185,6 +192,7 @@ public class ActivityTest {
     @Test
     public void setStartTime() throws SQLException {
         String time = "16:32:43";
+        DataStorer.insertProfile(profile1);
         DataStorer.insertActivity(activity1, profile1);
         activity1.setStartTime(time);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
@@ -195,6 +203,7 @@ public class ActivityTest {
     @Test
     public void setDuration() throws SQLException {
         String duration = "01:32:43";
+        DataStorer.insertProfile(profile1);
         DataStorer.insertActivity(activity1, profile1);
         activity1.setDuration(duration);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
@@ -205,26 +214,29 @@ public class ActivityTest {
     @Test
     public void setDistance() throws SQLException {
         double distance = 21.3;
+        DataStorer.insertProfile(profile1);
         DataStorer.insertActivity(activity1, profile1);
         activity1.setDistance(distance);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(distance, loadedProfile.getActivityList().get(0).getDistance());
+        assertEquals(distance, loadedProfile.getActivityList().get(0).getDistance(), 0.01);
     }
 
     @Test
     public void setCaloriesBurned() throws SQLException {
         double calories = 207;
+        DataStorer.insertProfile(profile1);
         DataStorer.insertActivity(activity1, profile1);
         activity1.setCaloriesBurned(calories);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(calories, loadedProfile.getActivityList().get(0).getCaloriesBurned());
+        assertEquals(calories, loadedProfile.getActivityList().get(0).getCaloriesBurned(), 0.01);
     }
 
     @Test
     public void setType() throws SQLException {
         ActivityType type = ActivityType.Walk;
+        DataStorer.insertProfile(profile1);
         DataStorer.insertActivity(activity1, profile1);
         activity1.setType(type);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());

@@ -45,7 +45,7 @@ public abstract class DataUpdater extends DataAccesser {
                 "name = (?) and " +
                 "activityDate = (?) and " +
                 "firstName = (?) and " +
-                "lastName = (?) and ";
+                "lastName = (?)";
 
         statement = connection.prepareStatement(update);
         // Set wildcards (indexed from 1)
@@ -54,7 +54,6 @@ public abstract class DataUpdater extends DataAccesser {
         statement.setString(3, activity.getDate().toString());
         statement.setString(4, profile.getFirstName());
         statement.setString(5, profile.getLastName());
-
 
         statement.executeUpdate();
 
