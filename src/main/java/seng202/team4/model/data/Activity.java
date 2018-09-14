@@ -52,6 +52,13 @@ public class Activity implements Comparable<Activity> {
         java.util.Collections.sort(this.rawData);   // ensure the data is in order
         this.date = (rawActivityList.get(0)).getDate();
         this.startTime = (rawActivityList.get(0)).getTime();
+
+        //TODO: Set these!!!!
+        this.duration = LocalTime.MIDNIGHT;
+        this.distance = 0;
+        this.caloriesBurned = 0;
+
+        this.type = ActivityType.Other;
     }
 
     @Override

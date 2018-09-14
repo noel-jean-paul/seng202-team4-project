@@ -18,6 +18,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /** Controller for the import activities preview screen. */
@@ -57,10 +58,11 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         applicationStateManager.switchToScreen("MainScreen");
         for (ActivityConfirmationRow activityConfirmationRow: activityConfirmationRows) {
             Activity activity = activityConfirmationRow.getActivity();
-            activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             if (activityConfirmationRow.isSelected()) {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
+                activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             }
+
         }
         activityTabController.updateTable();
 
@@ -78,17 +80,26 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         ArrayList<DataRow> rows = new ArrayList<>();
 
         fileImporter.readFile(csvFile, rows, activities);
-        for (int i=0; i < activities.size(); i++) {
-            ActivityConfirmationRowController activityRowController = new ActivityConfirmationRowController(applicationStateManager);
-            ActivityConfirmationRow activityConfirmationRow = new ActivityConfirmationRow(activityRowController, activities.get(i));
-            activityConfirmationRow.prefWidthProperty().bind(gridPane.widthProperty());
-            activityListVbox.getChildren().add(activityConfirmationRow);
 
-            if (i % 2 == 0) {
-                activityConfirmationRow.applyShadedBackground();
+        HashSet<String> activityStringKeySet = new HashSet<String>();
+        for (Activity activity: applicationStateManager.getCurrentProfile().getActivityList()) {
+            activityStringKeySet.add(activity.getName()+activity.getDate().toString());
+        }
+
+        for (int i=0; i < activities.size(); i++) {
+            if (!activityStringKeySet.contains(activities.get(i).getName()+activities.get(i).getDate().toString())) {
+                ActivityConfirmationRowController activityRowController = new ActivityConfirmationRowController(applicationStateManager);
+                ActivityConfirmationRow activityConfirmationRow = new ActivityConfirmationRow(activityRowController, activities.get(i));
+                activityConfirmationRow.prefWidthProperty().bind(gridPane.widthProperty());
+                activityListVbox.getChildren().add(activityConfirmationRow);
+
+                if (i % 2 == 0) {
+                    activityConfirmationRow.applyShadedBackground();
+                }
+
+                activityConfirmationRows.add(activityConfirmationRow);
             }
 
-            activityConfirmationRows.add(activityConfirmationRow);
         }
     }
 }
