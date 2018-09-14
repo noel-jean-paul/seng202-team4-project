@@ -87,4 +87,31 @@ public abstract class DataUpdater extends DataAccesser {
         // Cleanup
         statement.close();
     }
+
+    /** Update a field of a DataRow
+     *
+     * @param row the dataRow to be updated
+     * @param field the field to be updated
+     * @param value the new value for the field
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public static void updatDataRow(DataRow row, String field, String value) throws SQLException {
+        update = "update dataRow set " + field + " = (?) where " +
+                "rowNumber = (?) and " +
+                "name= (?) and " +
+                "activityDate = (?)";
+
+        statement = connection.prepareStatement(update);
+        // Set wildcards (indexed from 1)
+        statement.setString(1, value);
+        statement.setDouble(2, row.getNumber());
+        statement.setString(3, row.getOwner().getName());
+        statement.setString(4, row.getOwner().getDate().toString());
+
+        statement.executeUpdate();
+
+        // Cleanup
+        statement.close();
+    }
+
 }

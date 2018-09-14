@@ -147,7 +147,6 @@ public class GoalTest {
         assertEquals(description, loadedProfile.getGoalList().get(0).getDescription());
     }
 
-
     @Test
     public void setGoalDistance() throws SQLException {
         double distance = 15.0;
