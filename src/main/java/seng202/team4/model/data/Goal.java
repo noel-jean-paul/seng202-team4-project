@@ -111,24 +111,25 @@ public class Goal implements Comparable<Goal> {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
+    public void setCreationDate(String creationDate) {
+        this.creationDate = LocalDate.parse(creationDate);
     }
 
     public LocalDate getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(LocalDate expiryDate) {
-        this.expiryDate = expiryDate;
+    public void setExpiryDate(String expiryDate) {
+
+        this.expiryDate = LocalDate.parse(expiryDate);
     }
 
     public LocalDate getCompletionDate() {
         return completionDate;
     }
 
-    public void setCompletionDate(LocalDate completionDate) {
-        this.completionDate = completionDate;
+    public void setCompletionDate(String completionDate) {
+        this.completionDate = LocalDate.parse(completionDate);
     }
 
     public String getDescription() {
