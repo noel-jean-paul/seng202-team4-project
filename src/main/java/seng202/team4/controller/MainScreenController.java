@@ -4,7 +4,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
+import javafx.scene.chart.BarChart;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -18,10 +19,16 @@ import java.util.ResourceBundle;
 public class MainScreenController extends Controller {
 
     private ActivityTabController activityTabController;
+    private HomeTabController homeTabController;
 
     /** The AnchorPane of the main screen. */
     @FXML
     private AnchorPane activityPane;
+
+    /** The AnchorPane of the main screen. */
+    @FXML
+    private AnchorPane homePane;
+
 
 
     /**
@@ -43,6 +50,13 @@ public class MainScreenController extends Controller {
         activityTabController = new ActivityTabController(applicationStateManager);
         Pane = Utilities.loadPane("ActivityTab.fxml", activityTabController);
         activityPane.getChildren().setAll(Pane);
+
+        Pane home = new Pane();
+        homeTabController = new HomeTabController(applicationStateManager);
+        home = Utilities.loadPane("HomeTab.fxml", activityTabController);
+        homePane.getChildren().setAll(home);
+
+
     }
 
     /**
@@ -60,14 +74,10 @@ public class MainScreenController extends Controller {
         activityTabController.updateTable();
     }
 
-    @FXML
-    private Button distanceChartButton;
 
-
-    /* Test to open up the distance chart on click*/
     @FXML
-    public void openChart() {
-        Pane chart = Utilities.loadPane("DistanceChartScreen.fxml", new ActivityImportTypePromptController(applicationStateManager));
-        applicationStateManager.displayPopUp(chart);
+    public void homeTabSelected() {
+
     }
+
 }

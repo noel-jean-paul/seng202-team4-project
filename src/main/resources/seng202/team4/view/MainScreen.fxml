@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.chart.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -28,9 +30,9 @@
    <children>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="40.0" tabMinWidth="100.0" GridPane.columnSpan="2" GridPane.rowSpan="3">
         <tabs>
-          <Tab text="Home">
+          <Tab onSelectionChanged="#homeTabSelected" text="Home">
                <content>
-                  <Button fx:id="distanceChartButton" mnemonicParsing="false" onAction="#openChart" text="See distance chart" />
+                  <AnchorPane fx:id="homePane" prefHeight="200.0" prefWidth="200.0" />
                </content></Tab>
           <Tab onSelectionChanged="#activityTabSelected" text="Activity">
                <content>
