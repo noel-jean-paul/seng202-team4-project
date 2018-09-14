@@ -1,6 +1,8 @@
 package seng202.team4.model.data;
 import seng202.team4.model.data.enums.GoalType;
+import seng202.team4.model.database.DataUpdater;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Collection;
@@ -87,7 +89,8 @@ public class Goal implements Comparable<Goal> {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(int number) throws SQLException {
+        DataUpdater.updateGoal(this,"goalNumber", Double.toString(number));
         this.number = number;
     }
 
@@ -95,7 +98,8 @@ public class Goal implements Comparable<Goal> {
         return progress;
     }
 
-    public void setProgress(double progress) {
+    public void setProgress(double progress) throws SQLException {
+        DataUpdater.updateGoal(this,"progress", Double.toString(progress));
         this.progress = progress;
     }
 
@@ -103,7 +107,8 @@ public class Goal implements Comparable<Goal> {
         return type;
     }
 
-    public void setType(GoalType type) {
+    public void setType(GoalType type) throws SQLException {
+        DataUpdater.updateGoal(this,"type", String.valueOf(type));
         this.type = type;
     }
 
@@ -111,31 +116,35 @@ public class Goal implements Comparable<Goal> {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
+    public void setCreationDate(String creationDate) throws SQLException {
+        DataUpdater.updateGoal(this,"creationDate", creationDate);
+        this.creationDate = LocalDate.parse(creationDate);
     }
 
     public LocalDate getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(LocalDate expiryDate) {
-        this.expiryDate = expiryDate;
+    public void setExpiryDate(String expiryDate) throws SQLException {
+        DataUpdater.updateGoal(this,"expiryDate", expiryDate);
+        this.expiryDate = LocalDate.parse(expiryDate);
     }
 
     public LocalDate getCompletionDate() {
         return completionDate;
     }
 
-    public void setCompletionDate(LocalDate completionDate) {
-        this.completionDate = completionDate;
+    public void setCompletionDate(String completionDate) throws SQLException {
+        DataUpdater.updateGoal(this,"completionDate", completionDate);
+        this.completionDate = LocalDate.parse(completionDate);
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description) throws SQLException {
+        DataUpdater.updateGoal(this,"description", description);
         this.description = description;
     }
 
@@ -143,7 +152,8 @@ public class Goal implements Comparable<Goal> {
         return goalDistance;
     }
 
-    public void setGoalDistance(double goalDistance) {
+    public void setGoalDistance(double goalDistance) throws SQLException {
+        DataUpdater.updateGoal(this,"goalDistance", Double.toString(goalDistance));
         this.goalDistance = goalDistance;
     }
 
@@ -151,7 +161,8 @@ public class Goal implements Comparable<Goal> {
         return goalDuration;
     }
 
-    public void setGoalDuration(double goalDuration) {
+    public void setGoalDuration(double goalDuration) throws SQLException {
+        DataUpdater.updateGoal(this,"goalDuration", Double.toString(goalDuration));
         this.goalDuration = goalDuration;
     }
 
