@@ -102,7 +102,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setName(String name) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"name", name);
+        DataUpdater.updateActivity(this,"name", name);
         this.name = name;
     }
 
@@ -112,7 +112,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDescription(String description) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"description", description);
+        DataUpdater.updateActivity(this,"description", description);
         this.description = description;
     }
 
@@ -122,7 +122,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDate(String date) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"activityDate", date);
+        DataUpdater.updateActivity(this,"activityDate", date);
         this.date = LocalDate.parse(date);
     }
 
@@ -132,7 +132,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setStartTime(String startTime) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"startTime", startTime);
+        DataUpdater.updateActivity(this,"startTime", startTime);
         this.startTime = LocalTime.parse(startTime);
     }
 
@@ -142,7 +142,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDuration(String duration) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"duration", duration);
+        DataUpdater.updateActivity(this,"duration", duration);
         this.duration = LocalTime.parse(duration);
     }
 
@@ -152,7 +152,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDistance(double distance) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"distance", Double.toString(distance));
+        DataUpdater.updateActivity(this,"distance", Double.toString(distance));
         this.distance = distance;
     }
 
@@ -171,7 +171,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setCaloriesBurned(double caloriesBurned) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"caloriesBurned", Double.toString(caloriesBurned));
+        DataUpdater.updateActivity(this,"caloriesBurned", Double.toString(caloriesBurned));
         this.caloriesBurned = caloriesBurned;
     }
 
@@ -181,7 +181,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setType(ActivityType type) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"type", type.toString());
+        DataUpdater.updateActivity(this,"type", type.toString());
         this.type = type;
     }
 

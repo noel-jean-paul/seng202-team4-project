@@ -1,5 +1,8 @@
 package seng202.team4.model.data;
 
+import seng202.team4.model.database.DataUpdater;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -73,7 +76,8 @@ public class DataRow implements Comparable<DataRow> {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(int number) throws SQLException {
+        DataUpdater.updatDataRow(this, "rowNumber", Double.toString(number));
         this.number = number;
     }
 
@@ -81,23 +85,26 @@ public class DataRow implements Comparable<DataRow> {
         return date;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDate(String date)throws SQLException {
+        DataUpdater.updatDataRow(this, "rowDate", date);
+        this.date = LocalDate.parse(date);
     }
 
     public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
-        this.time = time;
+    public void setTime(String time) throws SQLException {
+        DataUpdater.updatDataRow(this, "time", time);
+        this.time = LocalTime.parse(time);
     }
 
     public int getHeartRate() {
         return heartRate;
     }
 
-    public void setHeartRate(int heartRate) {
+    public void setHeartRate(int heartRate) throws SQLException {
+        DataUpdater.updatDataRow(this, "heartRate", Double.toString(heartRate));
         this.heartRate = heartRate;
     }
 
@@ -105,7 +112,8 @@ public class DataRow implements Comparable<DataRow> {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(double latitude) throws SQLException {
+        DataUpdater.updatDataRow(this, "latitude", Double.toString(latitude));
         this.latitude = latitude;
     }
 
@@ -113,7 +121,8 @@ public class DataRow implements Comparable<DataRow> {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(double longitude) throws SQLException {
+        DataUpdater.updatDataRow(this, "longitude", Double.toString(longitude));
         this.longitude = longitude;
     }
 
@@ -121,7 +130,8 @@ public class DataRow implements Comparable<DataRow> {
         return elevation;
     }
 
-    public void setElevation(double elevation) {
+    public void setElevation(double elevation) throws SQLException {
+        DataUpdater.updatDataRow(this, "elevation", Double.toString(elevation));
         this.elevation = elevation;
     }
 
