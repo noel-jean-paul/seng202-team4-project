@@ -13,6 +13,7 @@ public class DataRow implements Comparable<DataRow> {
     private double latitude;    // values in range -90 to 90 inclusive
     private double longitude;   // values in range -180 to 180 inclusive
     private double elevation;
+    private Activity owner;
 
 
     /**
@@ -122,5 +123,13 @@ public class DataRow implements Comparable<DataRow> {
 
     public void setElevation(double elevation) {
         this.elevation = elevation;
+    }
+
+    public Activity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Activity owner) {
+        this.owner = owner;
     }
 }

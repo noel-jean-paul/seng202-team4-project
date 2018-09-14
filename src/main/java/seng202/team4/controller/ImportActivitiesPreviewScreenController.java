@@ -15,6 +15,7 @@ import seng202.team4.view.ActivityConfirmationRow;
 
 import java.awt.*;
 import java.io.File;
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
      * Stores all the activities to be imported in the database.
      */
     @FXML
-    public void importActivities() {
+    public void importActivities() throws SQLException {
         applicationStateManager.switchToScreen("MainScreen");
         for (ActivityConfirmationRow activityConfirmationRow: activityConfirmationRows) {
             Activity activity = activityConfirmationRow.getActivity();
@@ -70,7 +71,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
      *
      * @param csvFile The csv file that contains the data of the activities.
      */
-    public void loadActivities(File csvFile) {
+    public void loadActivities(File csvFile) throws SQLException {
         FileImporter fileImporter = new FileImporter();
         ArrayList<Activity> activities = new ArrayList<>();
         ArrayList<DataRow> rows = new ArrayList<>();

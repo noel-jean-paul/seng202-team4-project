@@ -7,6 +7,7 @@ import javafx.stage.FileChooser;
 import seng202.team4.Utilities;
 
 import java.io.File;
+import java.sql.SQLException;
 
 /**
  * Controller for the activity import type prompt. This handles the selection of how the user wants to add activities.
@@ -46,7 +47,7 @@ public class ActivityImportTypePromptController extends Controller {
      *  screen changes to the preview file import screen.
      */
     @FXML
-    public void importActivityFromFile() {
+    public void importActivityFromFile() throws SQLException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select CSV Data File");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV", "*.csv"));

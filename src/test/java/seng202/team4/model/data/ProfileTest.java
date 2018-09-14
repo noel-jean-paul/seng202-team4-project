@@ -6,12 +6,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
-import seng202.team4.model.database.DataAccesser;
-import seng202.team4.model.database.DataLoader;
-import seng202.team4.model.database.DataStorer;
-import seng202.team4.model.database.DataTestHelper;
+import seng202.team4.model.database.*;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -93,6 +91,21 @@ public class ProfileTest {
     }
 
     @Test
+    public void addActivity_checkStoredInDatabase() throws SQLException {
+        DataStorer.insertProfile(profile1);
+        profile1.addActivity(activity1);
+        Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(activity1, loadedProfile.getActivityList().get(0));
+    }
+
+    @Test
+    public void addActivity_checkOwnerSet() throws SQLException {
+        // Add the activity to the profile.
+        profile1.addActivity(activity1);
+        assertEquals(profile1, activity1.getOwner());
+    }
+
+    @Test
     public void addAllActivities() {
         // Clear the activity list
         profile1.getActivityList().clear();
@@ -110,7 +123,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void addGoal() throws SQLException {
+    public void addGoal_checkList() throws SQLException {
         // Clear goal list
         profile1.getGoalList().clear();
 
@@ -120,6 +133,20 @@ public class ProfileTest {
         profile1.addGoal(goal2);
 
         assertEquals(expectedGoals, profile1.getGoalList());
+    }
+
+    @Test
+    public void addGoal_checkStoredInDatabase() throws SQLException {
+        DataStorer.insertProfile(profile1);
+        profile1.addGoal(goal1);
+        Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(goal1, loadedProfile.getGoalList().get(0));
+    }
+
+    @Test
+    public void addGoal_checkOwnerSet() throws SQLException {
+        profile1.addGoal(goal1);
+        assertEquals(profile1, goal1.getOwner());
     }
 
     @Test
@@ -179,5 +206,55 @@ public class ProfileTest {
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(0, loadedProfile.getGoalList().size());
+    }
+
+    @Test
+    public void setFirstName() throws SQLException {
+        String firstName = "Michael";
+        DataStorer.insertProfile(profile1);
+        profile1.setFirstName(firstName);
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(firstName, loadedProfile.getFirstName());
+    }
+
+    @Test
+    public void setLastName() throws SQLException {
+        String lastName = "MacKay";
+        DataStorer.insertProfile(profile1);
+        profile1.setLastName(lastName);
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(lastName, loadedProfile.getLastName());
+    }
+
+    @Test
+    public void setDateOfBirth() throws SQLException {
+        String dob = "2012-12-12";
+        DataStorer.insertProfile(profile1);
+        profile1.setDateOfBirth(dob);
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(LocalDate.parse(dob), loadedProfile.getDateOfBirth());
+    }
+
+    @Test
+    public void setWeight() throws SQLException {
+        double weight = 100;
+        DataStorer.insertProfile(profile1);
+        profile1.setWeight(weight);
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(weight, loadedProfile.getWeight(), 0.01);
+    }
+
+    @Test
+    public void setHeight() throws SQLException {
+        double height = 1.50;
+        DataStorer.insertProfile(profile1);
+        profile1.setHeight(height);
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(height, loadedProfile.getHeight(), 0.01);
     }
 }
