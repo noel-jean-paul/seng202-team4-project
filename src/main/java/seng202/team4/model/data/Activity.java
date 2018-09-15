@@ -3,6 +3,7 @@ package seng202.team4.model.data;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;
+import seng202.team4.model.utilities.DataProcessor;
 
 import javax.xml.crypto.Data;
 import java.sql.SQLException;
@@ -52,10 +53,10 @@ public class Activity implements Comparable<Activity> {
         java.util.Collections.sort(this.rawData);   // ensure the data is in order
         this.date = (rawActivityList.get(0)).getDate();
         this.startTime = (rawActivityList.get(0)).getTime();
+        this.distance = DataProcessor.totalDistance(rawActivityList);
 
         //TODO: Set these!!!!
         this.duration = LocalTime.MIDNIGHT;
-        this.distance = 0;
         this.caloriesBurned = 0;
 
         this.type = ActivityType.Other;
@@ -153,8 +154,14 @@ public class Activity implements Comparable<Activity> {
         this.duration = LocalTime.parse(duration);
     }
 
+    /** Gets the distance of the activity */
     public double getDistance() {
         return distance;
+    }
+
+    /** Gets a string of the distance rounded to 0 decimal places. */
+    public String getDistanceDisplayString() {
+        return String.format("%.0f", distance);
     }
 
     /** Set and update in database */

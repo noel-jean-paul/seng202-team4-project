@@ -104,7 +104,7 @@ public class ActivityTabController extends Controller {
 
         nameColumn.setCellValueFactory(new PropertyValueFactory<Activity,String>("name"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Activity, LocalDate>("date"));
-        distanceColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("distance"));
+        distanceColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("distanceDisplayString"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<Activity, LocalTime>("startTime"));
         averageSpeedColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("averageSpeed"));
         caloriesColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("caloriesBurned"));
