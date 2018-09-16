@@ -1,11 +1,12 @@
 package seng202.team4.model.utilities;
 
+import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.data.enums.ActivityType;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.List;
 
 public class DataProcessor {
 
@@ -14,7 +15,7 @@ public class DataProcessor {
      * @param dataList the data set of the activity, must have size > 1.
      * @return the total distance travelled over the duration in meters.
      */
-    public static double totalDistance(ArrayList<DataRow> dataList) {
+    public static double totalDistance(List<DataRow> dataList) {
         final double earthRadius = earthRadiusCalculation(dataList.get(0).getLatitude());
         double totalDistance = 0;
         int i = 0;
@@ -77,7 +78,7 @@ public class DataProcessor {
      * @param dataList the ArrayList containg the raw data for the given activity.
      * @return the total duration of the activity - in seconds.
      */
-    public static int calculateDuration(ArrayList<DataRow> dataList) {
+    public static int calculateDuration(List<DataRow> dataList) {
         Duration totalDuration = Duration.ZERO;
         int j = 0;
         if (dataList != null) {
@@ -95,20 +96,22 @@ public class DataProcessor {
 
     /**
      * Calculates the calories burned by the user over the given duration.
+     * Values calculated here are very rough estimates - Ideal improvement is to calculate based on heart rate as shown
+     * through this web page: http://www.shapesense.com/fitness-exercise/calculators/heart-rate-based-calorie-burn-calculator.shtml
      * @param speed the average speed of the user over the duration - in kilometers per hour.
-     * @param weight the weight of the user - in kilograms.
+     * @param user the profile of the user who performed the activity.
      * @param duration the time taken for the specific leg of the activity - in seconds.
      * @param activity the type of activity which the user participated in - Run or Walk.
      * @return the approximate number of calories burned by the user for the given activity over the given period of time.
      */
-    public static double calculateCalories(double speed, double weight, double duration, ActivityType activity) {
+    public static double calculateCalories(double speed, double duration, ActivityType activity, Profile user) {
         double MET;
         if (activity == ActivityType.Walk) {
             MET = walkingMETCalculator(speed);
         } else {
             MET = runningMETCalculator(speed);
         }
-        return (duration / 60) * MET * 3.5 * weight / 200;
+        return (duration / 60) * MET * 3.5 * user.getWeight() / 200;
     }
 
     /**
@@ -117,25 +120,25 @@ public class DataProcessor {
      * @return the MET of the activity.
      */
     private static double walkingMETCalculator(double speed) {
-        double localMET;
+        double MET;
         if (speed < 3.2) {
-            localMET = 2.0;
+            MET = 2.0;
         } else if (3.2 <= speed && speed < 4.0) {
-            localMET = 2.8;
+            MET = 2.8;
         } else if (4.0 <= speed && speed < 4.5) {
-            localMET = 3.0;
+            MET = 3.0;
         } else if (4.5 <= speed && speed < 5.2) {
-            localMET = 3.5;
+            MET = 3.5;
         } else if (5.2 <= speed && speed < 5.6) {
-            localMET = 4.3;
+            MET = 4.3;
         } else if (5.6 <= speed && speed < 6.4) {
-            localMET = 5.0;
+            MET = 5.0;
         } else if (6.5 <= speed && speed < 7.2) {
-            localMET = 7.0;
+            MET = 7.0;
         } else {
-            localMET = 8.3;
+            MET = 8.3;
         }
-        return localMET;
+        return MET;
     }
 
     /**
