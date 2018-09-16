@@ -6,7 +6,7 @@ import javafx.scene.control.ProgressBar;
 
 
 /**
- * Controller for the Activity Tab.
+ * Controller for the Home Tab.
  */
 public class HomeTabController extends Controller {
 
@@ -19,7 +19,7 @@ public class HomeTabController extends Controller {
     private ProgressBar goalProgressBar;
 
     /**
-     * Constructor for the ActivityTabController.
+     * Constructor for the HomeTabController.
      *
      * @param applicationStateManager The ApplicationStateManager of the application.
      */

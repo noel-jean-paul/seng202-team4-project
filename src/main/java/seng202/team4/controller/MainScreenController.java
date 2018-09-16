@@ -20,6 +20,7 @@ public class MainScreenController extends Controller {
 
     private ActivityTabController activityTabController;
     private HomeTabController homeTabController;
+    private GoalsTabController goalsTabController;
 
     /** The AnchorPane of the main screen. */
     @FXML
@@ -28,6 +29,10 @@ public class MainScreenController extends Controller {
     /** The AnchorPane of the home screen. */
     @FXML
     private AnchorPane homePane;
+
+    /** The AnchorPane of the goals screen */
+    @FXML
+    private AnchorPane goalsPane;
 
 
 
@@ -51,12 +56,16 @@ public class MainScreenController extends Controller {
         Pane = Utilities.loadPane("ActivityTab.fxml", activityTabController);
         activityPane.getChildren().setAll(Pane);
 
+        // TODO: Figure out how to get these tabs to fit to parent, so they can expand
         Pane home = new Pane();
         homeTabController = new HomeTabController(applicationStateManager);
         home = Utilities.loadPane("HomeTab.fxml", homeTabController);
         homePane.getChildren().setAll(home);
 
-
+        Pane goals = new Pane();
+        goalsTabController = new GoalsTabController(applicationStateManager);
+        goals = Utilities.loadPane("GoalsTab.fxml", goalsTabController);
+        goalsPane.getChildren().setAll(goals);
     }
 
     /**
@@ -83,12 +92,10 @@ public class MainScreenController extends Controller {
         activityTabController.updateTable();
     }
 
-    /**
-     * @// TODO: 16/09/18 make something happen when tab selected if necessary 
-     */
+
     @FXML
     public void homeTabSelected() {
-
+        // TODO make something happen when tab selected if necessary
     }
 
 }
