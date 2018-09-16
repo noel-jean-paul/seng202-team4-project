@@ -3,6 +3,7 @@ package seng202.team4.model.data;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;
+import seng202.team4.model.utilities.DataProcessor;
 
 import javax.xml.crypto.Data;
 import java.sql.SQLException;
@@ -52,6 +53,13 @@ public class Activity implements Comparable<Activity> {
         java.util.Collections.sort(this.rawData);   // ensure the data is in order
         this.date = (rawActivityList.get(0)).getDate();
         this.startTime = (rawActivityList.get(0)).getTime();
+        this.distance = DataProcessor.totalDistance(rawActivityList);
+
+        //TODO: Set these!!!!
+        this.duration = LocalTime.MIDNIGHT;
+        this.caloriesBurned = 0;
+
+        this.type = ActivityType.Other;
     }
 
     @Override
@@ -102,7 +110,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setName(String name) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"name", name);
+        DataUpdater.updateActivity(this,"name", name);
         this.name = name;
     }
 
@@ -112,7 +120,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDescription(String description) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"description", description);
+        DataUpdater.updateActivity(this,"description", description);
         this.description = description;
     }
 
@@ -122,7 +130,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDate(String date) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"activityDate", date);
+        DataUpdater.updateActivity(this,"activityDate", date);
         this.date = LocalDate.parse(date);
     }
 
@@ -132,7 +140,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setStartTime(String startTime) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"startTime", startTime);
+        DataUpdater.updateActivity(this,"startTime", startTime);
         this.startTime = LocalTime.parse(startTime);
     }
 
@@ -142,17 +150,23 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDuration(String duration) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"duration", duration);
+        DataUpdater.updateActivity(this,"duration", duration);
         this.duration = LocalTime.parse(duration);
     }
 
+    /** Gets the distance of the activity */
     public double getDistance() {
         return distance;
     }
 
+    /** Gets a string of the distance rounded to 0 decimal places. */
+    public String getDistanceDisplayString() {
+        return String.format("%.0f", distance);
+    }
+
     /** Set and update in database */
     public void setDistance(double distance) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"distance", Double.toString(distance));
+        DataUpdater.updateActivity(this,"distance", Double.toString(distance));
         this.distance = distance;
     }
 
@@ -171,7 +185,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setCaloriesBurned(double caloriesBurned) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"caloriesBurned", Double.toString(caloriesBurned));
+        DataUpdater.updateActivity(this,"caloriesBurned", Double.toString(caloriesBurned));
         this.caloriesBurned = caloriesBurned;
     }
 
@@ -181,7 +195,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setType(ActivityType type) throws SQLException {
-        DataUpdater.updateActivity(this, owner,"type", type.toString());
+        DataUpdater.updateActivity(this,"type", type.toString());
         this.type = type;
     }
 

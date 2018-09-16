@@ -18,6 +18,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /** Controller for the import activities preview screen. */
@@ -26,11 +27,14 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     /** ArrayList of activityConfirmationRows that listed */
     private ArrayList<ActivityConfirmationRow> activityConfirmationRows = new ArrayList<>();
 
+    /** ActivityTabController of the activity tab. */
+    private ActivityTabController activityTabController;
+
     /** VBox that holds the rows of activities. */
     @FXML
     private VBox activityListVbox;
 
-    /** GridPane of the import actviities preview screen. */
+    /** GridPane of the import activities preview screen. */
     @FXML
     private GridPane gridPane;
 
@@ -39,8 +43,9 @@ public class ImportActivitiesPreviewScreenController extends Controller {
      *
      * @param applicationStateManager The ApplicationStateManager of the application.
      */
-    public ImportActivitiesPreviewScreenController(ApplicationStateManager applicationStateManager) {
+    public ImportActivitiesPreviewScreenController(ApplicationStateManager applicationStateManager, ActivityTabController activityTabController) {
         super(applicationStateManager);
+        this.activityTabController = activityTabController;
     }
 
 
@@ -53,16 +58,14 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         applicationStateManager.switchToScreen("MainScreen");
         for (ActivityConfirmationRow activityConfirmationRow: activityConfirmationRows) {
             Activity activity = activityConfirmationRow.getActivity();
-            activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             if (activityConfirmationRow.isSelected()) {
-                try {
-                    DataStorer.insertActivity(activity, applicationStateManager.getCurrentProfile());
-                } catch (java.sql.SQLException e) {
-                    System.out.println("Error importing activities.");
-                    e.printStackTrace();
-                }
+                applicationStateManager.getCurrentProfile().addActivity(activity);
+                activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             }
+
         }
+        activityTabController.updateTable();
+
     }
 
 
@@ -77,17 +80,26 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         ArrayList<DataRow> rows = new ArrayList<>();
 
         fileImporter.readFile(csvFile, rows, activities);
-        for (int i=0; i < activities.size(); i++) {
-            ActivityConfirmationRowController activityRowController = new ActivityConfirmationRowController(applicationStateManager);
-            ActivityConfirmationRow activityConfirmationRow = new ActivityConfirmationRow(activityRowController, activities.get(i));
-            activityConfirmationRow.prefWidthProperty().bind(gridPane.widthProperty());
-            activityListVbox.getChildren().add(activityConfirmationRow);
 
-            if (i % 2 == 0) {
-                activityConfirmationRow.applyShadedBackground();
+        HashSet<String> activityStringKeySet = new HashSet<String>();
+        for (Activity activity: applicationStateManager.getCurrentProfile().getActivityList()) {
+            activityStringKeySet.add(activity.getName()+activity.getDate().toString());
+        }
+
+        for (int i=0; i < activities.size(); i++) {
+            if (!activityStringKeySet.contains(activities.get(i).getName()+activities.get(i).getDate().toString())) {
+                ActivityConfirmationRowController activityRowController = new ActivityConfirmationRowController(applicationStateManager);
+                ActivityConfirmationRow activityConfirmationRow = new ActivityConfirmationRow(activityRowController, activities.get(i));
+                activityConfirmationRow.prefWidthProperty().bind(gridPane.widthProperty());
+                activityListVbox.getChildren().add(activityConfirmationRow);
+
+                if (i % 2 == 0) {
+                    activityConfirmationRow.applyShadedBackground();
+                }
+
+                activityConfirmationRows.add(activityConfirmationRow);
             }
 
-            activityConfirmationRows.add(activityConfirmationRow);
         }
     }
 }

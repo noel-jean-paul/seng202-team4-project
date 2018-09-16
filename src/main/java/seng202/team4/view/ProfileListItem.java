@@ -41,6 +41,8 @@ public class ProfileListItem extends AnchorPane {
         }
         controller.setNameText(String.format("%s %s", profileKey.getFirstName(), profileKey.getLastName()));
         this.profileKey = profileKey;
+
+        this.setBackground(unselectedBackground);
     }
 
 

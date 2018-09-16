@@ -47,13 +47,7 @@ public class ActivityConfirmationRow extends AnchorPane {
 
         controller.setActivityNameText(activity.getName());
         controller.setActivityDateText(activity.getDate().toString());
-        controller.setActivityDistanceText("TODO");
-
-        //TODO: Remove the following temp values.
-        activity.setDistance(0);
-        activity.setType(ActivityType.Other);
-        activity.setDuration(LocalTime.MIDNIGHT.toString());
-
+        controller.setActivityDistanceText(activity.getDistanceDisplayString());
 
        // controller.setActivityDurationText(activity.getDuration().toString());
         this.activity = activity;

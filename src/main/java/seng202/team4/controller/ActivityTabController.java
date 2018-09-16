@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -66,6 +67,7 @@ public class ActivityTabController extends Controller {
     @FXML
     public void initialize() {
         activityTable.setPlaceholder(new Text("No activates have been added yet."));
+        activityTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         nameColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
         dateColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
@@ -102,7 +104,7 @@ public class ActivityTabController extends Controller {
 
         nameColumn.setCellValueFactory(new PropertyValueFactory<Activity,String>("name"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Activity, LocalDate>("date"));
-        distanceColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("distance"));
+        distanceColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("distanceDisplayString"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<Activity, LocalTime>("startTime"));
         averageSpeedColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("averageSpeed"));
         caloriesColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("caloriesBurned"));
@@ -121,6 +123,8 @@ public class ActivityTabController extends Controller {
             isTableReorderable = false;
         }
 
+        ScrollBar scrollBarHorizontal = (ScrollBar) activityTable.lookup(".scroll-bar:hotizontal");
+        scrollBarHorizontal.setVisible(false);
 
     }
 
@@ -130,7 +134,7 @@ public class ActivityTabController extends Controller {
      */
     @FXML
     public void addActivities() {
-        Pane popUp = Utilities.loadPane("ActivityImportTypePrompt.fxml", new ActivityImportTypePromptController(applicationStateManager));
+        Pane popUp = Utilities.loadPane("ActivityImportTypePrompt.fxml", new ActivityImportTypePromptController(applicationStateManager, this));
         applicationStateManager.displayPopUp(popUp);
     }
 }

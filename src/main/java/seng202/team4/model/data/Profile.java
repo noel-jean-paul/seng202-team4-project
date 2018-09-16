@@ -1,4 +1,5 @@
 package seng202.team4.model.data;
+import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;
 
@@ -165,6 +166,33 @@ public class Profile {
      */
     public static boolean isValidName(String name) {
         return name.length() >= MIN_NAME_SIZE && name.length() <= MAX_NAME_SIZE;
+    }
+
+    /**
+     * Checks that the given name is a unique profile name.
+     *
+     * @param firstName The first name of the name to check.
+     * @param lastName The last name of the name to check.
+     * @return true if the name is unique, false otherwise.
+     */
+    public static boolean isUniqueName(String firstName, String lastName) {
+        boolean isDuplicate = false;
+        try {
+            List<ProfileKey> profileKeys = DataLoader.fetchAllProfileKeys();
+            ProfileKey newProfileKey = new ProfileKey(firstName, lastName);
+
+            for (ProfileKey profileKey: profileKeys) {
+                if (profileKey == newProfileKey) {
+                    isDuplicate = true;
+                }
+            }
+        } catch (java.sql.SQLException e) {
+            //TODO: Bring up proper error box to the user.
+            System.out.println("Error loading profile keys from the data base.");
+            isDuplicate = true;
+        }
+
+        return isDuplicate;
     }
 
     /**

@@ -68,6 +68,15 @@ public class MainScreenController extends Controller {
         applicationStateManager.switchToScreen("LoginScreen");
     }
 
+    @FXML
+    public void viewProfile() {
+        ProfileScreenController profileScreenController = new ProfileScreenController(applicationStateManager);
+        Pane profileScreen = Utilities.loadPane("ProfileScreen.fxml", profileScreenController);
+        applicationStateManager.addScreen("ProfileScreen", profileScreen);
+        applicationStateManager.switchToScreen("ProfileScreen");
+        profileScreenController.updateInformation();
+    }
+
 
     @FXML
     void activityTabSelected() {
