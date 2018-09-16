@@ -25,7 +25,7 @@ public class MainScreenController extends Controller {
     @FXML
     private AnchorPane activityPane;
 
-    /** The AnchorPane of the main screen. */
+    /** The AnchorPane of the home screen. */
     @FXML
     private AnchorPane homePane;
 
@@ -53,7 +53,7 @@ public class MainScreenController extends Controller {
 
         Pane home = new Pane();
         homeTabController = new HomeTabController(applicationStateManager);
-        home = Utilities.loadPane("HomeTab.fxml", activityTabController);
+        home = Utilities.loadPane("HomeTab.fxml", homeTabController);
         homePane.getChildren().setAll(home);
 
 
@@ -83,7 +83,9 @@ public class MainScreenController extends Controller {
         activityTabController.updateTable();
     }
 
-
+    /**
+     * @// TODO: 16/09/18 make something happen when tab selected if necessary 
+     */
     @FXML
     public void homeTabSelected() {
 

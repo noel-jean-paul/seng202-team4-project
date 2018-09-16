@@ -30,6 +30,9 @@
         <yAxis>
           <NumberAxis label="Distance (km)" side="LEFT" />
         </yAxis>
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
       </BarChart>
    </children>
 </GridPane>
