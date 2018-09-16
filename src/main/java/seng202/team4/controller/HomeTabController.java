@@ -10,7 +10,7 @@ import javafx.scene.control.ProgressBar;
  */
 public class HomeTabController extends Controller {
 
-    /** The distance bar graph of the home tab*/
+    /** The distance bar graph on the home tab*/
     @FXML
     private BarChart<?, ?> distanceBarGraph;
 
