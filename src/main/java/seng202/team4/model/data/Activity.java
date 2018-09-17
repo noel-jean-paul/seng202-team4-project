@@ -7,6 +7,7 @@ import seng202.team4.model.utilities.DataProcessor;
 
 import javax.xml.crypto.Data;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class Activity implements Comparable<Activity> {
     private String description;
     private ActivityType type;
     private LocalTime startTime;
-    private LocalTime duration;
+    private Duration duration;
     private double distance;
     private double caloriesBurned;
     private double averageSpeed;
@@ -42,7 +43,7 @@ public class Activity implements Comparable<Activity> {
         this.type = type;
 
         this.startTime = LocalTime.parse(startTime);
-        this.duration = LocalTime.parse(duration);
+        this.duration = Duration.parse(duration);
         this.distance = distance;
         this.caloriesBurned = caloriesBurned;
         this.averageSpeed = 5;  // TODO calculate average speed here in km/hr
@@ -62,7 +63,7 @@ public class Activity implements Comparable<Activity> {
         this.distance = DataProcessor.totalDistance(rawActivityList);
 
         //TODO: Set these!!!!
-        this.duration = LocalTime.MIDNIGHT;
+        this.duration = Duration.ZERO;
         this.caloriesBurned = 0;
 
 
@@ -151,14 +152,14 @@ public class Activity implements Comparable<Activity> {
         this.startTime = LocalTime.parse(startTime);
     }
 
-    public LocalTime getDuration() {
+    public Duration getDuration() {
         return duration;
     }
 
     /** Set and update in database */
     public void setDuration(String duration) throws SQLException {
         DataUpdater.updateActivity(this,"duration", duration);
-        this.duration = LocalTime.parse(duration);
+        this.duration = Duration.parse(duration);
     }
 
     /** Gets the distance of the activity */
@@ -294,7 +295,7 @@ public class Activity implements Comparable<Activity> {
      * the run and walk types then the other activity type
      * is returned.
      *
-     * @param activityName
+     * @param activityName the name of the activity
      * @return The ActivityType found from the activity name.
      */
     public static ActivityType findActivityType(String activityName) {

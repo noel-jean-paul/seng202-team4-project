@@ -31,7 +31,7 @@ public class DataRowTest {
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
         activity1 = new Activity("Run in the park", "2000-12-12", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 187);
+                "12:15:01", "PT40M", 5.13, 187);
 
         row1 = new DataRow(1, "2018-09-28", "12:21:12", 164, 50, 50,
                 50);
