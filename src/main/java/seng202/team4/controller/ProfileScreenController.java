@@ -22,10 +22,32 @@ public class ProfileScreenController extends Controller {
     @FXML
     private VBox firstNameVbox;
 
-    private boolean isfirstNameEdited = false;
+    @FXML
+    private VBox lastNameVbox;
+
+    @FXML
+    private VBox heightVbox;
+
+    @FXML
+    private VBox weightVbox;
+
+    private TextField firstNameTextField;
+    private TextField lastNameTextField;
+    private TextField heightTextField;
+    private TextField weightTextField;
+
+    private boolean isEditeding = false;
 
     public ProfileScreenController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
+    }
+
+    @FXML
+    public void initialize() {
+        firstNameTextField = new TextField();
+        lastNameTextField = new TextField();
+        heightTextField = new TextField();
+        weightTextField = new TextField();
     }
 
     @FXML
@@ -33,9 +55,27 @@ public class ProfileScreenController extends Controller {
         applicationStateManager.switchToScreen("MainScreen");
     }
 
-    @FXML void editFirstName() {
-        if (!isfirstNameEdited) {
-            firstNameVbox.getChildren().setAll(new TextField(applicationStateManager.getCurrentProfile().getFirstName()));
+    @FXML void editProfile() {
+        if (!isEditeding){
+            firstNameTextField.setText(applicationStateManager.getCurrentProfile().getFirstName());
+            lastNameTextField.setText(applicationStateManager.getCurrentProfile().getLastName());
+            heightTextField.setText(Double.toString(applicationStateManager.getCurrentProfile().getHeight()));
+            weightTextField.setText(Double.toString(applicationStateManager.getCurrentProfile().getWeight()));
+
+            firstNameVbox.getChildren().setAll(firstNameTextField);
+            lastNameVbox.getChildren().setAll(lastNameTextField);
+            heightVbox.getChildren().setAll(heightTextField);
+            weightVbox.getChildren().setAll(weightTextField);
+
+            isEditeding = true;
+        } else  {
+
+            firstNameVbox.getChildren().setAll(firstNameText);
+            lastNameVbox.getChildren().setAll(lastNameText);
+            heightVbox.getChildren().setAll(heightText);
+            weightVbox.getChildren().setAll(weightText);
+
+            isEditeding = false;
         }
 
     }
