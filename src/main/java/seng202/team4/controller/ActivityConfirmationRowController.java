@@ -81,4 +81,8 @@ public class ActivityConfirmationRowController extends Controller {
     public ActivityType getSelectedActvityType() {
         return (ActivityType) activityTypeChoiceBox.getSelectionModel().getSelectedItem();
     }
+
+    public void setSelectedActvityType(ActivityType actvityType) {
+        activityTypeChoiceBox.setValue(actvityType);
+    }
 }

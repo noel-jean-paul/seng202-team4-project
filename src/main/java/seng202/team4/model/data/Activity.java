@@ -15,6 +15,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class Activity implements Comparable<Activity> {
+
+    /** Keywords that indicate an Activity is a walk.*/
+    private static String[] walkKeyWords = {"walk", "hike", "stroll", "hiking"};
+    /** Keywords that indicate an Activity is a run.*/
+    private static String[] runKeyWords = {"run", "ran", "jog"};
+
     /* The combination of name and date must be unique for a profile */
     private String name;
     private LocalDate date;
@@ -60,7 +66,7 @@ public class Activity implements Comparable<Activity> {
         this.caloriesBurned = 0;
 
 
-        this.type = ActivityType.Other;
+        this.type = findActivityType(name);
     }
 
     @Override
@@ -277,6 +283,47 @@ public class Activity implements Comparable<Activity> {
         distance = Math.pow(distance, 2) + Math.pow(height, 2);
 
         return Math.sqrt(distance);
+    }
+
+
+    /**
+     * Finds the ActivityType of an Activity from its name.
+     * It does this by searching the name for keywords that may
+     * indicated whether an Activity is a walk or a run. If no
+     * keywords are found or the name has keywords from both
+     * the run and walk types then the other activity type
+     * is returned.
+     *
+     * @param activityName
+     * @return The ActivityType found from the activity name.
+     */
+    public static ActivityType findActivityType(String activityName) {
+        ActivityType type = ActivityType.Other;
+        boolean isWalk = false;
+        boolean isRun = false;
+
+        // Looks for walk key words in the name.
+        for (String walkKeyWord: walkKeyWords) {
+            if (activityName.toLowerCase().contains(walkKeyWord)) {
+                type = ActivityType.Walk;
+                isWalk = true;
+            }
+        }
+
+        // Looks for run key words in the name.
+        for (String runKeyWord: runKeyWords) {
+            if (activityName.toLowerCase().contains(runKeyWord)) {
+                type = ActivityType.Run;
+                isRun = true;
+            }
+        }
+
+        // Checks whether both walk and run key words were found in the name.
+        if (isWalk && isRun) {
+            type = ActivityType.Other;
+        }
+
+        return type;
     }
 
 //    /**
