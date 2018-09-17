@@ -1,8 +1,10 @@
 package seng202.team4.controller;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -10,6 +12,7 @@ import javafx.stage.Stage;
 import seng202.team4.model.data.Profile;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * The ApplicationStateManager class stores values and screens of the application.
@@ -86,6 +89,22 @@ public class ApplicationStateManager {
      */
     public void closePopUP(Pane popUp) {
         stackPane.getChildren().remove(popUp);
+    }
+
+
+    public void displayErrorMessage(String userMessage, String detail, boolean isCritical) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(userMessage);
+        alert.setContentText(detail);
+        alert.showAndWait();
+        if (isCritical) {
+            System.exit(1);
+        }
+    }
+
+    public void displayErrorMessage(String userMessage, String detail) {
+        displayErrorMessage(userMessage, detail, false);
     }
 
 
