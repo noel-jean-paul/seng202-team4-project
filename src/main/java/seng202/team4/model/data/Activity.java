@@ -59,6 +59,7 @@ public class Activity implements Comparable<Activity> {
         this.duration = LocalTime.MIDNIGHT;
         this.caloriesBurned = 0;
 
+
         this.type = ActivityType.Other;
     }
 

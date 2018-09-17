@@ -176,23 +176,25 @@ public class Profile {
      * @return true if the name is unique, false otherwise.
      */
     public static boolean isUniqueName(String firstName, String lastName) {
-        boolean isDuplicate = false;
+        boolean isUnique = true;
         try {
             List<ProfileKey> profileKeys = DataLoader.fetchAllProfileKeys();
             ProfileKey newProfileKey = new ProfileKey(firstName, lastName);
 
             for (ProfileKey profileKey: profileKeys) {
-                if (profileKey == newProfileKey) {
-                    isDuplicate = true;
+                System.out.println(profileKey.getFirstName());
+                System.out.println(profileKey.getLastName());
+                if (profileKey.equals(newProfileKey)) {
+                    isUnique = false;
                 }
             }
         } catch (java.sql.SQLException e) {
             //TODO: Bring up proper error box to the user.
             System.out.println("Error loading profile keys from the data base.");
-            isDuplicate = true;
+            isUnique = false;
         }
 
-        return isDuplicate;
+        return isUnique;
     }
 
     /**
