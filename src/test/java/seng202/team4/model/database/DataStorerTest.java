@@ -15,7 +15,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DataStorerTest extends DataTestAccesser {
+public class DataStorerTest {
     private static Profile profile1;
     private static Profile profile2;
     private Profile loadedProfile;

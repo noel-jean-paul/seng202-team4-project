@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class DataLoaderTest extends DataTestAccesser {
+public class DataLoaderTest {
     private static Profile profile1;
     private static Profile profile2;
     private static Activity activity1;
@@ -81,7 +81,7 @@ public class DataLoaderTest extends DataTestAccesser {
 
     @AfterClass
     public static void tearDown() throws SQLException {
-        connection.close();
+        DataAccesser.closeDatabase();
     }
 
     @Test
