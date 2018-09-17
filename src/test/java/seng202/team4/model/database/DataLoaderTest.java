@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class DataLoaderTest extends DataAccesser {
+public class DataLoaderTest extends DataTestAccesser {
     private static Profile profile1;
     private static Profile profile2;
     private static Activity activity1;
@@ -29,7 +29,7 @@ public class DataLoaderTest extends DataAccesser {
     @BeforeClass
     public static void setUp() throws SQLException {
         // Initialise the database connection for the other classes
-        DataAccesser.initialiseConnection();
+        DataTestAccesser.initialiseConnection();
 
         // Remove all data from the database
         DataTestHelper.clearDatabase();

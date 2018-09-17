@@ -32,7 +32,7 @@ public class ProfileTest {
     @BeforeClass
     public static void setUp() throws SQLException {
         // initialise the database connection
-        DataAccesser.initialiseConnection();
+        DataTestAccesser.initialiseConnection();
 
         // Clean the database
         DataTestHelper.clearDatabase();
@@ -74,7 +74,7 @@ public class ProfileTest {
 
     @AfterClass
     public static void tearDown() throws SQLException {
-        DataAccesser.closeDatabase();
+        DataTestAccesser.closeDatabase();
     }
 
     @Test

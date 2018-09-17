@@ -15,7 +15,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DataStorerTest extends DataAccesser {
+public class DataStorerTest extends DataTestAccesser {
     private static Profile profile1;
     private static Profile profile2;
     private Profile loadedProfile;
@@ -27,7 +27,7 @@ public class DataStorerTest extends DataAccesser {
     @BeforeClass
     public static void setUp() throws SQLException {
         // Initialise the database connection
-        DataAccesser.initialiseConnection();
+        DataTestAccesser.initialiseConnection();
 
         // Remove all data from the database
         DataTestHelper.clearDatabase();
@@ -48,7 +48,7 @@ public class DataStorerTest extends DataAccesser {
 
     @AfterClass
     public static void tearDown() throws SQLException {
-        DataAccesser.closeDatabase();
+        DataTestAccesser.closeDatabase();
     }
 
     @Before
