@@ -123,6 +123,7 @@ public class CreateProfileController extends Controller {
             } catch (java.sql.SQLException e) {
                 //TODO: Deal with this case.
                 System.out.println("Error storing new profile in the data base.");
+                e.printStackTrace();
             }
 
             applicationStateManager.switchToScreen("MainScreen");   //Changes to main screen.

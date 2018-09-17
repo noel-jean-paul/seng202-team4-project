@@ -182,8 +182,6 @@ public class Profile {
             ProfileKey newProfileKey = new ProfileKey(firstName, lastName);
 
             for (ProfileKey profileKey: profileKeys) {
-                System.out.println(profileKey.getFirstName());
-                System.out.println(profileKey.getLastName());
                 if (profileKey.equals(newProfileKey)) {
                     isUnique = false;
                 }
