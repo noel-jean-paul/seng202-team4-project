@@ -7,6 +7,7 @@ import seng202.team4.model.database.*;
 import javax.xml.crypto.Data;
 import java.sql.Array;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -29,17 +30,17 @@ public class ActivityTest {
     @BeforeClass
     public static void setUp() throws SQLException {
         DataTestAccesser.initialiseConnection();
-        DataTestHelper.clearDatabase();
+        DataAccesser.clearDatabase();
 
         // Initialise profile and activities
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
 
         activity1 = new Activity("Run in the park", "2000-12-12", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 187);
+                "12:15:01", "PT40M", 5.13, 187);
 
         activity2 = new Activity("Walk around the block", "2018-09-01", "Quick walk",
-                ActivityType.Walk, "01:28:30", "00:11:19", 1.2, 30);
+                ActivityType.Walk, "01:28:30", "PT11M19S", 1.2, 30);
 
         // set the owners as set methods are called so db updates will occur
         activity1.setOwner(profile1);
@@ -63,7 +64,7 @@ public class ActivityTest {
     public void setUpReccurring() throws SQLException {
         profile1.getActivityList().clear();
         profile1.getGoalList().clear();
-        DataTestHelper.clearDatabase();
+        DataAccesser.clearDatabase();
         activity1.getRawData().clear();
     }
 
@@ -230,13 +231,13 @@ public class ActivityTest {
 
     @Test
     public void setDuration() throws SQLException {
-        String duration = "01:32:43";
+        String duration = "PT1H32M43S";
         DataStorer.insertProfile(profile1);
         DataStorer.insertActivity(activity1, profile1);
         activity1.setDuration(duration);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(LocalTime.parse(duration), loadedProfile.getActivityList().get(0).getDuration());
+        assertEquals(Duration.parse(duration), loadedProfile.getActivityList().get(0).getDuration());
     }
 
     @Test
