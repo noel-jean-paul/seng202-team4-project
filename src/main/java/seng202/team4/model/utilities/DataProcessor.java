@@ -36,6 +36,15 @@ public class DataProcessor {
     }
 
     /**
+     * @param distance the total distance travelled during the activity in meters.
+     * @param time the duration of the activity of type Duration.
+     * @return
+     */
+    public static double calculateAverageSpeed(double distance, Duration time) {
+        return (distance / time.getSeconds()) * 3.6;
+    }
+
+    /**
      * Calculates the radius of the earth at the given latitudinal coordinates in metres.
      * This method was implemented using the given formula provided by: https://rechneronline.de/earth-radius/
      * @param latitude the latitude at which the given radius will be for - given in decimal degree notation.
@@ -108,8 +117,14 @@ public class DataProcessor {
         double MET;
         if (activity == ActivityType.Walk) {
             MET = walkingMETCalculator(speed);
-        } else {
+        } else if (activity == ActivityType.Run) {
             MET = runningMETCalculator(speed);
+        } else {
+            if (speed <= 7.0) {
+                MET = walkingMETCalculator(speed);
+            } else {
+                MET = runningMETCalculator(speed);
+            }
         }
         return (duration / 60) * MET * 3.5 * user.getWeight() / 200;
     }
