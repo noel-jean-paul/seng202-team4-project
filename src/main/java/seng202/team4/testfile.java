@@ -9,10 +9,11 @@ import seng202.team4.model.database.DataStorer;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.Duration;
 
 public class testfile  {
-    public static void main(String[] args){
-
+    public static void main(String[] args) throws SQLException {
+        DataAccesser.initialiseConnection();
+        DataAccesser.clearDatabase();
     }
-
 }

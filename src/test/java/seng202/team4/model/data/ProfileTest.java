@@ -35,7 +35,7 @@ public class ProfileTest {
         DataTestAccesser.initialiseConnection();
 
         // Clean the database
-        DataTestHelper.clearDatabase();
+        DataAccesser.clearDatabase();
 
         // Initialise profile
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
@@ -43,13 +43,13 @@ public class ProfileTest {
 
         // Initialise activities
         activity1 = new Activity("Run in the park", "2017-12-12", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 187);
+                "12:15:01", "PT40M", 5.13, 187);
 
         activity2 = new Activity("Walk around the block", "2019-12-12", "Quick walk",
-                ActivityType.Walk, "01:28:30", "00:11:19", 1.2, 30);
+                ActivityType.Walk, "01:28:30", "PT11M19S", 1.2, 30);
 
         activity3 = new Activity("Jog through Uni", "2018-12-12", "Quick walk",
-                ActivityType.Run, "01:28:30", "00:11:19", 1.2, 30);
+                ActivityType.Run, "01:28:30", "PT11M19S", 1.2, 30);
 
         expected = new ArrayList<>(Arrays.asList(activity1, activity3, activity2));
 
@@ -69,7 +69,7 @@ public class ProfileTest {
         // clear lists and database
         profile1.getActivityList().clear();
         profile1.getGoalList().clear();
-        DataTestHelper.clearDatabase();
+        DataAccesser.clearDatabase();
     }
 
     @AfterClass
