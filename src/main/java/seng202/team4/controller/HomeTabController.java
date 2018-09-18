@@ -49,7 +49,7 @@ public class HomeTabController extends Controller {
     }
 
     /**
-     * each time the home tab is clicked, it clears the old bar graph, and loads it again with any new updated data
+     * every time the home tab is clicked, it clears the old bar graph, and loads it again with any new updated data
      */
     public void loadData() {
         List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
