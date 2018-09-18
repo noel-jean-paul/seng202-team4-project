@@ -19,18 +19,21 @@ public class DataProcessor {
         final double earthRadius = earthRadiusCalculation(dataList.get(0).getLatitude());
         double totalDistance = 0;
         int i = 0;
-        for (int j = 1; j < dataList.size(); j++) {
-            double lat1 = dataList.get(i).getLatitude();
-            double lat2 = dataList.get(j).getLatitude();
-            double long1 = dataList.get(i).getLongitude();
-            double long2 = dataList.get(j).getLongitude();
-            double height1 = dataList.get(i).getElevation();
-            double height2 = dataList.get(j).getElevation();
-            double vertDistance = height2 - height1;
-            double horizDistance = haversineCalculation(earthRadius, lat1, lat2, long1, long2);
-            totalDistance += Math.sqrt(Math.pow(horizDistance, 2) + Math.pow(vertDistance, 2));
-            i++;
-
+        if (dataList.size() > 1) {
+            for (int j = 1; j < dataList.size(); j++) {
+                double lat1 = dataList.get(i).getLatitude();
+                double lat2 = dataList.get(j).getLatitude();
+                double long1 = dataList.get(i).getLongitude();
+                double long2 = dataList.get(j).getLongitude();
+                double height1 = dataList.get(i).getElevation();
+                double height2 = dataList.get(j).getElevation();
+                double vertDistance = height2 - height1;
+                double horizDistance = haversineCalculation(earthRadius, lat1, lat2, long1, long2);
+                totalDistance += Math.sqrt(Math.pow(horizDistance, 2) + Math.pow(vertDistance, 2));
+                i++;
+            }
+        } else {
+            totalDistance = 0;
         }
         return totalDistance;
     }
@@ -93,7 +96,7 @@ public class DataProcessor {
         if (dataList != null) {
             for (int i = 1; i < dataList.size(); i++) {
                 LocalTime startTime = dataList.get(j).getTime();
-                LocalTime endTime = dataList.get(i).getTime();https://www.canterbury.ac.nz/engineering/schools/csse/
+                LocalTime endTime = dataList.get(i).getTime();
                 totalDuration = totalDuration.plus(Duration.between(startTime, endTime));
                 j++;
             }
@@ -163,7 +166,7 @@ public class DataProcessor {
      */
     private static double runningMETCalculator(double speed) {
         double localMET;
-        if (speed < 6.5) {
+        if (speed < 6.5) {ttps://www.canterbury.ac.nz/engineering/schools/csse/
             localMET = 6.0;
         } else if (6.5 <= speed && speed < 8.0) {
             localMET = 8.3;
