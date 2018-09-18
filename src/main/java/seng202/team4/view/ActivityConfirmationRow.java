@@ -14,6 +14,7 @@ import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.enums.ActivityType;
 
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalTime;
 
 /** The confirmation row that is displayed when activities are imported */
@@ -48,8 +49,8 @@ public class ActivityConfirmationRow extends AnchorPane {
         controller.setActivityNameText(activity.getName());
         controller.setActivityDateText(activity.getDate().toString());
         controller.setActivityDistanceText(activity.getDistanceDisplayString());
+        controller.setActivityDurationText(activity.getDurationString());
 
-       // controller.setActivityDurationText(activity.getDuration().toString());
         this.activity = activity;
         this.controller = controller;
     }

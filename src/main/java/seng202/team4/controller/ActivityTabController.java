@@ -48,7 +48,8 @@ public class ActivityTabController extends Controller {
     @FXML
     private TableColumn typeColumn;
 
-
+    @FXML
+    private TableColumn durationColumn;
 
 
     private boolean isTableReorderable = true;
@@ -106,9 +107,10 @@ public class ActivityTabController extends Controller {
         dateColumn.setCellValueFactory(new PropertyValueFactory<Activity, LocalDate>("date"));
         distanceColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("distanceDisplayString"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<Activity, LocalTime>("startTime"));
-        averageSpeedColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("averageSpeed"));
+        averageSpeedColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("averageSpeedString"));
         caloriesColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("caloriesBurned"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<Activity, ActivityType>("type"));
+        durationColumn.setCellValueFactory(new PropertyValueFactory<Activity, ActivityType>("durationString"));
 
         activityTable.setItems(activitiesList);
 
