@@ -15,7 +15,13 @@ import java.util.Set;
 
 
 public class FileImporter {
-
+    /**
+     *
+     * @param file the name of the file that is being imported
+     * @param rows arrayList of that will be filled with the list of data for an activity
+     * @param allActivities  arrayList that will be filled with the arrayLists of data for each activity
+     * @return the arrayList of all activities' data points.
+     */
     public ArrayList readFile(File file, ArrayList<DataRow> rows, ArrayList<Activity> allActivities) {
 
         String line;   //empty line into which data will be read
