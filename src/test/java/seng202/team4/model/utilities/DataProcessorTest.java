@@ -3,7 +3,6 @@ package seng202.team4.model.utilities;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import seng202.team4.model.data.Activity;
-import seng202.team4.model.utilities.DataProcessor;
 import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.data.enums.ActivityType;
@@ -42,6 +41,7 @@ public class DataProcessorTest {
         testProfile.addAllActivities(activityList);
     }
 
+    // TODO add test cases where 1 and 0 data points are given
 
     // TODO make test cases for when only 1 or 0 data points are given in dataList
 

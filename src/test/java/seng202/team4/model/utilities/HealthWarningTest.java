@@ -12,7 +12,7 @@ public class HealthWarningTest {
     Activity testActivity;
 
     @BeforeClass
-    public void setUpActivity() {
+    public static void setUpActivity() {
         // testActivity = new Activity();
     }
 
