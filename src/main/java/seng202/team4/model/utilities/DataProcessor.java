@@ -36,6 +36,15 @@ public class DataProcessor {
     }
 
     /**
+     * @param distance the total distance travelled during the activity in meters.
+     * @param time the duration of the activity of type Duration.
+     * @return the average speed of the user during the activity in km/h.
+     */
+    public static double calculateAverageSpeed(double distance, Duration time) {
+        return (distance / time.getSeconds()) * 3.6;
+    }
+
+    /**
      * Calculates the radius of the earth at the given latitudinal coordinates in metres.
      * This method was implemented using the given formula provided by: https://rechneronline.de/earth-radius/
      * @param latitude the latitude at which the given radius will be for - given in decimal degree notation.
@@ -76,22 +85,20 @@ public class DataProcessor {
      * Using the time values from the Activity's raw data ArrayList, calculates the total duration of the activity.
      * If the ArrayList is null, returns 0.
      * @param dataList the ArrayList containg the raw data for the given activity.
-     * @return the total duration of the activity - in seconds.
+     * @return the total duration of the activity as a duration object.
      */
-    public static int calculateDuration(List<DataRow> dataList) {
+    public static Duration calculateDuration(List<DataRow> dataList) {
         Duration totalDuration = Duration.ZERO;
         int j = 0;
-        if (dataList != null) {
+        if (dataList != null && dataList.size() > 1) {
             for (int i = 1; i < dataList.size(); i++) {
                 LocalTime startTime = dataList.get(j).getTime();
-                LocalTime endTime = dataList.get(i).getTime();https://www.canterbury.ac.nz/engineering/schools/csse/
+                LocalTime endTime = dataList.get(i).getTime();
                 totalDuration = totalDuration.plus(Duration.between(startTime, endTime));
                 j++;
             }
-            return (int) totalDuration.getSeconds();
-        } else {
-            return 0;
         }
+        return totalDuration;
     }
 
     /**
@@ -108,8 +115,14 @@ public class DataProcessor {
         double MET;
         if (activity == ActivityType.Walk) {
             MET = walkingMETCalculator(speed);
-        } else {
+        } else if (activity == ActivityType.Run) {
             MET = runningMETCalculator(speed);
+        } else {
+            if (speed <= 7.0) {
+                MET = walkingMETCalculator(speed);
+            } else {
+                MET = runningMETCalculator(speed);
+            }
         }
         return (duration / 60) * MET * 3.5 * user.getWeight() / 200;
     }
