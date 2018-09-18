@@ -1,13 +1,11 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import seng202.team4.model.data.Profile;
-import seng202.team4.model.database.DataStorer;
-
-import java.time.LocalDate;
 
 public class ProfileScreenController extends Controller {
 
@@ -38,12 +36,15 @@ public class ProfileScreenController extends Controller {
     @FXML
     private VBox weightVbox;
 
+    @FXML
+    private Button editCancelButton;
+
     private TextField firstNameTextField;
     private TextField lastNameTextField;
     private TextField heightTextField;
     private TextField weightTextField;
 
-    private boolean isEditeding = false;
+    private boolean isEditing = false;
 
     public ProfileScreenController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
@@ -59,24 +60,7 @@ public class ProfileScreenController extends Controller {
 
     @FXML
     public void done() {
-        applicationStateManager.switchToScreen("MainScreen");
-    }
-
-    @FXML void editProfile() {
-        if (!isEditeding){
-            firstNameTextField.setText(applicationStateManager.getCurrentProfile().getFirstName());
-            lastNameTextField.setText(applicationStateManager.getCurrentProfile().getLastName());
-            heightTextField.setText(Double.toString(applicationStateManager.getCurrentProfile().getHeight()));
-            weightTextField.setText(Double.toString(applicationStateManager.getCurrentProfile().getWeight()));
-
-            firstNameVbox.getChildren().setAll(firstNameTextField);
-            lastNameVbox.getChildren().setAll(lastNameTextField);
-            heightVbox.getChildren().setAll(heightTextField);
-            weightVbox.getChildren().setAll(weightTextField);
-
-            isEditeding = true;
-        } else  {
-
+        if (isEditing) {
             String firstName = firstNameTextField.getText();
             String lastName = lastNameTextField.getText();
             String weightString = weightTextField.getText();
@@ -104,8 +88,6 @@ public class ProfileScreenController extends Controller {
             // Check that the given values are valid. If they are not, the user is displayed an appropriate error message.
             if (!Profile.isValidName(firstName)) {
                 errorText.setText(String.format("First name must be between %s and %s characters.", Profile.MIN_NAME_SIZE, Profile.MAX_NAME_SIZE));
-            } else if (!Profile.isUniqueName(firstName, lastName)) {
-                errorText.setText(String.format("User '%s %s' already exists.", firstName, lastName));
             } else if (!Profile.isValidName(lastName)){
                 errorText.setText(String.format("Last name must be between %s and %s characters.", Profile.MIN_NAME_SIZE, Profile.MAX_NAME_SIZE));
             } /*else if (!isValidDateFormat) {
@@ -129,14 +111,35 @@ public class ProfileScreenController extends Controller {
                 }
             }
 
-            firstNameVbox.getChildren().setAll(firstNameText);
-            lastNameVbox.getChildren().setAll(lastNameText);
-            heightVbox.getChildren().setAll(heightText);
-            weightVbox.getChildren().setAll(weightText);
-
             updateInformation();
+            changeValuesToText();
 
-            isEditeding = false;
+            editCancelButton.setText("Edit");
+            isEditing = false;
+        } else {
+            applicationStateManager.switchToScreen("MainScreen");
+        }
+    }
+
+    @FXML void editProfile() {
+        if (!isEditing){
+            firstNameTextField.setText(applicationStateManager.getCurrentProfile().getFirstName());
+            lastNameTextField.setText(applicationStateManager.getCurrentProfile().getLastName());
+            heightTextField.setText(Double.toString(applicationStateManager.getCurrentProfile().getHeight()));
+            weightTextField.setText(Double.toString(applicationStateManager.getCurrentProfile().getWeight()));
+
+            firstNameVbox.getChildren().setAll(firstNameTextField);
+            lastNameVbox.getChildren().setAll(lastNameTextField);
+            heightVbox.getChildren().setAll(heightTextField);
+            weightVbox.getChildren().setAll(weightTextField);
+
+            editCancelButton.setText("Cancel");
+            isEditing = true;
+        } else  {
+            editCancelButton.setText("Edit");
+            isEditing = false;
+            updateInformation();
+            changeValuesToText();
         }
 
     }
@@ -146,6 +149,13 @@ public class ProfileScreenController extends Controller {
         lastNameText.setText(applicationStateManager.getCurrentProfile().getLastName());
         heightText.setText(Double.toString(applicationStateManager.getCurrentProfile().getHeight()));
         weightText.setText(Double.toString(applicationStateManager.getCurrentProfile().getWeight()));
+    }
+
+    private void changeValuesToText() {
+        firstNameVbox.getChildren().setAll(firstNameText);
+        lastNameVbox.getChildren().setAll(lastNameText);
+        heightVbox.getChildren().setAll(heightText);
+        weightVbox.getChildren().setAll(weightText);
     }
 
 
