@@ -105,7 +105,7 @@ public class MainScreenController extends Controller {
 
     @FXML
     void homeTabSelected() {
-        homeTabController.loadData();
+        //homeTabController.loadData();
     }
 
 }

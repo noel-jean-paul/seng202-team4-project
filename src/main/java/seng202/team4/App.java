@@ -38,11 +38,16 @@ public class App extends Application {
         Pane createProfileScreen = Utilities.loadPane("CreateProfileScreen.fxml", new CreateProfileController(applicationStateManager));
         Pane mainScreen = Utilities.loadPane("MainScreen.fxml", new MainScreenController(applicationStateManager));
 
+        //Temp
+        Pane mapPane = Utilities.loadPane("Maps.fxml", new MapsController(applicationStateManager));
+        applicationStateManager.addScreen("MapPane", mapPane);
+
 
 
         applicationStateManager.addScreen("LoginScreen", loginScreen);
         applicationStateManager.addScreen("CreateProfileScreen", createProfileScreen);
         applicationStateManager.addScreen("MainScreen", mainScreen);
+
         applicationStateManager.switchToScreen("LoginScreen");
 
         primaryStage.setTitle("Step by Step");
