@@ -6,10 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -50,6 +47,9 @@ public class ActivityTabController extends Controller {
 
     @FXML
     private TableColumn typeColumn;
+
+
+
 
     private boolean isTableReorderable = true;
 
@@ -136,5 +136,12 @@ public class ActivityTabController extends Controller {
     public void addActivities() {
         Pane popUp = Utilities.loadPane("ActivityImportTypePrompt.fxml", new ActivityImportTypePromptController(applicationStateManager, this));
         applicationStateManager.displayPopUp(popUp);
+    }
+
+
+    @FXML
+    public void showPopup() {
+        Pane activityPopUp = Utilities.loadPane("ActivityPopUpScreen.fxml", new ActivityPopUpScreenController(applicationStateManager, this));
+        applicationStateManager.displayPopUp(activityPopUp);
     }
 }
