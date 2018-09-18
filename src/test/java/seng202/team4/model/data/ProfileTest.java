@@ -35,7 +35,7 @@ public class ProfileTest {
         DataTestAccesser.initialiseConnection();
 
         // Clean the database
-        DataTestHelper.clearDatabase();
+        DataAccesser.clearDatabase();
 
         // Initialise profile
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
@@ -69,7 +69,7 @@ public class ProfileTest {
         // clear lists and database
         profile1.getActivityList().clear();
         profile1.getGoalList().clear();
-        DataTestHelper.clearDatabase();
+        DataAccesser.clearDatabase();
     }
 
     @AfterClass

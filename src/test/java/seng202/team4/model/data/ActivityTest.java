@@ -30,7 +30,7 @@ public class ActivityTest {
     @BeforeClass
     public static void setUp() throws SQLException {
         DataTestAccesser.initialiseConnection();
-        DataTestHelper.clearDatabase();
+        DataAccesser.clearDatabase();
 
         // Initialise profile and activities
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
@@ -64,7 +64,7 @@ public class ActivityTest {
     public void setUpReccurring() throws SQLException {
         profile1.getActivityList().clear();
         profile1.getGoalList().clear();
-        DataTestHelper.clearDatabase();
+        DataAccesser.clearDatabase();
         activity1.getRawData().clear();
     }
 
