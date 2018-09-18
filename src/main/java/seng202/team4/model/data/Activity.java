@@ -57,13 +57,12 @@ public class Activity implements Comparable<Activity> {
     public Activity(String name, ArrayList<DataRow> rawActivityList) {
         this.name = name;
         this.rawData = rawActivityList;
-        java.util.Collections.sort(this.rawData);   // ensure the data is in order
         this.date = (rawActivityList.get(0)).getDate();
         this.startTime = (rawActivityList.get(0)).getTime();
         this.distance = DataProcessor.totalDistance(rawActivityList);
 
         //TODO: Set these!!!!
-        this.duration = Duration.ZERO;
+        //this.duration = DataProcessor.calculateDuration(rawActivityList)
         this.caloriesBurned = 0;
 
 
