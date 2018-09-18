@@ -4,6 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import seng202.team4.model.data.Profile;
+import seng202.team4.model.database.DataStorer;
+
+import java.time.LocalDate;
 
 public class ProfileScreenController extends Controller {
 
@@ -18,6 +22,9 @@ public class ProfileScreenController extends Controller {
 
     @FXML
     private Text weightText;
+
+    @FXML
+    private Text errorText;
 
     @FXML
     private VBox firstNameVbox;
@@ -70,10 +77,64 @@ public class ProfileScreenController extends Controller {
             isEditeding = true;
         } else  {
 
+            String firstName = firstNameTextField.getText();
+            String lastName = lastNameTextField.getText();
+            String weightString = weightTextField.getText();
+            String heightString = heightTextField.getText();
+
+            double weight = 0.0;
+            boolean isValidWeightDoubleString = false;
+            try {
+                weight = Double.parseDouble(weightString);
+                isValidWeightDoubleString = true;
+            } catch (Exception e) {
+                isValidWeightDoubleString = false;
+            }
+
+            // Try to parse the height string to check that it is in a valid format for a double.
+            double height = 0.0;
+            boolean isValidHeightDoubleString = false;
+            try {
+                height = Double.parseDouble(heightString);
+                isValidHeightDoubleString = true;
+            } catch (Exception e) {
+                isValidHeightDoubleString = false;
+            }
+
+            // Check that the given values are valid. If they are not, the user is displayed an appropriate error message.
+            if (!Profile.isValidName(firstName)) {
+                errorText.setText(String.format("First name must be between %s and %s characters.", Profile.MIN_NAME_SIZE, Profile.MAX_NAME_SIZE));
+            } else if (!Profile.isUniqueName(firstName, lastName)) {
+                errorText.setText(String.format("User '%s %s' already exists.", firstName, lastName));
+            } else if (!Profile.isValidName(lastName)){
+                errorText.setText(String.format("Last name must be between %s and %s characters.", Profile.MIN_NAME_SIZE, Profile.MAX_NAME_SIZE));
+            } /*else if (!isValidDateFormat) {
+                errorText.setText("Date should be in the form dd/mm/yyyy.");
+            } else if (!Profile.isValidDateOfBirth(dateOfBirth)) {
+                errorText.setText(String.format("Date should be between %s and %s.", Profile.MIN_DOB, LocalDate.now()));
+            } */else if (!isValidWeightDoubleString || !Profile.isValidWeight(weight)) {
+                errorText.setText(String.format("Weight must be a number between %s and %s", 0, Profile.MAX_WEIGHT));
+            } else if (!isValidHeightDoubleString || !Profile.isValidHeight(height)) {
+                errorText.setText(String.format("Height must be a number between %s and %s", 0, Profile.MAX_HEIGHT));
+            } else {
+                Profile profile = applicationStateManager.getCurrentProfile();
+
+                try {
+                    profile.setFirstName(firstName);
+                    profile.setLastName(lastName);
+                    profile.setWeight(weight);
+                    profile.setHeight(height);
+                } catch (java.sql.SQLException e) {
+                    applicationStateManager.displayErrorMessage("Error encountered editing profile.", e.getMessage());
+                }
+            }
+
             firstNameVbox.getChildren().setAll(firstNameText);
             lastNameVbox.getChildren().setAll(lastNameText);
             heightVbox.getChildren().setAll(heightText);
             weightVbox.getChildren().setAll(weightText);
+
+            updateInformation();
 
             isEditeding = false;
         }
