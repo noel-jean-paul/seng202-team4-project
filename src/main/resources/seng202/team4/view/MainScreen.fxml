@@ -42,7 +42,10 @@
                <content>
                   <AnchorPane fx:id="goalsPane" prefHeight="200.0" prefWidth="200.0" />
                </content></Tab>
-            <Tab text="Health" />
+            <Tab onSelectionChanged="#healthTabSelected" text="Health">
+               <content>
+                  <AnchorPane fx:id="healthPane" prefHeight="200.0" prefWidth="200.0" />
+               </content></Tab>
         </tabs>
          <GridPane.margin>
             <Insets />

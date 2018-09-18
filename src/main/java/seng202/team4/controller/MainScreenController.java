@@ -21,6 +21,7 @@ public class MainScreenController extends Controller {
     private ActivityTabController activityTabController;
     private HomeTabController homeTabController;
     private GoalsTabController goalsTabController;
+    private HealthTabController healthTabController;
 
     /** The AnchorPane of the main screen. */
     @FXML
@@ -34,6 +35,9 @@ public class MainScreenController extends Controller {
     @FXML
     private AnchorPane goalsPane;
 
+    /** The AnchorPane of the health screen */
+    @FXML
+    private AnchorPane healthPane;
 
 
     /**
@@ -66,6 +70,11 @@ public class MainScreenController extends Controller {
         goalsTabController = new GoalsTabController(applicationStateManager);
         goals = Utilities.loadPane("GoalsTab.fxml", goalsTabController);
         goalsPane.getChildren().setAll(goals);
+
+        Pane health = new Pane();
+        healthTabController = new HealthTabController(applicationStateManager);
+        health = Utilities.loadPane("HealthTab.fxml", healthTabController);
+        healthPane.getChildren().setAll(health);
     }
 
     /**
