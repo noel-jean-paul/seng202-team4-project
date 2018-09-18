@@ -93,7 +93,7 @@ public class DataProcessor {
         if (dataList != null) {
             for (int i = 1; i < dataList.size(); i++) {
                 LocalTime startTime = dataList.get(j).getTime();
-                LocalTime endTime = dataList.get(i).getTime();
+                LocalTime endTime = dataList.get(i).getTime();https://www.canterbury.ac.nz/engineering/schools/csse/
                 totalDuration = totalDuration.plus(Duration.between(startTime, endTime));
                 j++;
             }

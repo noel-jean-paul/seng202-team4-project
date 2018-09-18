@@ -3,9 +3,11 @@ package seng202.team4.model.data;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;
+import seng202.team4.model.utilities.DataProcessor;
 
 import javax.xml.crypto.Data;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -14,13 +16,19 @@ import java.util.List;
 import java.util.Objects;
 
 public class Activity implements Comparable<Activity> {
+
+    /** Keywords that indicate an Activity is a walk.*/
+    private static String[] walkKeyWords = {"walk", "hike", "stroll", "hiking"};
+    /** Keywords that indicate an Activity is a run.*/
+    private static String[] runKeyWords = {"run", "ran", "jog"};
+
     /* The combination of name and date must be unique for a profile */
     private String name;
     private LocalDate date;
     private String description;
     private ActivityType type;
     private LocalTime startTime;
-    private LocalTime duration;
+    private Duration duration;
     private double distance;
     private double caloriesBurned;
     private double averageSpeed;
@@ -35,7 +43,7 @@ public class Activity implements Comparable<Activity> {
         this.type = type;
 
         this.startTime = LocalTime.parse(startTime);
-        this.duration = LocalTime.parse(duration);
+        this.duration = Duration.parse(duration);
         this.distance = distance;
         this.caloriesBurned = caloriesBurned;
         this.averageSpeed = 5;  // TODO calculate average speed here in km/hr
@@ -52,13 +60,14 @@ public class Activity implements Comparable<Activity> {
         java.util.Collections.sort(this.rawData);   // ensure the data is in order
         this.date = (rawActivityList.get(0)).getDate();
         this.startTime = (rawActivityList.get(0)).getTime();
+        this.distance = DataProcessor.totalDistance(rawActivityList);
 
         //TODO: Set these!!!!
-        this.duration = LocalTime.MIDNIGHT;
-        this.distance = 0;
+        this.duration = Duration.ZERO;
         this.caloriesBurned = 0;
 
-        this.type = ActivityType.Other;
+
+        this.type = findActivityType(name);
     }
 
     @Override
@@ -143,18 +152,24 @@ public class Activity implements Comparable<Activity> {
         this.startTime = LocalTime.parse(startTime);
     }
 
-    public LocalTime getDuration() {
+    public Duration getDuration() {
         return duration;
     }
 
     /** Set and update in database */
     public void setDuration(String duration) throws SQLException {
         DataUpdater.updateActivity(this,"duration", duration);
-        this.duration = LocalTime.parse(duration);
+        this.duration = Duration.parse(duration);
     }
 
+    /** Gets the distance of the activity */
     public double getDistance() {
         return distance;
+    }
+
+    /** Gets a string of the distance rounded to 0 decimal places. */
+    public String getDistanceDisplayString() {
+        return String.format("%.0f", distance);
     }
 
     /** Set and update in database */
@@ -269,6 +284,47 @@ public class Activity implements Comparable<Activity> {
         distance = Math.pow(distance, 2) + Math.pow(height, 2);
 
         return Math.sqrt(distance);
+    }
+
+
+    /**
+     * Finds the ActivityType of an Activity from its name.
+     * It does this by searching the name for keywords that may
+     * indicated whether an Activity is a walk or a run. If no
+     * keywords are found or the name has keywords from both
+     * the run and walk types then the other activity type
+     * is returned.
+     *
+     * @param activityName the name of the activity
+     * @return The ActivityType found from the activity name.
+     */
+    public static ActivityType findActivityType(String activityName) {
+        ActivityType type = ActivityType.Other;
+        boolean isWalk = false;
+        boolean isRun = false;
+
+        // Looks for walk key words in the name.
+        for (String walkKeyWord: walkKeyWords) {
+            if (activityName.toLowerCase().contains(walkKeyWord)) {
+                type = ActivityType.Walk;
+                isWalk = true;
+            }
+        }
+
+        // Looks for run key words in the name.
+        for (String runKeyWord: runKeyWords) {
+            if (activityName.toLowerCase().contains(runKeyWord)) {
+                type = ActivityType.Run;
+                isRun = true;
+            }
+        }
+
+        // Checks whether both walk and run key words were found in the name.
+        if (isWalk && isRun) {
+            type = ActivityType.Other;
+        }
+
+        return type;
     }
 
 //    /**

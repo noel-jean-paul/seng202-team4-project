@@ -97,9 +97,12 @@ public class CreateProfileController extends Controller {
             isValidHeightDoubleString = false;
         }
 
+
         // Check that the given values are valid. If they are not, the user is displayed an appropriate error message.
         if (!Profile.isValidName(firstName)) {
             errorText.setText(String.format("First name must be between %s and %s characters.", Profile.MIN_NAME_SIZE, Profile.MAX_NAME_SIZE));
+        } else if (!Profile.isUniqueName(firstName, lastName)) {
+            errorText.setText(String.format("User '%s %s' already exists.", firstName, lastName));
         } else if (!Profile.isValidName(lastName)){
             errorText.setText(String.format("Last name must be between %s and %s characters.", Profile.MIN_NAME_SIZE, Profile.MAX_NAME_SIZE));
         } else if (!isValidDateFormat) {
@@ -117,11 +120,12 @@ public class CreateProfileController extends Controller {
             System.out.println("profile Created!");
             try {
                 DataStorer.insertProfile(profile);
+                applicationStateManager.switchToScreen("MainScreen");   //Changes to main screen.
             } catch (java.sql.SQLException e) {
+                applicationStateManager.displayErrorMessage("An error occurred storing the profile from the database.", e.getMessage());
                 System.out.println("Error storing new profile in the data base.");
+                e.printStackTrace();
             }
-
-            applicationStateManager.switchToScreen("MainScreen");   //Changes to main screen.
         }
 
     }

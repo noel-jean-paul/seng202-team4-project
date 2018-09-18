@@ -15,7 +15,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DataStorerTest extends DataAccesser {
+public class DataStorerTest {
     private static Profile profile1;
     private static Profile profile2;
     private Profile loadedProfile;
@@ -27,7 +27,7 @@ public class DataStorerTest extends DataAccesser {
     @BeforeClass
     public static void setUp() throws SQLException {
         // Initialise the database connection
-        DataAccesser.initialiseConnection();
+        DataTestAccesser.initialiseConnection();
 
         // Remove all data from the database
         DataTestHelper.clearDatabase();
@@ -37,7 +37,7 @@ public class DataStorerTest extends DataAccesser {
                 1.83);
 
         activity1 = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 187);
+                "12:15:01", "PT40M", 5.13, 187);
 
         goal1 = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
                 2.00, 0);
@@ -48,7 +48,7 @@ public class DataStorerTest extends DataAccesser {
 
     @AfterClass
     public static void tearDown() throws SQLException {
-        DataAccesser.closeDatabase();
+        DataTestAccesser.closeDatabase();
     }
 
     @Before
@@ -119,9 +119,9 @@ public class DataStorerTest extends DataAccesser {
 
         // Add 2 activities to the profile
         Activity activity2 = new Activity("Jog", "2018-08-29", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 187);
+                "12:15:01", "PT40M", 5.13, 187);
         Activity activity3 = new Activity("Other", "2018-08-29", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 187);
+                "12:15:01", "PT40M", 5.13, 187);
 
         profile.addActivity(activity2);
         profile.addActivity(activity3);
@@ -176,7 +176,7 @@ public class DataStorerTest extends DataAccesser {
 
         // Insert an activity for the profile
         Activity activity = new Activity("Walk in the woods", "2019-08-30", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 187);
+                "12:15:01", "PT40M", 5.13, 187);
         DataStorer.insertActivity(activity, profile);
 
         // Delete the activty and load the profile
@@ -195,7 +195,7 @@ public class DataStorerTest extends DataAccesser {
 
         // Insert an activity for the profile
         Activity activity = new Activity("Walk in the woods", "2019-08-30", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 187);
+                "12:15:01", "PT40M", 5.13, 187);
         DataStorer.insertActivity(activity, profile);
 
         // Delete the activty
@@ -234,7 +234,7 @@ public class DataStorerTest extends DataAccesser {
         DataStorer.insertProfile(profile);
 
         Activity activity = new Activity("Run in the Woods", "2019-08-30", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 187);
+                "12:15:01", "PT40M", 5.13, 187);
         DataStorer.insertActivity(activity, profile);
 
         DataRow row3 = new DataRow(2, "2018-07-18", "14:02:25", 182, -87.01902489,

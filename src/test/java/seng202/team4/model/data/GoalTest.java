@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import seng202.team4.model.data.enums.GoalType;
-import seng202.team4.model.database.DataAccesser;
+import seng202.team4.model.database.DataTestAccesser;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataTestHelper;
@@ -23,7 +23,7 @@ public class GoalTest {
 
     @BeforeClass
     public static void setUp() throws SQLException {
-        DataAccesser.initialiseConnection();
+        DataTestAccesser.initialiseConnection();
         DataTestHelper.clearDatabase();
 
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
@@ -46,7 +46,7 @@ public class GoalTest {
 
     @AfterClass
     public static void tearDown() throws SQLException {
-        DataAccesser.closeDatabase();
+        DataTestAccesser.closeDatabase();
     }
 
     @Test

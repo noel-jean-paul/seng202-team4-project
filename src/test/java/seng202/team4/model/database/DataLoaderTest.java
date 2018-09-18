@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class DataLoaderTest extends DataAccesser {
+public class DataLoaderTest {
     private static Profile profile1;
     private static Profile profile2;
     private static Activity activity1;
@@ -29,7 +29,7 @@ public class DataLoaderTest extends DataAccesser {
     @BeforeClass
     public static void setUp() throws SQLException {
         // Initialise the database connection for the other classes
-        DataAccesser.initialiseConnection();
+        DataTestAccesser.initialiseConnection();
 
         // Remove all data from the database
         DataTestHelper.clearDatabase();
@@ -44,10 +44,10 @@ public class DataLoaderTest extends DataAccesser {
 
         // create test Activities
         activity1 = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 187);
+                "12:15:01", "PT40M", 5.13, 187);
 
         activity2 = new Activity("Walk around the block", "2018-09-01", "Quick walk",
-                ActivityType.Walk, "01:28:30", "00:11:19", 1.2, 30);
+                ActivityType.Walk, "01:28:30", "PT11M19S", 1.2, 30);
 
         // Create test Goals
         goal1 = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
@@ -81,7 +81,7 @@ public class DataLoaderTest extends DataAccesser {
 
     @AfterClass
     public static void tearDown() throws SQLException {
-        connection.close();
+        DataAccesser.closeDatabase();
     }
 
     @Test

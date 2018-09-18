@@ -47,7 +47,7 @@ public class ActivityConfirmationRow extends AnchorPane {
 
         controller.setActivityNameText(activity.getName());
         controller.setActivityDateText(activity.getDate().toString());
-        controller.setActivityDistanceText(Double.toString(activity.getDistance()));
+        controller.setActivityDistanceText(activity.getDistanceDisplayString());
 
        // controller.setActivityDurationText(activity.getDuration().toString());
         this.activity = activity;

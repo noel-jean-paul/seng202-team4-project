@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import seng202.team4.Utilities;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.database.DataStorer;
+import seng202.team4.model.utilities.DataProcessor;
 import seng202.team4.model.utilities.FileImporter;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
@@ -87,15 +88,18 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         }
 
         for (int i=0; i < activities.size(); i++) {
-            if (!activityStringKeySet.contains(activities.get(i).getName()+activities.get(i).getDate().toString())) {
+            Activity activity = activities.get(i);
+            if (!activityStringKeySet.contains(activity.getName()+activity.getDate().toString())) {
                 ActivityConfirmationRowController activityRowController = new ActivityConfirmationRowController(applicationStateManager);
-                ActivityConfirmationRow activityConfirmationRow = new ActivityConfirmationRow(activityRowController, activities.get(i));
+                ActivityConfirmationRow activityConfirmationRow = new ActivityConfirmationRow(activityRowController, activity);
                 activityConfirmationRow.prefWidthProperty().bind(gridPane.widthProperty());
                 activityListVbox.getChildren().add(activityConfirmationRow);
 
                 if (i % 2 == 0) {
                     activityConfirmationRow.applyShadedBackground();
                 }
+
+                activityConfirmationRow.getController().setSelectedActvityType(activity.getType());
 
                 activityConfirmationRows.add(activityConfirmationRow);
             }

@@ -3,7 +3,7 @@ package seng202.team4.model.database;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-abstract public class DataTestHelper extends DataAccesser {
+abstract public class DataTestHelper extends DataTestAccesser {
 
     /** Removes all data from the database
      *

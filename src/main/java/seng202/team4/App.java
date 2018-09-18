@@ -39,6 +39,7 @@ public class App extends Application {
         Pane mainScreen = Utilities.loadPane("MainScreen.fxml", new MainScreenController(applicationStateManager));
 
 
+
         applicationStateManager.addScreen("LoginScreen", loginScreen);
         applicationStateManager.addScreen("CreateProfileScreen", createProfileScreen);
         applicationStateManager.addScreen("MainScreen", mainScreen);

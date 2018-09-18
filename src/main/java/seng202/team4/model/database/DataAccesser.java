@@ -8,7 +8,7 @@ abstract public class DataAccesser {
     static PreparedStatement statement;
 
     /** Initialise the connection to a the database.
-     *
+     *  @throws SQLException if the connection could not be opened
      */
     public static void initialiseConnection() throws SQLException {
         String url = "jdbc:sqlite:fitness_tracker.sqlite";
@@ -20,6 +20,10 @@ abstract public class DataAccesser {
 //        statement.executeUpdate();
     }
 
+    /**
+     * Close the database connection
+     * @throws SQLException if the connection could not be closed
+     */
     public static void closeDatabase() throws SQLException {
         connection.close();
     }
