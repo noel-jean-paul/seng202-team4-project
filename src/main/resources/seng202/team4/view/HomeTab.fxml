@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="338.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.HomeTabController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="338.0" prefWidth="602.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.HomeTabController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -28,7 +28,7 @@
           <CategoryAxis label="Activity" side="BOTTOM" />
         </xAxis>
         <yAxis>
-          <NumberAxis label="Distance (km)" side="LEFT" />
+          <NumberAxis label="Distance (m)" side="LEFT" />
         </yAxis>
          <GridPane.margin>
             <Insets />
@@ -37,5 +37,6 @@
             <Insets bottom="10.0" right="50.0" />
          </padding>
       </BarChart>
+      <Text fx:id="noDataText" strokeType="OUTSIDE" strokeWidth="0.0" text="You have no data to show" visible="false" wrappingWidth="175.81591796875" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
    </children>
 </GridPane>
