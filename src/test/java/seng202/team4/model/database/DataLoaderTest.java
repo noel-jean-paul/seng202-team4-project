@@ -32,7 +32,7 @@ public class DataLoaderTest {
         DataTestAccesser.initialiseConnection();
 
         // Remove all data from the database
-        DataTestHelper.clearDatabase();
+        DataAccesser.clearDatabase();
 
         // Create test DataRows
         row1 = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,

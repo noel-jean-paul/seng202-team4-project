@@ -5,10 +5,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import seng202.team4.model.data.enums.GoalType;
+import seng202.team4.model.database.DataAccesser;
 import seng202.team4.model.database.DataTestAccesser;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
-import seng202.team4.model.database.DataTestHelper;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -24,7 +24,7 @@ public class GoalTest {
     @BeforeClass
     public static void setUp() throws SQLException {
         DataTestAccesser.initialiseConnection();
-        DataTestHelper.clearDatabase();
+        DataAccesser.clearDatabase();
 
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
@@ -41,7 +41,7 @@ public class GoalTest {
     @Before
     public void setUpReccurring() throws SQLException {
         profile1.getGoalList().clear();
-        DataTestHelper.clearDatabase();
+        DataAccesser.clearDatabase();
     }
 
     @AfterClass

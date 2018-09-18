@@ -12,10 +12,8 @@ import java.sql.SQLException;
 import java.time.Duration;
 
 public class testfile  {
-    public static void main(String[] args){
-        Duration d = Duration.parse("PT20M15S");
-        System.out.println(d.toMinutes());
-        System.out.println(d.toDays());
+    public static void main(String[] args) throws SQLException {
+        DataAccesser.initialiseConnection();
+        DataAccesser.clearDatabase();
     }
-
 }

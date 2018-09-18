@@ -47,7 +47,17 @@ public class MainScreenController extends Controller {
     }
 
     /**
-     * Creates, loads and initializes the different tabs of the main screen.
+     * Creates, loads and initialize        //List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
+        XYChart.Series set1 = new XYChart.Series<>();
+
+//        for (int i = 0; i < 5; i++) {
+//            set1.getData().add(new XYChart.Data(activityList.get(i).getName(), activityList.get(i).getDistance()));
+//        }
+        set1.getData().add(new XYChart.Data("Walk in woods", 1.5));
+//        set1.getData().add(new XYChart.Data("fun run", 2));
+//        set1.getData().add(new XYChart.Data("Run through town", 12));
+//        set1.getData().add(new XYChart.Data("Marathon", 42));
+        distanceBarGraph.getData().addAll(set1);s the different tabs of the main screen.
      */
     @FXML
     public void initialize() {
@@ -56,7 +66,6 @@ public class MainScreenController extends Controller {
         Pane = Utilities.loadPane("ActivityTab.fxml", activityTabController);
         activityPane.getChildren().setAll(Pane);
 
-        // TODO: Figure out how to get these tabs to fit to parent, so they can expand
         Pane home = new Pane();
         homeTabController = new HomeTabController(applicationStateManager);
         home = Utilities.loadPane("HomeTab.fxml", homeTabController);
@@ -94,8 +103,8 @@ public class MainScreenController extends Controller {
 
 
     @FXML
-    public void homeTabSelected() {
-        // TODO make something happen when tab selected if necessary
+    void homeTabSelected() {
+        homeTabController.loadData();
     }
 
 }

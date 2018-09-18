@@ -30,7 +30,7 @@ public class DataStorerTest {
         DataTestAccesser.initialiseConnection();
 
         // Remove all data from the database
-        DataTestHelper.clearDatabase();
+        DataAccesser.clearDatabase();
 
         // Initialise objects and insert some into the database
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
@@ -53,7 +53,7 @@ public class DataStorerTest {
 
     @Before
     public void setUpReccurring() throws SQLException {
-        DataTestHelper.clearDatabase();
+        DataAccesser.clearDatabase();
         profile1.getActivityList().clear();
         profile1.getGoalList().clear();
         activity1.getRawData().clear();
