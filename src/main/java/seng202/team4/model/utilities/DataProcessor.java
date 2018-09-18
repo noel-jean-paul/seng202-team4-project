@@ -38,7 +38,7 @@ public class DataProcessor {
     /**
      * @param distance the total distance travelled during the activity in meters.
      * @param time the duration of the activity of type Duration.
-     * @return
+     * @return the average speed of the user during the activity in km/h.
      */
     public static double calculateAverageSpeed(double distance, Duration time) {
         return (distance / time.getSeconds()) * 3.6;
