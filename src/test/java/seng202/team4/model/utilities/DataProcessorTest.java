@@ -102,4 +102,10 @@ public class DataProcessorTest {
         double calories = DataProcessor.calculateCalories(7, 1560, ActivityType.Walk, testProfile);
         assertEquals(250.3, calories, 0.1);
     }
+
+    @Test
+    public void testCalculateAverageSpeed() {
+        Activity testActivity = testProfile.getActivityList().get(1);
+        double averageSpeed = DataProcessor.calculateAverageSpeed(testActivity.getDistance(), testActivity.getDuration());
+    }
 }
