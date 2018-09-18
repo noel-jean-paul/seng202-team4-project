@@ -1,15 +1,15 @@
-package seng202.team4.Model.utilities;
+package seng202.team4.model.utilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import seng202.team4.model.data.Activity;
-import seng202.team4.model.utilities.DataProcessor;
 import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.data.enums.ActivityType;
 
 
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.Month;
 import java.util.ArrayList;
 
@@ -41,6 +41,7 @@ public class DataProcessorTest {
         testProfile.addAllActivities(activityList);
     }
 
+    // TODO add test cases where 1 and 0 data points are given
 
     @Test
     public void totalDistanceLevel() {
@@ -56,8 +57,8 @@ public class DataProcessorTest {
 
     @Test
     public void calculateDuration() {
-        int duration = DataProcessor.calculateDuration(testProfile.getActivityList().get(0).getRawData());
-        assertEquals(66, duration);     // Expected value was calculated by hand & calculator
+        Duration duration = DataProcessor.calculateDuration(testProfile.getActivityList().get(0).getRawData());
+        assertEquals(66, duration.getSeconds());     // Expected value was calculated by hand & calculator
     }
 
     @Test
