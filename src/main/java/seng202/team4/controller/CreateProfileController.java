@@ -59,7 +59,6 @@ public class CreateProfileController extends Controller {
      * error message. Otherwise the new profile is stored in the database and
      * the application changes to the main screen.
      *
-     * TODO: Check that the new profile does not have the same name as an existing profile.
      */
     public void createProfile() {
         // Get string values from the text fields.
@@ -128,5 +127,22 @@ public class CreateProfileController extends Controller {
             }
         }
 
+    }
+
+    @FXML
+    public void cancel() {
+        applicationStateManager.switchToScreen("LoginScreen");
+        reset();
+
+    }
+
+    public void reset() {
+        firstNameField.setText("");
+        lastNameField.setText("");
+        dayField.setText("");
+        monthField.setText("");
+        yearField.setText("");
+        weightField.setText("");
+        heightField.setText("");
     }
 }
