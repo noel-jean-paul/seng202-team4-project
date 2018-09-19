@@ -29,7 +29,7 @@ public class DataLoaderTest {
     @BeforeClass
     public static void setUp() throws SQLException {
         // Initialise the database connection for the other classes
-        DataTestAccesser.initialiseConnection();
+        DataAccesser.initialiseTestConnection();
 
         // Remove all data from the database
         DataAccesser.clearDatabase();

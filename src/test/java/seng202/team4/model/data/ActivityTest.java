@@ -29,7 +29,7 @@ public class ActivityTest {
 
     @BeforeClass
     public static void setUp() throws SQLException {
-        DataTestAccesser.initialiseConnection();
+        DataAccesser.initialiseTestConnection();
         DataAccesser.clearDatabase();
 
         // Initialise profile and activities
@@ -58,7 +58,7 @@ public class ActivityTest {
     @AfterClass
     public static void tearDown() throws SQLException {
         DataAccesser.clearDatabase();
-        DataTestAccesser.closeDatabase();
+        DataAccesser.closeDatabase();
     }
 
     @Before

@@ -27,7 +27,7 @@ public class DataStorerTest {
     @BeforeClass
     public static void setUp() throws SQLException {
         // Initialise the database connection
-        DataTestAccesser.initialiseConnection();
+        DataAccesser.initialiseTestConnection();
 
         // Remove all data from the database
         DataAccesser.clearDatabase();
@@ -49,7 +49,7 @@ public class DataStorerTest {
     @AfterClass
     public static void tearDown() throws SQLException {
         DataAccesser.clearDatabase();
-        DataTestAccesser.closeDatabase();
+        DataAccesser.closeDatabase();
     }
 
     @Before

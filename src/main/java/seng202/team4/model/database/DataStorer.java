@@ -230,7 +230,7 @@ abstract public class DataStorer extends DataAccesser {
 
 
     public static void main(String[] args) throws SQLException {
-        DataAccesser.initialiseConnection();
+        DataAccesser.initialiseMainConnection();
         DataAccesser.clearDatabase();
 
 
