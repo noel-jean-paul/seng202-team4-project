@@ -91,7 +91,7 @@ public class DataLoaderTest {
     }
 
     @Test
-    public void loadProfile_allListsFilled_checkActivityOwne() throws SQLException {
+    public void loadProfile_allListsFilled_checkActivityOwner() throws SQLException {
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(profile1, loadedProfile.getActivityList().get(0).getOwner());
     }

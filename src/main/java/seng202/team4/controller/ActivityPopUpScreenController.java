@@ -52,9 +52,10 @@ public class ActivityPopUpScreenController extends Controller {
         distanceGraph.setVisible(false);
         heartRateGraph.setVisible(true);
 //        //@todo Fix this stuff up, not displaying graph correctly
-//        List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
-//        List<DataRow> dataRow = activityList.get(0).getRawData();
-//        System.out.println(dataRow.get(0).getHeartRate());
+        List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
+        //List<DataRow> dataRow = activityList.get(0).getRawData();
+        System.out.println(activityList.get(0).getDate());
+        System.out.println(activityList.get(0).getRawData());
         XYChart.Series set1 = new XYChart.Series<>();
 //        for (DataRow row : dataRow) {
 //            set1.getData().add(new XYChart.Data(row.getTime(), row.getHeartRate()));

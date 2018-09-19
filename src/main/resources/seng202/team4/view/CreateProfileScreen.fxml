@@ -107,6 +107,11 @@
                   <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#createProfile" text="Create Profile" />
                </children>
             </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+               <children>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
+               </children>
+            </HBox>
          </children>
       </GridPane>
    </center>

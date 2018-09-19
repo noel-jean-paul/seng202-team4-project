@@ -61,6 +61,10 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             Activity activity = activityConfirmationRow.getActivity();
             if (activityConfirmationRow.isSelected()) {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
+                // Store all data rows in the database as they have not been stored yet but are in the rawData list
+                for (DataRow dataRow : activity.getRawData()) {
+                    DataStorer.insertDataRow(dataRow, activity);
+                }
                 activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             }
 
@@ -90,6 +94,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         for (int i=0; i < activities.size(); i++) {
             Activity activity = activities.get(i);
             if (!activityStringKeySet.contains(activity.getName()+activity.getDate().toString())) {
+                activity.setCaloriesBurnedValue(DataProcessor.calculateCalories(activity.getAverageSpeed(), activity.getDuration().getSeconds(), activity.getType(), applicationStateManager.getCurrentProfile()));
                 ActivityConfirmationRowController activityRowController = new ActivityConfirmationRowController(applicationStateManager);
                 ActivityConfirmationRow activityConfirmationRow = new ActivityConfirmationRow(activityRowController, activity);
                 activityConfirmationRow.prefWidthProperty().bind(gridPane.widthProperty());
@@ -105,5 +110,11 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             }
 
         }
+    }
+
+    @FXML
+    public void cancel() {
+        applicationStateManager.switchToScreen("MainScreen");
+        activityConfirmationRows = new ArrayList<ActivityConfirmationRow>();
     }
 }
