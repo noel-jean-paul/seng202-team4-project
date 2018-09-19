@@ -51,6 +51,7 @@ public class DataRowTest {
 
     @AfterClass
     public static void tearDown() throws SQLException {
+        DataAccesser.clearDatabase();
         DataTestAccesser.closeDatabase();
     }
 

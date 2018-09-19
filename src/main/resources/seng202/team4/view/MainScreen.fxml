@@ -28,7 +28,7 @@
       <RowConstraints />
   </rowConstraints>
    <children>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="40.0" tabMinWidth="100.0" GridPane.columnSpan="2" GridPane.rowSpan="3">
+      <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="40.0" tabMinWidth="100.0" GridPane.columnSpan="2" GridPane.rowSpan="3">
         <tabs>
           <Tab onSelectionChanged="#homeTabSelected" text="Home">
                <content>
@@ -42,7 +42,10 @@
                <content>
                   <AnchorPane fx:id="goalsPane" prefHeight="200.0" prefWidth="200.0" />
                </content></Tab>
-            <Tab text="Health" />
+            <Tab onSelectionChanged="#healthTabSelected" text="Health">
+               <content>
+                  <AnchorPane fx:id="healthPane" prefHeight="200.0" prefWidth="200.0" />
+               </content></Tab>
         </tabs>
          <GridPane.margin>
             <Insets />

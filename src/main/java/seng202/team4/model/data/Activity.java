@@ -46,7 +46,7 @@ public class Activity implements Comparable<Activity> {
         this.duration = Duration.parse(duration);
         this.distance = distance;
         this.caloriesBurned = caloriesBurned;
-        this.averageSpeed = 5;  // TODO calculate average speed here in km/hr
+        this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.rawData = new ArrayList<>();
     }
 
@@ -57,15 +57,12 @@ public class Activity implements Comparable<Activity> {
     public Activity(String name, ArrayList<DataRow> rawActivityList) {
         this.name = name;
         this.rawData = rawActivityList;
+        java.util.Collections.sort(this.rawData);   // ensure the data is in order
         this.date = (rawActivityList.get(0)).getDate();
         this.startTime = (rawActivityList.get(0)).getTime();
         this.distance = DataProcessor.totalDistance(rawActivityList);
-
-        //TODO: Set these!!!!
-        //this.duration = DataProcessor.calculateDuration(rawActivityList)
-        this.caloriesBurned = 0;
-
-
+        this.duration = DataProcessor.calculateDuration(rawActivityList);
+        this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.type = findActivityType(name);
     }
 
@@ -155,6 +152,15 @@ public class Activity implements Comparable<Activity> {
         return duration;
     }
 
+    public String getDurationString() {
+        long totalSeconds = duration.getSeconds();
+        int seconds = (int) totalSeconds % 60;
+        int minutes = (int) (totalSeconds/60) % 60;
+        int hours = (int) totalSeconds/3600;
+
+        return String.format("%2s:%2s:%2s", hours, minutes, seconds).replace(' ', '0');
+    }
+
     /** Set and update in database */
     public void setDuration(String duration) throws SQLException {
         DataUpdater.updateActivity(this,"duration", duration);
@@ -168,7 +174,11 @@ public class Activity implements Comparable<Activity> {
 
     /** Gets a string of the distance rounded to 0 decimal places. */
     public String getDistanceDisplayString() {
-        return String.format("%.0f", distance);
+        return String.format("%.0f m", distance);
+    }
+
+    public String getCaloriesDisplayString() {
+        return String.format("%.1f", caloriesBurned);
     }
 
     /** Set and update in database */
@@ -186,6 +196,10 @@ public class Activity implements Comparable<Activity> {
         this.averageSpeed = averageSpeed;
     }
 
+    public String getAverageSpeedDisplayString() {
+        return String.format("%.1f km/h", averageSpeed);
+    }
+
     public double getCaloriesBurned() {
         return caloriesBurned;
     }
@@ -193,6 +207,10 @@ public class Activity implements Comparable<Activity> {
     /** Set and update in database */
     public void setCaloriesBurned(double caloriesBurned) throws SQLException {
         DataUpdater.updateActivity(this,"caloriesBurned", Double.toString(caloriesBurned));
+        this.caloriesBurned = caloriesBurned;
+    }
+
+    public void setCaloriesBurnedValue(double caloriesBurned) {
         this.caloriesBurned = caloriesBurned;
     }
 

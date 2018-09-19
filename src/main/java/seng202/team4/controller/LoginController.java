@@ -89,6 +89,8 @@ public class LoginController extends Controller {
             ProfileKey profileKey = selectedProfileItem.getProfileKey();
             try {
                 applicationStateManager.setCurrentProfile(DataLoader.loadProfile(profileKey.getFirstName(), profileKey.getLastName()));
+                applicationStateManager.switchToScreen("MainScreen");
+                ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).reset();
                 //Temp
                 //Temp
                 Pane mapPane = Utilities.loadPane("Maps.fxml", new MapsController(applicationStateManager));

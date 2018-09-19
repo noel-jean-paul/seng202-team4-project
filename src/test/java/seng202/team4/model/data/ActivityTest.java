@@ -57,6 +57,7 @@ public class ActivityTest {
 
     @AfterClass
     public static void tearDown() throws SQLException {
+        DataAccesser.clearDatabase();
         DataTestAccesser.closeDatabase();
     }
 

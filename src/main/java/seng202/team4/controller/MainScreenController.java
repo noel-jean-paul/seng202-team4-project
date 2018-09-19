@@ -21,6 +21,7 @@ public class MainScreenController extends Controller {
     private ActivityTabController activityTabController;
     private HomeTabController homeTabController;
     private GoalsTabController goalsTabController;
+    private HealthTabController healthTabController;
 
     /** The AnchorPane of the main screen. */
     @FXML
@@ -33,6 +34,13 @@ public class MainScreenController extends Controller {
     /** The AnchorPane of the goals screen */
     @FXML
     private AnchorPane goalsPane;
+
+    /** The AnchorPane of the goals screen */
+    @FXML
+    private AnchorPane healthPane;
+
+    @FXML
+    private TabPane tabPane;
 
 
 
@@ -53,6 +61,7 @@ public class MainScreenController extends Controller {
 //        for (int i = 0; i < 5; i++) {
 //            set1.getData().add(new XYChart.Data(activityList.get(i).getName(), activityList.get(i).getDistance()));
 //        }
+import javafx.scene.text.Text;
         set1.getData().add(new XYChart.Data("Walk in woods", 1.5));
 //        set1.getData().add(new XYChart.Data("fun run", 2));
 //        set1.getData().add(new XYChart.Data("Run through town", 12));
@@ -76,6 +85,12 @@ public class MainScreenController extends Controller {
         goalsTabController = new GoalsTabController(applicationStateManager);
         goals = Utilities.loadPane("GoalsTab.fxml", goalsTabController);
         goalsPane.getChildren().setAll(goals);
+
+        Pane health = new Pane();
+        healthTabController = new HealthTabController(applicationStateManager);
+        health = Utilities.loadPane("HealthTab.fxml", healthTabController);
+        healthPane.getChildren().setAll(health);
+
     }
 
     /**
@@ -91,7 +106,7 @@ public class MainScreenController extends Controller {
     public void viewProfile() {
         ProfileScreenController profileScreenController = new ProfileScreenController(applicationStateManager);
         Pane profileScreen = Utilities.loadPane("ProfileScreen.fxml", profileScreenController);
-        applicationStateManager.addScreen("ProfileScreen", profileScreen);
+        applicationStateManager.addScreen("ProfileScreen", profileScreen, profileScreenController);
         applicationStateManager.switchToScreen("ProfileScreen");
         profileScreenController.updateInformation();
     }
@@ -105,7 +120,22 @@ public class MainScreenController extends Controller {
 
     @FXML
     void homeTabSelected() {
-        //homeTabController.loadData();
+        if (applicationStateManager.getCurrentProfile() != null) {
+            homeTabController.loadData();
+        }
+    }
+
+
+    @FXML
+    void healthTabSelected() {
+
+    }
+
+    public void reset() {
+        tabPane.getSelectionModel().selectFirst();
+        if (applicationStateManager.getCurrentProfile() != null) {
+            homeTabController.loadData();
+        }
     }
 
 }
