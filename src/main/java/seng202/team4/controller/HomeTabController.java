@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.RadioButton;
 import javafx.scene.text.Text;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.enums.ActivityType;
@@ -31,6 +32,16 @@ public class HomeTabController extends Controller {
     @FXML
     private Text noDataText;
 
+    @FXML
+    private RadioButton allDataButton;
+
+    @FXML
+    private RadioButton walkDataButton;
+
+    @FXML
+    private RadioButton runDataButton;
+
+
 
     /**
      * Constructor for the HomeTabController.
@@ -52,6 +63,9 @@ public class HomeTabController extends Controller {
      * every time the home tab is clicked, it clears the old bar graph, and loads it again with any new updated data
      */
     public void loadData() {
+        runDataButton.setSelected(false);
+        walkDataButton.setSelected(false);
+        allDataButton.setSelected(true);
         List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
         distanceBarGraph.getData().clear();
         distanceBarGraph.layout();
@@ -68,5 +82,68 @@ public class HomeTabController extends Controller {
         distanceBarGraph.getXAxis().setAnimated(false); //these two lines avoid errors where only the last name value in the x axis was loaded
         distanceBarGraph.getYAxis().setAnimated(false);
         distanceBarGraph.getData().addAll(set1);
+    }
+
+    /**
+     * Displays the graph of the last five activities of all types
+     */
+    @FXML
+    void filterAll() {
+        runDataButton.setSelected(false);
+        walkDataButton.setSelected(false);
+        allDataButton.setSelected(true);
+        loadData();
+    }
+
+    /**
+     * Displays the graph of up to five of the last activities of walk type
+     */
+    @FXML
+    void filterWalk() {
+        runDataButton.setSelected(false);
+        walkDataButton.setSelected(true);
+        allDataButton.setSelected(false);
+        displayGraph(ActivityType.Walk);
+    }
+
+    /**
+     * Displays the graph of up to five of the last activities of run type
+     */
+    @FXML
+    void filterRun() {
+        walkDataButton.setSelected(false);
+        runDataButton.setSelected(true);
+        allDataButton.setSelected(false);
+        displayGraph(ActivityType.Run);
+    }
+
+    /**
+     * The method which populates the graph on the home page with required data
+     * @param type is the type of the activity, whether walk or run
+     */
+    void displayGraph(ActivityType type) {
+        distanceBarGraph.getData().clear();
+        distanceBarGraph.layout();
+        List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
+        XYChart.Series dataSet = new XYChart.Series<>();
+
+        if (activityList.size() == 0) {
+            noDataText.setVisible(true); //if there is no data to display, then show this message to the user
+        } else {
+            noDataText.setVisible(false);
+            int counter = 0;
+            for (int i = activityList.size() - 1; i >= 0 && counter < 5; i -= 1) {
+                if (activityList.get(i).getType() == type) {
+                    dataSet.getData().add(new XYChart.Data(activityList.get(i).getName(), activityList.get(i).getDistance()));
+                    counter++;
+                }
+            }
+            if (counter == 0) {
+                noDataText.setVisible(true); //if there is no data to display, then show this message to the user
+            }
+        }
+        distanceBarGraph.getXAxis().setAnimated(false); //these two lines avoid errors where only the last name value in the x axis was loaded
+        distanceBarGraph.getYAxis().setAnimated(false);
+        distanceBarGraph.getData().addAll(dataSet);
     }
 }
