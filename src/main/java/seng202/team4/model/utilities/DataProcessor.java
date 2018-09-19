@@ -41,7 +41,11 @@ public class DataProcessor {
      * @return the average speed of the user during the activity in km/h.
      */
     public static double calculateAverageSpeed(double distance, Duration time) {
-        return (distance / time.getSeconds()) * 3.6;
+        if (time.getSeconds() > 0) {
+            return (distance / time.getSeconds()) * 3.6;
+        } else {
+            return 0;
+        }
     }
 
     /**
