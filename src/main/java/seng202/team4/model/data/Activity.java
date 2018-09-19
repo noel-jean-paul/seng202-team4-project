@@ -56,17 +56,7 @@ public class Activity implements Comparable<Activity> {
      */
     public Activity(String name, ArrayList<DataRow> rawActivityList) {
         this.name = name;
-        this.rawData = new ArrayList<>();
-        // Insert the datarows
-        try {
-            for (DataRow dataRow : rawActivityList) {
-                this.addDataRow(dataRow);
-            }
-            } catch (SQLException e) {
-                //ToDo add alert saying "The raw data could not be inserted due to a database problem"
-                System.out.println("The raw data could not be inserted due to a database problem");
-        }
-
+        this.rawData = rawActivityList;
         java.util.Collections.sort(this.rawData);   // ensure the data is in order
         this.date = (rawActivityList.get(0)).getDate();
         this.startTime = (rawActivityList.get(0)).getTime();
