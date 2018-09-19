@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import seng202.team4.Utilities;

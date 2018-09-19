@@ -93,8 +93,9 @@ public class LoginController extends Controller {
                 ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).reset();
                 //Temp
                 //Temp
-                Pane mapPane = Utilities.loadPane("Maps.fxml", new MapsController(applicationStateManager));
-                applicationStateManager.addScreen("MapPane", mapPane);
+                MapsController mapsController = new MapsController(applicationStateManager);
+                Pane mapPane = Utilities.loadPane("Maps.fxml", mapsController);
+                applicationStateManager.addScreen("MapPane", mapPane, mapsController);
                 applicationStateManager.switchToScreen("MapPane");
 
 
