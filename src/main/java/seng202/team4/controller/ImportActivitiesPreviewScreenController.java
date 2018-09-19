@@ -61,6 +61,10 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             Activity activity = activityConfirmationRow.getActivity();
             if (activityConfirmationRow.isSelected()) {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
+                // Store all data rows in the database as they have not been stored yet but are in the rawData list
+                for (DataRow dataRow : activity.getRawData()) {
+                    DataStorer.insertDataRow(dataRow, activity);
+                }
                 activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             }
 

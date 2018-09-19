@@ -1,5 +1,6 @@
 package seng202.team4.model.database;
 
+import javafx.scene.chart.XYChart;
 import seng202.team4.model.data.*;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
@@ -73,7 +74,7 @@ abstract public class DataLoader extends DataAccesser {
                     set.getString("startTime"),
                     set.getString("duration"),
                     set.getDouble("distance"),
-                    set.getInt("caloriesBurned")
+                    set.getDouble("caloriesBurned")
                     );
             loadActivityDataRows(activity);
             activities.add(activity);
