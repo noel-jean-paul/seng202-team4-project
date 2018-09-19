@@ -39,6 +39,7 @@ public class LoginController extends Controller {
 
     /** Updates the list of profiles displayed by loading all the profiles from the database. */
     public void updateProfileList() {
+        profileListVbox.getChildren().clear();
         List<ProfileKey> profileKeys = null;
         try {
             profileKeys = DataLoader.fetchAllProfileKeys();

@@ -38,6 +38,8 @@ public class ApplicationStateManager {
     /** The currently loaded user profile. */
     private Profile currentUserProfile;
 
+    private Pane glassPane;
+
     /**
      * Constructor of the ApplicationStateManager.
      *
@@ -49,6 +51,10 @@ public class ApplicationStateManager {
         this.primaryStage = stage;
         this.rootScene.setRoot(stackPane);
         this.stackPane.getChildren().add(new Pane());
+
+        this.glassPane = new Pane();
+        glassPane.prefWidthProperty().bind(rootScene.widthProperty());
+        glassPane.prefHeightProperty().bind(rootScene.heightProperty());
     }
 
 
@@ -82,6 +88,9 @@ public class ApplicationStateManager {
      * @param popUp The pop up (pane) to be displayed
      */
     public void displayPopUp(Pane popUp) {
+
+        stackPane.getChildren().remove(glassPane);
+        stackPane.getChildren().add(glassPane);
         stackPane.getChildren().add(popUp);
     }
 
@@ -92,6 +101,7 @@ public class ApplicationStateManager {
      * @param popUp The pop up to be closed.
      */
     public void closePopUP(Pane popUp) {
+        stackPane.getChildren().remove(glassPane);
         stackPane.getChildren().remove(popUp);
     }
 
