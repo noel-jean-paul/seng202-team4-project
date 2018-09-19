@@ -14,7 +14,6 @@ public class HealthWarning {
     private String description;
     private Activity activity;
     private Profile user;
-    private int age;
     private WarningType type;
     private boolean healthRisk;
 
@@ -24,7 +23,6 @@ public class HealthWarning {
         this.avgHeartRate = avgHearRate;
         this.minHeartRate = minHeartRate;
         this.maxHeartRate = maxHeartRate;
-        this.age = user.getAge();
         this.type = type;
         this.healthRisk = checkRisk();
     }
@@ -68,7 +66,7 @@ public class HealthWarning {
     }
 
     private boolean tachyRisk() {
-        if (maxHeartRate > (220 - age)) {
+        if (maxHeartRate > (220 - user.getAge())) {
             return true;
         } else {
             return false;
@@ -76,9 +74,9 @@ public class HealthWarning {
     }
 
     private boolean brachyRisk() {
-        if (age >= 18 && minHeartRate < 50) {
+        if (user.getAge() >= 18 && minHeartRate < 50) {
             return true;
-        } else if (age < 18 && minHeartRate < 60) {
+        } else if (user.getAge() < 18 && minHeartRate < 60) {
             return true;
         } else {
             return false;
@@ -92,4 +90,34 @@ public class HealthWarning {
             return false;
         }
     }
+
+    public boolean isHealthRisk() {
+        return healthRisk;
+    }
+
+    public int getAvgHeartRate() {
+        return avgHeartRate;
+    }
+
+    public String getAvgHeartRateString() {
+        return Integer.toString(avgHeartRate);
+    }
+
+    public int getMinHeartRate() {
+        return avgHeartRate;
+    }
+
+    public String getMinHeartRateString() {
+        return Integer.toString(minHeartRate);
+    }
+
+    public int getMaxHeartRate() {
+        return maxHeartRate;
+    }
+
+    public String getMaxHeartRateString() {
+        return Integer.toString(maxHeartRate);
+    }
+
+
 }
