@@ -27,8 +27,6 @@ import static java.time.temporal.ChronoUnit.SECONDS;
  */
 public class ActivityPopUpScreenController extends Controller {
 
-    private ActivityTabController activityTabController;
-
     @FXML
     private AnchorPane popupPrompt;
 
@@ -43,6 +41,18 @@ public class ActivityPopUpScreenController extends Controller {
 
     @FXML
     private LineChart<?, ?> distanceGraph;
+
+    private Activity activity;
+
+    /**
+     * Constructor for the ActivityPopUpScreenController.
+     *
+     * @param applicationStateManager The ApplicationStateManager of the application.
+     */
+    public ActivityPopUpScreenController(ApplicationStateManager applicationStateManager, Activity activity) {
+        super(applicationStateManager);
+        this.activity = activity;
+    }
 
     @FXML
     public void initialize() {
@@ -64,12 +74,12 @@ public class ActivityPopUpScreenController extends Controller {
         distanceGraph.setVisible(false);
         heartRateGraph.setVisible(true);
 
-        List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
+        //List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
 
         //The next three lines will have to have the correct activity selected
-        List<DataRow> dataRow = activityList.get(0).getRawData(); //ToDo currently gets first activity, will need to be changed to selected activity
-        heartRateGraph.setTitle("Heart rate during " + activityList.get(0).getName()); //@ToDo will also need to change this line to select the name of the correct activity
-        LocalTime startTime = activityList.get(0).getStartTime(); //gets the start time of activity //@ToDo will also need to give this line the correct value of the selected activity
+        List<DataRow> dataRow = activity.getRawData(); //ToDo currently gets first activity, will need to be changed to selected activity
+        heartRateGraph.setTitle("Heart rate during " + activity.getName()); //@ToDo will also need to change this line to select the name of the correct activity
+        LocalTime startTime = activity.getStartTime(); //gets the start time of activity //@ToDo will also need to give this line the correct value of the selected activity
 
         long timeMinutes = 0;   //keeps track of the current minute
         long previousTime = -1; //sets previous time to -1, to avoid clashes with starting time which is always going to be 0
@@ -100,11 +110,9 @@ public class ActivityPopUpScreenController extends Controller {
         heartRateGraph.setVisible(false);
         distanceGraph.setVisible(true);
 
-        List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
-
         //Next two lines will need the correct activity parsed in
-        distanceGraph.setTitle("Distance Travelled During " + activityList.get(0).getName()); //@ToDo need to parse in correct activity
-        List<DataRow> dataRow = activityList.get(0).getRawData(); //@ToDo need to parse in correct activity
+        distanceGraph.setTitle("Distance Travelled During " + activity.getName()); //@ToDo need to parse in correct activity
+        List<DataRow> dataRow = activity.getRawData(); //@ToDo need to parse in correct activity
 
         XYChart.Series set2 = new XYChart.Series<>();
         int previous = 0;
@@ -119,17 +127,6 @@ public class ActivityPopUpScreenController extends Controller {
         distanceGraph.getXAxis().setAnimated(false); //these two lines avoid errors where only the last value in the x axis was loaded
         distanceGraph.getYAxis().setAnimated(false);
         distanceGraph.getData().addAll(set2);
-    }
-
-
-    /**
-     * Constructor for the ActivityPopUpScreenController.
-     *
-     * @param applicationStateManager The ApplicationStateManager of the application.
-     */
-    public ActivityPopUpScreenController(ApplicationStateManager applicationStateManager, ActivityTabController activityTabController) {
-        super(applicationStateManager);
-        this.activityTabController = activityTabController;
     }
 
 
