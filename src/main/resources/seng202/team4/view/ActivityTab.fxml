@@ -94,6 +94,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
                   </TextArea>
+                  <Button fx:id="seeDataButton" mnemonicParsing="false" onAction="#showPopup" text="See first activity data" GridPane.columnIndex="2" />
                </children>
             </GridPane>
          </children>
@@ -104,8 +105,9 @@
               <columns>
                 <TableColumn fx:id="nameColumn" editable="false" prefWidth="75.0" text="Name" />
                 <TableColumn fx:id="dateColumn" prefWidth="75.0" text="Date" />
-                  <TableColumn fx:id="distanceColumn" prefWidth="75.0" text="Distance" />
                   <TableColumn fx:id="timeColumn" prefWidth="75.0" text="Time" />
+                  <TableColumn fx:id="distanceColumn" prefWidth="75.0" text="Distance" />
+                  <TableColumn fx:id="durationColumn" prefWidth="75.0" text="Duration" />
                   <TableColumn fx:id="averageSpeedColumn" prefWidth="100.0" text="Avg speed" />
                   <TableColumn fx:id="caloriesColumn" prefWidth="111.0" text="Calories burned" />
                   <TableColumn fx:id="typeColumn" prefWidth="88.0" text="Type" />

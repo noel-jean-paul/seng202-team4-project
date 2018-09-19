@@ -21,6 +21,7 @@ public class MainScreenController extends Controller {
     private ActivityTabController activityTabController;
     private HomeTabController homeTabController;
     private GoalsTabController goalsTabController;
+    private HealthTabController healthTabController;
 
     /** The AnchorPane of the main screen. */
     @FXML
@@ -33,6 +34,10 @@ public class MainScreenController extends Controller {
     /** The AnchorPane of the goals screen */
     @FXML
     private AnchorPane goalsPane;
+
+    /** The AnchorPane of the goals screen */
+    @FXML
+    private AnchorPane healthPane;
 
 
 
@@ -47,7 +52,18 @@ public class MainScreenController extends Controller {
     }
 
     /**
-     * Creates, loads and initializes the different tabs of the main screen.
+     * Creates, loads and initialize        //List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
+        XYChart.Series set1 = new XYChart.Series<>();
+
+//        for (int i = 0; i < 5; i++) {
+//            set1.getData().add(new XYChart.Data(activityList.get(i).getName(), activityList.get(i).getDistance()));
+//        }
+import javafx.scene.text.Text;
+        set1.getData().add(new XYChart.Data("Walk in woods", 1.5));
+//        set1.getData().add(new XYChart.Data("fun run", 2));
+//        set1.getData().add(new XYChart.Data("Run through town", 12));
+//        set1.getData().add(new XYChart.Data("Marathon", 42));
+        distanceBarGraph.getData().addAll(set1);s the different tabs of the main screen.
      */
     @FXML
     public void initialize() {
@@ -56,7 +72,6 @@ public class MainScreenController extends Controller {
         Pane = Utilities.loadPane("ActivityTab.fxml", activityTabController);
         activityPane.getChildren().setAll(Pane);
 
-        // TODO: Figure out how to get these tabs to fit to parent, so they can expand
         Pane home = new Pane();
         homeTabController = new HomeTabController(applicationStateManager);
         home = Utilities.loadPane("HomeTab.fxml", homeTabController);
@@ -66,6 +81,12 @@ public class MainScreenController extends Controller {
         goalsTabController = new GoalsTabController(applicationStateManager);
         goals = Utilities.loadPane("GoalsTab.fxml", goalsTabController);
         goalsPane.getChildren().setAll(goals);
+
+        Pane health = new Pane();
+        healthTabController = new HealthTabController(applicationStateManager);
+        health = Utilities.loadPane("HealthTab.fxml", healthTabController);
+        healthPane.getChildren().setAll(health);
+
     }
 
     /**
@@ -94,8 +115,13 @@ public class MainScreenController extends Controller {
 
 
     @FXML
-    public void homeTabSelected() {
-        // TODO make something happen when tab selected if necessary
+    void homeTabSelected() {
+        homeTabController.loadData();
+    }
+
+    @FXML
+    void healthTabSelected() {
+
     }
 
 }
