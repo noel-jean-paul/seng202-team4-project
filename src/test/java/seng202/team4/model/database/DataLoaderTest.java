@@ -81,6 +81,7 @@ public class DataLoaderTest {
 
     @AfterClass
     public static void tearDown() throws SQLException {
+        DataAccesser.clearDatabase();
         DataAccesser.closeDatabase();
     }
 

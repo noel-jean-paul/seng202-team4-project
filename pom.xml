@@ -78,7 +78,7 @@
                         <configuration>
                             <tasks>
                                 <echo>Using env.test.properties</echo>
-                                <copy file="fitness_tracker.sqlite" tofile="${basedir}/target/fitness_tracker.sqlite"/>
+                                <copy file="testDatabase.sqlite" tofile="${basedir}/target/fitness_tracker.sqlite"/>
                             </tasks>
                         </configuration>
                     </execution>
