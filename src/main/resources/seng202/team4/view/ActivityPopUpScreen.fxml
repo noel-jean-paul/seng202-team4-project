@@ -37,7 +37,7 @@
                   </LineChart>
                   <LineChart fx:id="distanceGraph" layoutY="34.0" legendVisible="false" prefHeight="281.0" prefWidth="514.0" title="Distance Travelled during Activity">
                     <xAxis>
-                      <CategoryAxis label="Time (s)" side="BOTTOM" />
+                      <CategoryAxis label="Time (m)" side="BOTTOM" />
                     </xAxis>
                     <yAxis>
                       <NumberAxis label="Distance (m)" side="LEFT" />
