@@ -32,7 +32,7 @@ public class ApplicationStateManager {
     /** The StackPane that contains the various layers of the application. */
     private StackPane stackPane = new StackPane();
 
-    /** Tje currently loaded user profile. */
+    /** The currently loaded user profile. */
     private Profile currentUserProfile;
 
     /**
