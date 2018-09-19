@@ -8,6 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.collections.FXCollections;
+import seng202.team4.App;
 import seng202.team4.model.data.*;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class MapsController extends Controller {
         activityCombo.setItems(activityList);
         activityCombo.getSelectionModel().select(0);
         webEngine = activityMap.getEngine();
-        webEngine.load(MapsController.class.getResource("map.html").toExternalForm());
+        webEngine.load(App.class.getResource("view/map.html").toExternalForm());
     }
 
     /**
