@@ -111,4 +111,10 @@ public class ImportActivitiesPreviewScreenController extends Controller {
 
         }
     }
+
+    @FXML
+    public void cancel() {
+        applicationStateManager.switchToScreen("MainScreen");
+        activityConfirmationRows = new ArrayList<ActivityConfirmationRow>();
+    }
 }
