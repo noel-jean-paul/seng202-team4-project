@@ -116,8 +116,11 @@ import javafx.scene.text.Text;
 
     @FXML
     void homeTabSelected() {
-        homeTabController.loadData();
+        if (applicationStateManager.getCurrentProfile() != null) {
+            homeTabController.loadData();
+        }
     }
+    
 
     @FXML
     void healthTabSelected() {

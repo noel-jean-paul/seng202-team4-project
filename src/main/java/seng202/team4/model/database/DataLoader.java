@@ -73,7 +73,7 @@ abstract public class DataLoader extends DataAccesser {
                     set.getString("startTime"),
                     set.getString("duration"),
                     set.getDouble("distance"),
-                    set.getInt("caloriesBurned")
+                    set.getDouble("caloriesBurned")
                     );
             loadActivityDataRows(activity);
             activities.add(activity);

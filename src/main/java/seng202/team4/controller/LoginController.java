@@ -50,6 +50,7 @@ public class LoginController extends Controller {
         for (ProfileKey profileKey: profileKeys) {
             ProfileListItemController controller = new ProfileListItemController(applicationStateManager);
             ProfileListItem profileListItem = new ProfileListItem(controller, profileKey);
+            profileListItem.prefWidthProperty().bind(profileListScrollPane.widthProperty());
             profileListItem.setOnMouseClicked(event -> {changeSelectedProfile(profileListItem);});
             profileListVbox.getChildren().add(profileListItem);
         }
