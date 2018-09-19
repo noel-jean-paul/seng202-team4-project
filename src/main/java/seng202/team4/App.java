@@ -1,7 +1,6 @@
 package seng202.team4;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -22,7 +21,7 @@ public class App extends Application {
     public void start(Stage primaryStage) {
 
         try {
-            DataAccesser.initialiseConnection();
+            DataAccesser.initialiseMainConnection();
         } catch (java.sql.SQLException e) {
             System.out.println("Error: Could not establish connection with the data base.");
             System.out.print(e.getMessage());

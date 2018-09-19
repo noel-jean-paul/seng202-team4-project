@@ -99,6 +99,7 @@ import javafx.scene.text.Text;
      */
     @FXML
     public void switchProfile() {
+        ((LoginController) applicationStateManager.getScreenController("LoginScreen")).updateProfileList();
         applicationStateManager.switchToScreen("LoginScreen");
     }
 

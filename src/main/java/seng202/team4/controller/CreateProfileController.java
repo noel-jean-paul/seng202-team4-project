@@ -120,6 +120,7 @@ public class CreateProfileController extends Controller {
             try {
                 DataStorer.insertProfile(profile);
                 applicationStateManager.switchToScreen("MainScreen");   //Changes to main screen.
+                ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).reset();
             } catch (java.sql.SQLException e) {
                 applicationStateManager.displayErrorMessage("An error occurred storing the profile from the database.", e.getMessage());
                 System.out.println("Error storing new profile in the data base.");

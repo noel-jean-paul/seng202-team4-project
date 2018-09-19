@@ -8,7 +8,7 @@ firstName text not null,
 lastName text not null,
 dateOfBirth character(10) not null,
 height real constraint check_height check (height BETWEEN 1.00 and 3.00),
-weight real constraint check_weight check (weight between 20 and 250),
+weight real constraint check_weight check (weight between 0 and 250),
 primary key (firstName, lastName)
 );
 

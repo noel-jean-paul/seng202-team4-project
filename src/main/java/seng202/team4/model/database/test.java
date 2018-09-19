@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public class test extends DataAccesser {
     public static void main(String[] args) throws SQLException {
-        DataAccesser.initialiseConnection();
+        DataAccesser.initialiseMainConnection();
         // Delete all activities from the database
         String select = "delete from activity";
         PreparedStatement statement = connection.prepareStatement(select);
