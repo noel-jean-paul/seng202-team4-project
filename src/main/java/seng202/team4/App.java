@@ -34,15 +34,20 @@ public class App extends Application {
 
         ApplicationStateManager applicationStateManager = new ApplicationStateManager(baseScene, primaryStage);
 
-        Pane loginScreen = Utilities.loadPane("LoginScreen.fxml", new LoginController(applicationStateManager));
-        Pane createProfileScreen = Utilities.loadPane("CreateProfileScreen.fxml", new CreateProfileController(applicationStateManager));
-        Pane mainScreen = Utilities.loadPane("MainScreen.fxml", new MainScreenController(applicationStateManager));
+        LoginController loginController = new LoginController(applicationStateManager);
+        Pane loginScreen = Utilities.loadPane("LoginScreen.fxml", loginController);
+
+        CreateProfileController createProfileController = new CreateProfileController(applicationStateManager);
+        Pane createProfileScreen = Utilities.loadPane("CreateProfileScreen.fxml", createProfileController);
+
+        MainScreenController mainScreenController = new MainScreenController(applicationStateManager);
+        Pane mainScreen = Utilities.loadPane("MainScreen.fxml", mainScreenController);
 
 
 
-        applicationStateManager.addScreen("LoginScreen", loginScreen);
-        applicationStateManager.addScreen("CreateProfileScreen", createProfileScreen);
-        applicationStateManager.addScreen("MainScreen", mainScreen);
+        applicationStateManager.addScreen("LoginScreen", loginScreen, loginController);
+        applicationStateManager.addScreen("CreateProfileScreen", createProfileScreen, createProfileController);
+        applicationStateManager.addScreen("MainScreen", mainScreen, mainScreenController);
         applicationStateManager.switchToScreen("LoginScreen");
 
         primaryStage.setTitle("Step by Step");

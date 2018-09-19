@@ -174,7 +174,11 @@ public class Activity implements Comparable<Activity> {
 
     /** Gets a string of the distance rounded to 0 decimal places. */
     public String getDistanceDisplayString() {
-        return String.format("%.0f", distance);
+        return String.format("%.0f m", distance);
+    }
+
+    public String getCaloriesDisplayString() {
+        return String.format("%.1f", caloriesBurned);
     }
 
     /** Set and update in database */
@@ -192,8 +196,8 @@ public class Activity implements Comparable<Activity> {
         this.averageSpeed = averageSpeed;
     }
 
-    public String getAverageSpeedString() {
-        return String.format("%.1f", averageSpeed);
+    public String getAverageSpeedDisplayString() {
+        return String.format("%.1f km/h", averageSpeed);
     }
 
     public double getCaloriesBurned() {
