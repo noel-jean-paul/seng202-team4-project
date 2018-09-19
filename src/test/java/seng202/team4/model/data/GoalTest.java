@@ -94,7 +94,7 @@ public class GoalTest {
 
     @Test
     public void setType() throws SQLException {
-        GoalType type = GoalType.Other;
+        GoalType type = GoalType.Walk;
         DataStorer.insertProfile(profile1);
         DataStorer.insertGoal(goal1, profile1);
         goal1.setType(type);
