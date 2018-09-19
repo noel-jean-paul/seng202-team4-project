@@ -34,6 +34,9 @@ public class Activity implements Comparable<Activity> {
     private double averageSpeed;
     private List<DataRow> rawData;
     private Profile owner;
+    private int avgHeartRate;
+    private int minHeartRate;
+    private int maxHeartRate;
 
     public Activity(String name, String date, String description, ActivityType type, String startTime,
                     String duration, double distance, double caloriesBurned) {
@@ -48,6 +51,9 @@ public class Activity implements Comparable<Activity> {
         this.caloriesBurned = caloriesBurned;
         this.averageSpeed = 5;  // TODO calculate average speed here in km/hr
         this.rawData = new ArrayList<>();
+        this.avgHeartRate = calculateAvgHeartRate();
+        this.minHeartRate = calculateMinHeartRate();
+        this.maxHeartRate = calculateMaxHeartRate();
     }
 
     /**
@@ -61,13 +67,14 @@ public class Activity implements Comparable<Activity> {
         this.date = (rawActivityList.get(0)).getDate();
         this.startTime = (rawActivityList.get(0)).getTime();
         this.distance = DataProcessor.totalDistance(rawActivityList);
-
         //TODO: Set these!!!!
-        this.duration = Duration.ZERO;
+        this.duration = DataProcessor.calculateDuration(rawData);
         this.caloriesBurned = 0;
 
-
         this.type = findActivityType(name);
+        this.avgHeartRate = calculateAvgHeartRate();
+        this.minHeartRate = calculateMinHeartRate();
+        this.maxHeartRate = calculateMaxHeartRate();
     }
 
     @Override
@@ -220,6 +227,20 @@ public class Activity implements Comparable<Activity> {
         this.owner = owner;
     }
 
+
+    public int getAvgHeartRate() {
+        return avgHeartRate;
+    }
+
+    public int getMinHeartRate() {
+        return minHeartRate;
+    }
+
+    public int getMaxHeartRate() {
+        return maxHeartRate;
+    }
+
+
     /** Add a dataRow to the rawData list in order and insert it into the database
      *
      * @param row the DataRow to be added
@@ -325,6 +346,37 @@ public class Activity implements Comparable<Activity> {
         }
 
         return type;
+    }
+
+    private int calculateAvgHeartRate() {
+        int avgBPM = 0;
+        if (rawData.size() > 0) {
+            for (DataRow row : rawData) {
+                avgBPM += row.getHeartRate();
+            }
+            avgBPM /= rawData.size();
+        }
+        return avgBPM;
+    }
+
+    private int calculateMinHeartRate() {
+        int minBPM = Integer.MAX_VALUE;
+        for (DataRow row : rawData) {
+            if (row.getHeartRate() < minBPM) {
+                minBPM = row.getHeartRate();
+            }
+        }
+        return minBPM;
+    }
+
+    private int calculateMaxHeartRate() {
+        int maxBPM = Integer.MIN_VALUE;
+        for (DataRow row : rawData) {
+            if (row.getHeartRate() > maxBPM) {
+                maxBPM = row.getHeartRate();
+            }
+        }
+        return maxBPM;
     }
 
 //    /**
