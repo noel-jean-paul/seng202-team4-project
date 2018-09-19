@@ -91,6 +91,7 @@ public class LoginController extends Controller {
             try {
                 applicationStateManager.setCurrentProfile(DataLoader.loadProfile(profileKey.getFirstName(), profileKey.getLastName()));
                 applicationStateManager.switchToScreen("MainScreen");
+                ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).reset();
                 System.out.println(String.format("%s %s has logged in!", profileKey.getFirstName(), profileKey.getLastName()));
             } catch (java.sql.SQLException e) {
                 applicationStateManager.displayErrorMessage("An error occurred loading the profile from the database.", e.getMessage());

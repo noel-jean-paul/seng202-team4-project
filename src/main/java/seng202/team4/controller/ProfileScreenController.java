@@ -1,6 +1,7 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -56,6 +57,11 @@ public class ProfileScreenController extends Controller {
         lastNameTextField = new TextField();
         heightTextField = new TextField();
         weightTextField = new TextField();
+
+        firstNameTextField.setAlignment(Pos.CENTER);
+        lastNameTextField.setAlignment(Pos.CENTER);
+        heightTextField.setAlignment(Pos.CENTER);
+        weightTextField.setAlignment(Pos.CENTER);
     }
 
     @FXML

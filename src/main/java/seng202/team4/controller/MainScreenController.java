@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import seng202.team4.Utilities;
@@ -38,6 +39,9 @@ public class MainScreenController extends Controller {
     /** The AnchorPane of the goals screen */
     @FXML
     private AnchorPane healthPane;
+
+    @FXML
+    private TabPane tabPane;
 
 
 
@@ -102,7 +106,7 @@ import javafx.scene.text.Text;
     public void viewProfile() {
         ProfileScreenController profileScreenController = new ProfileScreenController(applicationStateManager);
         Pane profileScreen = Utilities.loadPane("ProfileScreen.fxml", profileScreenController);
-        applicationStateManager.addScreen("ProfileScreen", profileScreen);
+        applicationStateManager.addScreen("ProfileScreen", profileScreen, profileScreenController);
         applicationStateManager.switchToScreen("ProfileScreen");
         profileScreenController.updateInformation();
     }
@@ -125,6 +129,13 @@ import javafx.scene.text.Text;
     @FXML
     void healthTabSelected() {
 
+    }
+
+    public void reset() {
+        tabPane.getSelectionModel().selectFirst();
+        if (applicationStateManager.getCurrentProfile() != null) {
+            homeTabController.loadData();
+        }
     }
 
 }
