@@ -39,7 +39,13 @@ public class HealthTabController extends Controller {
     private Button returnButton;
 
     @FXML
-    private TextArea healthTabTextBox;
+    private Label ageLabel;
+
+    @FXML
+    private Label weightLabel;
+
+    @FXML
+    private Label bmiLabel;
 
     @FXML
     void loadInformation() {
@@ -70,15 +76,31 @@ public class HealthTabController extends Controller {
         engine.load(currentUrl);
     }
 
+    /**
+     *
+     */
     public void updateTable() {
         ObservableList<HealthWarning> warningList = FXCollections.observableArrayList(applicationStateManager.getCurrentProfile().getWarningList());
         dateColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,LocalDate>("warningDate"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,WarningType>("type"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,String>("typeString"));
         descColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,String>("description"));
 
         healthWarningTable.setItems(warningList);
 
         ScrollBar scrollBarHorizontal = (ScrollBar) healthWarningTable.lookup(".scroll-bar:hotizontal");
         scrollBarHorizontal.setVisible(false);
+    }
+
+    /**
+     *
+     */
+    public void setLabels() {
+        System.out.println("Let's do it");
+        ageLabel.setText(String.format("%d", (applicationStateManager.getCurrentProfile().getAge())));
+        System.out.println(applicationStateManager.getCurrentProfile().getAge());
+        System.out.println(applicationStateManager.getCurrentProfile().getWeight());
+        System.out.println(applicationStateManager.getCurrentProfile().getBmi());
+        weightLabel.setText(String.format("%.1f", applicationStateManager.getCurrentProfile().getWeight()) + "kg");
+        bmiLabel.setText(String.format("%.2f", applicationStateManager.getCurrentProfile().getBmi()));
     }
 }
