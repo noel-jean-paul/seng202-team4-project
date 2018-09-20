@@ -36,7 +36,6 @@ public class MapsController extends Controller {
     public void initialize() {
         //Initialization code goes here (called just after the pane has been loaded)
         ObservableList<Activity> activityList = FXCollections.observableArrayList();
-        //TODO no current use is loaded so fails past this point
         currentUser = applicationStateManager.getCurrentProfile();
         activities.addAll(currentUser.getActivityList());
         System.out.println(activities.size());
@@ -60,13 +59,15 @@ public class MapsController extends Controller {
             positionList.add(new Position((data.getLatitude()), (data.getLongitude())));
         }
         Route newRoute = new Route((positionList));
+        System.out.println("test");
         return newRoute;
     }
 
+    @FXML
     private void initMap() {
-        Route route = generateRoute(activities.get(activityCombo.getSelectionModel().getSelectedIndex()));
-        webEngine = activityMap.getEngine();
-        webEngine.load(Controller.class.getResource("map.html").toExternalForm());
+        System.out.println("run");
+        Route newRoute = generateRoute(activities.get(activityCombo.getSelectionModel().getSelectedIndex()));
+        displayRoute(newRoute);
     }
 
     private void displayRoute(Route newRoute) {
