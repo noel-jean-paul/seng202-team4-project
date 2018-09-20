@@ -23,7 +23,7 @@
             <Insets top="20.0" />
          </GridPane.margin>
       </Text>
-      <BarChart fx:id="distanceBarGraph" alternativeColumnFillVisible="true" categoryGap="5.0" legendVisible="false" prefHeight="219.0" prefWidth="507.0" title="Distance Travelled" GridPane.rowIndex="2">
+      <BarChart fx:id="distanceBarGraph" alternativeColumnFillVisible="true" animated="false" categoryGap="5.0" legendVisible="false" prefHeight="219.0" prefWidth="507.0" title="Distance Travelled" GridPane.rowIndex="2">
         <xAxis>
           <CategoryAxis label="Activity" side="BOTTOM" />
         </xAxis>
