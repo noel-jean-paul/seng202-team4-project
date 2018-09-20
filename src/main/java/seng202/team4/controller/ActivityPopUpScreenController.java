@@ -56,14 +56,25 @@ public class ActivityPopUpScreenController extends Controller {
 
     @FXML
     public void initialize() {
-        distanceGraph.setVisible(false);
-        heartRateGraph.setVisible(false);
+        int size = activity.getRawData().size();
+        if (size == 0) {
+            heartRateGraph.setVisible(true);
+            heartRateButton.setSelected(true);
+            heartRateGraph.setTitle("There is no data that can be displayed");
+            distanceGraph.setTitle("There is no data that can be displayed");
+        } else {
+            distanceGraph.setVisible(false);
+            heartRateGraph.setVisible(true);
+            heartRateButton.setSelected(true);
+            displayHeartRateGraph();
+        }
     }
 
     /**
      * Loads the heart rate graph with the correct data for the selected activity, by giving the heart rate at each minute
      * during the activity
      * //@ToDo could be improved by taking care of the case when the activity lasts less than a minute, currently just gives a single point
+     * //@ToDo could also make it so heart rate y axis doesn't start from zero but from the minimum heart rate in the list
      */
     @FXML
     public void displayHeartRateGraph() {
