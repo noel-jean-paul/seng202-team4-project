@@ -7,11 +7,13 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import seng202.team4.Utilities;
 import seng202.team4.model.data.enums.ActivityType;
+import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.utilities.DataProcessor;
 import seng202.team4.model.utilities.FileImporter;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
+import seng202.team4.model.utilities.HealthWarning;
 import seng202.team4.view.ActivityConfirmationRow;
 
 import java.awt.*;
@@ -56,11 +58,15 @@ public class ImportActivitiesPreviewScreenController extends Controller {
      */
     @FXML
     public void importActivities() throws SQLException {
+        boolean warningFound = false;
         applicationStateManager.switchToScreen("MainScreen");
         for (ActivityConfirmationRow activityConfirmationRow: activityConfirmationRows) {
             Activity activity = activityConfirmationRow.getActivity();
             if (activityConfirmationRow.isSelected()) {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
+                // Check the activity for health warnings
+                warningFound = activity.addWarnings();
+
                 // Store all data rows in the database as they have not been stored yet but are in the rawData list
                 for (DataRow dataRow : activity.getRawData()) {
                     DataStorer.insertDataRow(dataRow, activity);
@@ -70,6 +76,9 @@ public class ImportActivitiesPreviewScreenController extends Controller {
 
         }
         activityTabController.updateTable();
+        if (warningFound) {
+            // TODO warning popup - Kenny
+        }
 
     }
 
