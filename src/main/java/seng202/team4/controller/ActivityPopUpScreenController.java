@@ -63,7 +63,6 @@ public class ActivityPopUpScreenController extends Controller {
     /**
      * Loads the heart rate graph with the correct data for the selected activity, by giving the heart rate at each minute
      * during the activity
-     * //@ToDo this function will likely take a parameter specifying the selected activity
      * //@ToDo could be improved by taking care of the case when the activity lasts less than a minute, currently just gives a single point
      */
     @FXML
@@ -77,9 +76,9 @@ public class ActivityPopUpScreenController extends Controller {
         //List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
 
         //The next three lines will have to have the correct activity selected
-        List<DataRow> dataRow = activity.getRawData(); //ToDo currently gets first activity, will need to be changed to selected activity
-        heartRateGraph.setTitle("Heart rate during " + activity.getName()); //@ToDo will also need to change this line to select the name of the correct activity
-        LocalTime startTime = activity.getStartTime(); //gets the start time of activity //@ToDo will also need to give this line the correct value of the selected activity
+        List<DataRow> dataRow = activity.getRawData();
+        heartRateGraph.setTitle("Heart rate during " + activity.getName()); //sets the title of the
+        LocalTime startTime = activity.getStartTime(); //gets the start time of activity
 
         long timeMinutes = 0;   //keeps track of the current minute
         long previousTime = -1; //sets previous time to -1, to avoid clashes with starting time which is always going to be 0
@@ -111,18 +110,24 @@ public class ActivityPopUpScreenController extends Controller {
         distanceGraph.setVisible(true);
 
         //Next two lines will need the correct activity parsed in
-        distanceGraph.setTitle("Distance Travelled During " + activity.getName()); //@ToDo need to parse in correct activity
-        List<DataRow> dataRow = activity.getRawData(); //@ToDo need to parse in correct activity
+        distanceGraph.setTitle("Distance Travelled During " + activity.getName());
+        List<DataRow> dataRow = activity.getRawData();
 
         XYChart.Series set2 = new XYChart.Series<>();
-        int previous = 0;
-        for (int i = 0; i < dataRow.size(); i += 1) {
-            List<DataRow>twoPoints = dataRow.subList(previous, i+1);
-            double distance = seng202.team4.model.utilities.DataProcessor.totalDistance(twoPoints);
-            String strInt = Integer.toString(i);
-            String strDouble = Double.toString(distance);
-            set2.getData().add(new XYChart.Data(strInt, distance));
-            previous = i;
+        if (dataRow.size() > 50) {
+            for (int i = 0; i < dataRow.size(); i += 10) {
+                List<DataRow> twoPoints = dataRow.subList(0, i + 1);
+                double distance = seng202.team4.model.utilities.DataProcessor.totalDistance(twoPoints);
+                String strInt = Integer.toString(i);
+                set2.getData().add(new XYChart.Data(strInt, distance));
+            }
+        } else {
+            for (int i = 0; i < dataRow.size(); i += 1) {
+                List<DataRow> twoPoints = dataRow.subList(0, i + 1);
+                double distance = seng202.team4.model.utilities.DataProcessor.totalDistance(twoPoints);
+                String strInt = Integer.toString(i);
+                set2.getData().add(new XYChart.Data(strInt, distance));
+            }
         }
         distanceGraph.getXAxis().setAnimated(false); //these two lines avoid errors where only the last value in the x axis was loaded
         distanceGraph.getYAxis().setAnimated(false);

@@ -27,7 +27,7 @@
             <RadioButton fx:id="heartRateButton" mnemonicParsing="false" onAction="#displayHeartRateGraph" text="Show heart rate graph" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
-                  <LineChart fx:id="heartRateGraph" layoutY="33.0" legendVisible="false" prefHeight="281.0" prefWidth="514.0" title="Heart Rate During Activity">
+                  <LineChart fx:id="heartRateGraph" createSymbols="false" layoutY="33.0" legendVisible="false" prefHeight="281.0" prefWidth="514.0" title="Heart Rate During Activity">
                     <xAxis>
                       <CategoryAxis label="Time (s)" side="BOTTOM" />
                     </xAxis>
@@ -35,9 +35,9 @@
                       <NumberAxis label="Heart Rate (bpm)" side="LEFT" />
                     </yAxis>
                   </LineChart>
-                  <LineChart fx:id="distanceGraph" layoutY="34.0" legendVisible="false" prefHeight="281.0" prefWidth="514.0" title="Distance Travelled during Activity">
+                  <LineChart fx:id="distanceGraph" createSymbols="false" layoutY="34.0" legendVisible="false" prefHeight="281.0" prefWidth="514.0" title="Distance Travelled during Activity">
                     <xAxis>
-                      <CategoryAxis label="Time (m)" side="BOTTOM" />
+                      <CategoryAxis label="Measurement Number" side="BOTTOM" />
                     </xAxis>
                     <yAxis>
                       <NumberAxis label="Distance (m)" side="LEFT" />
