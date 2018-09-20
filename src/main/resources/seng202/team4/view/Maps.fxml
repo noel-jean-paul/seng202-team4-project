@@ -9,6 +9,6 @@
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.MapsController">
    <children>
       <WebView fx:id="activityMap" layoutX="60.0" layoutY="72.0" prefHeight="314.0" prefWidth="481.0" />
-      <ComboBox fx:id="activityCombo" layoutX="236.0" layoutY="14.0" prefWidth="150.0" />
+      <ComboBox fx:id="activityCombo" layoutX="236.0" layoutY="14.0" onAction="#initMap" prefWidth="150.0" />
    </children>
 </AnchorPane>
