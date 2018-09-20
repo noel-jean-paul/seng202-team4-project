@@ -82,7 +82,7 @@ abstract public class DataLoader extends DataAccesser {
             // Set the owner of the activity as the profile
             activity.setOwner(profile);
         }
-        // Add all activities to the activity list
+        // Add all activities to the activity list (without reinserting into the database)
         profile.addAllActivities(activities);
     }
 
@@ -122,7 +122,7 @@ abstract public class DataLoader extends DataAccesser {
             // Set the owner of the activity as the profile
             goal.setOwner(profile);
         }
-        // Add all activities to the activity list
+        // Add all activities to the activity list (without reinserting into the database)
         profile.addAllGoals(goals);
     }
 
@@ -160,7 +160,7 @@ abstract public class DataLoader extends DataAccesser {
             // Set the owner of the DataRow
             row.setOwner(activity);
         }
-        // Add all activities to the activity list
+        // Add all activities to the activity list (without reinserting into the database)
         activity.addAllDataRows(rows);
     }
 
