@@ -59,13 +59,11 @@ public class MapsController extends Controller {
             positionList.add(new Position((data.getLatitude()), (data.getLongitude())));
         }
         Route newRoute = new Route((positionList));
-        System.out.println("test");
         return newRoute;
     }
 
     @FXML
     private void initMap() {
-        System.out.println("run");
         Route newRoute = generateRoute(activities.get(activityCombo.getSelectionModel().getSelectedIndex()));
         displayRoute(newRoute);
     }
