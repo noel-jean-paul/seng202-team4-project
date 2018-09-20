@@ -51,9 +51,6 @@ public class ActivityTabController extends Controller {
     @FXML
     private TableColumn durationColumn;
 
-    private Activity selectedActivity = null;
-
-
     private boolean isTableReorderable = true;
 
     /**
@@ -130,5 +127,14 @@ public class ActivityTabController extends Controller {
             applicationStateManager.displayPopUp(activityPopUp);
         }
 
+    }
+
+    @FXML
+    public void showMaps() {
+        Activity activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
+        if (activity != null) {
+            Pane activityPopUp = Utilities.loadPane("ActivityPopUpScreen.fxml", new ActivityPopUpScreenController(applicationStateManager, activity));
+            applicationStateManager.displayPopUp(activityPopUp);
+        }
     }
 }
