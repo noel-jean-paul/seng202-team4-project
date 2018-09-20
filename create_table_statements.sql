@@ -59,6 +59,8 @@ create table dataRow (
   elevation double constraint check_elevation check (elevation between 0 and 4000),
   name text,
   activityDate character(10),
-  foreign key (name, activityDate) references activity,
-  primary key (name, activityDate, rowNumber)
+  firstName text not NULL,
+  lastName text not null,
+  foreign key (firstName, lastName) references Profile,
+  primary key (firstName, lastName, name, activityDate, rowNumber)
 );
