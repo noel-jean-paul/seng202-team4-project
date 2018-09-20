@@ -33,6 +33,7 @@
                   <Button mnemonicParsing="false" onAction="#close" text="Close" />
                </children>
             </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
          </children>
       </GridPane>
    </children>

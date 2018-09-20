@@ -7,6 +7,7 @@ import javafx.stage.FileChooser;
 import seng202.team4.Utilities;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -51,7 +52,7 @@ public class ActivityImportTypePromptController extends Controller {
      *  screen changes to the preview file import screen.
      */
     @FXML
-    public void importActivityFromFile() throws SQLException {
+    public void importActivityFromFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select CSV Data File");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV", "*.csv"));
@@ -64,7 +65,12 @@ public class ActivityImportTypePromptController extends Controller {
             applicationStateManager.addScreen("ImportActivitesPreviewScreen", importPreviewPane, previewContoller);
             applicationStateManager.switchToScreen("ImportActivitesPreviewScreen");
 
-            previewContoller.loadActivities(file);
+            try {
+                previewContoller.loadActivities(file);
+            } catch (IOException e) {
+                applicationStateManager.displayErrorMessage("Failed to load file.", "");
+            }
+
         }
     }
 

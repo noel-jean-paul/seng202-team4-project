@@ -10,14 +10,16 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class FileImporterTest {
 
     private static FileImporter testImport;
     private String filename = "seng202_2018_example_data.csv";
-    private ArrayList<DataRow> testRows = new ArrayList<>();
-    private ArrayList<Activity> testAllActivities = new ArrayList<>();
+    private ArrayList<Activity> testValidActivities = new ArrayList<>();
+    private ArrayList<Activity> testWarningActivities = new ArrayList<>();
+    private ArrayList<Activity> testSkippedActivities = new ArrayList<>();
 
     //FileImporter testImport = new FileImporter();
 
@@ -26,7 +28,11 @@ public class FileImporterTest {
     @Before
     public void init() {
         testImport = new FileImporter();
-        testImport.readFile(new File(filename), testRows, testAllActivities);
+        try {
+            testImport.readFile(new File(filename), testValidActivities, testWarningActivities, testSkippedActivities);
+        } catch (IOException e) {
+
+        }
     }
 
     /**
@@ -34,8 +40,13 @@ public class FileImporterTest {
      */
     @Test
     public void activityListEqualTest() {
-        ArrayList<Activity> expected = testImport.readFile(new File(filename), testRows, testAllActivities);
-        assertThat(testAllActivities, is(expected));
+        ArrayList<Activity> expected;
+        try {
+            expected = testImport.readFile(new File(filename), testValidActivities, testWarningActivities, testSkippedActivities);
+        } catch (IOException e) {
+            expected = new ArrayList<Activity>();
+        }
+        assertThat(testValidActivities, is(expected));
     }
 
     /**
@@ -43,7 +54,7 @@ public class FileImporterTest {
      */
     @Test
     public void activityListSizeTest() {
-        assertEquals(12, testAllActivities.size());
+        assertEquals(12, testValidActivities.size());
     }
 
 
@@ -52,7 +63,7 @@ public class FileImporterTest {
      */
     @Test
     public void firstDataRowListSizeTest() {
-        assertEquals(33, testAllActivities.get(0).getRawData().size());
+        assertEquals(33, testValidActivities.get(0).getRawData().size());
     }
 
     /**
@@ -60,7 +71,7 @@ public class FileImporterTest {
      */
     @Test
     public void lastDataRowListSizeTest() {
-        assertEquals(101, testAllActivities.get(11).getRawData().size());
+        assertEquals(101, testValidActivities.get(11).getRawData().size());
     }
 
 

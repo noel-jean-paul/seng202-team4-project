@@ -53,6 +53,8 @@ public class LoginController extends Controller {
             ProfileListItem profileListItem = new ProfileListItem(controller, profileKey);
             profileListItem.setOnMouseClicked(event -> {changeSelectedProfile(profileListItem);});
             profileListVbox.getChildren().add(profileListItem);
+
+            profileListItem.prefWidthProperty().bind(profileListScrollPane.widthProperty());
         }
     }
 
