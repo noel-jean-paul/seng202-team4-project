@@ -80,6 +80,8 @@ public class FileImporter {
                         skippedActivities.add(activity);
                     }
                     rows.clear();    //clear the arrayList of rows in preparation for the next lot of data for the next activity
+                } else {
+                    line = bufferedReader.readLine();
                 }
             }
 
