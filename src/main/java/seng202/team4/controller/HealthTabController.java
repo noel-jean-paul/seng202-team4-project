@@ -95,11 +95,7 @@ public class HealthTabController extends Controller {
      *
      */
     public void setLabels() {
-        System.out.println("Let's do it");
         ageLabel.setText(String.format("%d", (applicationStateManager.getCurrentProfile().getAge())));
-        System.out.println(applicationStateManager.getCurrentProfile().getAge());
-        System.out.println(applicationStateManager.getCurrentProfile().getWeight());
-        System.out.println(applicationStateManager.getCurrentProfile().getBmi());
         weightLabel.setText(String.format("%.1f", applicationStateManager.getCurrentProfile().getWeight()) + "kg");
         bmiLabel.setText(String.format("%.2f", applicationStateManager.getCurrentProfile().getBmi()));
     }

@@ -31,7 +31,6 @@ public class HealthWarning {
         this.healthRisk = checkRisk();
         this.url = setUpURL();
         this.typeString = calculateTypeString();
-        System.out.println("Looking at warnings!");
     }
     // TODO JavaDoc - Kenny
 
@@ -105,7 +104,6 @@ public class HealthWarning {
      * @return
      */
     private boolean tachyRisk() {
-        System.out.println("Max = " + maxHeartRate);
         if (maxHeartRate > (220 - user.getAge())) {
             return true;
         } else {
@@ -117,7 +115,6 @@ public class HealthWarning {
      * @return
      */
     private boolean bradyRisk() {
-        System.out.println("Min is = " + minHeartRate);
         if (user.getAge() >= 18 && minHeartRate < 50) {
             return true;
         } else if (user.getAge() < 18 && minHeartRate < 60) {
