@@ -122,6 +122,7 @@ public class ProfileScreenController extends Controller {
 
             editCancelButton.setText("Edit");
             isEditing = false;
+            errorText.setText("");
         } else {
             applicationStateManager.switchToScreen("MainScreen");
         }
@@ -146,6 +147,7 @@ public class ProfileScreenController extends Controller {
             isEditing = false;
             updateInformation();
             changeValuesToText();
+            errorText.setText("");
         }
 
     }
