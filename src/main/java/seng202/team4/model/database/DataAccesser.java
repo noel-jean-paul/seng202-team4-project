@@ -54,10 +54,10 @@ abstract public class DataAccesser {
         String dropGoal = "drop table goal;";
         String dropDataRow = "drop table dataRow;";
 
-//        stmt.addBatch(dropProfile);
-//        stmt.addBatch(dropActivity);
-//        stmt.addBatch(dropGoal);
-//        stmt.addBatch(dropDataRow);
+        stmt.addBatch(dropProfile);
+        stmt.addBatch(dropActivity);
+        stmt.addBatch(dropGoal);
+        stmt.addBatch(dropDataRow);
 
         // Create new tables
         String createProfile = "create table profile ("+
@@ -111,6 +111,8 @@ abstract public class DataAccesser {
                 "  elevation double constraint check_elevation check (elevation between 0 and 4000),\n" +
                 "  name text,\n" +
                 "  activityDate character(10),\n" +
+                "  firstName text not NULL,\n" +
+                "  lastName text not null," +
                 "  foreign key (name, activityDate) references activity,\n" +
                 "  foreign key (firstName, lastName) references Profile, \n" +
                 "  primary key (firstName, lastName, name, activityDate, rowNumber)\n" +
