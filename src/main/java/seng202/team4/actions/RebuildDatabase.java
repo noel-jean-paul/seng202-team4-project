@@ -7,6 +7,8 @@ import java.sql.SQLException;
 public class RebuildDatabase {
     /** Rebuild the databases (drop tables and recreate them) */
     public static void main(String[] args) throws SQLException {
+        DataAccesser.initialiseMainConnection();
+        DataAccesser.initialiseTestConnection();
         DataAccesser.rebuildAllDatabases();
     }
 }
