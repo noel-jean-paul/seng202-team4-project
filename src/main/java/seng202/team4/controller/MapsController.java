@@ -34,16 +34,6 @@ public class MapsController extends Controller {
 
     @FXML
     public void initialize() {
-        //Initialization code goes here (called just after the pane has been loaded)
-//        ObservableList<Activity> activityList = FXCollections.observableArrayList();
-//        currentUser = applicationStateManager.getCurrentProfile();
-//        activities.addAll(currentUser.getActivityList());
-//        System.out.println(activities.size());
-//        for (Activity activity : activities) {
-//            activityList.add(activity);
-//        }
-//        activityCombo.setItems(activityList);
-//        activityCombo.getSelectionModel().select(0);
         webEngine = activityMap.getEngine();
         webEngine.load(App.class.getResource("view/map.html").toExternalForm());
     }
