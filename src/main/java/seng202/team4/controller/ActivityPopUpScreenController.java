@@ -59,9 +59,13 @@ public class ActivityPopUpScreenController extends Controller {
         int size = activity.getRawData().size();
         if (size == 0) {
             heartRateGraph.setVisible(true);
+            distanceGraph.setVisible(false);
             heartRateButton.setSelected(true);
             heartRateGraph.setTitle("There is no data that can be displayed");
-            distanceGraph.setTitle("There is no data that can be displayed");
+            //distanceGraph.setTitle("There is no data that can be displayed");
+            heartRateButton.setDisable(true);
+            distanceButton.setDisable(true);
+
         } else {
             distanceGraph.setVisible(false);
             heartRateGraph.setVisible(true);
