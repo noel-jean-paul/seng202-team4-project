@@ -103,8 +103,8 @@ abstract public class DataStorer extends DataAccesser {
     public static void insertDataRow(DataRow dataRow, Activity activity) throws SQLException {
         assert dataRow != null;
 
-        String insert = "insert into dataRow(rowNumber, rowDate, time, heartRate, latitude, longitude, elevation, " +
-                "name, activityDate) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insert = "insert into dataRow (rowNumber, rowDate, time, heartRate, latitude, longitude, elevation, " +
+                "name, activityDate, firstName, lastName) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
         statement.setString(1, String.valueOf(dataRow.getNumber()));
@@ -116,6 +116,8 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(7, String.valueOf(dataRow.getElevation()));
         statement.setString(8, activity.getName());
         statement.setString(9, String.valueOf(activity.getDate()));
+        statement.setString(10, activity.getOwner().getFirstName());
+        statement.setString(11, activity.getOwner().getLastName());
 
         statement.executeUpdate();
     }
@@ -230,7 +232,7 @@ abstract public class DataStorer extends DataAccesser {
 
 
     public static void main(String[] args) throws SQLException {
-        DataAccesser.initialiseConnection();
+        DataAccesser.initialiseMainConnection();
         DataAccesser.clearDatabase();
 
 

@@ -51,6 +51,8 @@ public class ActivityTabController extends Controller {
     @FXML
     private TableColumn durationColumn;
 
+    private Activity selectedActivity = null;
+
 
     private boolean isTableReorderable = true;
 
@@ -67,7 +69,7 @@ public class ActivityTabController extends Controller {
     /** Initializes the activity tab. */
     @FXML
     public void initialize() {
-        activityTable.setPlaceholder(new Text("No activates have been added yet."));
+        activityTable.setPlaceholder(new Text("No activities have been added yet."));
         activityTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         nameColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
@@ -77,27 +79,6 @@ public class ActivityTabController extends Controller {
         averageSpeedColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
         caloriesColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
         typeColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
-
-        activityTable.setRowFactory( table -> {
-            TableRow row = new TableRow();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2) {
-                    //TODO: Open popup with more information.
-//                    ActivityInfoController activityInfoController = new ActivityInfoController(applicationStateManager);
-//                    Pane infoPopup = Utilities.loadPane("ActivityInfo.fxml", activityInfoController);
-//                    activityInfoController.setTestText(((Activity) row.getItem()).getName());
-//
-//
-//                    applicationStateManager.displayPopUp(infoPopup);
-//                    infoPopup.setOnMouseClicked(mouseEvent -> {
-//                        if (activityInfoController.isClickOutsideRect(mouseEvent)) {
-//                            applicationStateManager.closePopUP(infoPopup);
-//                        }
-//                    });
-                }
-            });
-            return row;
-        });
     }
 
     public void updateTable() {
@@ -143,7 +124,11 @@ public class ActivityTabController extends Controller {
 
     @FXML
     public void showPopup() {
-        Pane activityPopUp = Utilities.loadPane("ActivityPopUpScreen.fxml", new ActivityPopUpScreenController(applicationStateManager, this));
-        applicationStateManager.displayPopUp(activityPopUp);
+        Activity activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
+        if (activity != null) {
+            Pane activityPopUp = Utilities.loadPane("ActivityPopUpScreen.fxml", new ActivityPopUpScreenController(applicationStateManager, activity));
+            applicationStateManager.displayPopUp(activityPopUp);
+        }
+
     }
 }

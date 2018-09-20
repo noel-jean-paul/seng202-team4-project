@@ -1,12 +1,8 @@
 package seng202.team4.model.data;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.database.DataAccesser;
-import seng202.team4.model.database.DataTestAccesser;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
 
@@ -25,7 +21,7 @@ public class DataRowTest {
 
     @BeforeClass
     public static void setUp() throws SQLException {
-        DataTestAccesser.initialiseConnection();
+        DataAccesser.initialiseTestConnection();
         DataAccesser.clearDatabase();
 
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
@@ -49,9 +45,17 @@ public class DataRowTest {
         DataAccesser.clearDatabase();
     }
 
+    @After
+    public void tearDownReccurring() throws SQLException {
+        activity1.getRawData().clear();
+        profile1.getActivityList().clear();
+        DataAccesser.clearDatabase();
+    }
+
     @AfterClass
     public static void tearDown() throws SQLException {
-        DataTestAccesser.closeDatabase();
+        DataAccesser.clearDatabase();
+        DataAccesser.closeDatabase();
     }
 
     @Test
@@ -103,8 +107,8 @@ public class DataRowTest {
     public void setTime() throws SQLException {
         String time = "05:08:00";
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
-        DataStorer.insertDataRow(row1, activity1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         row1.setTime(time);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
