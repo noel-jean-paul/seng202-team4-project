@@ -15,5 +15,9 @@ public class testfile  {
     public static void main(String[] args) throws SQLException {
         DataAccesser.initialiseConnection();
         DataAccesser.clearDatabase();
+
+        Profile profile1 = new Profile("Noel", "Bisson", "1998-03-06", 299,
+                1.83);
+        DataStorer.insertProfile(profile1);
     }
 }
