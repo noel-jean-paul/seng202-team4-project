@@ -1,20 +1,10 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Group;
-import javafx.scene.chart.BarChart;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import seng202.team4.Utilities;
-import seng202.team4.model.data.Activity;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /** Controller for the main screen of the App. */
 public class MainScreenController extends Controller {
@@ -76,6 +66,7 @@ import javafx.scene.text.Text;
         Pane = Utilities.loadPane("ActivityTab.fxml", activityTabController);
         activityPane.getChildren().setAll(Pane);
 
+        // TODO: Figure out how to get these tabs to fit to parent, so they can expand
         Pane home = new Pane();
         homeTabController = new HomeTabController(applicationStateManager);
         home = Utilities.loadPane("HomeTab.fxml", homeTabController);
@@ -125,11 +116,12 @@ import javafx.scene.text.Text;
             homeTabController.loadData();
         }
     }
-    
+
 
     @FXML
     void healthTabSelected() {
-
+        healthTabController.updateTable();
+        healthTabController.setLabels();
     }
 
     public void reset() {

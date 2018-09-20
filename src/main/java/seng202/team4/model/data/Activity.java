@@ -1,11 +1,12 @@
 package seng202.team4.model.data;
 
 import seng202.team4.model.data.enums.ActivityType;
+import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;
 import seng202.team4.model.utilities.DataProcessor;
+import seng202.team4.model.utilities.HealthWarning;
 
-import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -367,6 +368,31 @@ public class Activity implements Comparable<Activity> {
         return type;
     }
 
+    // TODO JavaDoc - Kenny
+
+    /**
+     * Creates all 3 different warning types for the activities, and if the warning in fact is a health issue, adds it to
+     * the user's list of warnings.
+     * @return whether or not a warning was added to the user's warning list.
+     */
+    public boolean addWarnings() {
+        boolean hasWarning = false;
+        ArrayList<HealthWarning> warnings = new ArrayList<>();
+        warnings.add(new HealthWarning(this, owner, WarningType.Tachy, avgHeartRate, minHeartRate, maxHeartRate));
+        warnings.add(new HealthWarning(this, owner, WarningType.Brady, avgHeartRate, minHeartRate, maxHeartRate));
+        warnings.add(new HealthWarning(this, owner, WarningType.Cardiovascular, avgHeartRate, minHeartRate, maxHeartRate));
+        for (HealthWarning warning : warnings) {
+            if (warning.isHealthRisk()) {
+                owner.addWarning(warning);
+                hasWarning = true;
+            }
+        }
+        return hasWarning;
+    }
+
+    /**
+     * @return
+     */
     private int calculateAvgHeartRate() {
         int avgBPM = 0;
         if (rawData.size() > 0) {
@@ -378,6 +404,9 @@ public class Activity implements Comparable<Activity> {
         return avgBPM;
     }
 
+    /**
+     * @return
+     */
     private int calculateMinHeartRate() {
         int minBPM = Integer.MAX_VALUE;
         for (DataRow row : rawData) {
@@ -388,6 +417,9 @@ public class Activity implements Comparable<Activity> {
         return minBPM;
     }
 
+    /**
+     * @return
+     */
     private int calculateMaxHeartRate() {
         int maxBPM = Integer.MIN_VALUE;
         for (DataRow row : rawData) {
