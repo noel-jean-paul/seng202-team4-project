@@ -16,6 +16,7 @@ public class HealthWarning {
     private Activity activity;
     private Profile user;
     private WarningType type;
+    private String typeString;
     private LocalDate warningDate;
     private boolean healthRisk;
 
@@ -29,9 +30,22 @@ public class HealthWarning {
         this.warningDate = activity.getDate();
         this.healthRisk = checkRisk();
         this.url = setUpURL();
+        this.typeString = calculateTypeString();
+        System.out.println("Looking at warnings!");
     }
-
     // TODO JavaDoc - Kenny
+
+    private String calculateTypeString() {
+        String typeStr;
+        if (type == WarningType.Tachy) {
+            typeStr = "Tachycardia";
+        } else if (type == WarningType.Brady) {
+            typeStr = "Bradycaria";
+        } else {
+            typeStr = "Cardiovascular Mortality";
+        }
+        return typeStr;
+    }
 
     /**
      * @return
@@ -91,6 +105,7 @@ public class HealthWarning {
      * @return
      */
     private boolean tachyRisk() {
+        System.out.println("Max = " + maxHeartRate);
         if (maxHeartRate > (220 - user.getAge())) {
             return true;
         } else {
@@ -102,6 +117,7 @@ public class HealthWarning {
      * @return
      */
     private boolean bradyRisk() {
+        System.out.println("Min is = " + minHeartRate);
         if (user.getAge() >= 18 && minHeartRate < 50) {
             return true;
         } else if (user.getAge() < 18 && minHeartRate < 60) {
@@ -189,6 +205,18 @@ public class HealthWarning {
 
     public LocalDate getWarningDate() {
         return warningDate;
+    }
+
+    public WarningType geType() {
+        return type;
+    }
+
+    public String getTypeString() {
+        return typeString;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getUrl() {
