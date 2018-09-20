@@ -76,6 +76,7 @@ import javafx.scene.text.Text;
         Pane = Utilities.loadPane("ActivityTab.fxml", activityTabController);
         activityPane.getChildren().setAll(Pane);
 
+        // TODO: Figure out how to get these tabs to fit to parent, so they can expand
         Pane home = new Pane();
         homeTabController = new HomeTabController(applicationStateManager);
         home = Utilities.loadPane("HomeTab.fxml", homeTabController);
@@ -125,7 +126,7 @@ import javafx.scene.text.Text;
             homeTabController.loadData();
         }
     }
-    
+
 
     @FXML
     void healthTabSelected() {
