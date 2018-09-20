@@ -88,7 +88,6 @@ public class ActivityPopUpScreenController extends Controller {
         distanceGraph.setVisible(false);
         heartRateGraph.setVisible(true);
 
-        //List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
 
         //The next three lines will have to have the correct activity selected
         List<DataRow> dataRow = activity.getRawData();
