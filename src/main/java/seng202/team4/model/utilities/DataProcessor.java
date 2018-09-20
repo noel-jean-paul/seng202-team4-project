@@ -1,7 +1,7 @@
 package seng202.team4.model.utilities;
 
-import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.DataRow;
+import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 
 import java.time.Duration;

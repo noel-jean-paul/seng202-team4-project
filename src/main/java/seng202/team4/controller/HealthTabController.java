@@ -8,7 +8,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.utilities.HealthWarning;
 
 import java.time.LocalDate;

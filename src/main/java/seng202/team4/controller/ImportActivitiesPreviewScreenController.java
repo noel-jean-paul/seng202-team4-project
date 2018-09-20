@@ -1,13 +1,13 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.DataRow;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.utilities.DataProcessor;
 import seng202.team4.model.utilities.FileImporter;
-import seng202.team4.model.data.Activity;
-import seng202.team4.model.data.DataRow;
-import seng202.team4.model.utilities.HealthWarning;
 import seng202.team4.view.ActivityConfirmationRow;
 
 import java.io.File;

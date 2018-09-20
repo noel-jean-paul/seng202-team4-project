@@ -1,6 +1,5 @@
 package seng202.team4.model.data;
 
-import com.sun.deploy.util.ArrayUtil;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.database.DataStorer;
@@ -8,8 +7,6 @@ import seng202.team4.model.database.DataUpdater;
 import seng202.team4.model.utilities.DataProcessor;
 import seng202.team4.model.utilities.HealthWarning;
 
-import javax.xml.crypto.Data;
-import java.sql.Array;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;

@@ -2,8 +2,7 @@ package seng202.team4.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
-import seng202.team4.Utilities;
+import javafx.scene.layout.VBox;
 import seng202.team4.model.data.ProfileKey;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.view.ProfileListItem;

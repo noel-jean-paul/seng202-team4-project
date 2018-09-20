@@ -8,7 +8,6 @@ import seng202.team4.Utilities;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * Controller for the activity import type prompt. This handles the selection of how the user wants to add activities.
