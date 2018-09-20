@@ -92,12 +92,6 @@ public class LoginController extends Controller {
                 applicationStateManager.setCurrentProfile(DataLoader.loadProfile(profileKey.getFirstName(), profileKey.getLastName()));
                 applicationStateManager.switchToScreen("MainScreen");
                 ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).reset();
-                //Temp
-                //Temp
-                MapsController mapsController = new MapsController(applicationStateManager);
-                Pane mapPane = Utilities.loadPane("Maps.fxml", mapsController);
-                applicationStateManager.addScreen("MapPane", mapPane, mapsController);
-                applicationStateManager.switchToScreen("MapPane");
 
 
                 System.out.println(String.format("%s %s has logged in!", profileKey.getFirstName(), profileKey.getLastName()));

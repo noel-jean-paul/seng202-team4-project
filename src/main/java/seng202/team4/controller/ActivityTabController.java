@@ -53,6 +53,9 @@ public class ActivityTabController extends Controller {
 
     private boolean isTableReorderable = true;
 
+    private MapsController mapsController;
+    private Pane mapPane;
+
     /**
      * Constructor for the ActivityTabController.
      *
@@ -60,6 +63,9 @@ public class ActivityTabController extends Controller {
      */
     public ActivityTabController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
+
+        mapsController = new MapsController(applicationStateManager);
+        mapPane = Utilities.loadPane("Maps.fxml", mapsController);
     }
 
 
@@ -133,8 +139,8 @@ public class ActivityTabController extends Controller {
     public void showMaps() {
         Activity activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
         if (activity != null) {
-            Pane activityPopUp = Utilities.loadPane("ActivityPopUpScreen.fxml", new ActivityPopUpScreenController(applicationStateManager, activity));
-            applicationStateManager.displayPopUp(activityPopUp);
+            applicationStateManager.displayPopUp(mapPane);
+            mapsController.initMap(activity);
         }
     }
 }

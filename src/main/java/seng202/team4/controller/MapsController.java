@@ -1,7 +1,10 @@
 package seng202.team4.controller;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
@@ -21,12 +24,9 @@ public class MapsController extends Controller {
     @FXML
     private WebView activityMap;
 
-    @FXML
-    private ComboBox activityCombo;
-
-    private Profile currentUser;
     private WebEngine webEngine;
-    private ArrayList<Activity> activities = new ArrayList<Activity>();
+
+
     public MapsController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
@@ -35,15 +35,15 @@ public class MapsController extends Controller {
     @FXML
     public void initialize() {
         //Initialization code goes here (called just after the pane has been loaded)
-        ObservableList<Activity> activityList = FXCollections.observableArrayList();
-        currentUser = applicationStateManager.getCurrentProfile();
-        activities.addAll(currentUser.getActivityList());
-        System.out.println(activities.size());
-        for (Activity activity : activities) {
-            activityList.add(activity);
-        }
-        activityCombo.setItems(activityList);
-        activityCombo.getSelectionModel().select(0);
+//        ObservableList<Activity> activityList = FXCollections.observableArrayList();
+//        currentUser = applicationStateManager.getCurrentProfile();
+//        activities.addAll(currentUser.getActivityList());
+//        System.out.println(activities.size());
+//        for (Activity activity : activities) {
+//            activityList.add(activity);
+//        }
+//        activityCombo.setItems(activityList);
+//        activityCombo.getSelectionModel().select(0);
         webEngine = activityMap.getEngine();
         webEngine.load(App.class.getResource("view/map.html").toExternalForm());
     }
@@ -62,14 +62,18 @@ public class MapsController extends Controller {
         return newRoute;
     }
 
-    @FXML
-    private void initMap() {
-        Route newRoute = generateRoute(activities.get(activityCombo.getSelectionModel().getSelectedIndex()));
+    public void initMap(Activity activity) {
+        Route newRoute = generateRoute(activity);
         displayRoute(newRoute);
     }
 
     private void displayRoute(Route newRoute) {
         String scriptToExecute = "displayRoute(" + newRoute.toJSONArray() + ");";
         webEngine.executeScript(scriptToExecute);
+    }
+
+    @FXML
+    public void close() {
+        applicationStateManager.closePopUP(mainPane);
     }
 }
