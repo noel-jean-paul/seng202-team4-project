@@ -51,10 +51,10 @@ public class ActivityTabController extends Controller {
     @FXML
     private TableColumn durationColumn;
 
-    private Activity selectedActivity = null;
-
-
     private boolean isTableReorderable = true;
+
+    private MapsController mapsController;
+    private Pane mapPane;
 
     /**
      * Constructor for the ActivityTabController.
@@ -63,6 +63,9 @@ public class ActivityTabController extends Controller {
      */
     public ActivityTabController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
+
+        mapsController = new MapsController(applicationStateManager);
+        mapPane = Utilities.loadPane("Maps.fxml", mapsController);
     }
 
 
@@ -130,5 +133,14 @@ public class ActivityTabController extends Controller {
             applicationStateManager.displayPopUp(activityPopUp);
         }
 
+    }
+
+    @FXML
+    public void showMaps() {
+        Activity activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
+        if (activity != null) {
+            applicationStateManager.displayPopUp(mapPane);
+            mapsController.initMap(activity);
+        }
     }
 }
