@@ -1,12 +1,11 @@
 package seng202.team4.model.data;
+
 import seng202.team4.model.data.enums.GoalType;
 import seng202.team4.model.database.DataUpdater;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Collection;
-import java.util.Date;
 import java.util.Objects;
 
 

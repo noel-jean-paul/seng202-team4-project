@@ -2,17 +2,14 @@ package seng202.team4.model.utilities;
 
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
-import seng202.team4.model.data.enums.ActivityType;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.FileReader;
-import java.sql.SQLException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Set;
 
 
 public class FileImporter {

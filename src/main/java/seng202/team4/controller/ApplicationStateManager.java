@@ -1,18 +1,13 @@
 package seng202.team4.controller;
 
-import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seng202.team4.model.data.Profile;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 /**
  * The ApplicationStateManager class stores values and screens of the application.

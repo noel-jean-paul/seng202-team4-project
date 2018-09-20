@@ -6,10 +6,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
-import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.enums.ActivityType;
-
-import java.awt.*;
 
 /**
  * The controller for an activityConfirmationRow.

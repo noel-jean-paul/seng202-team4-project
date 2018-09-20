@@ -1,19 +1,15 @@
 package seng202.team4.controller;
 
-import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.collections.FXCollections;
 import seng202.team4.App;
-import seng202.team4.model.data.*;
+import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.DataRow;
+import seng202.team4.model.data.Position;
+import seng202.team4.model.data.Route;
 
 import java.util.ArrayList;
 
