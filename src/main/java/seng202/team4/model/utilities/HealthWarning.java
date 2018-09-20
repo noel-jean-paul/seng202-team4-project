@@ -31,7 +31,6 @@ public class HealthWarning {
         this.healthRisk = checkRisk();
         this.url = setUpURL();
         this.typeString = calculateTypeString();
-        System.out.println("Looking at warnings!");
     }
     // TODO JavaDoc - Kenny
 
