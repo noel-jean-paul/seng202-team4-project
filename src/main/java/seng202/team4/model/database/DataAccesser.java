@@ -32,7 +32,7 @@ abstract public class DataAccesser {
      *  re-create them.
      * @throws SQLException if an error occurred regarding the database
      */
-    private static void rebuildAllDatabases() throws SQLException {
+    public static void rebuildAllDatabases() throws SQLException {
         //Rebuild the production database
         DataAccesser.initialiseMainConnection();
         DataAccesser.rebuildDatabase();
@@ -54,10 +54,10 @@ abstract public class DataAccesser {
         String dropGoal = "drop table goal;";
         String dropDataRow = "drop table dataRow;";
 
-        stmt.addBatch(dropProfile);
-        stmt.addBatch(dropActivity);
-        stmt.addBatch(dropGoal);
-        stmt.addBatch(dropDataRow);
+//        stmt.addBatch(dropProfile);
+//        stmt.addBatch(dropActivity);
+//        stmt.addBatch(dropGoal);
+//        stmt.addBatch(dropDataRow);
 
         // Create new tables
         String createProfile = "create table profile ("+
@@ -112,7 +112,8 @@ abstract public class DataAccesser {
                 "  name text,\n" +
                 "  activityDate character(10),\n" +
                 "  foreign key (name, activityDate) references activity,\n" +
-                "  primary key (name, activityDate, rowNumber)\n" +
+                "  foreign key (firstName, lastName) references Profile, \n" +
+                "  primary key (firstName, lastName, name, activityDate, rowNumber)\n" +
                 ");";
 
         stmt.addBatch(createProfile);
@@ -159,8 +160,25 @@ abstract public class DataAccesser {
         statement.executeUpdate();
     }
 
-    /** Rebuild the databases */
-    public static void main(String[] args) throws SQLException {
-        DataAccesser.rebuildAllDatabases();
+    /** Clear contents of all non-profile tables
+     *
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public static void clearNonProfileData() throws SQLException {
+        DataAccesser.initialiseMainConnection();
+        // Delete all activities from the database
+        String select = "delete from activity";
+        PreparedStatement statement = connection.prepareStatement(select);
+        statement.executeUpdate();
+
+        // Delete all goals from the database
+        select = "delete from goal";
+        statement = connection.prepareStatement(select);
+        statement.executeUpdate();
+
+        // Delete all dataRows from the database
+        select = "delete from dataRow";
+        statement = connection.prepareStatement(select);
+        statement.executeUpdate();
     }
 }
