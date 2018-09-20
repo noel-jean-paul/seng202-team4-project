@@ -1,11 +1,15 @@
 package seng202.team4.model.data;
 
+import com.sun.deploy.util.ArrayUtil;
 import seng202.team4.model.data.enums.ActivityType;
+import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;
 import seng202.team4.model.utilities.DataProcessor;
+import seng202.team4.model.utilities.HealthWarning;
 
 import javax.xml.crypto.Data;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -34,6 +38,9 @@ public class Activity implements Comparable<Activity> {
     private double averageSpeed;
     private List<DataRow> rawData;
     private Profile owner;
+    private int avgHeartRate;
+    private int minHeartRate;
+    private int maxHeartRate;
 
     public Activity(String name, String date, String description, ActivityType type, String startTime,
                     String duration, double distance, double caloriesBurned) {
@@ -48,6 +55,9 @@ public class Activity implements Comparable<Activity> {
         this.caloriesBurned = caloriesBurned;
         this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.rawData = new ArrayList<>();
+        this.avgHeartRate = calculateAvgHeartRate();
+        this.minHeartRate = calculateMinHeartRate();
+        this.maxHeartRate = calculateMaxHeartRate();
     }
 
     /**
@@ -64,6 +74,9 @@ public class Activity implements Comparable<Activity> {
         this.duration = DataProcessor.calculateDuration(rawActivityList);
         this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.type = findActivityType(name);
+        this.avgHeartRate = calculateAvgHeartRate();
+        this.minHeartRate = calculateMinHeartRate();
+        this.maxHeartRate = calculateMaxHeartRate();
     }
 
     @Override
@@ -237,6 +250,20 @@ public class Activity implements Comparable<Activity> {
         this.owner = owner;
     }
 
+
+    public int getAvgHeartRate() {
+        return avgHeartRate;
+    }
+
+    public int getMinHeartRate() {
+        return minHeartRate;
+    }
+
+    public int getMaxHeartRate() {
+        return maxHeartRate;
+    }
+
+
     /** Add a dataRow to the rawData list in order and insert it into the database
      *
      * @param row the DataRow to be added
@@ -342,6 +369,68 @@ public class Activity implements Comparable<Activity> {
         }
 
         return type;
+    }
+
+    // TODO JavaDoc - Kenny
+
+    /**
+     * Creates all 3 different warning types for the activities, and if the warning in fact is a health issue, adds it to
+     * the user's list of warnings.
+     * @return whether or not a warning was added to the user's warning list.
+     */
+    public boolean addWarnings() {
+        boolean hasWarning = false;
+        ArrayList<HealthWarning> warnings = new ArrayList<>();
+        warnings.add(new HealthWarning(this, owner, WarningType.Tachy, avgHeartRate, minHeartRate, maxHeartRate));
+        warnings.add(new HealthWarning(this, owner, WarningType.Brady, avgHeartRate, minHeartRate, maxHeartRate));
+        warnings.add(new HealthWarning(this, owner, WarningType.Cardiovascular, avgHeartRate, minHeartRate, maxHeartRate));
+        for (HealthWarning warning : warnings) {
+            if (warning.isHealthRisk()) {
+                owner.addWarning(warning);
+                hasWarning = true;
+            }
+        }
+        return hasWarning;
+    }
+
+    /**
+     * @return
+     */
+    private int calculateAvgHeartRate() {
+        int avgBPM = 0;
+        if (rawData.size() > 0) {
+            for (DataRow row : rawData) {
+                avgBPM += row.getHeartRate();
+            }
+            avgBPM /= rawData.size();
+        }
+        return avgBPM;
+    }
+
+    /**
+     * @return
+     */
+    private int calculateMinHeartRate() {
+        int minBPM = Integer.MAX_VALUE;
+        for (DataRow row : rawData) {
+            if (row.getHeartRate() < minBPM) {
+                minBPM = row.getHeartRate();
+            }
+        }
+        return minBPM;
+    }
+
+    /**
+     * @return
+     */
+    private int calculateMaxHeartRate() {
+        int maxBPM = Integer.MIN_VALUE;
+        for (DataRow row : rawData) {
+            if (row.getHeartRate() > maxBPM) {
+                maxBPM = row.getHeartRate();
+            }
+        }
+        return maxBPM;
     }
 
 //    /**

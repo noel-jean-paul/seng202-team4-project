@@ -2,6 +2,7 @@ package seng202.team4.model.data;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;
+import seng202.team4.model.utilities.HealthWarning;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ public class Profile {
     private double height;
     private List<Activity> activityList;    // sorted collection - use addActivity to update
     private List<Goal> goalList;    // sorted collection - use addGoal to update
+    private List<HealthWarning> warningList;
 
     /**
      *Constructor for profile class taking in the date of birth in string format
@@ -45,8 +47,9 @@ public class Profile {
         this.dateOfBirth = LocalDate.parse(dateOfBirth);
         this.weight = weight;
         this.height = height;
-        goalList = new ArrayList<>();
-        activityList = new ArrayList<>();
+        this.goalList = new ArrayList<>();
+        this.activityList = new ArrayList<>();
+        this.warningList = new ArrayList<>();
     }
 
     /**
@@ -80,7 +83,8 @@ public class Profile {
                 Objects.equals(getLastName(), profile.getLastName()) &&
                 Objects.equals(getDateOfBirth(), profile.getDateOfBirth()) &&
                 Objects.equals(getActivityList(), profile.getActivityList()) &&
-                Objects.equals(getGoalList(), profile.getGoalList());
+                Objects.equals(getGoalList(), profile.getGoalList()) &&
+                Objects.equals(getWarningList(), profile.getWarningList());
     }
 
     @Override
@@ -289,5 +293,19 @@ public class Profile {
     public void removeGoal(Goal goal) throws SQLException {
         goalList.remove(goal);
         DataStorer.deleteGoal(goal, this);
+    }
+    // TODO JavaDoc - Kenny
+    /**
+     * @param warning
+     */
+    public void addWarning(HealthWarning warning) {
+        warningList.add(warning);
+    }
+
+    /**
+     * @return
+     */
+    public List<HealthWarning> getWarningList() {
+        return warningList;
     }
 }
