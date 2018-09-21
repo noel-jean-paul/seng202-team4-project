@@ -69,8 +69,8 @@ public class ImportActivitiesPreviewScreenController extends Controller {
                     // Insert the datarows at once using a transaction
                     DataStorer.insertDataRowTransaction(activity.getRawData());
                 } catch (SQLException e) {
-                    System.out.println(e.getMessage());
-                    // TODO: 21/09/18 Change to print error to file
+                    // TODO: 22/09/18 Currently displays error message for every activity failed. Want one for all activities
+                    applicationStateManager.displayErrorMessage("Failed to import one or more activities.", "");
                 }
                 activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             }

@@ -11,10 +11,7 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Activity implements Comparable<Activity> {
 
@@ -290,7 +287,7 @@ public class Activity implements Comparable<Activity> {
      */
     public void removeDataRow(DataRow row) throws SQLException {
         rawData.remove(row);
-        DataStorer.deleteDataRow(row, this);
+        DataStorer.deleteDataRows(Collections.singletonList(row));
     }
 
 

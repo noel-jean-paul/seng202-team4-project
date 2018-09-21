@@ -180,6 +180,7 @@ public class ActivityTest {
 
         // Remove the activity from the list and the database
         activity1.removeDataRow(row1);
+        System.out.println(row1.getOwner().getOwner().getFirstName());
 
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
