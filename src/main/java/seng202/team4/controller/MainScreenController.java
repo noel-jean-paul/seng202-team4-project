@@ -102,6 +102,10 @@ import javafx.scene.text.Text;
         applicationStateManager.switchToScreen("LoginScreen");
     }
 
+    /**
+     * Takes the user to the view profile screen.
+     * Is called when the user clicks the 'view profile menu option'.
+     */
     @FXML
     public void viewProfile() {
         ProfileScreenController profileScreenController = new ProfileScreenController(applicationStateManager);
@@ -111,13 +115,19 @@ import javafx.scene.text.Text;
         profileScreenController.updateInformation();
     }
 
-
+    /**
+     * Called when the activity tab is clicked.
+     * Updates the activity table in the activity tab.
+     */
     @FXML
     void activityTabSelected() {
         activityTabController.updateTable();
     }
 
-
+    /**
+     * Called when the home tab is clicked.
+     * Loads data into the graphs of the home tab.
+     */
     @FXML
     void homeTabSelected() {
         if (applicationStateManager.getCurrentProfile() != null) {
@@ -125,13 +135,19 @@ import javafx.scene.text.Text;
         }
     }
 
-
+    /**
+     * Called when the health tab is clicked.
+     * Updates the health tab.
+     */
     @FXML
     void healthTabSelected() {
         healthTabController.updateTable();
         healthTabController.setLabels();
     }
 
+    /**
+     * Resets the main screen. sets selected tab to home tab and reloads graph data in home tab.
+     */
     public void reset() {
         tabPane.getSelectionModel().selectFirst();
         if (applicationStateManager.getCurrentProfile() != null) {
