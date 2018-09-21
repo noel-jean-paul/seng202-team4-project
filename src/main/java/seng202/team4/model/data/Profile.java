@@ -308,4 +308,13 @@ public class Profile {
     public List<HealthWarning> getWarningList() {
         return warningList;
     }
+
+    /**
+     *
+     */
+    public void findWarnings() {
+        for (Activity acvty : activityList) {
+            acvty.addWarnings();
+        }
+    }
 }
