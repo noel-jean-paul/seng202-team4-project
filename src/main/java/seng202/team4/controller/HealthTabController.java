@@ -8,6 +8,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import seng202.team4.App;
 import seng202.team4.model.utilities.HealthWarning;
 
 import java.time.LocalDate;
@@ -69,9 +70,15 @@ public class HealthTabController extends Controller {
     public void initialize() {
         healthWarningTable.setPlaceholder(new Text("No warnings have been detected."));
         healthWarningTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        descColumn.prefWidthProperty().bind(healthWarningTable.widthProperty().divide( 4));
+
+
+
         currentUrl = "https://www.google.co.nz/";
         webBrowser.setZoom(0.9);
         engine = webBrowser.getEngine();
+        engine.setUserStyleSheetLocation(App.class.getResource("view/webViewStyle.css").toExternalForm());
         engine.load(currentUrl);
     }
 
