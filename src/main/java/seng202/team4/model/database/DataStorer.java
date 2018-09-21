@@ -20,7 +20,7 @@ abstract public class DataStorer extends DataAccesser {
         assert profile != null;
 
         String insert = "insert into profile(firstName, lastName, dateOfBirth, height, weight) values (?, ? , ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(insert);
+        statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
         statement.setString(1, profile.getFirstName());
         statement.setString(2, profile.getLastName());
@@ -29,6 +29,8 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(5, String.valueOf(profile.getWeight()));
 
         statement.executeUpdate();
+
+        statement.close();
     }
 
     /** Add an activity to the database
@@ -45,7 +47,7 @@ abstract public class DataStorer extends DataAccesser {
 
         String insert = "insert into activity(name, activityDate, description, type, startTime, duration, distance, " +
                 "caloriesBurned, firstName, lastName) values (?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(insert);
+        statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
         statement.setString(1, activity.getName());
         statement.setString(2, String.valueOf(activity.getDate()));
@@ -59,6 +61,8 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(10, activityOwner.getLastName());
 
         statement.executeUpdate();
+
+        statement.close();
     }
 
     /** Add an goal to the database
@@ -75,7 +79,7 @@ abstract public class DataStorer extends DataAccesser {
 
         String insert = "insert into goal(goalNumber, progress, description, type, creationDate, expiryDate, completionDate, " +
                 "goalDuration, goalDistance, firstName, lastName) values (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(insert);
+        statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
         statement.setString(1, String.valueOf(goal.getNumber()));
         statement.setString(2, String.valueOf(goal.getProgress()));
@@ -90,6 +94,8 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(11, goalOwner.getLastName());
 
         statement.executeUpdate();
+
+        statement.close();
     }
 
     /** Add a dataRow to the database
@@ -105,7 +111,7 @@ abstract public class DataStorer extends DataAccesser {
 
         String insert = "insert into dataRow (rowNumber, rowDate, time, heartRate, latitude, longitude, elevation, " +
                 "name, activityDate, firstName, lastName) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(insert);
+        statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
         statement.setString(1, String.valueOf(dataRow.getNumber()));
         statement.setString(2, String.valueOf(dataRow.getDate()));
@@ -120,6 +126,8 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(11, activity.getOwner().getLastName());
 
         statement.executeUpdate();
+
+        statement.close();
     }
 
     //
@@ -138,11 +146,12 @@ abstract public class DataStorer extends DataAccesser {
         String select = "delete from profile where " +
                 "firstName = (?) " +
                 "and lastName = (?)";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
         statement.setString(1, profile.getFirstName());
         statement.setString(2, profile.getLastName());
 
         statement.executeUpdate();
+        statement.close();
 
         // Delete all activities belonging to the profile
         for (Activity activity : profile.getActivityList()) {
@@ -171,13 +180,14 @@ abstract public class DataStorer extends DataAccesser {
                 "and activityDate = (?)" +
                 "and firstName = (?)" +
                 "and lastName = (?)";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
         statement.setString(1, activity.getName());
         statement.setString(2, String.valueOf(activity.getDate()));
         statement.setString(3, profile.getFirstName());
         statement.setString(4, profile.getLastName());
 
         statement.executeUpdate();
+        statement.close();
 
         // Delete all dataRows belonging to the activity
         for (DataRow row : activity.getRawData()) {
@@ -200,12 +210,13 @@ abstract public class DataStorer extends DataAccesser {
                 "goalNumber = (?) " +
                 "and firstName = (?) " +
                 "and lastName = (?)";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
         statement.setString(1, String.valueOf(goal.getNumber()));
         statement.setString(2, profile.getFirstName());
         statement.setString(3, profile.getLastName());
 
         statement.executeUpdate();
+        statement.close();
     }
 
     /** Delete a dataRow from the database
@@ -222,12 +233,13 @@ abstract public class DataStorer extends DataAccesser {
                 "rowNumber = (?) " +
                 "and name = (?) " +
                 "and activityDate = (?)";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
         statement.setString(1, String.valueOf(row.getNumber()));
         statement.setString(2, activity.getName());
         statement.setString(3, String.valueOf(activity.getDate()));
 
         statement.executeUpdate();
+        statement.close();
     }
 
 
