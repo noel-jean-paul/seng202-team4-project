@@ -1,9 +1,11 @@
 package seng202.team4;
 
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seng202.team4.controller.*;
 import seng202.team4.model.database.DataAccesser;
@@ -69,6 +71,8 @@ public class App extends Application {
         primaryStage.show();
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
+
+        primaryStage.setMaximized(true);
     }
 
     public static void main(String[] args) {

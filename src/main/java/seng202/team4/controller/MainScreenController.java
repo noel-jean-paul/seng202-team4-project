@@ -9,11 +9,6 @@ import seng202.team4.Utilities;
 /** Controller for the main screen of the App. */
 public class MainScreenController extends Controller {
 
-    private ActivityTabController activityTabController;
-    private HomeTabController homeTabController;
-    private GoalsTabController goalsTabController;
-    private HealthTabController healthTabController;
-
     /** The AnchorPane of the main screen. */
     @FXML
     private AnchorPane activityPane;
@@ -30,8 +25,21 @@ public class MainScreenController extends Controller {
     @FXML
     private AnchorPane healthPane;
 
+    /** The TabPane of the main screen. */
     @FXML
     private TabPane tabPane;
+
+    /** The ActivityTabController of the activity tab. */
+    private ActivityTabController activityTabController;
+
+    /** The HomeTabController of the home tab. */
+    private HomeTabController homeTabController;
+
+    /** The GoalsTabController of the goals tab. */
+    private GoalsTabController goalsTabController;
+
+    /** The HealthTabController of the health tab. */
+    private HealthTabController healthTabController;
 
 
 

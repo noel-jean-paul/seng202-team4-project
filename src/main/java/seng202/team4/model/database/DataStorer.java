@@ -224,7 +224,7 @@ abstract public class DataStorer extends DataAccesser {
 
         // Delete all dataRows belonging to the activity
         for (DataRow row : activity.getRawData()) {
-            System.out.println("deleting row");
+            //System.out.println("deleting row");
             deleteDataRow(row, activity);
         }
     }

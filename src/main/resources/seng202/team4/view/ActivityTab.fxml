@@ -96,7 +96,7 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
                      <children>
-                        <Button fx:id="seeDataButton" mnemonicParsing="false" onAction="#showPopup" text="Show Graphs">
+                        <Button fx:id="seeDataButton" mnemonicParsing="false" onAction="#showGraphsPopup" text="Show Graphs">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
