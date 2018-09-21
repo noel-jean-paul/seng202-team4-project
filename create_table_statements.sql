@@ -8,7 +8,7 @@ firstName text not null,
 lastName text not null,
 dateOfBirth character(10) not null,
 height real constraint check_height check (height BETWEEN 1.00 and 3.00),
-weight real constraint check_weight check (weight between 20 and 250),
+weight real constraint check_weight check (weight between 0 and 250),
 primary key (firstName, lastName)
 );
 
@@ -59,6 +59,8 @@ create table dataRow (
   elevation double constraint check_elevation check (elevation between 0 and 4000),
   name text,
   activityDate character(10),
-  foreign key (name, activityDate) references activity,
-  primary key (name, activityDate, rowNumber)
+  firstName text not NULL,
+  lastName text not null,
+  foreign key (firstName, lastName) references Profile,
+  primary key (firstName, lastName, name, activityDate, rowNumber)
 );

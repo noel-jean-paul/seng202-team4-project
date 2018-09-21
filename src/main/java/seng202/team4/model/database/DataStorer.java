@@ -103,8 +103,8 @@ abstract public class DataStorer extends DataAccesser {
     public static void insertDataRow(DataRow dataRow, Activity activity) throws SQLException {
         assert dataRow != null;
 
-        String insert = "insert into dataRow(rowNumber, rowDate, time, heartRate, latitude, longitude, elevation, " +
-                "name, activityDate) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insert = "insert into dataRow (rowNumber, rowDate, time, heartRate, latitude, longitude, elevation, " +
+                "name, activityDate, firstName, lastName) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
         statement.setString(1, String.valueOf(dataRow.getNumber()));
@@ -116,6 +116,8 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(7, String.valueOf(dataRow.getElevation()));
         statement.setString(8, activity.getName());
         statement.setString(9, String.valueOf(activity.getDate()));
+        statement.setString(10, activity.getOwner().getFirstName());
+        statement.setString(11, activity.getOwner().getLastName());
 
         statement.executeUpdate();
     }
@@ -230,8 +232,8 @@ abstract public class DataStorer extends DataAccesser {
 
 
     public static void main(String[] args) throws SQLException {
-        DataAccesser.initialiseConnection();
-
+        DataAccesser.initialiseMainConnection();
+        DataAccesser.clearDatabase();
 
 
 //        // Delete all dataRows from the database
@@ -241,13 +243,10 @@ abstract public class DataStorer extends DataAccesser {
 
         Profile profile = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
-        deleteProfile(profile);
         insertProfile(profile);
 
         Activity activity = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
-                "12:15:01", "00:40:00", 5.13, 18);
-
-        deleteActivity(activity, profile);
+                "12:15:01", "PT40M", 5.13, 18);
         insertActivity(activity, profile);
 
 //        Goal goal = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
@@ -258,10 +257,6 @@ abstract public class DataStorer extends DataAccesser {
         DataRow row = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
                 178.4352, 203);
 //
-        deleteDataRow(row, activity);
-        insertDataRow(row, activity);
         activity.addDataRow(row);
-
-        deleteActivity(activity, profile);
     }
 }

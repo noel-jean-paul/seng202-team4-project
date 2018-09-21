@@ -27,7 +27,7 @@ public class DataStorerTest {
     @BeforeClass
     public static void setUp() throws SQLException {
         // Initialise the database connection
-        DataTestAccesser.initialiseConnection();
+        DataAccesser.initialiseTestConnection();
 
         // Remove all data from the database
         DataAccesser.clearDatabase();
@@ -48,7 +48,8 @@ public class DataStorerTest {
 
     @AfterClass
     public static void tearDown() throws SQLException {
-        DataTestAccesser.closeDatabase();
+        DataAccesser.clearDatabase();
+        DataAccesser.closeDatabase();
     }
 
     @Before
@@ -235,11 +236,11 @@ public class DataStorerTest {
 
         Activity activity = new Activity("Run in the Woods", "2019-08-30", "", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
-        DataStorer.insertActivity(activity, profile);
+        profile.addActivity(activity);
 
         DataRow row3 = new DataRow(2, "2018-07-18", "14:02:25", 182, -87.01902489,
                 178.4352, 203);
-        DataStorer.insertDataRow(row3, activity);
+        activity.addDataRow(row3);
 
         DataStorer.deleteDataRow(row3, activity);
         Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());

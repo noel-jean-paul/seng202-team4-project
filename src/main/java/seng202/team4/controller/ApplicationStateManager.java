@@ -23,6 +23,9 @@ public class ApplicationStateManager {
     /** A HashMap that stores the screens (Pane) with a particular screen key. */
     private HashMap<String, Pane> paneMap = new HashMap<String, Pane>();
 
+    /** A HasMap that stores the controllers of the screens. */
+    private HashMap<String, Controller> controllerMap = new HashMap<String, Controller>();
+
     /** The root Scene that the screens of the application belong to. */
     private Scene rootScene;
 
@@ -32,8 +35,10 @@ public class ApplicationStateManager {
     /** The StackPane that contains the various layers of the application. */
     private StackPane stackPane = new StackPane();
 
-    /** Tje currently loaded user profile. */
+    /** The currently loaded user profile. */
     private Profile currentUserProfile;
+
+    private Pane glassPane;
 
     /**
      * Constructor of the ApplicationStateManager.
@@ -46,6 +51,10 @@ public class ApplicationStateManager {
         this.primaryStage = stage;
         this.rootScene.setRoot(stackPane);
         this.stackPane.getChildren().add(new Pane());
+
+        this.glassPane = new Pane();
+        glassPane.prefWidthProperty().bind(rootScene.widthProperty());
+        glassPane.prefHeightProperty().bind(rootScene.heightProperty());
     }
 
 
@@ -55,8 +64,9 @@ public class ApplicationStateManager {
      * @param name The name of the screen.
      * @param pane The screen to be added.
      */
-    public void addScreen(String name, Pane pane) {
+    public void addScreen(String name, Pane pane, Controller controller) {
         paneMap.put(name, pane);
+        controllerMap.put(name, controller);
     }
 
 
@@ -78,6 +88,9 @@ public class ApplicationStateManager {
      * @param popUp The pop up (pane) to be displayed
      */
     public void displayPopUp(Pane popUp) {
+
+        stackPane.getChildren().remove(glassPane);
+        stackPane.getChildren().add(glassPane);
         stackPane.getChildren().add(popUp);
     }
 
@@ -88,6 +101,7 @@ public class ApplicationStateManager {
      * @param popUp The pop up to be closed.
      */
     public void closePopUP(Pane popUp) {
+        stackPane.getChildren().remove(glassPane);
         stackPane.getChildren().remove(popUp);
     }
 
@@ -108,6 +122,11 @@ public class ApplicationStateManager {
     }
 
 
+    public Controller getScreenController(String screenName) {
+        return controllerMap.get(screenName);
+    }
+
+
     /**
      * Removes a screen from the ApplicationStateManager.
      *
@@ -116,6 +135,7 @@ public class ApplicationStateManager {
      */
     public void removeScreen(String name) {
         paneMap.remove(name);
+        controllerMap.remove(name);
     }
 
 

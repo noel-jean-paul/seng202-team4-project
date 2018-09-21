@@ -23,7 +23,7 @@
             <Insets top="20.0" />
          </GridPane.margin>
       </Text>
-      <BarChart fx:id="distanceBarGraph" alternativeColumnFillVisible="true" categoryGap="5.0" legendVisible="false" prefHeight="219.0" prefWidth="507.0" title="Distance Travelled" GridPane.rowIndex="2">
+      <BarChart fx:id="distanceBarGraph" alternativeColumnFillVisible="true" animated="false" categoryGap="5.0" legendVisible="false" prefHeight="219.0" prefWidth="507.0" title="Distance Travelled" GridPane.rowIndex="2">
         <xAxis>
           <CategoryAxis label="Activity" side="BOTTOM" />
         </xAxis>
@@ -38,5 +38,8 @@
          </padding>
       </BarChart>
       <Text fx:id="noDataText" strokeType="OUTSIDE" strokeWidth="0.0" text="You have no data to show" visible="false" wrappingWidth="175.81591796875" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+      <RadioButton fx:id="runDataButton" mnemonicParsing="false" onAction="#filterRun" text="View Run Data" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+      <RadioButton fx:id="walkDataButton" mnemonicParsing="false" onAction="#filterWalk" text="View Walk Data" GridPane.rowIndex="1" />
+      <RadioButton fx:id="allDataButton" mnemonicParsing="false" onAction="#filterAll" selected="true" text="View All" GridPane.rowIndex="1" GridPane.valignment="TOP" />
    </children>
 </GridPane>

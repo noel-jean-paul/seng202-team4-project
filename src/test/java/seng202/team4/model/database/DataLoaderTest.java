@@ -29,7 +29,7 @@ public class DataLoaderTest {
     @BeforeClass
     public static void setUp() throws SQLException {
         // Initialise the database connection for the other classes
-        DataTestAccesser.initialiseConnection();
+        DataAccesser.initialiseTestConnection();
 
         // Remove all data from the database
         DataAccesser.clearDatabase();
@@ -81,6 +81,7 @@ public class DataLoaderTest {
 
     @AfterClass
     public static void tearDown() throws SQLException {
+        DataAccesser.clearDatabase();
         DataAccesser.closeDatabase();
     }
 
@@ -91,7 +92,7 @@ public class DataLoaderTest {
     }
 
     @Test
-    public void loadProfile_allListsFilled_checkActivityOwne() throws SQLException {
+    public void loadProfile_allListsFilled_checkActivityOwner() throws SQLException {
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(profile1, loadedProfile.getActivityList().get(0).getOwner());
     }

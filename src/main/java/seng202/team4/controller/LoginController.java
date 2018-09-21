@@ -39,6 +39,7 @@ public class LoginController extends Controller {
 
     /** Updates the list of profiles displayed by loading all the profiles from the database. */
     public void updateProfileList() {
+        profileListVbox.getChildren().clear();
         List<ProfileKey> profileKeys = null;
         try {
             profileKeys = DataLoader.fetchAllProfileKeys();
@@ -50,6 +51,7 @@ public class LoginController extends Controller {
         for (ProfileKey profileKey: profileKeys) {
             ProfileListItemController controller = new ProfileListItemController(applicationStateManager);
             ProfileListItem profileListItem = new ProfileListItem(controller, profileKey);
+            profileListItem.prefWidthProperty().bind(profileListScrollPane.widthProperty());
             profileListItem.setOnMouseClicked(event -> {changeSelectedProfile(profileListItem);});
             profileListVbox.getChildren().add(profileListItem);
         }
@@ -90,6 +92,7 @@ public class LoginController extends Controller {
             try {
                 applicationStateManager.setCurrentProfile(DataLoader.loadProfile(profileKey.getFirstName(), profileKey.getLastName()));
                 applicationStateManager.switchToScreen("MainScreen");
+                ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).reset();
                 System.out.println(String.format("%s %s has logged in!", profileKey.getFirstName(), profileKey.getLastName()));
             } catch (java.sql.SQLException e) {
                 applicationStateManager.displayErrorMessage("An error occurred loading the profile from the database.", e.getMessage());

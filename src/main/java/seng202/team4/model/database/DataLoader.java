@@ -1,5 +1,6 @@
 package seng202.team4.model.database;
 
+import javafx.scene.chart.XYChart;
 import seng202.team4.model.data.*;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
@@ -73,7 +74,7 @@ abstract public class DataLoader extends DataAccesser {
                     set.getString("startTime"),
                     set.getString("duration"),
                     set.getDouble("distance"),
-                    set.getInt("caloriesBurned")
+                    set.getDouble("caloriesBurned")
                     );
             loadActivityDataRows(activity);
             activities.add(activity);
@@ -81,7 +82,7 @@ abstract public class DataLoader extends DataAccesser {
             // Set the owner of the activity as the profile
             activity.setOwner(profile);
         }
-        // Add all activities to the activity list
+        // Add all activities to the activity list (without reinserting into the database)
         profile.addAllActivities(activities);
     }
 
@@ -121,7 +122,7 @@ abstract public class DataLoader extends DataAccesser {
             // Set the owner of the activity as the profile
             goal.setOwner(profile);
         }
-        // Add all activities to the activity list
+        // Add all activities to the activity list (without reinserting into the database)
         profile.addAllGoals(goals);
     }
 
@@ -159,7 +160,7 @@ abstract public class DataLoader extends DataAccesser {
             // Set the owner of the DataRow
             row.setOwner(activity);
         }
-        // Add all activities to the activity list
+        // Add all activities to the activity list (without reinserting into the database)
         activity.addAllDataRows(rows);
     }
 
