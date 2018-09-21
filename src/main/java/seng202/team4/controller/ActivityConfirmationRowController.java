@@ -37,14 +37,19 @@ public class ActivityConfirmationRowController extends Controller {
     @FXML
     private CheckBox selectedCheckBox;
 
+    /** The RowConstraints of the row in the GridPane. */
     @FXML
     private RowConstraints errorRow;
 
+    /** The error Text that is used to display warnings/errors */
     @FXML
     private Text errorText;
 
+    /** The AnchorPane that is the parent Node of the ActivityConfirmationRow. */
     @FXML
     private AnchorPane confirmationRowPane;
+
+
 
     /**
      * Constructor of the ActivityConfirmationRowController.
@@ -55,6 +60,9 @@ public class ActivityConfirmationRowController extends Controller {
         super(applicationStateManager);
     }
 
+    /**
+     * Initializes the ActivityConfirmationRow.
+     */
     @FXML
     public void initialize() {
         activityTypeChoiceBox.getItems().addAll(ActivityType.Other, ActivityType.Walk, ActivityType.Run);
@@ -62,25 +70,47 @@ public class ActivityConfirmationRowController extends Controller {
         selectedCheckBox.setSelected(true);
     }
 
+    /**
+     * Sets the text of the the activity Text in the row.
+     *
+     * @param text String that the Text will be set to.
+     */
     public void setActivityDateText(String text) {
         activityDate.setText(text);
     }
 
-
+    /**
+     * Sets the text of the the distance Text in the row.
+     *
+     * @param text String that the Text will be set to.
+     */
     public void setActivityDistanceText(String text) {
         activityDistance.setText(text);
     }
 
-
+    /**
+     * Sets the text of the the activity name Text in the row.
+     *
+     * @param text String that the Text will be set to.
+     */
     public void setActivityNameText(String text) {
         activityName.setText(text);
     }
 
-
+    /**
+     * Sets the text of the the activity duration in the row.
+     *
+     * @param text String that the Text will be set to.
+     */
     public void setActivityDurationText(String text) {
         activityDuration.setText(text);
     }
 
+    /**
+     * Sets an error for the row. The row is expanded and the error text is set to some error String.
+     *
+     * @param errorString The String of the error to be set.
+     */
     public void setError(String errorString) {
         confirmationRowPane.setPrefHeight(confirmationRowPane.getPrefHeight()+35);
 
@@ -91,14 +121,29 @@ public class ActivityConfirmationRowController extends Controller {
         errorText.setText(errorString);
     }
 
+    /**
+     * Gets whether the ActivityConfirmationRow is selected.
+     *
+     * @return true if the row is selected. false otherwise.
+     */
     public boolean isSelected() {
         return selectedCheckBox.isSelected();
     }
 
+    /**
+     * Gets the ActivityType that is selected in the activityTypeChoiceBox.
+     *
+     * @return The ActivityType that is selected.
+     */
     public ActivityType getSelectedActvityType() {
         return (ActivityType) activityTypeChoiceBox.getSelectionModel().getSelectedItem();
     }
 
+    /**
+     * Sets the selected ActivityType of the activityTypeChoiceBox.
+     *
+     * @param actvityType The ActivityType to set the activityTypeChoiceBox to.
+     */
     public void setSelectedActvityType(ActivityType actvityType) {
         activityTypeChoiceBox.setValue(actvityType);
     }

@@ -33,6 +33,8 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     @FXML
     private GridPane gridPane;
 
+
+
     /**
      * Constructor of the ImportActivitiesPreviewScreenController.
      *
@@ -42,7 +44,6 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         super(applicationStateManager);
         this.activityTabController = activityTabController;
     }
-
 
     /**
      * Action performed when the import activities button is pressed.
@@ -81,7 +82,6 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         }
 
     }
-
 
     /**
      * Loads all activities from the given csv file.
