@@ -140,7 +140,7 @@ public class ActivityTest {
         activity1.addDataRow(row1);
         DataStorer.insertProfile(profile1);
         profile1.addActivity(activity1);
-        
+
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(row1, loadedProfile.getActivityList().get(0).getRawData().get(0));
     }
