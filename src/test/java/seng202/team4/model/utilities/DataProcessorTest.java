@@ -35,15 +35,13 @@ public class DataProcessorTest {
         elevatedDataList.add(new DataRow(0, "2015-04-10","23:43:15",132,30.25469617,-97.83931962,302));
         elevatedDataList.add(new DataRow(0, "2015-04-10","23:43:34",156,30.2541537,-97.83977501,249));
 
-        activityList.add(new Activity("Test Activity on same level", levelDataList));
-        activityList.add(new Activity("Test Activity with elevation", elevatedDataList));
+        activityList.add(new Activity("Walk in the woods - level", levelDataList));
+        activityList.add(new Activity("Walk in the woods - elevated", elevatedDataList));
 
         testProfile.addAllActivities(activityList);
     }
 
     // TODO add test cases where 1 and 0 data points are given
-
-    // TODO make test cases for when only 1 or 0 data points are given in dataList
 
     @Test
     public void totalDistanceLevel() {
@@ -59,7 +57,7 @@ public class DataProcessorTest {
 
     @Test
     public void calculateDuration() {
-        Duration duration = DataProcessor.calculateDuration(testProfile.getActivityList().get(0).getRawData());
+        Duration duration = DataProcessor.calculateDuration(testProfile.getActivityList().get(1).getRawData());
         assertEquals(66, duration.getSeconds());     // Expected value was calculated by hand & calculator
     }
 
@@ -110,5 +108,6 @@ public class DataProcessorTest {
     public void testCalculateAverageSpeed() {
         Activity testActivity = testProfile.getActivityList().get(1);
         double averageSpeed = DataProcessor.calculateAverageSpeed(testActivity.getDistance(), testActivity.getDuration());
+        assertEquals(9.78, averageSpeed, .1);
     }
 }

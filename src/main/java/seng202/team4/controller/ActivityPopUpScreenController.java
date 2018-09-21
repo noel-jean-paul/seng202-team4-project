@@ -6,20 +6,12 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
-import seng202.team4.model.data.enums.ActivityType;
-import seng202.team4.model.database.DataLoader;
-import seng202.team4.model.utilities.DataProcessor;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-
-import static java.time.temporal.ChronoUnit.MINUTES;
-import static java.time.temporal.ChronoUnit.SECONDS;
 
 
 /**
@@ -88,7 +80,6 @@ public class ActivityPopUpScreenController extends Controller {
         distanceGraph.setVisible(false);
         heartRateGraph.setVisible(true);
 
-        //List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
 
         //The next three lines will have to have the correct activity selected
         List<DataRow> dataRow = activity.getRawData();

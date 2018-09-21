@@ -35,7 +35,7 @@ public class ActivityConfirmationRow extends AnchorPane {
      * @param controller The controller of ActivityConfirmationRow.
      * @param activity The activity that the row is displaying.
      */
-    public ActivityConfirmationRow(ActivityConfirmationRowController controller, Activity activity) throws SQLException {
+    public ActivityConfirmationRow(ActivityConfirmationRowController controller, Activity activity) {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("view/ActivityConfirmationRow.fxml"));
         loader.setControllerFactory(c -> {return controller;});
         loader.setRoot(this);

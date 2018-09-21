@@ -3,11 +3,10 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
-import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.enums.ActivityType;
-
-import java.awt.*;
 
 /**
  * The controller for an activityConfirmationRow.
@@ -37,6 +36,15 @@ public class ActivityConfirmationRowController extends Controller {
     /** The CheckBox that allows the user to pick which activities they want to import. */
     @FXML
     private CheckBox selectedCheckBox;
+
+    @FXML
+    private RowConstraints errorRow;
+
+    @FXML
+    private Text errorText;
+
+    @FXML
+    private AnchorPane confirmationRowPane;
 
     /**
      * Constructor of the ActivityConfirmationRowController.
@@ -73,6 +81,15 @@ public class ActivityConfirmationRowController extends Controller {
         activityDuration.setText(text);
     }
 
+    public void setError(String errorString) {
+        confirmationRowPane.setPrefHeight(confirmationRowPane.getPrefHeight()+35);
+
+        errorRow.setMaxHeight(35);
+        errorRow.setMinHeight(35);
+        errorRow.setPercentHeight(35);
+
+        errorText.setText(errorString);
+    }
 
     public boolean isSelected() {
         return selectedCheckBox.isSelected();

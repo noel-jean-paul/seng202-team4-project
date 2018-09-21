@@ -1,7 +1,7 @@
 package seng202.team4.model.utilities;
 
-import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.DataRow;
+import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 
 import java.time.Duration;
@@ -41,7 +41,11 @@ public class DataProcessor {
      * @return the average speed of the user during the activity in km/h.
      */
     public static double calculateAverageSpeed(double distance, Duration time) {
-        return (distance / time.getSeconds()) * 3.6;
+        if (time.getSeconds() > 0) {
+            return (distance / time.getSeconds()) * 3.6;
+        } else {
+            return 0;
+        }
     }
 
     /**

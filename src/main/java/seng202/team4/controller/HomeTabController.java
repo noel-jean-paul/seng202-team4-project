@@ -1,7 +1,5 @@
 package seng202.team4.controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
@@ -10,9 +8,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.text.Text;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.enums.ActivityType;
-import seng202.team4.model.database.DataLoader;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
