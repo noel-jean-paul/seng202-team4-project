@@ -61,8 +61,15 @@ public class ImportActivitiesPreviewScreenController extends Controller {
 
                 // Store all data rows in the database as they have not been stored yet but are in the rawData list
                 for (DataRow dataRow : activity.getRawData()) {
+                    // Set the owner manually as addDataRow has not been called
                     dataRow.setOwner(activity);
-                    DataStorer.insertDataRow(dataRow);
+                }
+                try {
+                    // Insert the datarows at once using a transaction
+                    DataStorer.insertDataRowTransaction(activity.getRawData());
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                    // TODO: 21/09/18 Change to print error to file
                 }
                 activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             }

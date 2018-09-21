@@ -11,6 +11,10 @@ import java.util.List;
 abstract public class DataStorer extends DataAccesser {
     /* Class to handle inserting and deleting of objects from the database */
 
+    private static String dataRowInsertSQL = "insert into dataRow (rowNumber, rowDate, time, heartRate, latitude, " +
+            "longitude, elevation, name, activityDate, firstName, lastName) " +
+            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
     /** Add a profile to the database.
      *  If the combination of profile firstName and lastName is not unique, the profile will not be added.
      *  It is assumed that all profile fields are correctly formatted.
@@ -102,17 +106,11 @@ abstract public class DataStorer extends DataAccesser {
 
     /** Create the statement for inserting a dataRow
      *
+     * @param statement the PreparedStatement whose wildcards are being set
      * @param dataRow the dataRow being inserted
-     * @return a PreparedStatement for inserting the dataRow
      * @throws SQLException if an error occurred regarding the database
      */
-    private static PreparedStatement initInsertDataRowStatement(DataRow dataRow) throws SQLException {
-        assert dataRow != null;
-
-        String insert = "insert into dataRow (rowNumber, rowDate, time, heartRate, latitude, longitude, elevation, " +
-                "name, activityDate, firstName, lastName) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(insert);
-
+    private static void setDataRowInsertStatement(PreparedStatement statement, DataRow dataRow) throws SQLException {
         // set the wildcards (indexed from 1)
         statement.setString(1, String.valueOf(dataRow.getNumber()));
         statement.setString(2, String.valueOf(dataRow.getDate()));
@@ -125,8 +123,6 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(9, String.valueOf(dataRow.getOwner().getDate()));
         statement.setString(10, dataRow.getOwner().getOwner().getFirstName());
         statement.setString(11, dataRow.getOwner().getOwner().getLastName());
-
-        return statement;
     }
 
     /** Add a dataRow to the database
@@ -137,11 +133,13 @@ abstract public class DataStorer extends DataAccesser {
      * @throws SQLException if an error occurred regarding the database
      */
     public static void insertDataRow(DataRow dataRow) throws SQLException {
-        statement = initInsertDataRowStatement(dataRow);
+        assert dataRow != null;
+
+        statement = connection.prepareStatement(dataRowInsertSQL);
+        DataStorer.setDataRowInsertStatement(statement, dataRow);
         statement.executeUpdate();
         statement.close();
     }
-
 
     /** Insert a list of dataRows into the database using a transaciton
      *
@@ -149,7 +147,20 @@ abstract public class DataStorer extends DataAccesser {
      * @throws SQLException if an error occurred regarding the database
      */
     public static void insertDataRowTransaction(List<DataRow> rows) throws SQLException {
+        // Set auto-commit mode to false
+        connection.setAutoCommit(false);
 
+        for (DataRow dataRow : rows) {
+            assert dataRow != null;
+            statement = connection.prepareStatement(dataRowInsertSQL);
+            setDataRowInsertStatement(statement, dataRow);
+            statement.executeUpdate();
+        }
+
+        connection.commit();
+
+        // Set auto-commit mode back to true
+        connection.setAutoCommit(true);
     }
 
     //
