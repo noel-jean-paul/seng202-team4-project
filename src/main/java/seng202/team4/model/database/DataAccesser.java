@@ -7,9 +7,7 @@ abstract public class DataAccesser {
     static ResultSet set;
     static PreparedStatement statement;
 
-    /** Initialise the connection to a the production database.
-     *  @throws SQLException if the connection could not be opened
-     */
+    /** Initialise the connection to a the production database. */
     public static void initialiseMainConnection() throws SQLException {
         String url = "jdbc:sqlite:fitness_tracker.sqlite";
         connection = DriverManager.getConnection(url);
@@ -20,12 +18,22 @@ abstract public class DataAccesser {
 //        statement.executeUpdate();
     }
 
-    /** Initialise the connection to a the test database.
-     *  @throws SQLException if the connection could not be opened
-     */
-    public static void initialiseTestConnection() throws SQLException {
+    /** Initialise the connection to a the test database. */
+    public static void initialiseTestConnection() {
         String url = "jdbc:sqlite:testDatabase.sqlite";
-        connection = DriverManager.getConnection(url);
+        initialiseConnection(url);
+    }
+
+    /** Initialise a connection to a database
+     *
+     * @param url the url of the database to connect to
+     */
+    private static void initialiseConnection(String url) {
+        try {
+            connection = DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /** Drop all tables from both the production and test databases and
@@ -49,10 +57,10 @@ abstract public class DataAccesser {
         Statement stmt = connection.createStatement();
 
         // Drop the tables
-        String dropProfile = "drop table profile;";
-        String dropActivity = "drop table activity;";
-        String dropGoal = "drop table goal;";
-        String dropDataRow = "drop table dataRow;";
+        String dropProfile = "drop table if exists profile;";
+        String dropActivity = "drop table if exists activity;";
+        String dropGoal = "drop table if exists goal;";
+        String dropDataRow = "drop table if exists dataRow;";
 
         stmt.addBatch(dropProfile);
         stmt.addBatch(dropActivity);
@@ -60,7 +68,7 @@ abstract public class DataAccesser {
         stmt.addBatch(dropDataRow);
 
         // Create new tables
-        String createProfile = "create table profile ("+
+        String createProfile = "create table if not exists profile ("+
                 "firstName text not null, " +
                 "lastName text not null, " +
                 "dateOfBirth character(10) not null, " +
@@ -69,7 +77,7 @@ abstract public class DataAccesser {
                 "primary key (firstName, lastName)" +
                 ");";
 
-        String createActivity = "create table activity ( " +
+        String createActivity = "create table if not exists activity ( " +
                 "name text, " +
                 "activityDate character(10), " +
                 "description text, " +
@@ -84,7 +92,7 @@ abstract public class DataAccesser {
                 "foreign key (firstName, lastName) references profile" +
                 ");";
 
-        String createGoal = "create table goal (\n" +
+        String createGoal = "create table if not exists goal (\n" +
                 "goalNumber integer,\n" +
                 "progress integer constraint check_progress check (progress between 0 and 100),\n" +
                 "type character(3) constraint check_type check (type in (\"Run\", \"Walk\")),\n" +
@@ -101,7 +109,7 @@ abstract public class DataAccesser {
                 "on delete cascade on update no action\n" +
                 ");";
 
-        String createDataRow = "create table dataRow (\n" +
+        String createDataRow = "create table if not exists dataRow (\n" +
                 "  rowNumber integer,\n" +
                 "  rowDate character(10),\n" +
                 "  time character(8) not null,\n" +
