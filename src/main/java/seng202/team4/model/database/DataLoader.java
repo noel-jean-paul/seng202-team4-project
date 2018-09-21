@@ -65,7 +65,7 @@ abstract public class DataLoader extends DataAccesser {
         statement.setString(1, profile.getFirstName());
         statement.setString(2, profile.getLastName());
 
-        set = statement.executeQuery();
+        ResultSet set = statement.executeQuery();
 
         // Parse the result set into a list - ResultSet cursor starts 1 before the first row
         while (set.next()) {
