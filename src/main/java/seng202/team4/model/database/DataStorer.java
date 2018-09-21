@@ -106,7 +106,7 @@ abstract public class DataStorer extends DataAccesser {
      * @param activity the activity which the data row belongs to. Assumed to be in the database already.
      * @throws SQLException if an error occurred regarding the database
      */
-    public static void insertDataRow(DataRow dataRow, Activity activity) throws SQLException {
+    public static void insertDataRow(DataRow dataRow) throws SQLException {
         assert dataRow != null;
 
         String insert = "insert into dataRow (rowNumber, rowDate, time, heartRate, latitude, longitude, elevation, " +
@@ -120,10 +120,10 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(5, String.valueOf(dataRow.getLatitude()));
         statement.setString(6, String.valueOf(dataRow.getLongitude()));
         statement.setString(7, String.valueOf(dataRow.getElevation()));
-        statement.setString(8, activity.getName());
-        statement.setString(9, String.valueOf(activity.getDate()));
-        statement.setString(10, activity.getOwner().getFirstName());
-        statement.setString(11, activity.getOwner().getLastName());
+        statement.setString(8, dataRow.getOwner().getName());
+        statement.setString(9, String.valueOf(dataRow.getOwner().getDate()));
+        statement.setString(10, dataRow.getOwner().getOwner().getFirstName());
+        statement.setString(11, dataRow.getOwner().getOwner().getLastName());
 
         statement.executeUpdate();
 

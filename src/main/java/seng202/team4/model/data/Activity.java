@@ -271,7 +271,7 @@ public class Activity implements Comparable<Activity> {
         // Set the owner
         row.setOwner(this);
 
-        DataStorer.insertDataRow(row, this);
+        DataStorer.insertDataRow(row);
     }
 
     /** Adds all dataRows of the specified collection to rawData and sorts the rawData list
