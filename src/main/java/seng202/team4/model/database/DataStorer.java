@@ -3,7 +3,9 @@ package seng202.team4.model.database;
 import seng202.team4.model.data.*;
 import seng202.team4.model.data.enums.*;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
+import java.util.List;
 
 
 abstract public class DataStorer extends DataAccesser {
@@ -98,20 +100,19 @@ abstract public class DataStorer extends DataAccesser {
         statement.close();
     }
 
-    /** Add a dataRow to the database
-     *  If the combination of dataRow number and activty name/date is not unique, the dataRow will not be added.
-     *  It is assumed that all dataRow fields are correctly formatted.
+    /** Create the statement for inserting a dataRow
      *
-     * @param dataRow the data row to be added
-     * @param activity the activity which the data row belongs to. Assumed to be in the database already.
+     * @param dataRow the dataRow being inserted
+     * @return a PreparedStatement for inserting the dataRow
      * @throws SQLException if an error occurred regarding the database
      */
-    public static void insertDataRow(DataRow dataRow) throws SQLException {
+    private static PreparedStatement initInsertDataRowStatement(DataRow dataRow) throws SQLException {
         assert dataRow != null;
 
         String insert = "insert into dataRow (rowNumber, rowDate, time, heartRate, latitude, longitude, elevation, " +
                 "name, activityDate, firstName, lastName) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        statement = connection.prepareStatement(insert);
+        PreparedStatement statement = connection.prepareStatement(insert);
+
         // set the wildcards (indexed from 1)
         statement.setString(1, String.valueOf(dataRow.getNumber()));
         statement.setString(2, String.valueOf(dataRow.getDate()));
@@ -125,9 +126,30 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(10, dataRow.getOwner().getOwner().getFirstName());
         statement.setString(11, dataRow.getOwner().getOwner().getLastName());
 
-        statement.executeUpdate();
+        return statement;
+    }
 
+    /** Add a dataRow to the database
+     *  If the combination of dataRow number and activty name/date is not unique, the dataRow will not be added.
+     *  It is assumed that all dataRow fields are correctly formatted.
+     *
+     * @param dataRow the data row to be added
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public static void insertDataRow(DataRow dataRow) throws SQLException {
+        statement = initInsertDataRowStatement(dataRow);
+        statement.executeUpdate();
         statement.close();
+    }
+
+
+    /** Insert a list of dataRows into the database using a transaciton
+     *
+     * @param rows the list of dataRows to be inserted
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public static void insertDataRowTransaction(List<DataRow> rows) throws SQLException {
+
     }
 
     //

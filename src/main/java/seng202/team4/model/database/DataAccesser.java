@@ -28,6 +28,14 @@ abstract public class DataAccesser {
         connection = DriverManager.getConnection(url);
     }
 
+    /** Check if a connection to the database is currently open
+     *
+     * @return true if there is an open connection, false otherwise
+     */
+    public static boolean checkNullConnection() {
+        return connection == null;
+    }
+
     /** Drop all tables from both the production and test databases and
      *  re-create them.
      * @throws SQLException if an error occurred regarding the database
