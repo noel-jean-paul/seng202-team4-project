@@ -67,6 +67,7 @@ public class ActivityTest {
         profile1.getGoalList().clear();
         DataAccesser.clearDatabase();
         activity1.getRawData().clear();
+        activity2.getRawData().clear();
     }
 
     @Test
@@ -138,7 +139,8 @@ public class ActivityTest {
     public void addDataRow_checkStoredInDatabase() throws SQLException {
         activity1.addDataRow(row1);
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
+        profile1.addActivity(activity1);
+        
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(row1, loadedProfile.getActivityList().get(0).getRawData().get(0));
     }
@@ -180,7 +182,6 @@ public class ActivityTest {
 
         // Remove the activity from the list and the database
         activity1.removeDataRow(row1);
-        System.out.println(row1.getOwner().getOwner().getFirstName());
 
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
