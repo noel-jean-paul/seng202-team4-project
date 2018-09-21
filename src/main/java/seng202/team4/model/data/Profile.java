@@ -236,10 +236,10 @@ public class Profile {
     public void addActivity(Activity activity) throws SQLException {
         activityList.add(activity);
         java.util.Collections.sort(activityList);   // Keep the lsit ordered
-        DataStorer.insertActivity(activity, this);
-
         // Set this as the activity owner
         activity.setOwner(this);
+
+        DataStorer.insertActivity(activity, this);
     }
 
     /** Adds all activities of the specified collection to the profile activityList and sorts the activityList
@@ -260,10 +260,10 @@ public class Profile {
     public void addGoal(Goal goal) throws SQLException {
         goalList.add(goal);
         java.util.Collections.sort(goalList);
-        DataStorer.insertGoal(goal, this);
-
         // Set this as the activity owner
         goal.setOwner(this);
+
+        DataStorer.insertGoal(goal, this);
     }
 
     /** Adds all goals of the specified collection to the goalList and sorts the goalList
