@@ -16,6 +16,7 @@ public class ProfileListItemController extends Controller {
     private Text nameText;
 
 
+
     /**
      * Constructor of the ProfileListItemController.
      *
@@ -24,7 +25,6 @@ public class ProfileListItemController extends Controller {
     public ProfileListItemController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
-
 
     /** Sets the name of the name Text. */
     public void setNameText(String text) {

@@ -46,11 +46,11 @@ public class CreateProfileController extends Controller {
     private Text errorText;
 
 
+
     /** Creates a new CreateProfileController with the given ApplicationStateManager. */
     public CreateProfileController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
-
 
     /**
      * Action performed when the user clicks the create profile button.
@@ -131,6 +131,10 @@ public class CreateProfileController extends Controller {
 
     }
 
+    /**
+     * Switches back to the login screen and resets the screen.
+     * Is called when the user hits the 'cancel' button.
+     */
     @FXML
     public void cancel() {
         applicationStateManager.switchToScreen("LoginScreen");
@@ -138,6 +142,9 @@ public class CreateProfileController extends Controller {
 
     }
 
+    /**
+     * Resets the screen by clearing all TextFields.
+     */
     public void reset() {
         firstNameField.setText("");
         lastNameField.setText("");

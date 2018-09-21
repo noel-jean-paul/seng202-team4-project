@@ -4,13 +4,11 @@ import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;
 import seng202.team4.model.utilities.HealthWarning;
 
+import java.sql.Array;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 public class Profile {
@@ -283,7 +281,7 @@ public class Profile {
      */
     public void removeActivity(Activity activity) throws SQLException {
         activityList.remove(activity);
-        DataStorer.deleteActivity(activity, this);
+        DataStorer.deleteActivities(new ArrayList<>(Collections.singletonList(activity)));
     }
 
     /** Remove the goal from the goalList and the database
@@ -292,7 +290,7 @@ public class Profile {
      */
     public void removeGoal(Goal goal) throws SQLException {
         goalList.remove(goal);
-        DataStorer.deleteGoal(goal, this);
+        DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
     }
     // TODO JavaDoc - Kenny
     /**
