@@ -66,17 +66,25 @@ public class ActivityTabController extends Controller {
     @FXML
     private Label caloriesLabel;
 
+    /** The text that displays an error message to the user if there is no data present */
     @FXML
     private Text noDataText;
 
+    /** The text that displays name of the distance metric*/
     @FXML
     private Text distanceText;
 
+    /** The text that displays name of the speed metric*/
     @FXML
     private Text speedText;
 
+    /** The text that displays name of the calories metric*/
     @FXML
     private Text caloriesText;
+
+    /** The text that displays time period of the metrics, whether today, the last 7 days, or the last 30 days*/
+    @FXML
+    private Text metricsTitleText;
 
 
     private boolean isTableReorderable = true;
@@ -110,6 +118,10 @@ public class ActivityTabController extends Controller {
         averageSpeedColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
         caloriesColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
         typeColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
+        distanceLabel.setVisible(false);
+        speedLabel.setVisible(false);
+        caloriesLabel.setVisible(false);
+        metricsTitleText.setVisible(false);
     }
 
     public void updateTable() {
@@ -177,12 +189,10 @@ public class ActivityTabController extends Controller {
      */
     @FXML
     void getDailyMetrics() {
+        metricsTitleText.setVisible(true);
+        metricsTitleText.setText("Today's Metrics");
         int request = 1;
-        List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
         LocalDate startDate = LocalDate.now();
-//        System.out.println(activityList.get(0).getDate());
-//        System.out.println(startDate);
-//        System.out.println(ChronoUnit.DAYS.between(activityList.get(0).getDate(), startDate));
         setLabels(request, startDate);
     }
 
@@ -191,6 +201,8 @@ public class ActivityTabController extends Controller {
      */
     @FXML
     void getWeeklyMetrics() {
+        metricsTitleText.setVisible(true);
+        metricsTitleText.setText("Weekly Metrics");
         int request = 2;
         LocalDate startDate = LocalDate.now();
         setLabels(request, startDate);
@@ -201,6 +213,8 @@ public class ActivityTabController extends Controller {
      */
     @FXML
     void getMonthlyMetrics() {
+        metricsTitleText.setVisible(true);
+        metricsTitleText.setText("Monthly Metrics");
         int request = 3;
         LocalDate startDate = LocalDate.now();
         setLabels(request, startDate);
@@ -222,7 +236,7 @@ public class ActivityTabController extends Controller {
         for (Activity currentActivity : activityList) {
             timeDifference = ChronoUnit.DAYS.between(currentActivity.getDate(), startDate);
             if (request == 1) { //we want daily data
-                if (timeDifference >= 0 && timeDifference <= 1) {
+                if (timeDifference == 0) {
                     totalDistance += currentActivity.getDistance();
                     totalTime += currentActivity.getDuration().toMinutes();
                     totalCalories += currentActivity.getCaloriesBurned();
@@ -241,7 +255,6 @@ public class ActivityTabController extends Controller {
                 }
             }
         }
-        //ToDo tidy the next lines up, find a better way to do it
         if (totalDistance == 0) {
             distanceLabel.setVisible(false);
             distanceText.setVisible(false);
@@ -249,6 +262,9 @@ public class ActivityTabController extends Controller {
             speedText.setVisible(false);
             caloriesLabel.setVisible(false);
             caloriesText.setVisible(false);
+            if (request == 1) {
+                noDataText.setText("You have no activities recorded today");
+            }
             if (request == 2) {
                 noDataText.setText("You have no activities in the last week");
             }
@@ -266,7 +282,7 @@ public class ActivityTabController extends Controller {
             caloriesText.setVisible(true);
             distanceLabel.setVisible(true);
             averageSpeed = (totalDistance / 1000.0) / (totalTime / 60.0);
-            String formattedDistance = String.format("%.01f", totalDistance);
+            String formattedDistance = String.format("%.00f", totalDistance);
             String formattedSpeed = String.format("%.01f", averageSpeed);
             String formattedCalories = String.format("%.01f", totalCalories);
             distanceLabel.setText(formattedDistance + " km");
