@@ -65,9 +65,14 @@ public class MapsController extends Controller {
      * @param activity The Activity to display on the map.
      */
     public void initMap(Activity activity) {
-        headingText.setText(String.format("Map of '%s'", activity.getName()));
-        Route newRoute = generateRoute(activity);
-        displayRoute(newRoute);
+        if (activity.getRawData().size() > 0) {
+            headingText.setText(String.format("Map of '%s'", activity.getName()));
+            Route newRoute = generateRoute(activity);
+            displayRoute(newRoute);
+        } else {
+            headingText.setText(String.format("No map data found for '%s'", activity.getName()));
+        }
+
     }
 
     /**
