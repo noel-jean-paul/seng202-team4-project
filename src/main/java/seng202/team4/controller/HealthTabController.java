@@ -111,7 +111,7 @@ public class HealthTabController extends Controller {
     /**
      *
      */
-    public void updateTable() {
+    public void reloadTab() {
         ObservableList<HealthWarning> warningList = FXCollections.observableArrayList(applicationStateManager.getCurrentProfile().getWarningList());
         dateColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,LocalDate>("warningDate"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,String>("typeString"));
@@ -121,6 +121,9 @@ public class HealthTabController extends Controller {
 
         ScrollBar scrollBarHorizontal = (ScrollBar) healthWarningTable.lookup(".scroll-bar:hotizontal");
         scrollBarHorizontal.setVisible(false);
+
+        currentUrl = "https://www.google.com/";
+        engine.load(currentUrl);
     }
 
     /**
