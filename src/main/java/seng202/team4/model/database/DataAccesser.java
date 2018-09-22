@@ -113,7 +113,7 @@ abstract public class DataAccesser {
                 "  rowNumber integer,\n" +
                 "  rowDate character(10),\n" +
                 "  time character(8) not null,\n" +
-                "  heartRate integer constraint check_heartRate check (heartRate between 60 and 250),\n" +
+                "  heartRate integer constraint check_heartRate check (heartRate between 20 and 250),\n" +
                 "  latitude double constraint check_latitude check (latitude between -90 and 90),\n" +
                 "  longitude double constraint check_longitude check (longitude between -180 and 180),\n" +
                 "  elevation double constraint check_elevation check (elevation between 0 and 4000),\n" +
