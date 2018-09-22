@@ -4,8 +4,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
+import seng202.team4.model.data.enums.WarningType;
 
 public class WarningDescriptionPopUpController extends Controller{
+
+    @FXML
+    private GridPane popUpWarning;
 
     @FXML
     private Label averageLabel;
@@ -43,41 +48,51 @@ public class WarningDescriptionPopUpController extends Controller{
 
     @FXML
     public void initialize() {
-        setDescriptionText();
         descriptionText.setWrapText(true);
         descriptionText.setEditable(false);
     }
 
     public void setAverageLabel(int heartRate) {
-        averageLabel.setText(Integer.toString(heartRate));
+        averageLabel.setText(Integer.toString(heartRate) + "bpm");
     }
 
     public void setMinLabel(int heartRate) {
-        minLabel.setText(Integer.toString(heartRate));
+        minLabel.setText(Integer.toString(heartRate) + "bpm");
     }
 
     public void setMaxLabel(int heartRate) {
-        maxLabel.setText(Integer.toString(heartRate));
+        maxLabel.setText(Integer.toString(heartRate) + "bpm");
     }
 
-    public void setHeartRateRecommendation() {
+    public void setHeartRateRecommendation(String heartRateType) {
+        heartRateRecommendation.setText("Recommended " + heartRateType + ":");
 
+    }
+
+    public void setRecommendedLabel(int heartRate) {
+        recommendedLabel.setText(heartRate + "bpm");
     }
 
     public void setPopUpTitle(String title) {
         popUpTitle.setText(title);
     }
 
-    public void setDescriptionText() {
+    /*public void setDescriptionText(WarningType type) {
+        String text;
+        if (type == WarningType.Tachy) {
+            text = "Your heart rate was over your recommended maximum heart rate as displayed below." +
+                    "It is advisable that you keep track of your heart rate, and if a pattern continues"
+            descriptionText.setText();
+        }
+    }*/
 
-    }
-
-    public void setRecommendedLabel() {
-
+    @FXML
+    void cancelPressed() {
+        closePopup();
     }
 
     @FXML
     void closePopup() {
-
+        applicationStateManager.closePopUP(popUpWarning);
     }
 }
