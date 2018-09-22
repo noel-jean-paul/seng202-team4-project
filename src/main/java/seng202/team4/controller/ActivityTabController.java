@@ -334,7 +334,6 @@ public class ActivityTabController extends Controller {
 
     /** Resets the ActivityTab. */
     public void reset() {
-        updateTable();
         showGraphsButton.setDisable(true);
         showMapsButton.setDisable(true);
     }

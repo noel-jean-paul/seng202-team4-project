@@ -69,10 +69,10 @@ import javafx.scene.text.Text;
      */
     @FXML
     public void initialize() {
-        Pane Pane = new Pane();
+        Pane pane = new Pane();
         activityTabController = new ActivityTabController(applicationStateManager);
-        Pane = Utilities.loadPane("ActivityTab.fxml", activityTabController);
-        activityPane.getChildren().setAll(Pane);
+        pane = Utilities.loadPane("ActivityTab.fxml", activityTabController);
+        activityPane.getChildren().setAll(pane);
 
         // TODO: Figure out how to get these tabs to fit to parent, so they can expand
         Pane home = new Pane();

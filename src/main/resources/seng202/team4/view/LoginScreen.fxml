@@ -39,7 +39,7 @@
                         <RowConstraints maxHeight="93.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ScrollPane fx:id="profileListScrollPane" hbarPolicy="NEVER" prefWidth="360.0" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                        <ScrollPane fx:id="profileListScrollPane" hbarPolicy="NEVER" prefWidth="360.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                            <content>
                               <VBox fx:id="profileListVbox" />
                            </content>

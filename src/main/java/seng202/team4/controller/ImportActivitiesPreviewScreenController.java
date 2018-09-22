@@ -7,7 +7,7 @@ import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.utilities.DataProcessor;
-import seng202.team4.model.utilities.FileImporter;
+import seng202.team4.model.utilities.FileParser;
 import seng202.team4.view.ActivityConfirmationRow;
 
 import java.io.File;
@@ -89,13 +89,13 @@ public class ImportActivitiesPreviewScreenController extends Controller {
      * @param csvFile The csv file that contains the data of the activities.
      */
     public void loadActivities(File csvFile) throws IOException {
-        FileImporter fileImporter = new FileImporter();
+        FileParser fileParser = new FileParser();
         ArrayList<Activity> validActivities = new ArrayList<>();
         ArrayList<Activity> warningActivities = new ArrayList<>();
         ArrayList<Activity> skippedActivities = new ArrayList<>();
 
         try {
-            fileImporter.readFile(csvFile, validActivities, warningActivities, skippedActivities);
+            fileParser.parseFileToActivites(csvFile, validActivities, warningActivities, skippedActivities);
         } catch (IOException exception) {
             throw exception;
         }

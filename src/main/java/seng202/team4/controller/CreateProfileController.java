@@ -153,5 +153,6 @@ public class CreateProfileController extends Controller {
         yearField.setText("");
         weightField.setText("");
         heightField.setText("");
+        errorText.setText("");
     }
 }

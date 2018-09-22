@@ -12,16 +12,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 
-public class FileImporter {
+public class FileParser {
+
     /**
+     * Parse a given csv file into lists of activities.
      *
-     * @param file the name of the file that is being imported
+     * @param file the name of the file that is to be parsed.
      * @param validActivities ArrayList of that will be filled with the activities that were successfully parsed with no warnings or errors.
      * @param warningActivities  ArrayList that will be filled with the activities that were parsed with warnings.
      * @param skippedActivities ArrayList that will be filled with the activities that had to be skipped due to lack of valid data.
      * @return the arrayList of all activities' data points.
      */
-    public ArrayList readFile(File file, ArrayList<Activity> validActivities, ArrayList<Activity> warningActivities, ArrayList<Activity> skippedActivities) throws IOException {
+    public ArrayList parseFileToActivites(File file, ArrayList<Activity> validActivities, ArrayList<Activity> warningActivities, ArrayList<Activity> skippedActivities) throws IOException {
 
         String line;   //empty line into which data will be read
         String csvSplitBy = ",";    //split on the comma
@@ -58,7 +60,14 @@ public class FileImporter {
                                 double longitude = (Double.parseDouble(dataPoints[4]));
                                 double elevation = (Double.parseDouble(dataPoints[5]));
 
-                                rows.add(new DataRow(counter, date, time, heartRate, latitude, longitude, elevation));   //add the data to a new ActivityRawData element
+                                if ((latitude >= -90 && latitude <= 90) && (longitude >= -180 && longitude <= 180)) {
+                                    rows.add(new DataRow(counter, date, time, heartRate, latitude, longitude, elevation));   //add the data to a new ActivityRawData element
+                                } else {
+                                    warning = true;
+                                    System.out.println(latitude);
+                                    System.out.println(longitude);
+                                }
+
                             } catch (Exception e) {
                                 warning = true;
                             }
@@ -93,13 +102,13 @@ public class FileImporter {
 
     public static void main(String[] args) {
         String filename = "seng202_2018_example_data.csv";  //example file for testing purposes
-        FileImporter fileImporter = new FileImporter();
+        FileParser fileParser = new FileParser();
         ArrayList<Activity> validActivities = new ArrayList<>(); // Creates a list of all activities parsed in the file
         ArrayList<Activity> warningActivities = new ArrayList<>();
         ArrayList<Activity> skippedActivities = new ArrayList<>();
         ArrayList<DataRow> rows = new ArrayList<>();
         try {
-            fileImporter.readFile(new File(filename), validActivities, warningActivities, skippedActivities);
+            fileParser.parseFileToActivites(new File(filename), validActivities, warningActivities, skippedActivities);
         } catch (IOException e) {
 
         }
