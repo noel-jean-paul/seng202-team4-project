@@ -82,7 +82,8 @@ public class App extends Application {
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
 
-        primaryStage.setMaximized(true);
+        primaryStage.setWidth(1280);
+        primaryStage.setHeight(720);
     }
 
     public static void main(String[] args) {

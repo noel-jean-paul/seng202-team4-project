@@ -153,6 +153,7 @@ import javafx.scene.text.Text;
         if (applicationStateManager.getCurrentProfile() != null) {
             homeTabController.loadData();
         }
+        activityTabController.reset();
     }
 
 }
