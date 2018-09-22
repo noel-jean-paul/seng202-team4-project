@@ -4,6 +4,7 @@ import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.Profile;
+import seng202.team4.model.data.enums.ProfileFields;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -33,19 +34,17 @@ public abstract class DataUpdater extends DataAccesser {
 
         statement.executeUpdate();
 
-        // Determine what needs to be upated in the goals/activities
-        boolean propagateUpdates;
-        String updateField;
-        if (field.equals("firstName")) {
-            propagateUpdates = true;
-            updateField = "firstName";
+        // Propagate the updates if a primary key was updated
+        if (field.equals(ProfileFields.firstName.toString()) || field.equals(ProfileFields.lastName.toString())) {
+            // Update the activities
+            updateActivities(profile.getActivityList(), field, value);
 
+            // Update the goals
+            updateGoals(profile.getGoalList(), field, value);
         }
 
-        // Update the activities
-
-        // Update the goals
-        //updateActivity
+        //Reset autoCommit to false as removing goals and activities will make it true
+        connection.setAutoCommit(false);
 
         // Commit the updates
         connection.commit();
@@ -57,12 +56,12 @@ public abstract class DataUpdater extends DataAccesser {
 
     /** Update the field of an activity
      *
-     * @param activity the activity to be updated
+     * @param activities the activities to be updated
      * @param field the field of the activity to be updated
      * @param value the new value for the field
      * @throws SQLException if an error occurred regarding the database
      */
-    public static void updateActivity(Activity activity, String field, String value)
+    public static void updateActivities(List<Activity> activities, String field, String value)
             throws SQLException {
         // Set auto-commit mode to false
         connection.setAutoCommit(false);
@@ -74,18 +73,23 @@ public abstract class DataUpdater extends DataAccesser {
                 "firstName = (?) and " +
                 "lastName = (?)";
 
-        statement = connection.prepareStatement(update);
-        // Set wildcards (indexed from 1)
-        statement.setString(1, value);
-        statement.setString(2, activity.getName());
-        statement.setString(3, activity.getDate().toString());
-        statement.setString(4, activity.getOwner().getFirstName());
-        statement.setString(5, activity.getOwner().getLastName());
+        for (Activity activity : activities) {
+            statement = connection.prepareStatement(update);
+            // Set wildcards (indexed from 1)
+            statement.setString(1, value);
+            statement.setString(2, activity.getName());
+            statement.setString(3, activity.getDate().toString());
+            statement.setString(4, activity.getOwner().getFirstName());
+            statement.setString(5, activity.getOwner().getLastName());
 
-        statement.executeUpdate();
+            statement.executeUpdate();
 
-        // Update the dataRows
-        // TODO: 22/09/18
+            // Update the dataRows
+            // TODO: 22/09/18
+
+            // Reset auto-commit mode to false every iteration as it will be set true by deleteDataRows
+            connection.setAutoCommit(false);
+        }
 
         // Commit the updates
         connection.commit();
@@ -97,28 +101,37 @@ public abstract class DataUpdater extends DataAccesser {
 
     /** Update a field of a goal
      *
-     * @param goal the goal to be updated
+     * @param goals the goals to be updated
      * @param field the field to be updated
      * @param value the new value for the field
      * @throws SQLException if an error occurred regarding the database
      */
-    public static void updateGoal(Goal goal, String field, String value) throws SQLException {
+    public static void updateGoals(List<Goal> goals, String field, String value) throws SQLException {
+        // Set auto-commit mode to false
+        connection.setAutoCommit(false);
+
         update = "update goal set " + field + " = (?) where " +
                 "goalNumber = (?) and " +
                 "firstName = (?) and " +
                 "lastName = (?)";
 
-        statement = connection.prepareStatement(update);
-        // Set wildcards (indexed from 1)
-        statement.setString(1, value);
-        statement.setDouble(2, goal.getNumber());
-        statement.setString(3, goal.getOwner().getFirstName());
-        statement.setString(4, goal.getOwner().getLastName());
+        for (Goal goal : goals) {
+            statement = connection.prepareStatement(update);
+            // Set wildcards (indexed from 1)
+            statement.setString(1, value);
+            statement.setDouble(2, goal.getNumber());
+            statement.setString(3, goal.getOwner().getFirstName());
+            statement.setString(4, goal.getOwner().getLastName());
 
-        statement.executeUpdate();
+            statement.executeUpdate();
+        }
+
+        // Commit the updates
+        connection.commit();
 
         // Cleanup
         statement.close();
+        connection.setAutoCommit(true);
     }
 
     /** Update a field of a DataRow

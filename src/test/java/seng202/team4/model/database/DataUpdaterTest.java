@@ -64,11 +64,11 @@ public class DataUpdaterTest {
 
     @Before
     public void setUpReccuring() throws SQLException {
-        // Initialise profile everytime to undo changes to the primary keys
+        // Initialise profile before every test to undo changes to the primary keys
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
 
-        // Initialise activity
+        // Initialise activity before every test to undo changes to the primary keys
         activity1 = new Activity("Run in the park", "2017-12-12", "", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
@@ -93,42 +93,65 @@ public class DataUpdaterTest {
         // Change an aspect of the primary key
         profile1.setFirstName("Ben");
 
+        // Check that the activiteis were updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-        assertEquals(profile1, loadedProfile.getActivityList());
+        assertEquals(profile1.getActivityList(), loadedProfile.getActivityList());
     }
 
     @Test
     public void updateProfile_updateLasttName_checkActivitiesUpdated() throws SQLException {
+        // Store the profile and activities in the database
+        DataStorer.insertProfile(profile1);
+        profile1.addActivity(activity1);
+        profile1.addActivity(activity2);
+        profile1.addActivity(activity3);
+
+        // Change an aspect of the primary key
         profile1.setLastName("Solo");
+
+        // Check that the activiteis were updated
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(profile1.getActivityList(), loadedProfile.getActivityList());
     }
 
     @Test
-    public void updateProfile_updateFirstName_checkGoalsUpdated() {
+    public void updateProfile_updateFirstName_checkGoalsUpdated() throws SQLException {
+        // Store the profile and activities in the database
+        DataStorer.insertProfile(profile1);
+        profile1.addGoal(goal1);
+        profile1.addGoal(goal2);
+        profile1.addGoal(goal3);
+
+        // Change an aspect of the primary key
+        profile1.setFirstName("Solo");
+
+        // Check that the activiteis were updated
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(profile1.getGoalList(), loadedProfile.getGoalList());
+    }
+
+    @Test
+    public void updateProfile_updateLastName_checkGoalsUpdated() throws SQLException {
 
     }
 
     @Test
-    public void updateProfile_updateLastName_checkGoalsUpdated() {
+    public void updateActivity_updateActivityName_checkDataRowsUpdated() throws SQLException {
 
     }
 
     @Test
-    public void updateActivity_updateActivityName_checkDataRowsUpdated() {
+    public void updateActivity_updateActivityDate_checkDataRowsUpdated() throws SQLException {
 
     }
 
     @Test
-    public void updateActivity_updateActivityDate_checkDataRowsUpdated() {
+    public void updateActivity_updateFirstName_checkDataRowsUpdated() throws SQLException {
 
     }
 
     @Test
-    public void updateActivity_updateFirstName_checkDataRowsUpdated() {
-
-    }
-
-    @Test
-    public void updateActivity_updateLastName_checkDataRowsUpdated() {
+    public void updateActivity_updateLastName_checkDataRowsUpdated() throws SQLException {
 
     }
 
