@@ -64,11 +64,11 @@ public class DataUpdaterTest {
 
     @Before
     public void setUpReccuring() throws SQLException {
-        // Initialise profile before every test to undo changes to the primary keys
+        // Initialise profile before every test to undo changes to the primary keys. Also clears activity/goal lists
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
 
-        // Initialise activity before every test to undo changes to the primary keys
+        // Initialise activity before every test to undo changes to the primary keys. Also clears raw data list
         activity1 = new Activity("Run in the park", "2017-12-12", "", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
@@ -99,7 +99,7 @@ public class DataUpdaterTest {
     }
 
     @Test
-    public void updateProfile_updateLasttName_checkActivitiesUpdated() throws SQLException {
+    public void updateProfile_updateLastName_checkActivitiesUpdated() throws SQLException {
         // Store the profile and activities in the database
         DataStorer.insertProfile(profile1);
         profile1.addActivity(activity1);
@@ -123,7 +123,7 @@ public class DataUpdaterTest {
         profile1.addGoal(goal3);
 
         // Change an aspect of the primary key
-        profile1.setFirstName("Solo");
+        profile1.setFirstName("Ben");
 
         // Check that the activiteis were updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
@@ -132,27 +132,82 @@ public class DataUpdaterTest {
 
     @Test
     public void updateProfile_updateLastName_checkGoalsUpdated() throws SQLException {
+        // Store the profile and activities in the database
+        DataStorer.insertProfile(profile1);
+        profile1.addGoal(goal1);
+        profile1.addGoal(goal2);
+        profile1.addGoal(goal3);
 
+        // Change an aspect of the primary key
+        profile1.setLastName("Solo");
+
+        // Check that the activiteis were updated
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(profile1.getGoalList(), loadedProfile.getGoalList());
     }
 
     @Test
     public void updateActivity_updateActivityName_checkDataRowsUpdated() throws SQLException {
+        // Store the profile and activities in the database
+        DataStorer.insertProfile(profile1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
+        activity1.addDataRow(row2);
 
+        // Change an aspect of the primary key
+        activity1.setName("This is a test activity");
+
+        // Check that the activiteis were updated
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(profile1.getActivityList().get(0).getRawData(), loadedProfile.getActivityList().get(0).getRawData());
     }
 
     @Test
     public void updateActivity_updateActivityDate_checkDataRowsUpdated() throws SQLException {
+        // Store the profile and activities in the database
+        DataStorer.insertProfile(profile1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
+        activity1.addDataRow(row2);
 
+        // Change an aspect of the primary key
+        activity1.setDate("2010-11-12");
+
+        // Check that the activiteis were updated
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(profile1.getActivityList().get(0).getRawData(), loadedProfile.getActivityList().get(0).getRawData());
     }
 
     @Test
     public void updateActivity_updateFirstName_checkDataRowsUpdated() throws SQLException {
+        // Store the profile and activities in the database
+        DataStorer.insertProfile(profile1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
+        activity1.addDataRow(row2);
 
+        // Change an aspect of the primary key
+        profile1.setFirstName("Phoebe");
+
+        // Check that the activiteis were updated
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(profile1.getActivityList().get(0).getRawData(), loadedProfile.getActivityList().get(0).getRawData());
     }
 
     @Test
     public void updateActivity_updateLastName_checkDataRowsUpdated() throws SQLException {
+        // Store the profile and activities in the database
+        DataStorer.insertProfile(profile1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
+        activity1.addDataRow(row2);
 
+        // Change an aspect of the primary key
+        profile1.setLastName("King");
+
+        // Check that the activiteis were updated
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        assertEquals(profile1.getActivityList().get(0).getRawData(), loadedProfile.getActivityList().get(0).getRawData());
     }
 
 }

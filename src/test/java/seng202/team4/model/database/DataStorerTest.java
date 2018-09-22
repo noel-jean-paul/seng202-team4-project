@@ -236,8 +236,6 @@ public class DataStorerTest {
         // Check the other profile in the database is the same as the original
         loadedProfile = DataLoader.loadProfile(profile2.getFirstName(), profile2.getLastName());
 
-        System.out.println(loadedProfile.getActivityList());
-
         assertEquals(profile2, loadedProfile);
     }
 

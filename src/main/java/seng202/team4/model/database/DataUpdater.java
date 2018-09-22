@@ -8,6 +8,7 @@ import seng202.team4.model.data.enums.ProfileFields;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class DataUpdater extends DataAccesser {
@@ -44,7 +45,7 @@ public abstract class DataUpdater extends DataAccesser {
         statement.close();
     }
 
-    /** Update the field of an activity
+    /** Update the field of a collection of activities
      *
      * @param activities the activities to be updated
      * @param field the field of the activity to be updated
@@ -73,9 +74,10 @@ public abstract class DataUpdater extends DataAccesser {
             statement.setString(5, activity.getOwner().getLastName());
 
             statement.executeUpdate();
+            statement.close();
 
             // Update the dataRows
-            // TODO: 22/09/18
+            updateDataRows(activity.getRawData(), field, value);
 
             // Reset auto-commit mode to false every iteration as it will be set true by deleteDataRows
             connection.setAutoCommit(false);
@@ -85,11 +87,10 @@ public abstract class DataUpdater extends DataAccesser {
         connection.commit();
 
         // Cleanup
-        statement.close();
         connection.setAutoCommit(true);
     }
 
-    /** Update a field of a goal
+    /** Update a field of a list of goals
      *
      * @param goals the goals to be updated
      * @param field the field to be updated
@@ -114,40 +115,54 @@ public abstract class DataUpdater extends DataAccesser {
             statement.setString(4, goal.getOwner().getLastName());
 
             statement.executeUpdate();
+            statement.close();
         }
 
         // Commit the updates
         connection.commit();
 
         // Cleanup
-        statement.close();
         connection.setAutoCommit(true);
     }
 
-    /** Update a field of a DataRow
+    /** Update a field of a collection of DataRows
      *
-     * @param row the dataRow to be updated
+     * @param rows the collection of dataRows to be updated
      * @param field the field to be updated
      * @param value the new value for the field
      * @throws SQLException if an error occurred regarding the database
      */
-    public static void updatDataRow(DataRow row, String field, String value) throws SQLException {
-        update = "update dataRow set " + field + " = (?) where " +
+    public static void updateDataRows(Collection<DataRow> rows, String field, String value) throws SQLException {
+        // Set auto-commit mode to false
+        connection.setAutoCommit(false);
+
+        // Using the class attribute update breaks 2 of the updateProfile tests. Not sure why
+        String update = "update dataRow set " + field + " = (?) where " +
                 "rowNumber = (?) and " +
                 "name= (?) and " +
-                "activityDate = (?)";
+                "activityDate = (?) and " +
+                "firstName = (?) and " +
+                "lastName = (?)";
 
-        statement = connection.prepareStatement(update);
-        // Set wildcards (indexed from 1)
-        statement.setString(1, value);
-        statement.setDouble(2, row.getNumber());
-        statement.setString(3, row.getOwner().getName());
-        statement.setString(4, row.getOwner().getDate().toString());
+        for (DataRow row : rows) {
+            statement = connection.prepareStatement(update);
+            // Set wildcards (indexed from 1)
+            statement.setString(1, value);
+            statement.setDouble(2, row.getNumber());
+            statement.setString(3, row.getOwner().getName());
+            statement.setString(4, row.getOwner().getDate().toString());
+            statement.setString(5, row.getOwner().getOwner().getFirstName());
+            statement.setString(6, row.getOwner().getOwner().getLastName());
 
-        statement.executeUpdate();
+            statement.executeUpdate();
+            statement.close();
+        }
+
+        // Commit the updates
+        connection.commit();
 
         // Cleanup
-        statement.close();
+        connection.setAutoCommit(true);
     }
 
 }
