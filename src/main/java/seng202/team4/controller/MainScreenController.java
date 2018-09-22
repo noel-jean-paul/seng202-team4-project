@@ -120,7 +120,7 @@ import javafx.scene.text.Text;
 
     @FXML
     void healthTabSelected() {
-        healthTabController.updateTable();
+        healthTabController.reloadTab();
         healthTabController.setLabels();
     }
 

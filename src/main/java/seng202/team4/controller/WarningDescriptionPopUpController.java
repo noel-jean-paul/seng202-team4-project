@@ -57,11 +57,11 @@ public class WarningDescriptionPopUpController extends Controller{
     }
 
     public void setMinLabel(int heartRate) {
-        minLabel.setText(Integer.toString(heartRate) + "bpm");
+        minLabel.setText(Integer.toString(heartRate) + " bpm");
     }
 
     public void setMaxLabel(int heartRate) {
-        maxLabel.setText(Integer.toString(heartRate) + "bpm");
+        maxLabel.setText(Integer.toString(heartRate) + " bpm");
     }
 
     public void setHeartRateRecommendation(String heartRateType) {
@@ -70,7 +70,7 @@ public class WarningDescriptionPopUpController extends Controller{
     }
 
     public void setRecommendedLabel(int heartRate) {
-        recommendedLabel.setText(heartRate + "bpm");
+        recommendedLabel.setText(heartRate + " bpm");
     }
 
     public void setPopUpTitle(String title) {
