@@ -22,6 +22,7 @@ public class ActivityImportTypePromptController extends Controller {
     private AnchorPane popupPrompt;
 
 
+
     /**
      * Constructor for the ActivityImportTypePromptController.
      *
@@ -31,7 +32,6 @@ public class ActivityImportTypePromptController extends Controller {
         super(applicationStateManager);
         this.activityTabController = activityTabController;
     }
-
 
     /** The method that is called when the user clicks the cancel button. */
     @FXML
@@ -46,30 +46,33 @@ public class ActivityImportTypePromptController extends Controller {
     }
 
 
-    /** The method that is called when the users click the import file button.
-     *  The user is then able to select a file using the FileChooser and the
-     *  screen changes to the preview file import screen.
+    /**
+     * The method that is called when the users click the import file button.
+     * The user is then able to select a file using the FileChooser and the
+     * screen changes to the preview file import screen.
      */
     @FXML
     public void importActivityFromFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select CSV Data File");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV", "*.csv"));
-        File file = fileChooser.showOpenDialog(applicationStateManager.getPrimaryStage());
+        File file = fileChooser.showOpenDialog(applicationStateManager.getPrimaryStage());  //Gets the user to select a file.
         if (file != null) {
-            closePopup();
+            closePopup();   // Closes the popup
+
             ImportActivitiesPreviewScreenController previewContoller = new ImportActivitiesPreviewScreenController(applicationStateManager, activityTabController);
             Pane importPreviewPane = Utilities.loadPane("ImportActivitesPreviewScreen.fxml", previewContoller);
 
+            // Switches to the ActivityImportPreviewScreen.
             applicationStateManager.addScreen("ImportActivitesPreviewScreen", importPreviewPane, previewContoller);
             applicationStateManager.switchToScreen("ImportActivitesPreviewScreen");
 
+            // Tries to load all the activities from the selected file.
             try {
                 previewContoller.loadActivities(file);
             } catch (IOException e) {
                 applicationStateManager.displayErrorMessage("Failed to load file.", "");
             }
-
         }
     }
 

@@ -9,6 +9,5 @@ public class Controller {
     /** Creates a new controller with the given ApplicationStateManager */
     public Controller(ApplicationStateManager applicationStateManager) {
         this.applicationStateManager = applicationStateManager;
-
     }
 }

@@ -23,18 +23,18 @@ public class LoginController extends Controller {
     /** The currently selected ProfileListItem. */
     private ProfileListItem selectedProfileItem = null;
 
+
+
     /** Creates a new LoginController with the given ApplicationStateManager. */
     public LoginController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
-
 
     /** Initializes the LoginController by updating the profile list. */
     @FXML
     public void initialize() {
         updateProfileList();
     }
-
 
     /** Updates the list of profiles displayed by loading all the profiles from the database. */
     public void updateProfileList() {
@@ -93,6 +93,9 @@ public class LoginController extends Controller {
                 applicationStateManager.setCurrentProfile(DataLoader.loadProfile(profileKey.getFirstName(), profileKey.getLastName()));
                 applicationStateManager.switchToScreen("MainScreen");
                 ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).reset();
+
+                // TODO remove following once database stores data
+                applicationStateManager.getCurrentProfile().findWarnings();
 
 
                 System.out.println(String.format("%s %s has logged in!", profileKey.getFirstName(), profileKey.getLastName()));

@@ -4,13 +4,11 @@ import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;
 import seng202.team4.model.utilities.HealthWarning;
 
+import java.sql.Array;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 public class Profile {
@@ -236,10 +234,10 @@ public class Profile {
     public void addActivity(Activity activity) throws SQLException {
         activityList.add(activity);
         java.util.Collections.sort(activityList);   // Keep the lsit ordered
-        DataStorer.insertActivity(activity, this);
-
         // Set this as the activity owner
         activity.setOwner(this);
+
+        DataStorer.insertActivity(activity, this);
     }
 
     /** Adds all activities of the specified collection to the profile activityList and sorts the activityList
@@ -260,10 +258,10 @@ public class Profile {
     public void addGoal(Goal goal) throws SQLException {
         goalList.add(goal);
         java.util.Collections.sort(goalList);
-        DataStorer.insertGoal(goal, this);
-
         // Set this as the activity owner
         goal.setOwner(this);
+
+        DataStorer.insertGoal(goal, this);
     }
 
     /** Adds all goals of the specified collection to the goalList and sorts the goalList
@@ -283,7 +281,7 @@ public class Profile {
      */
     public void removeActivity(Activity activity) throws SQLException {
         activityList.remove(activity);
-        DataStorer.deleteActivity(activity, this);
+        DataStorer.deleteActivities(new ArrayList<>(Collections.singletonList(activity)));
     }
 
     /** Remove the goal from the goalList and the database
@@ -292,7 +290,7 @@ public class Profile {
      */
     public void removeGoal(Goal goal) throws SQLException {
         goalList.remove(goal);
-        DataStorer.deleteGoal(goal, this);
+        DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
     }
     // TODO JavaDoc - Kenny
     /**
@@ -307,5 +305,14 @@ public class Profile {
      */
     public List<HealthWarning> getWarningList() {
         return warningList;
+    }
+
+    /**
+     *
+     */
+    public void findWarnings() {
+        for (Activity acvty : activityList) {
+            acvty.addWarnings();
+        }
     }
 }

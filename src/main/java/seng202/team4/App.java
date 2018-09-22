@@ -1,12 +1,16 @@
 package seng202.team4;
 
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seng202.team4.controller.*;
 import seng202.team4.model.database.DataAccesser;
+
+import java.sql.SQLException;
 
 import static javafx.application.Application.launch;
 
@@ -19,6 +23,19 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
+        // !! does not work - would need to query the database to see if it has a connection open currently
+//        // Check that the database is not already in use
+//        if (!DataAccesser.checkNullConnection()) {
+//            System.out.println("An instance of the app is aleady open");
+//            // TODO: 21/09/18 Implement this by asking the database if it has any connections open?
+//            try {
+//                DataAccesser.closeDatabase();
+//            } catch (SQLException e) {
+//                System.out.println(e.getMessage());
+//            }
+//            System.exit(1);
+//        }
 
         try {
             DataAccesser.initialiseMainConnection();
@@ -54,6 +71,8 @@ public class App extends Application {
         primaryStage.show();
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
+
+        primaryStage.setMaximized(true);
     }
 
     public static void main(String[] args) {

@@ -128,6 +128,7 @@ public class HealthWarning {
      * @return
      */
     private boolean cardioRisk() {
+        //TODO refine wrning detection
         if (minHeartRate > 83) {
             return true;
         } else {

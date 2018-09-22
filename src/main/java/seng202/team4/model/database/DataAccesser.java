@@ -28,6 +28,14 @@ abstract public class DataAccesser {
         connection = DriverManager.getConnection(url);
     }
 
+    /** Check if a connection to the database is currently open
+     *
+     * @return true if there is an open connection, false otherwise
+     */
+    public static boolean checkNullConnection() {
+        return connection == null;
+    }
+
     /** Drop all tables from both the production and test databases and
      *  re-create them.
      * @throws SQLException if an error occurred regarding the database
@@ -143,7 +151,7 @@ abstract public class DataAccesser {
     public static void clearDatabase() throws SQLException {
         // Delete all profiles from the database
         String select = "delete from profile";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
         statement.executeUpdate();
 
         // Delete all activities from the database
@@ -160,6 +168,8 @@ abstract public class DataAccesser {
         select = "delete from dataRow";
         statement = connection.prepareStatement(select);
         statement.executeUpdate();
+
+        statement.close();
     }
 
     /** Clear contents of all non-profile tables
@@ -170,7 +180,7 @@ abstract public class DataAccesser {
         DataAccesser.initialiseMainConnection();
         // Delete all activities from the database
         String select = "delete from activity";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
         statement.executeUpdate();
 
         // Delete all goals from the database
@@ -182,5 +192,9 @@ abstract public class DataAccesser {
         select = "delete from dataRow";
         statement = connection.prepareStatement(select);
         statement.executeUpdate();
+
+        // Cleanup
+        statement.close();
+        connection.close();
     }
 }

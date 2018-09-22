@@ -7,7 +7,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import seng202.team4.model.data.Profile;
+import seng202.team4.model.database.DataStorer;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class ProfileScreenController extends Controller {
@@ -222,6 +224,17 @@ public class ProfileScreenController extends Controller {
         dayVbox.getChildren().setAll(dayText);
         monthVbox.getChildren().setAll(monthText);
         yearVbox.getChildren().setAll(yearText);
+    }
+
+    public void deleteProfile() {
+
+        try {
+            DataStorer.deleteProfile(applicationStateManager.getCurrentProfile());
+            ((LoginController) applicationStateManager.getScreenController("LoginScreen")).updateProfileList();
+            applicationStateManager.switchToScreen("LoginScreen");
+        } catch (SQLException e) {
+            applicationStateManager.displayErrorMessage("Failed to delete profile.", "");
+        }
     }
 
 
