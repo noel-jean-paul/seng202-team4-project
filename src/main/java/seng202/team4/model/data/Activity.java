@@ -1,5 +1,6 @@
 package seng202.team4.model.data;
 
+import seng202.team4.model.data.enums.ActivityFields;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.database.DataStorer;
@@ -121,7 +122,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setName(String name) throws SQLException {
-        DataUpdater.updateActivity(this,"name", name);
+        DataUpdater.updateActivity(this, ActivityFields.name.toString(), name);
         this.name = name;
     }
 
@@ -131,7 +132,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDescription(String description) throws SQLException {
-        DataUpdater.updateActivity(this,"description", description);
+        DataUpdater.updateActivity(this, ActivityFields.description.toString(), description);
         this.description = description;
     }
 
@@ -141,7 +142,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDate(String date) throws SQLException {
-        DataUpdater.updateActivity(this,"activityDate", date);
+        DataUpdater.updateActivity(this, ActivityFields.activityDate.toString(), date);
         this.date = LocalDate.parse(date);
     }
 
@@ -151,7 +152,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setStartTime(String startTime) throws SQLException {
-        DataUpdater.updateActivity(this,"startTime", startTime);
+        DataUpdater.updateActivity(this, ActivityFields.startTime.toString(), startTime);
         this.startTime = LocalTime.parse(startTime);
     }
 
@@ -170,7 +171,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDuration(String duration) throws SQLException {
-        DataUpdater.updateActivity(this,"duration", duration);
+        DataUpdater.updateActivity(this, ActivityFields.duration.toString(), duration);
         this.duration = Duration.parse(duration);
     }
 
@@ -190,7 +191,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDistance(double distance) throws SQLException {
-        DataUpdater.updateActivity(this,"distance", Double.toString(distance));
+        DataUpdater.updateActivity(this,ActivityFields.distance.toString(), Double.toString(distance));
         this.distance = distance;
     }
 
@@ -213,7 +214,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setCaloriesBurned(double caloriesBurned) throws SQLException {
-        DataUpdater.updateActivity(this,"caloriesBurned", Double.toString(caloriesBurned));
+        DataUpdater.updateActivity(this, ActivityFields.caloriesBurned.toString(), Double.toString(caloriesBurned));
         this.caloriesBurned = caloriesBurned;
     }
 
@@ -227,7 +228,7 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setType(ActivityType type) throws SQLException {
-        DataUpdater.updateActivity(this,"type", type.toString());
+        DataUpdater.updateActivity(this, ActivityFields.type.toString(), type.toString());
         this.type = type;
     }
 

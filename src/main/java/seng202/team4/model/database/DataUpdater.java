@@ -20,6 +20,10 @@ public abstract class DataUpdater extends DataAccesser {
      * @throws SQLException if an error occurred regarding the database
      */
     public static void updateProfile(Profile profile, String field, String value) throws SQLException {
+        // Set auto-commit mode to false
+        connection.setAutoCommit(false);
+
+        // Update the profile
         update = "update profile set " + field + " = (?) where firstName = (?) and lastName = (?)";
         statement = connection.prepareStatement(update);
         // Set wildcards (indexed from 1)
@@ -29,8 +33,26 @@ public abstract class DataUpdater extends DataAccesser {
 
         statement.executeUpdate();
 
+        // Determine what needs to be upated in the goals/activities
+        boolean propagateUpdates;
+        String updateField;
+        if (field.equals("firstName")) {
+            propagateUpdates = true;
+            updateField = "firstName";
+
+        }
+
+        // Update the activities
+
+        // Update the goals
+        //updateActivity
+
+        // Commit the updates
+        connection.commit();
+
         // Cleanup
         statement.close();
+        connection.setAutoCommit(true);
     }
 
     /** Update the field of an activity
@@ -42,6 +64,10 @@ public abstract class DataUpdater extends DataAccesser {
      */
     public static void updateActivity(Activity activity, String field, String value)
             throws SQLException {
+        // Set auto-commit mode to false
+        connection.setAutoCommit(false);
+
+        // Update the profile
         update = "update activity set " + field + " = (?) where " +
                 "name = (?) and " +
                 "activityDate = (?) and " +
@@ -58,8 +84,15 @@ public abstract class DataUpdater extends DataAccesser {
 
         statement.executeUpdate();
 
+        // Update the dataRows
+        // TODO: 22/09/18
+
+        // Commit the updates
+        connection.commit();
+
         // Cleanup
         statement.close();
+        connection.setAutoCommit(true);
     }
 
     /** Update a field of a goal
