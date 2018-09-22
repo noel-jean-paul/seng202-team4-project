@@ -141,4 +141,9 @@ public class DataRow implements Comparable<DataRow> {
     public void setOwner(Activity owner) {
         this.owner = owner;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s, %s, %s, %s", number, date, owner.getName(), owner.getOwner().getFirstName());
+    }
 }
