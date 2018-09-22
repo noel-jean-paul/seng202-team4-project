@@ -4,8 +4,10 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import seng202.team4.Utilities;
 import seng202.team4.model.data.Profile;
 import seng202.team4.model.database.DataStorer;
 
@@ -227,14 +229,8 @@ public class ProfileScreenController extends Controller {
     }
 
     public void deleteProfile() {
-
-        try {
-            DataStorer.deleteProfile(applicationStateManager.getCurrentProfile());
-            ((LoginController) applicationStateManager.getScreenController("LoginScreen")).updateProfileList();
-            applicationStateManager.switchToScreen("LoginScreen");
-        } catch (SQLException e) {
-            applicationStateManager.displayErrorMessage("Failed to delete profile.", "");
-        }
+        Pane DeletionpopUp = Utilities.loadPane("ProfileDeletionConfirmation.fxml", new ProfileDeletionConfirmationController(applicationStateManager));
+        applicationStateManager.displayPopUp(DeletionpopUp);
     }
 
 
