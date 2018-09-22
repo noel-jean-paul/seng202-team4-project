@@ -84,7 +84,7 @@ public class DataUpdaterTest {
 
     @Test
     public void updateProfile_updateFirstName_checkActivitiesUpdated() throws SQLException {
-        // Store the profile and activities in the database
+        // Setup
         DataStorer.insertProfile(profile1);
         profile1.addActivity(activity1);
         profile1.addActivity(activity2);
@@ -93,14 +93,14 @@ public class DataUpdaterTest {
         // Change an aspect of the primary key
         profile1.setFirstName("Ben");
 
-        // Check that the activiteis were updated
+        // Check that the activities were updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(profile1.getActivityList(), loadedProfile.getActivityList());
     }
 
     @Test
     public void updateProfile_updateLastName_checkActivitiesUpdated() throws SQLException {
-        // Store the profile and activities in the database
+        // Setup
         DataStorer.insertProfile(profile1);
         profile1.addActivity(activity1);
         profile1.addActivity(activity2);
@@ -109,14 +109,14 @@ public class DataUpdaterTest {
         // Change an aspect of the primary key
         profile1.setLastName("Solo");
 
-        // Check that the activiteis were updated
+        // Check that the activities were updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(profile1.getActivityList(), loadedProfile.getActivityList());
     }
 
     @Test
     public void updateProfile_updateFirstName_checkGoalsUpdated() throws SQLException {
-        // Store the profile and activities in the database
+        // Setup
         DataStorer.insertProfile(profile1);
         profile1.addGoal(goal1);
         profile1.addGoal(goal2);
@@ -125,14 +125,14 @@ public class DataUpdaterTest {
         // Change an aspect of the primary key
         profile1.setFirstName("Ben");
 
-        // Check that the activiteis were updated
+        // Check that the goals were updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(profile1.getGoalList(), loadedProfile.getGoalList());
     }
 
     @Test
     public void updateProfile_updateLastName_checkGoalsUpdated() throws SQLException {
-        // Store the profile and activities in the database
+        // Setup
         DataStorer.insertProfile(profile1);
         profile1.addGoal(goal1);
         profile1.addGoal(goal2);
@@ -141,14 +141,29 @@ public class DataUpdaterTest {
         // Change an aspect of the primary key
         profile1.setLastName("Solo");
 
-        // Check that the activiteis were updated
+        // Check that the goals were updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(profile1.getGoalList(), loadedProfile.getGoalList());
+    }
+    
+    @Test 
+    public void updateProfile_updateNonKey_checkNoPropagation() throws SQLException {
+        // Setup
+        DataStorer.insertProfile(profile1);
+        profile1.addGoal(goal1);
+        profile1.addActivity(activity1);
+
+        // Change something that is not part of the primary key
+        profile1.setWeight(65);
+
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        // We'd expect an exception if the test was failing so this assert is trivial
+        assertEquals(profile1, loadedProfile);
     }
 
     @Test
     public void updateActivity_updateActivityName_checkDataRowsUpdated() throws SQLException {
-        // Store the profile and activities in the database
+        // Setup
         DataStorer.insertProfile(profile1);
         profile1.addActivity(activity1);
         activity1.addDataRow(row1);
@@ -157,14 +172,14 @@ public class DataUpdaterTest {
         // Change an aspect of the primary key
         activity1.setName("This is a test activity");
 
-        // Check that the activiteis were updated
+        // Check that the raw data was updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(profile1.getActivityList().get(0).getRawData(), loadedProfile.getActivityList().get(0).getRawData());
     }
 
     @Test
     public void updateActivity_updateActivityDate_checkDataRowsUpdated() throws SQLException {
-        // Store the profile and activities in the database
+        // Setup
         DataStorer.insertProfile(profile1);
         profile1.addActivity(activity1);
         activity1.addDataRow(row1);
@@ -173,14 +188,14 @@ public class DataUpdaterTest {
         // Change an aspect of the primary key
         activity1.setDate("2010-11-12");
 
-        // Check that the activiteis were updated
+        // Check that the raw Data was updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(profile1.getActivityList().get(0).getRawData(), loadedProfile.getActivityList().get(0).getRawData());
     }
 
     @Test
     public void updateActivity_updateFirstName_checkDataRowsUpdated() throws SQLException {
-        // Store the profile and activities in the database
+        // Setup
         DataStorer.insertProfile(profile1);
         profile1.addActivity(activity1);
         activity1.addDataRow(row1);
@@ -189,14 +204,14 @@ public class DataUpdaterTest {
         // Change an aspect of the primary key
         profile1.setFirstName("Phoebe");
 
-        // Check that the activiteis were updated
+        // Check that the rawData was updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(profile1.getActivityList().get(0).getRawData(), loadedProfile.getActivityList().get(0).getRawData());
     }
 
     @Test
     public void updateActivity_updateLastName_checkDataRowsUpdated() throws SQLException {
-        // Store the profile and activities in the database
+        // Setup
         DataStorer.insertProfile(profile1);
         profile1.addActivity(activity1);
         activity1.addDataRow(row1);
@@ -205,9 +220,25 @@ public class DataUpdaterTest {
         // Change an aspect of the primary key
         profile1.setLastName("King");
 
-        // Check that the activiteis were updated
+        // Check that the rawData was updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(profile1.getActivityList().get(0).getRawData(), loadedProfile.getActivityList().get(0).getRawData());
+    }
+    
+    @Test
+    public void updateActivity_updateNonKey_checkNoPropagation() throws SQLException {
+        // Setup
+        DataStorer.insertProfile(profile1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
+        activity1.addDataRow(row2);
+
+        // Change something that is not part of the primary key of a dataRow
+        activity1.setType(ActivityType.Other);
+        
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+        // We'd expect an exception if the test was failing so this assert is trivial
+        assertEquals(profile1, loadedProfile);
     }
 
 }

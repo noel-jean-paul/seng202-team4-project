@@ -35,7 +35,7 @@ public abstract class DataUpdater extends DataAccesser {
         // Propagate the updates if a primary key was updated
         if (field.equals(ProfileFields.firstName.toString()) || field.equals(ProfileFields.lastName.toString())) {
             // Update the activities
-            updateActivities(profile.getActivityList(), field, value);
+            updateActivities(profile.getActivityList(), field, value, true);
 
             // Update the goals
             updateGoals(profile.getGoalList(), field, value);
@@ -45,14 +45,16 @@ public abstract class DataUpdater extends DataAccesser {
         statement.close();
     }
 
-    /** Update the field of a collection of activities
+    /** Update the field of a collection of activities. Update the raw data of the activities if the propagateUpdate
+     *   flag is set
      *
      * @param activities the activities to be updated
      * @param field the field of the activity to be updated
      * @param value the new value for the field
+     * @param propagateUpdate boolean flag for whether the dataRows should also have the update applied to them
      * @throws SQLException if an error occurred regarding the database
      */
-    public static void updateActivities(List<Activity> activities, String field, String value)
+    public static void updateActivities(List<Activity> activities, String field, String value, boolean propagateUpdate)
             throws SQLException {
         // Set auto-commit mode to false
         connection.setAutoCommit(false);
@@ -76,8 +78,12 @@ public abstract class DataUpdater extends DataAccesser {
             statement.executeUpdate();
             statement.close();
 
-            // Update the dataRows
-            updateDataRows(activity.getRawData(), field, value);
+            // Only update the dataRows if the update is intented to be propagated
+            // (i.e. it modifys a component of the primary key of dataRow)
+            if (propagateUpdate) {
+                // Update the dataRows
+                updateDataRows(activity.getRawData(), field, value);
+            }
 
             // Reset auto-commit mode to false every iteration as it will be set true by deleteDataRows
             connection.setAutoCommit(false);
