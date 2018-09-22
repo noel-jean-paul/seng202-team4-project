@@ -3,6 +3,7 @@ package seng202.team4.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.AnchorPane;
@@ -33,6 +34,9 @@ public class ActivityPopUpScreenController extends Controller {
 
     @FXML
     private LineChart<?, ?> distanceGraph;
+
+    @FXML
+    private NumberAxis heartRateYAxis;
 
     private Activity activity;
 
