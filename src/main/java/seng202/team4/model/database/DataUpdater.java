@@ -21,9 +21,6 @@ public abstract class DataUpdater extends DataAccesser {
      * @throws SQLException if an error occurred regarding the database
      */
     public static void updateProfile(Profile profile, String field, String value) throws SQLException {
-        // Set auto-commit mode to false
-        connection.setAutoCommit(false);
-
         // Update the profile
         update = "update profile set " + field + " = (?) where firstName = (?) and lastName = (?)";
         statement = connection.prepareStatement(update);
@@ -43,15 +40,8 @@ public abstract class DataUpdater extends DataAccesser {
             updateGoals(profile.getGoalList(), field, value);
         }
 
-        //Reset autoCommit to false as removing goals and activities will make it true
-        connection.setAutoCommit(false);
-
-        // Commit the updates
-        connection.commit();
-
         // Cleanup
         statement.close();
-        connection.setAutoCommit(true);
     }
 
     /** Update the field of an activity
