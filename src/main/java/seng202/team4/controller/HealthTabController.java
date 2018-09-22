@@ -5,10 +5,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import jdk.nashorn.internal.runtime.regexp.joni.Warnings;
 import seng202.team4.App;
+import seng202.team4.Utilities;
 import seng202.team4.model.utilities.HealthWarning;
 
 import java.time.LocalDate;
@@ -36,6 +39,9 @@ public class HealthTabController extends Controller {
     private Button viewInfoButton;
 
     @FXML
+    private Button webSearchButton;
+
+    @FXML
     private Button returnButton;
 
     @FXML
@@ -50,8 +56,28 @@ public class HealthTabController extends Controller {
     @FXML
     void loadInformation() {
         HealthWarning warning = (HealthWarning) healthWarningTable.getSelectionModel().getSelectedItem();
-        currentUrl = warning.getUrl();
-        engine.load(currentUrl);
+        if (warning != null) {
+            WarningDescriptionPopUpController warningPopUp = new WarningDescriptionPopUpController(applicationStateManager);
+            Pane popUp = Utilities.loadPane("HealthPopUpScreen.fxml", warningPopUp);
+            setUpPopUpLabels(warningPopUp, warning);
+            applicationStateManager.displayPopUp(popUp);
+        }
+    }
+
+    private void setUpPopUpLabels(WarningDescriptionPopUpController warningPopUp, HealthWarning warning) {
+        warningPopUp.setPopUpTitle(warning.getTypeString());
+        warningPopUp.setAverageLabel(warning.getAvgHeartRate());
+        warningPopUp.setMinLabel(warning.getMinHeartRate());
+        warningPopUp.setMaxLabel(warning.getMaxHeartRate());
+    }
+
+    @FXML
+    void webSearch() {
+        HealthWarning warning = (HealthWarning) healthWarningTable.getSelectionModel().getSelectedItem();
+        if (warning != null) {
+            currentUrl = warning.getUrl();
+            engine.load(currentUrl);
+        }
     }
 
     @FXML
