@@ -17,7 +17,10 @@ public class ProfileDeletionConfirmationController extends Controller {
         super(applicationStateManager);
     }
 
-
+    /**
+     * Called if user clicks the 'yes' button.
+     * Deletes the profile, then closes the popup.
+     */
     @FXML
     void yesClicked() {
         try {
@@ -31,6 +34,10 @@ public class ProfileDeletionConfirmationController extends Controller {
 
     }
 
+    /**
+     * Called if user clicks the 'no' button.
+     * closes the popup.
+     */
     @FXML
     void noClicked() {
         applicationStateManager.closePopUP(rootPane);

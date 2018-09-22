@@ -229,8 +229,8 @@ public class ProfileScreenController extends Controller {
     }
 
     public void deleteProfile() {
-        Pane DeletionpopUp = Utilities.loadPane("ProfileDeletionConfirmation.fxml", new ProfileDeletionConfirmationController(applicationStateManager));
-        applicationStateManager.displayPopUp(DeletionpopUp);
+        Pane deletionPopup = Utilities.loadPane("ProfileDeletionConfirmation.fxml", new ProfileDeletionConfirmationController(applicationStateManager));
+        applicationStateManager.displayPopUp(deletionPopup);
     }
 
 

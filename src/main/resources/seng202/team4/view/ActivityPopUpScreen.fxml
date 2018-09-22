@@ -42,7 +42,7 @@
                       <CategoryAxis label="Time (m)" side="BOTTOM" />
                     </xAxis>
                     <yAxis>
-                      <NumberAxis label="Heart Rate (bpm)" side="LEFT" />
+                      <NumberAxis fx:id="heartRateYAxis" label="Heart Rate (bpm)" side="LEFT" />
                     </yAxis>
                   </LineChart>
                   <LineChart fx:id="distanceGraph" createSymbols="false" layoutY="34.0" legendVisible="false" prefHeight="281.0" prefWidth="514.0" title="Distance Travelled during Activity">
