@@ -76,4 +76,15 @@ public class ActivityImportTypePromptController extends Controller {
         }
     }
 
+    /**
+     * Displays the popup to add an activity manually.
+     * Is called when the user clicks the 'Add manually' button.
+     */
+    @FXML
+    public void addManualActivity() {
+        Pane manualEntryPopup = Utilities.loadPane("ManualActivityPopup.fxml", new AddManualActivityController(applicationStateManager));
+        applicationStateManager.displayPopUp(manualEntryPopup);
+        closePopup();
+    }
+
 }

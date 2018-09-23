@@ -1,9 +1,10 @@
 package seng202.team4.controller;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import seng202.team4.model.data.Profile;
 
@@ -95,8 +96,11 @@ public class ApplicationStateManager {
      * @param popUp The pop up to be closed.
      */
     public void closePopUP(Pane popUp) {
-        stackPane.getChildren().remove(glassPane);
+        if (stackPane.getChildren().indexOf(glassPane) < stackPane.getChildren().indexOf(popUp)) {
+            stackPane.getChildren().remove(glassPane);
+        }
         stackPane.getChildren().remove(popUp);
+
     }
 
     /**
