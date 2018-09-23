@@ -50,9 +50,6 @@ public class Activity implements Comparable<Activity> {
         this.caloriesBurned = caloriesBurned;
         this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.rawData = new ArrayList<>();
-        this.avgHeartRate = calculateAvgHeartRate();
-        this.minHeartRate = calculateMinHeartRate();
-        this.maxHeartRate = calculateMaxHeartRate();
     }
 
     /**
@@ -254,14 +251,26 @@ public class Activity implements Comparable<Activity> {
     }
 
 
+    /**
+     * Getter method for the average heart rate.
+     * @return the average heart rate.
+     */
     public int getAvgHeartRate() {
         return avgHeartRate;
     }
 
+    /**
+     * Getter method for the minimum heart rate.
+     * @return the minimum heart rate.
+     */
     public int getMinHeartRate() {
         return minHeartRate;
     }
 
+    /**
+     * Getter method for the maximum heart rate.
+     * @return the maximum heart rate.
+     */
     public int getMaxHeartRate() {
         return maxHeartRate;
     }
@@ -298,41 +307,6 @@ public class Activity implements Comparable<Activity> {
         rawData.remove(row);
         DataStorer.deleteDataRows(Collections.singletonList(row));
     }
-
-
-    //The functions detailed below will likely be moved to DataProcessor -Matt M
-
-
-    /**
-     * A function to calculate the distance between two points
-     * @param lat1 The latitude of the first point
-     * @param lat2 The latitude of the second point
-     * @param lon1 The longitude of the first point
-     * @param lon2 The longitude of the second point
-     * @param el1 The elevation of the first point
-     * @param el2 The elevation of the second point
-     * @return a double representing the distance between the two points in metres
-     */
-    public double calcDistance(double lat1, double lat2, double lon1,
-                               double lon2, double el1, double el2) {
-
-        final int R = 6371; // Radius of the earth
-
-        double latDistance = Math.toRadians(lat2 - lat1);
-        double lonDistance = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c * 1000; // convert to meters
-
-        double height = el1 - el2;
-
-        distance = Math.pow(distance, 2) + Math.pow(height, 2);
-
-        return Math.sqrt(distance);
-    }
-
 
     /**
      * Finds the ActivityType of an Activity from its name.
@@ -374,14 +348,17 @@ public class Activity implements Comparable<Activity> {
         return type;
     }
 
-    // TODO JavaDoc - Kenny
-
     /**
      * Creates all 3 different warning types for the activities, and if the warning in fact is a health issue, adds it to
      * the user's list of warnings.
      * @return whether or not a warning was added to the user's warning list.
      */
-    public boolean addWarnings() {
+    public boolean addWarnings(boolean heartRatesCalculated) {
+        if (!heartRatesCalculated) {
+            this.avgHeartRate = calculateAvgHeartRate();
+            this.minHeartRate = calculateMinHeartRate();
+            this.maxHeartRate = calculateMaxHeartRate();
+        }
         boolean hasWarning = false;
         ArrayList<HealthWarning> warnings = new ArrayList<>();
         warnings.add(new HealthWarning(this, owner, WarningType.Tachy, avgHeartRate, minHeartRate, maxHeartRate));
@@ -397,7 +374,8 @@ public class Activity implements Comparable<Activity> {
     }
 
     /**
-     * @return
+     * Calculates the average heart rate of the user over the course of the activity.
+     * @return the user's average heart rate.
      */
     private int calculateAvgHeartRate() {
         int avgBPM = 0;
@@ -411,7 +389,8 @@ public class Activity implements Comparable<Activity> {
     }
 
     /**
-     * @return
+     * Calculate the minimum heart rate of the user over the course of the activity.
+     * @return the user's minimum heart rate.
      */
     private int calculateMinHeartRate() {
         int minBPM = Integer.MAX_VALUE;
@@ -424,7 +403,8 @@ public class Activity implements Comparable<Activity> {
     }
 
     /**
-     * @return
+     * Calculate the maximum heart rate of the user over the course of the activity.
+     * @return the user's maximum heart rate.
      */
     private int calculateMaxHeartRate() {
         int maxBPM = Integer.MIN_VALUE;
@@ -435,21 +415,4 @@ public class Activity implements Comparable<Activity> {
         }
         return maxBPM;
     }
-
-//    /**
-//     * Calculates the total distance covered in meters for an activity
-//     */
-//    public void calcTotalDistance() {
-//        double totalDistance = 0;
-//        ActivityRawData previous = null;
-//        for (ActivityRawData data: rawActivityList) {
-//            if (!(previous == null)) {
-//                totalDistance += calcDistance(previous.getLatitude(), data.getLatitude(),
-//                        previous.getLongitude(), data.getLongitude(),
-//                        previous.getElevation(), data.getElevation());
-//            }
-//            previous = data;
-//        }
-//        this.distance = totalDistance;
-//    }
 }

@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import seng202.team4.Utilities;
+import seng202.team4.GuiUtilities;
 
 /** Controller for the main screen of the App. */
 public class MainScreenController extends Controller {
@@ -71,23 +71,23 @@ import javafx.scene.text.Text;
     public void initialize() {
         Pane pane = new Pane();
         activityTabController = new ActivityTabController(applicationStateManager);
-        pane = Utilities.loadPane("ActivityTab.fxml", activityTabController);
+        pane = GuiUtilities.loadPane("ActivityTab.fxml", activityTabController);
         activityPane.getChildren().setAll(pane);
 
         // TODO: Figure out how to get these tabs to fit to parent, so they can expand
         Pane home = new Pane();
         homeTabController = new HomeTabController(applicationStateManager);
-        home = Utilities.loadPane("HomeTab.fxml", homeTabController);
+        home = GuiUtilities.loadPane("HomeTab.fxml", homeTabController);
         homePane.getChildren().setAll(home);
 
         Pane goals = new Pane();
         goalsTabController = new GoalsTabController(applicationStateManager);
-        goals = Utilities.loadPane("GoalsTab.fxml", goalsTabController);
+        goals = GuiUtilities.loadPane("GoalsTab.fxml", goalsTabController);
         goalsPane.getChildren().setAll(goals);
 
         Pane health = new Pane();
         healthTabController = new HealthTabController(applicationStateManager);
-        health = Utilities.loadPane("HealthTab.fxml", healthTabController);
+        health = GuiUtilities.loadPane("HealthTab.fxml", healthTabController);
         healthPane.getChildren().setAll(health);
 
     }
@@ -109,7 +109,7 @@ import javafx.scene.text.Text;
     @FXML
     public void viewProfile() {
         ProfileScreenController profileScreenController = new ProfileScreenController(applicationStateManager);
-        Pane profileScreen = Utilities.loadPane("ProfileScreen.fxml", profileScreenController);
+        Pane profileScreen = GuiUtilities.loadPane("ProfileScreen.fxml", profileScreenController);
         applicationStateManager.addScreen("ProfileScreen", profileScreen, profileScreenController);
         applicationStateManager.switchToScreen("ProfileScreen");
         profileScreenController.updateInformation();
@@ -141,7 +141,7 @@ import javafx.scene.text.Text;
      */
     @FXML
     void healthTabSelected() {
-        healthTabController.updateTable();
+        healthTabController.reloadTab();
         healthTabController.setLabels();
     }
 

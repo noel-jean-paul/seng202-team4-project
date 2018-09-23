@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
-import seng202.team4.Utilities;
+import seng202.team4.GuiUtilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,7 +61,7 @@ public class ActivityImportTypePromptController extends Controller {
             closePopup();   // Closes the popup
 
             ImportActivitiesPreviewScreenController previewContoller = new ImportActivitiesPreviewScreenController(applicationStateManager, activityTabController);
-            Pane importPreviewPane = Utilities.loadPane("ImportActivitesPreviewScreen.fxml", previewContoller);
+            Pane importPreviewPane = GuiUtilities.loadPane("ImportActivitesPreviewScreen.fxml", previewContoller);
 
             // Switches to the ActivityImportPreviewScreen.
             applicationStateManager.addScreen("ImportActivitesPreviewScreen", importPreviewPane, previewContoller);
@@ -82,7 +82,7 @@ public class ActivityImportTypePromptController extends Controller {
      */
     @FXML
     public void addManualActivity() {
-        Pane manualEntryPopup = Utilities.loadPane("ManualActivityPopup.fxml", new AddManualActivityController(applicationStateManager));
+        Pane manualEntryPopup = GuiUtilities.loadPane("ManualActivityPopup.fxml", new AddManualActivityController(applicationStateManager));
         applicationStateManager.displayPopUp(manualEntryPopup);
         closePopup();
     }

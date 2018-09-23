@@ -7,11 +7,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import seng202.team4.Utilities;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Profile;
-import seng202.team4.model.database.DataStorer;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class ProfileScreenController extends Controller {
@@ -229,7 +227,7 @@ public class ProfileScreenController extends Controller {
     }
 
     public void deleteProfile() {
-        Pane deletionPopup = Utilities.loadPane("ProfileDeletionConfirmation.fxml", new ProfileDeletionConfirmationController(applicationStateManager));
+        Pane deletionPopup = GuiUtilities.loadPane("ProfileDeletionConfirmation.fxml", new ProfileDeletionConfirmationController(applicationStateManager));
         applicationStateManager.displayPopUp(deletionPopup);
     }
 

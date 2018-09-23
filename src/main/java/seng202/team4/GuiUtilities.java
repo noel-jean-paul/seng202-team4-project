@@ -10,7 +10,7 @@ import javax.swing.text.TableView;
 /**
  * Class for utility functions.
  */
-public abstract class Utilities {
+public abstract class GuiUtilities {
 
     /**
      * Initializes, loads and returns a JavaFX pane from the given arguments.
