@@ -10,10 +10,10 @@ import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
 
 import javax.xml.crypto.Data;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DataStorerTest {
     private static Profile profile1;
@@ -22,6 +22,7 @@ public class DataStorerTest {
     private static Activity activity1;
     private static Goal goal1;
     private static DataRow row1;
+    private static DataRow row2;
 
 
     @BeforeClass
@@ -43,6 +44,9 @@ public class DataStorerTest {
                 2.00, 0);
 
         row1 = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
+                178.4352, 203);
+
+        row2 = new DataRow(2, "2018-07-18", "14:02:30", 182, -87.01902489,
                 178.4352, 203);
     }
 
@@ -92,6 +96,26 @@ public class DataStorerTest {
         DataStorer.insertProfile(profile1);
         profile1.addActivity(activity1);
         activity1.addDataRow(row1);
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(profile1, loadedProfile);
+    }
+
+    @Test
+    public void insertDataRowTransaction() throws SQLException {
+        DataStorer.insertProfile(profile1);
+        profile1.addActivity(activity1);
+        List<DataRow> rows = new ArrayList<>(Arrays.asList(row1, row2));
+
+        // Use add all to prevent insertDataRow from being called
+        activity1.addAllDataRows(rows);
+        // Since we used addAllDataRows, the owner needs to be manually set
+        for (DataRow row : rows) {
+            row.setOwner(activity1);
+        }
+
+        // Insert the dataRows and load the profile
+        DataStorer.insertDataRowTransaction(rows);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(profile1, loadedProfile);

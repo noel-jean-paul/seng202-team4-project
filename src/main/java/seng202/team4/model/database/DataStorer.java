@@ -3,11 +3,17 @@ package seng202.team4.model.database;
 import seng202.team4.model.data.*;
 import seng202.team4.model.data.enums.*;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
+import java.util.List;
 
 
 abstract public class DataStorer extends DataAccesser {
     /* Class to handle inserting and deleting of objects from the database */
+
+    private static String dataRowInsertSQL = "insert into dataRow (rowNumber, rowDate, time, heartRate, latitude, " +
+            "longitude, elevation, name, activityDate, firstName, lastName) " +
+            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /** Add a profile to the database.
      *  If the combination of profile firstName and lastName is not unique, the profile will not be added.
@@ -20,7 +26,7 @@ abstract public class DataStorer extends DataAccesser {
         assert profile != null;
 
         String insert = "insert into profile(firstName, lastName, dateOfBirth, height, weight) values (?, ? , ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(insert);
+        statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
         statement.setString(1, profile.getFirstName());
         statement.setString(2, profile.getLastName());
@@ -29,6 +35,8 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(5, String.valueOf(profile.getWeight()));
 
         statement.executeUpdate();
+
+        statement.close();
     }
 
     /** Add an activity to the database
@@ -45,7 +53,7 @@ abstract public class DataStorer extends DataAccesser {
 
         String insert = "insert into activity(name, activityDate, description, type, startTime, duration, distance, " +
                 "caloriesBurned, firstName, lastName) values (?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(insert);
+        statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
         statement.setString(1, activity.getName());
         statement.setString(2, String.valueOf(activity.getDate()));
@@ -59,6 +67,8 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(10, activityOwner.getLastName());
 
         statement.executeUpdate();
+
+        statement.close();
     }
 
     /** Add an goal to the database
@@ -75,7 +85,7 @@ abstract public class DataStorer extends DataAccesser {
 
         String insert = "insert into goal(goalNumber, progress, description, type, creationDate, expiryDate, completionDate, " +
                 "goalDuration, goalDistance, firstName, lastName) values (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(insert);
+        statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
         statement.setString(1, String.valueOf(goal.getNumber()));
         statement.setString(2, String.valueOf(goal.getProgress()));
@@ -90,22 +100,17 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(11, goalOwner.getLastName());
 
         statement.executeUpdate();
+
+        statement.close();
     }
 
-    /** Add a dataRow to the database
-     *  If the combination of dataRow number and activty name/date is not unique, the dataRow will not be added.
-     *  It is assumed that all dataRow fields are correctly formatted.
+    /** Create the statement for inserting a dataRow
      *
-     * @param dataRow the data row to be added
-     * @param activity the activity which the data row belongs to. Assumed to be in the database already.
+     * @param statement the PreparedStatement whose wildcards are being set
+     * @param dataRow the dataRow being inserted
      * @throws SQLException if an error occurred regarding the database
      */
-    public static void insertDataRow(DataRow dataRow, Activity activity) throws SQLException {
-        assert dataRow != null;
-
-        String insert = "insert into dataRow (rowNumber, rowDate, time, heartRate, latitude, longitude, elevation, " +
-                "name, activityDate, firstName, lastName) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(insert);
+    private static void setDataRowInsertStatement(PreparedStatement statement, DataRow dataRow) throws SQLException {
         // set the wildcards (indexed from 1)
         statement.setString(1, String.valueOf(dataRow.getNumber()));
         statement.setString(2, String.valueOf(dataRow.getDate()));
@@ -114,12 +119,48 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(5, String.valueOf(dataRow.getLatitude()));
         statement.setString(6, String.valueOf(dataRow.getLongitude()));
         statement.setString(7, String.valueOf(dataRow.getElevation()));
-        statement.setString(8, activity.getName());
-        statement.setString(9, String.valueOf(activity.getDate()));
-        statement.setString(10, activity.getOwner().getFirstName());
-        statement.setString(11, activity.getOwner().getLastName());
+        statement.setString(8, dataRow.getOwner().getName());
+        statement.setString(9, String.valueOf(dataRow.getOwner().getDate()));
+        statement.setString(10, dataRow.getOwner().getOwner().getFirstName());
+        statement.setString(11, dataRow.getOwner().getOwner().getLastName());
+    }
 
+    /** Add a dataRow to the database
+     *  If the combination of dataRow number and activty name/date is not unique, the dataRow will not be added.
+     *  It is assumed that all dataRow fields are correctly formatted.
+     *
+     * @param dataRow the data row to be added
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public static void insertDataRow(DataRow dataRow) throws SQLException {
+        assert dataRow != null;
+
+        statement = connection.prepareStatement(dataRowInsertSQL);
+        DataStorer.setDataRowInsertStatement(statement, dataRow);
         statement.executeUpdate();
+        statement.close();
+    }
+
+    /** Insert a list of dataRows into the database using a transaciton
+     *
+     * @param rows the list of dataRows to be inserted
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public static void insertDataRowTransaction(List<DataRow> rows) throws SQLException {
+        // Set auto-commit mode to false
+        connection.setAutoCommit(false);
+
+        for (DataRow dataRow : rows) {
+            assert dataRow != null;
+            statement = connection.prepareStatement(dataRowInsertSQL);
+            setDataRowInsertStatement(statement, dataRow);
+            statement.executeUpdate();
+        }
+
+        connection.commit();
+
+        // Set auto-commit mode back to true
+        connection.setAutoCommit(true);
     }
 
     //
@@ -138,11 +179,12 @@ abstract public class DataStorer extends DataAccesser {
         String select = "delete from profile where " +
                 "firstName = (?) " +
                 "and lastName = (?)";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
         statement.setString(1, profile.getFirstName());
         statement.setString(2, profile.getLastName());
 
         statement.executeUpdate();
+        statement.close();
 
         // Delete all activities belonging to the profile
         for (Activity activity : profile.getActivityList()) {
@@ -171,13 +213,14 @@ abstract public class DataStorer extends DataAccesser {
                 "and activityDate = (?)" +
                 "and firstName = (?)" +
                 "and lastName = (?)";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
         statement.setString(1, activity.getName());
         statement.setString(2, String.valueOf(activity.getDate()));
         statement.setString(3, profile.getFirstName());
         statement.setString(4, profile.getLastName());
 
         statement.executeUpdate();
+        statement.close();
 
         // Delete all dataRows belonging to the activity
         for (DataRow row : activity.getRawData()) {
@@ -200,12 +243,13 @@ abstract public class DataStorer extends DataAccesser {
                 "goalNumber = (?) " +
                 "and firstName = (?) " +
                 "and lastName = (?)";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
         statement.setString(1, String.valueOf(goal.getNumber()));
         statement.setString(2, profile.getFirstName());
         statement.setString(3, profile.getLastName());
 
         statement.executeUpdate();
+        statement.close();
     }
 
     /** Delete a dataRow from the database
@@ -222,12 +266,13 @@ abstract public class DataStorer extends DataAccesser {
                 "rowNumber = (?) " +
                 "and name = (?) " +
                 "and activityDate = (?)";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
         statement.setString(1, String.valueOf(row.getNumber()));
         statement.setString(2, activity.getName());
         statement.setString(3, String.valueOf(activity.getDate()));
 
         statement.executeUpdate();
+        statement.close();
     }
 
 

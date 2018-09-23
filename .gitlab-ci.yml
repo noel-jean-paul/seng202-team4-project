@@ -9,3 +9,4 @@ generate_artifacts:
     artifacts:
         paths:
         - target/Fitness*.jar
+        - target/fitness_tracker.sqlite

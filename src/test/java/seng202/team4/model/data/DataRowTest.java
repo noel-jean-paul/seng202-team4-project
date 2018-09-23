@@ -83,8 +83,8 @@ public class DataRowTest {
     public void setNumber() throws SQLException {
         int num = 5;
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
-        DataStorer.insertDataRow(row1, activity1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         row1.setNumber(num);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -95,8 +95,8 @@ public class DataRowTest {
     public void setDate() throws SQLException {
         String date = "2019-01-15";
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
-        DataStorer.insertDataRow(row1, activity1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         row1.setDate(date);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -119,8 +119,8 @@ public class DataRowTest {
     public void setHeartRate() throws SQLException {
         int rate = 170;
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
-        DataStorer.insertDataRow(row1, activity1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         row1.setHeartRate(rate);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -131,8 +131,8 @@ public class DataRowTest {
     public void setLatitude() throws SQLException {
         double latitude = -60;
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
-        DataStorer.insertDataRow(row1, activity1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         row1.setLatitude(latitude);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -143,8 +143,8 @@ public class DataRowTest {
     public void setLongitude() throws SQLException {
         double longitude = -70;
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
-        DataStorer.insertDataRow(row1, activity1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         row1.setLongitude(longitude);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -155,8 +155,8 @@ public class DataRowTest {
     public void setElevation() throws SQLException {
         double elevation = 440;
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
-        DataStorer.insertDataRow(row1, activity1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         row1.setElevation(elevation);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 

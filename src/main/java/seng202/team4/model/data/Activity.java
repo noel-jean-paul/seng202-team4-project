@@ -52,9 +52,6 @@ public class Activity implements Comparable<Activity> {
         this.caloriesBurned = caloriesBurned;
         this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.rawData = new ArrayList<>();
-        this.avgHeartRate = calculateAvgHeartRate();
-        this.minHeartRate = calculateMinHeartRate();
-        this.maxHeartRate = calculateMaxHeartRate();
     }
 
     /**
@@ -248,14 +245,26 @@ public class Activity implements Comparable<Activity> {
     }
 
 
+    /**
+     * Getter method for the average heart rate.
+     * @return the average heart rate.
+     */
     public int getAvgHeartRate() {
         return avgHeartRate;
     }
 
+    /**
+     * Getter method for the minimum heart rate.
+     * @return the minimum heart rate.
+     */
     public int getMinHeartRate() {
         return minHeartRate;
     }
 
+    /**
+     * Getter method for the maximum heart rate.
+     * @return the maximum heart rate.
+     */
     public int getMaxHeartRate() {
         return maxHeartRate;
     }
@@ -268,10 +277,10 @@ public class Activity implements Comparable<Activity> {
     public void addDataRow(DataRow row) throws SQLException {
         rawData.add(row);
         java.util.Collections.sort(rawData);
-        DataStorer.insertDataRow(row, this);
-
         // Set the owner
         row.setOwner(this);
+
+        DataStorer.insertDataRow(row);
     }
 
     /** Adds all dataRows of the specified collection to rawData and sorts the rawData list
@@ -368,14 +377,17 @@ public class Activity implements Comparable<Activity> {
         return type;
     }
 
-    // TODO JavaDoc - Kenny
-
     /**
      * Creates all 3 different warning types for the activities, and if the warning in fact is a health issue, adds it to
      * the user's list of warnings.
      * @return whether or not a warning was added to the user's warning list.
      */
-    public boolean addWarnings() {
+    public boolean addWarnings(boolean heartRatesCalculated) {
+        if (!heartRatesCalculated) {
+            this.avgHeartRate = calculateAvgHeartRate();
+            this.minHeartRate = calculateMinHeartRate();
+            this.maxHeartRate = calculateMaxHeartRate();
+        }
         boolean hasWarning = false;
         ArrayList<HealthWarning> warnings = new ArrayList<>();
         warnings.add(new HealthWarning(this, owner, WarningType.Tachy, avgHeartRate, minHeartRate, maxHeartRate));
@@ -391,7 +403,8 @@ public class Activity implements Comparable<Activity> {
     }
 
     /**
-     * @return
+     * Calculates the average heart rate of the user over the course of the activity.
+     * @return the user's average heart rate.
      */
     private int calculateAvgHeartRate() {
         int avgBPM = 0;
@@ -405,7 +418,8 @@ public class Activity implements Comparable<Activity> {
     }
 
     /**
-     * @return
+     * Calculate the minimum heart rate of the user over the course of the activity.
+     * @return the user's minimum heart rate.
      */
     private int calculateMinHeartRate() {
         int minBPM = Integer.MAX_VALUE;
@@ -418,7 +432,8 @@ public class Activity implements Comparable<Activity> {
     }
 
     /**
-     * @return
+     * Calculate the maximum heart rate of the user over the course of the activity.
+     * @return the user's maximum heart rate.
      */
     private int calculateMaxHeartRate() {
         int maxBPM = Integer.MIN_VALUE;
@@ -429,21 +444,4 @@ public class Activity implements Comparable<Activity> {
         }
         return maxBPM;
     }
-
-//    /**
-//     * Calculates the total distance covered in meters for an activity
-//     */
-//    public void calcTotalDistance() {
-//        double totalDistance = 0;
-//        ActivityRawData previous = null;
-//        for (ActivityRawData data: rawActivityList) {
-//            if (!(previous == null)) {
-//                totalDistance += calcDistance(previous.getLatitude(), data.getLatitude(),
-//                        previous.getLongitude(), data.getLongitude(),
-//                        previous.getElevation(), data.getElevation());
-//            }
-//            previous = data;
-//        }
-//        this.distance = totalDistance;
-//    }
 }

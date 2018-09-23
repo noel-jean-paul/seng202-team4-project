@@ -94,6 +94,9 @@ public class LoginController extends Controller {
                 applicationStateManager.switchToScreen("MainScreen");
                 ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).reset();
 
+                // TODO remove following once database stores data
+                applicationStateManager.getCurrentProfile().findWarnings();
+
 
                 System.out.println(String.format("%s %s has logged in!", profileKey.getFirstName(), profileKey.getLastName()));
             } catch (java.sql.SQLException e) {

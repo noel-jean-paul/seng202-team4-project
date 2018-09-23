@@ -57,11 +57,19 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             if (activityConfirmationRow.isSelected()) {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
                 // Check the activity for health warnings
-                warningFound = activity.addWarnings();
+                warningFound = activity.addWarnings(true);
 
                 // Store all data rows in the database as they have not been stored yet but are in the rawData list
                 for (DataRow dataRow : activity.getRawData()) {
-                    DataStorer.insertDataRow(dataRow, activity);
+                    // Set the owner manually as addDataRow has not been called
+                    dataRow.setOwner(activity);
+                }
+                try {
+                    // Insert the datarows at once using a transaction
+                    DataStorer.insertDataRowTransaction(activity.getRawData());
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                    // TODO: 21/09/18 Change to print error to file
                 }
                 activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             }
@@ -119,6 +127,13 @@ public class ImportActivitiesPreviewScreenController extends Controller {
 
     }
 
+    /**
+     * Adds an activity confirmation row to the screen.
+     *
+     * @param activity The activity to be added as a row to the screen.
+     * @param shaded Whether the row should be shaded.
+     * @return The controller of the ActivityConfirmationRow.
+     */
     private ActivityConfirmationRowController addNewConfirmationRow(Activity activity, boolean shaded) {
         activity.setCaloriesBurnedValue(DataProcessor.calculateCalories(activity.getAverageSpeed(), activity.getDuration().getSeconds(), activity.getType(), applicationStateManager.getCurrentProfile()));
         ActivityConfirmationRowController activityRowController = new ActivityConfirmationRowController(applicationStateManager);
@@ -126,7 +141,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         activityConfirmationRow.prefWidthProperty().bind(gridPane.widthProperty());
         activityListVbox.getChildren().add(activityConfirmationRow);
 
-        if (shaded) {
+        if (shaded) {   // If the row needs to be shaded then a shaded background is applied.
             activityConfirmationRow.applyShadedBackground();
         }
 
@@ -137,6 +152,9 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         return activityRowController;
     }
 
+    /**
+     * Cancels the import and returns to the main screen of the app.
+     */
     @FXML
     public void cancel() {
         applicationStateManager.switchToScreen("MainScreen");

@@ -236,10 +236,10 @@ public class Profile {
     public void addActivity(Activity activity) throws SQLException {
         activityList.add(activity);
         java.util.Collections.sort(activityList);   // Keep the lsit ordered
-        DataStorer.insertActivity(activity, this);
-
         // Set this as the activity owner
         activity.setOwner(this);
+
+        DataStorer.insertActivity(activity, this);
     }
 
     /** Adds all activities of the specified collection to the profile activityList and sorts the activityList
@@ -260,10 +260,10 @@ public class Profile {
     public void addGoal(Goal goal) throws SQLException {
         goalList.add(goal);
         java.util.Collections.sort(goalList);
-        DataStorer.insertGoal(goal, this);
-
         // Set this as the activity owner
         goal.setOwner(this);
+
+        DataStorer.insertGoal(goal, this);
     }
 
     /** Adds all goals of the specified collection to the goalList and sorts the goalList
@@ -294,18 +294,29 @@ public class Profile {
         goalList.remove(goal);
         DataStorer.deleteGoal(goal, this);
     }
-    // TODO JavaDoc - Kenny
     /**
-     * @param warning
+     * Adds a warning to the user's list of warnings.
+     * @param warning the warning to be added.
      */
     public void addWarning(HealthWarning warning) {
         warningList.add(warning);
     }
 
     /**
-     * @return
+     * Gets the user's warning history.
+     * @return the list of warnings.
      */
     public List<HealthWarning> getWarningList() {
         return warningList;
+    }
+
+    /**
+     * Used when the profile has been loaded. Goes through all the activities stored by the user and tells the activity to
+     * check for any health warnings it may have.
+     */
+    public void findWarnings() {
+        for (Activity activity : activityList) {
+            activity.addWarnings(false);
+        }
     }
 }
