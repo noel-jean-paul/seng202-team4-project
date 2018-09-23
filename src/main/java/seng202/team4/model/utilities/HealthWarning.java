@@ -39,7 +39,7 @@ public class HealthWarning {
         if (type == WarningType.Tachy) {
             typeStr = "Tachycardia";
         } else if (type == WarningType.Brady) {
-            typeStr = "Bradycaria";
+            typeStr = "Bradycardia";
         } else {
             typeStr = "Cardiovascular Mortality";
         }
@@ -47,7 +47,8 @@ public class HealthWarning {
     }
 
     /**
-     * @return
+     * Checks the activity to see if a health risk was detected.
+     * @return whether a risk was detected or not.
      */
     private boolean checkRisk() {
         boolean atRisk;
@@ -68,7 +69,8 @@ public class HealthWarning {
     // TODO - Create modular approach to description setting
 
     /**
-     * @return
+     * Checks all the relevant risks which are easily detectable while the user is performing a running activity.
+     * @return whether a running risk was detected.
      */
     private boolean runningRisk() {
         boolean atRisk = false;
@@ -83,7 +85,8 @@ public class HealthWarning {
     }
 
     /**
-     * @return
+     * Checks all the relevant risks which are easily detectable while the user is performing a walking activity.
+     * @return whether a walking risk was detected.
      */
     private boolean walkingRisk() {
         boolean atRisk;
@@ -101,7 +104,8 @@ public class HealthWarning {
     }
 
     /**
-     * @return
+     * Calculates the user's maximum heart rate for their age and evaluates their own heart rate against this max.
+     * @return whether the user's heart rate was of their recommended maximum.
      */
     private boolean tachyRisk() {
         if (maxHeartRate > (220 - user.getAge())) {
@@ -112,7 +116,8 @@ public class HealthWarning {
     }
 
     /**
-     * @return
+     * Calculates the user's minimum heart rate for their age bracket and evaluates their own heart rate against this minimum.
+     * @return whether the user's heart rate was under the minimum.
      */
     private boolean bradyRisk() {
         if (user.getAge() >= 18 && minHeartRate < 50) {
@@ -128,8 +133,8 @@ public class HealthWarning {
      * @return
      */
     private boolean cardioRisk() {
-        //TODO refine wrning detection
-        if (minHeartRate > 83) {
+        //TODO refine warning detection
+        if (minHeartRate > 90) {
             return true;
         } else {
             return false;
@@ -137,7 +142,8 @@ public class HealthWarning {
     }
 
     /**
-     * @return
+     * Sets the URL to search for the specific health warning depending on the type.
+     * @return the web search URL of the warning.
      */
     private String setUpURL() {
         String warningURL;
@@ -205,7 +211,7 @@ public class HealthWarning {
         return warningDate;
     }
 
-    public WarningType geType() {
+    public WarningType getType() {
         return type;
     }
 

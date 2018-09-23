@@ -17,9 +17,11 @@ import seng202.team4.model.utilities.HealthWarning;
 
 import java.time.LocalDate;
 
+/**
+ * Controller for the health tab.
+ */
 public class HealthTabController extends Controller {
 
-    // TODO Implement - Kenny
 
     @FXML
     private TableView healthWarningTable;
@@ -65,6 +67,11 @@ public class HealthTabController extends Controller {
         }
     }
 
+    /**
+     * Populates all of the labels in the popUp window.
+     * @param warningPopUp the popUp window controller being populated.
+     * @param warning the warning who's values are being user to populate the PopUp.
+     */
     private void setUpPopUpLabels(WarningDescriptionPopUpController warningPopUp, HealthWarning warning) {
         String heartRateRange = setRateRange(warning);
         warningPopUp.setPopUpTitle(warning.getTypeString());
@@ -76,6 +83,11 @@ public class HealthTabController extends Controller {
         warningPopUp.setRecommendedLabel(getRecommendedHeartRate(warning));
     }
 
+    /**
+     * Retrieves the recommended heart rate according to the warning being displayed.
+     * @param warning the warning being displayed.
+     * @return the recommended heart rate which the user was in excess of.
+     */
     private int getRecommendedHeartRate(HealthWarning warning) {
         int rate;
         if (warning.getType() == WarningType.Tachy) {
@@ -92,6 +104,12 @@ public class HealthTabController extends Controller {
         return rate;
     }
 
+    /**
+     * Looking at the warning type of the given health warning, gives a string correlating which bound the user
+     * was in excess of - Maximum, Minimum.
+     * @param warning the warning being displayed.
+     * @return the range bound in violation.
+     */
     private String setRateRange(HealthWarning warning) {
         String heartRateRange;
         if (warning.getType() == WarningType.Tachy) {
@@ -104,6 +122,9 @@ public class HealthTabController extends Controller {
         return heartRateRange;
     }
 
+    /**
+     * When the button is pressed, the warning's URL is used to perform a google search on the warning in the webView
+     */
     @FXML
     void webSearch() {
         HealthWarning warning = (HealthWarning) healthWarningTable.getSelectionModel().getSelectedItem();
@@ -113,6 +134,9 @@ public class HealthTabController extends Controller {
         }
     }
 
+    /**
+     * Returns the webView to the most recent warning URL, if none was given, returns the webView back to google.com
+     */
     @FXML
     void webViewReturn() {
         engine.load(currentUrl);
@@ -121,10 +145,18 @@ public class HealthTabController extends Controller {
     private WebEngine engine;
     private String currentUrl;
 
+
+    /**
+     * The constructor for the health tab.
+     * @param applicationStateManager the application state manager of the application.
+     */
     public HealthTabController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
 
+    /**
+     * Initialises the HealthTab to its initial state.
+     */
     @FXML
     public void initialize() {
         healthWarningTable.setPlaceholder(new Text("No warnings have been detected."));
@@ -142,7 +174,7 @@ public class HealthTabController extends Controller {
     }
 
     /**
-     *
+     * Populates the table and sets the web view back to Google.com when the health tab is selected.
      */
     public void reloadTab() {
         ObservableList<HealthWarning> warningList = FXCollections.observableArrayList(applicationStateManager.getCurrentProfile().getWarningList());
@@ -160,7 +192,7 @@ public class HealthTabController extends Controller {
     }
 
     /**
-     *
+     * Sets the top metric labels in the health tab.
      */
     public void setLabels() {
         ageLabel.setText(String.format("%d", (applicationStateManager.getCurrentProfile().getAge())));
