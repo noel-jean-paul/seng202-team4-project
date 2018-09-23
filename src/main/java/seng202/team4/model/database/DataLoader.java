@@ -79,11 +79,11 @@ abstract public class DataLoader extends DataAccesser {
                     set.getDouble("distance"),
                     set.getDouble("caloriesBurned")
                     );
-            loadActivityDataRows(activity);
-            activities.add(activity);
-
             // Set the owner of the activity as the profile
             activity.setOwner(profile);
+
+            loadActivityDataRows(activity);
+            activities.add(activity);
         }
         // Add all activities to the activity list (without reinserting into the database)
         profile.addAllActivities(activities);
@@ -124,6 +124,7 @@ abstract public class DataLoader extends DataAccesser {
                     set.getDouble("goalDuration"),
                     set.getDouble("goalDistance")
                     );
+
             goals.add(goal);
 
             // Set the owner of the activity as the profile
@@ -146,12 +147,15 @@ abstract public class DataLoader extends DataAccesser {
         List<DataRow> rows = new ArrayList<>();
 
         // Select all activities for the profile
-        String select = "SELECT * FROM dataRow where name = (?) and activityDate = (?)";
+        String select = "SELECT * FROM dataRow where name = (?) and activityDate = (?) and firstName = (?) " +
+                "and lastName = (?)";
         statement = connection.prepareStatement(select);
 
         // Set the wildcards (indexed from 1)
         statement.setString(1, activity.getName());
         statement.setString(2, String.valueOf(activity.getDate()));
+        statement.setString(3, String.valueOf(activity.getOwner().getFirstName()));
+        statement.setString(4, String.valueOf(activity.getOwner().getLastName()));
 
         set = statement.executeQuery();
 

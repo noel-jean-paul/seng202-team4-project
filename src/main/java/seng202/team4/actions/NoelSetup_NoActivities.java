@@ -7,7 +7,7 @@ import seng202.team4.model.database.DataStorer;
 
 import java.sql.SQLException;
 
-public class NoelSetup {
+public class NoelSetup_NoActivities {
     public static void main(String[] args) throws SQLException {
         DataAccesser.initialiseMainConnection();
         DataAccesser.clearDatabase();

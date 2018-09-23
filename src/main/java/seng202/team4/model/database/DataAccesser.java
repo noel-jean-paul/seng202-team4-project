@@ -26,14 +26,11 @@ abstract public class DataAccesser {
     public static void initialiseTestConnection() throws SQLException {
         String url = "jdbc:sqlite:testDatabase.sqlite";
         connection = DriverManager.getConnection(url);
-    }
 
-    /** Check if a connection to the database is currently open
-     *
-     * @return true if there is an open connection, false otherwise
-     */
-    public static boolean checkNullConnection() {
-        return connection == null;
+//        // Turn foreign keys on
+//        String update = "PRAGMA foreign_keys = ON;";
+//        PreparedStatement statement = connection.prepareStatement(update);
+//        statement.executeUpdate();
     }
 
     /** Drop all tables from both the production and test databases and
@@ -73,7 +70,7 @@ abstract public class DataAccesser {
                 "lastName text not null, " +
                 "dateOfBirth character(10) not null, " +
                 "height real constraint check_height check (height BETWEEN 1.00 and 3.00), " +
-                "weight real constraint check_weight check (weight between 0 and 250), " +
+                "weight real constraint check_weight check (weight between 20 and 250), " +
                 "primary key (firstName, lastName)" +
                 ");";
 
@@ -116,7 +113,7 @@ abstract public class DataAccesser {
                 "  heartRate integer constraint check_heartRate check (heartRate between 20 and 250),\n" +
                 "  latitude double constraint check_latitude check (latitude between -90 and 90),\n" +
                 "  longitude double constraint check_longitude check (longitude between -180 and 180),\n" +
-                "  elevation double constraint check_elevation check (elevation between 0 and 4000),\n" +
+                "  elevation double constraint check_elevation check (elevation between -1000 and 5000),\n" +
                 "  name text,\n" +
                 "  activityDate character(10),\n" +
                 "  firstName text not NULL,\n" +

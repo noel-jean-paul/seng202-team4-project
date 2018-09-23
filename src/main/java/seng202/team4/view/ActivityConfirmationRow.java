@@ -20,7 +20,7 @@ import java.time.LocalTime;
 /** The confirmation row that is displayed when activities are imported */
 public class ActivityConfirmationRow extends AnchorPane {
 
-    /** Background colour of a row when it is slightly shaeded. */
+    /** Background colour of a row when it is slightly shaded. */
     private final Background shadedBackground = new Background( new BackgroundFill( Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY ) );
 
     /** The activity that the row is displaying. */

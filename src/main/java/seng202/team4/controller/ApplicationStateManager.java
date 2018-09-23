@@ -1,9 +1,10 @@
 package seng202.team4.controller;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import seng202.team4.model.data.Profile;
 
@@ -33,7 +34,10 @@ public class ApplicationStateManager {
     /** The currently loaded user profile. */
     private Profile currentUserProfile;
 
+    /** Pane used to block clicks on buttons in the background of a popup. */
     private Pane glassPane;
+
+
 
     /**
      * Constructor of the ApplicationStateManager.
@@ -52,7 +56,6 @@ public class ApplicationStateManager {
         glassPane.prefHeightProperty().bind(rootScene.heightProperty());
     }
 
-
     /**
      * Adds a screen to the ApplicationStateManager.
      *
@@ -64,7 +67,6 @@ public class ApplicationStateManager {
         controllerMap.put(name, controller);
     }
 
-
     /**
      * Switches to a particular screen of the ApplicationStateManager.
      *
@@ -75,7 +77,6 @@ public class ApplicationStateManager {
         paneMap.get(name).prefWidthProperty().bind(stackPane.widthProperty());
         paneMap.get(name).prefHeightProperty().bind(stackPane.heightProperty());
     }
-
 
     /**
      * Displays a pop up over the current screen.
@@ -89,18 +90,27 @@ public class ApplicationStateManager {
         stackPane.getChildren().add(popUp);
     }
 
-
     /**
      * Closes a pop up that is currently being displayed.
      *
      * @param popUp The pop up to be closed.
      */
     public void closePopUP(Pane popUp) {
-        stackPane.getChildren().remove(glassPane);
+        if (stackPane.getChildren().indexOf(glassPane) < stackPane.getChildren().indexOf(popUp)) {
+            stackPane.getChildren().remove(glassPane);
+        }
         stackPane.getChildren().remove(popUp);
+
     }
 
-
+    /**
+     * Displays an error popup to the user.
+     * If the error is critical then the App is closed.
+     *
+     * @param userMessage User friendly message to display.
+     * @param detail More detailed error message to display.
+     * @param isCritical Whether the error is critical.
+     */
     public void displayErrorMessage(String userMessage, String detail, boolean isCritical) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -112,15 +122,26 @@ public class ApplicationStateManager {
         }
     }
 
+    /**
+     * Displays an error popup to the user.
+     * Shortcut method that does not require the 'isCritical' flag to be supplied.
+     *
+     * @param userMessage User friendly message to display.
+     * @param detail More detailed error message to display.
+     */
     public void displayErrorMessage(String userMessage, String detail) {
         displayErrorMessage(userMessage, detail, false);
     }
 
-
+    /**
+     * Gets the Controller of the screen specified by name.
+     *
+     * @param screenName The name of the screen.
+     * @return The Controller of the screen.
+     */
     public Controller getScreenController(String screenName) {
         return controllerMap.get(screenName);
     }
-
 
     /**
      * Removes a screen from the ApplicationStateManager.
@@ -133,7 +154,6 @@ public class ApplicationStateManager {
         controllerMap.remove(name);
     }
 
-
     /**
      * Checks whether the ApplicationStateManager contains a screen of the given name.
      *
@@ -144,7 +164,6 @@ public class ApplicationStateManager {
         return paneMap.containsKey(name);
     }
 
-
     /**
      * Checks whether the ApplicationStateManager contains the given screen.
      *
@@ -154,7 +173,6 @@ public class ApplicationStateManager {
     public  boolean containsScreen(Pane pane) {
         return paneMap.containsValue(pane);
     }
-
 
     /**
      * Sets the current profile of the application.
@@ -168,7 +186,6 @@ public class ApplicationStateManager {
     public Profile getCurrentProfile() {
         return currentUserProfile;
     }
-
 
     /**
      * Gets the primary Stage of the application.

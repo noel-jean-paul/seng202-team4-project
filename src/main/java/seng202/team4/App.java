@@ -1,13 +1,16 @@
 package seng202.team4;
 
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seng202.team4.controller.*;
 import seng202.team4.model.database.DataAccesser;
 
+import java.io.*;
 import java.sql.SQLException;
 
 import static javafx.application.Application.launch;
@@ -36,13 +39,22 @@ public class App extends Application {
 //        }
 
         try {
+            File errorLog = new File("ErrorLog.txt");
+            PrintStream errorLogStream = new PrintStream(errorLog);
+            System.setOut(errorLogStream);
+            System.setErr(errorLogStream);
+        } catch (IOException e) {
+
+        }
+
+
+        try {
             DataAccesser.initialiseMainConnection();
         } catch (java.sql.SQLException e) {
             System.out.println("Error: Could not establish connection with the data base.");
             System.out.print(e.getMessage());
             System.exit(1);
         }
-
 
         Scene baseScene = new Scene(new Group(), 600, 400);
 
@@ -69,6 +81,9 @@ public class App extends Application {
         primaryStage.show();
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
+
+        primaryStage.setWidth(1280);
+        primaryStage.setHeight(720);
     }
 
     public static void main(String[] args) {

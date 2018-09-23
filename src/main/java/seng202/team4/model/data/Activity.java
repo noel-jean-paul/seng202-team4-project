@@ -1,5 +1,6 @@
 package seng202.team4.model.data;
 
+import seng202.team4.model.data.enums.ActivityFields;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.database.DataStorer;
@@ -11,10 +12,7 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Activity implements Comparable<Activity> {
 
@@ -121,7 +119,8 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setName(String name) throws SQLException {
-        DataUpdater.updateActivity(this,"name", name);
+        DataUpdater.updateActivities(Collections.singletonList(this),
+                ActivityFields.name.toString(), name, true);
         this.name = name;
     }
 
@@ -131,7 +130,8 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDescription(String description) throws SQLException {
-        DataUpdater.updateActivity(this,"description", description);
+        DataUpdater.updateActivities(Collections.singletonList(this),
+                ActivityFields.description.toString(), description, false);
         this.description = description;
     }
 
@@ -141,7 +141,8 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDate(String date) throws SQLException {
-        DataUpdater.updateActivity(this,"activityDate", date);
+        DataUpdater.updateActivities(Collections.singletonList(this),
+                ActivityFields.activityDate.toString(), date, true);
         this.date = LocalDate.parse(date);
     }
 
@@ -151,7 +152,8 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setStartTime(String startTime) throws SQLException {
-        DataUpdater.updateActivity(this,"startTime", startTime);
+        DataUpdater.updateActivities(Collections.singletonList(this),
+                ActivityFields.startTime.toString(), startTime, false);
         this.startTime = LocalTime.parse(startTime);
     }
 
@@ -170,7 +172,8 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDuration(String duration) throws SQLException {
-        DataUpdater.updateActivity(this,"duration", duration);
+        DataUpdater.updateActivities(Collections.singletonList(this),
+                ActivityFields.duration.toString(), duration, false);
         this.duration = Duration.parse(duration);
     }
 
@@ -190,7 +193,8 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setDistance(double distance) throws SQLException {
-        DataUpdater.updateActivity(this,"distance", Double.toString(distance));
+        DataUpdater.updateActivities(Collections.singletonList(this),
+                ActivityFields.distance.toString(), Double.toString(distance), false);
         this.distance = distance;
     }
 
@@ -213,7 +217,8 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setCaloriesBurned(double caloriesBurned) throws SQLException {
-        DataUpdater.updateActivity(this,"caloriesBurned", Double.toString(caloriesBurned));
+        DataUpdater.updateActivities(Collections.singletonList(this),
+                ActivityFields.caloriesBurned.toString(), Double.toString(caloriesBurned), false);
         this.caloriesBurned = caloriesBurned;
     }
 
@@ -227,7 +232,8 @@ public class Activity implements Comparable<Activity> {
 
     /** Set and update in database */
     public void setType(ActivityType type) throws SQLException {
-        DataUpdater.updateActivity(this,"type", type.toString());
+        DataUpdater.updateActivities(Collections.singletonList(this),
+                ActivityFields.type.toString(), type.toString(), false);
         this.type = type;
     }
 
@@ -299,7 +305,7 @@ public class Activity implements Comparable<Activity> {
      */
     public void removeDataRow(DataRow row) throws SQLException {
         rawData.remove(row);
-        DataStorer.deleteDataRow(row, this);
+        DataStorer.deleteDataRows(Collections.singletonList(row));
     }
 
 
