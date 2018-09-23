@@ -53,7 +53,7 @@ public class WarningDescriptionPopUpController extends Controller{
     }
 
     public void setAverageLabel(int heartRate) {
-        averageLabel.setText(Integer.toString(heartRate) + "bpm");
+        averageLabel.setText(Integer.toString(heartRate) + " bpm");
     }
 
     public void setMinLabel(int heartRate) {
@@ -77,14 +77,17 @@ public class WarningDescriptionPopUpController extends Controller{
         popUpTitle.setText(title);
     }
 
-    /*public void setDescriptionText(WarningType type) {
+    public void setDescriptionText(WarningType type) {
         String text;
         if (type == WarningType.Tachy) {
-            text = "Your heart rate was over your recommended maximum heart rate as displayed below." +
-                    "It is advisable that you keep track of your heart rate, and if a pattern continues"
-            descriptionText.setText();
+            text = "Your heart rate was over your recommended maximum heart rate";
+        } else if (type == WarningType.Brady) {
+            text = "Your heart rate was under your recommended minimum heart rate.";
+        } else {
+            text = "Your resting heart rate was over your recommended resting rate";
         }
-    }*/
+        descriptionText.setText(text);
+    }
 
     @FXML
     void cancelPressed() {
