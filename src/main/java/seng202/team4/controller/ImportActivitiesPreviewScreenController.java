@@ -57,7 +57,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             if (activityConfirmationRow.isSelected()) {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
                 // Check the activity for health warnings
-                warningFound = activity.addWarnings();
+                warningFound = activity.addWarnings(true);
 
                 // Store all data rows in the database as they have not been stored yet but are in the rawData list
                 for (DataRow dataRow : activity.getRawData()) {
