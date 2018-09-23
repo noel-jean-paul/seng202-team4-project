@@ -54,42 +54,33 @@ public class MainScreenController extends Controller {
     }
 
     /**
-     * Creates, loads and initialize        //List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
-        XYChart.Series set1 = new XYChart.Series<>();
-
-//        for (int i = 0; i < 5; i++) {
-//            set1.getData().add(new XYChart.Data(activityList.get(i).getName(), activityList.get(i).getDistance()));
-//        }
-import javafx.scene.text.Text;
-        set1.getData().add(new XYChart.Data("Walk in woods", 1.5));
-//        set1.getData().add(new XYChart.Data("fun run", 2));
-//        set1.getData().add(new XYChart.Data("Run through town", 12));
-//        set1.getData().add(new XYChart.Data("Marathon", 42));
-        distanceBarGraph.getData().addAll(set1);s the different tabs of the main screen.
+     * Initializes the main screen and creates all of the tabs of the main screen.
      */
     @FXML
     public void initialize() {
+        // Creates the activity tab.
         Pane pane = new Pane();
         activityTabController = new ActivityTabController(applicationStateManager);
         pane = GuiUtilities.loadPane("ActivityTab.fxml", activityTabController);
         activityPane.getChildren().setAll(pane);
 
-        // TODO: Figure out how to get these tabs to fit to parent, so they can expand
+        // Creates the home tab.
         Pane home = new Pane();
         homeTabController = new HomeTabController(applicationStateManager);
         home = GuiUtilities.loadPane("HomeTab.fxml", homeTabController);
         homePane.getChildren().setAll(home);
 
+        // Creates the goals tab.
         Pane goals = new Pane();
         goalsTabController = new GoalsTabController(applicationStateManager);
         goals = GuiUtilities.loadPane("GoalsTab.fxml", goalsTabController);
         goalsPane.getChildren().setAll(goals);
 
+        // Creates the health tab.
         Pane health = new Pane();
         healthTabController = new HealthTabController(applicationStateManager);
         health = GuiUtilities.loadPane("HealthTab.fxml", healthTabController);
         healthPane.getChildren().setAll(health);
-
     }
 
     /**

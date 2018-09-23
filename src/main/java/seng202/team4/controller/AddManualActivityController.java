@@ -6,8 +6,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
-import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.utilities.DataProcessor;
 
@@ -137,7 +137,7 @@ public class AddManualActivityController extends Controller {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
                 applicationStateManager.closePopUP(rootPane);
             } catch (java.sql.SQLException e) {
-                applicationStateManager.displayErrorMessage("Failed to add activity.", "The activity could not be inserted into the database.");
+                GuiUtilities.displayErrorMessage("Failed to add activity.", "The activity could not be inserted into the database.");
                 e.printStackTrace();
             }
         }

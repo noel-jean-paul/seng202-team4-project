@@ -71,7 +71,7 @@ public class ActivityImportTypePromptController extends Controller {
             try {
                 previewContoller.loadActivities(file);
             } catch (IOException e) {
-                applicationStateManager.displayErrorMessage("Failed to load file.", "");
+                GuiUtilities.displayErrorMessage("Failed to load file.", "");
             }
         }
     }

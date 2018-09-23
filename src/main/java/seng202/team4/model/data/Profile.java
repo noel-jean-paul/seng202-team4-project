@@ -1,4 +1,5 @@
 package seng202.team4.model.data;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.enums.ProfileFields;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
@@ -190,7 +191,8 @@ public class Profile {
                 }
             }
         } catch (java.sql.SQLException e) {
-            //TODO: Bring up proper error box to the user.
+            GuiUtilities.displayErrorMessage("Error loading profile keys from the data base.", "");
+            e.printStackTrace();
             System.out.println("Error loading profile keys from the data base.");
             isUnique = false;
         }

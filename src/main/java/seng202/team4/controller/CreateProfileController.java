@@ -3,6 +3,7 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Profile;
 import seng202.team4.model.database.DataStorer;
 
@@ -123,7 +124,7 @@ public class CreateProfileController extends Controller {
                 ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).reset();
                 this.reset();
             } catch (java.sql.SQLException e) {
-                applicationStateManager.displayErrorMessage("An error occurred storing the profile from the database.", e.getMessage());
+                GuiUtilities.displayErrorMessage("An error occurred storing the profile from the database.", e.getMessage());
                 System.out.println("Error storing new profile in the data base.");
                 e.printStackTrace();
             }
