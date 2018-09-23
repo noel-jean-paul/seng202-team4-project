@@ -52,9 +52,6 @@ public class Activity implements Comparable<Activity> {
         this.caloriesBurned = caloriesBurned;
         this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.rawData = new ArrayList<>();
-        this.avgHeartRate = calculateAvgHeartRate();
-        this.minHeartRate = calculateMinHeartRate();
-        this.maxHeartRate = calculateMaxHeartRate();
     }
 
     /**
@@ -375,7 +372,12 @@ public class Activity implements Comparable<Activity> {
      * the user's list of warnings.
      * @return whether or not a warning was added to the user's warning list.
      */
-    public boolean addWarnings() {
+    public boolean addWarnings(boolean heartRatesCalculated) {
+        if (!heartRatesCalculated) {
+            this.avgHeartRate = calculateAvgHeartRate();
+            this.minHeartRate = calculateMinHeartRate();
+            this.maxHeartRate = calculateMaxHeartRate();
+        }
         boolean hasWarning = false;
         ArrayList<HealthWarning> warnings = new ArrayList<>();
         warnings.add(new HealthWarning(this, owner, WarningType.Tachy, avgHeartRate, minHeartRate, maxHeartRate));
