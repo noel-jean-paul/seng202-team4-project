@@ -73,7 +73,8 @@ public class MainScreenController extends Controller {
         // Creates the goals tab.
         Pane goals = new Pane();
         goalsTabController = new GoalsTabController(applicationStateManager);
-        goals = GuiUtilities.loadPane("GoalsTab.fxml", goalsTabController);
+        //TODO: Implement a proper goals tab.
+        //goals = GuiUtilities.loadPane("GoalsTab.fxml", goalsTabController);
         goalsPane.getChildren().setAll(goals);
 
         // Creates the health tab.
