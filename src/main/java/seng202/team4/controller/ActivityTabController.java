@@ -10,7 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import seng202.team4.Utilities;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.enums.ActivityType;
 
@@ -120,7 +120,7 @@ public class ActivityTabController extends Controller {
         super(applicationStateManager);
 
         mapsController = new MapsController(applicationStateManager);
-        mapPane = Utilities.loadPane("Maps.fxml", mapsController);
+        mapPane = GuiUtilities.loadPane("Maps.fxml", mapsController);
     }
 
     /** Initializes the activity tab. */
@@ -194,7 +194,7 @@ public class ActivityTabController extends Controller {
      */
     @FXML
     public void addActivities() {
-        Pane popUp = Utilities.loadPane("ActivityImportTypePrompt.fxml", new ActivityImportTypePromptController(applicationStateManager, this));
+        Pane popUp = GuiUtilities.loadPane("ActivityImportTypePrompt.fxml", new ActivityImportTypePromptController(applicationStateManager, this));
         applicationStateManager.displayPopUp(popUp);
     }
 
@@ -206,7 +206,7 @@ public class ActivityTabController extends Controller {
     public void showGraphsPopup() {
         Activity activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
         if (activity != null) {
-            Pane activityPopUp = Utilities.loadPane("ActivityPopUpScreen.fxml", new ActivityPopUpScreenController(applicationStateManager, activity));
+            Pane activityPopUp = GuiUtilities.loadPane("ActivityPopUpScreen.fxml", new ActivityPopUpScreenController(applicationStateManager, activity));
             applicationStateManager.displayPopUp(activityPopUp);
         }
 

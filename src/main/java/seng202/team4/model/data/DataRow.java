@@ -23,6 +23,7 @@ public class DataRow implements Comparable<DataRow> {
 
     /**
      * Constructor for the ActivityRawData class
+     * @param number is the number of the row within the activity.
      * @param date is a date in dd/mm/yyyy format
      * @param time is a time in hh/mm/ss format
      * @param heartRate is the heart rate as an integer(BPM)

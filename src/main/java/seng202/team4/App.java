@@ -1,17 +1,14 @@
 package seng202.team4;
 
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seng202.team4.controller.*;
 import seng202.team4.model.database.DataAccesser;
 
 import java.io.*;
-import java.sql.SQLException;
 
 import static javafx.application.Application.launch;
 
@@ -61,13 +58,13 @@ public class App extends Application {
         ApplicationStateManager applicationStateManager = new ApplicationStateManager(baseScene, primaryStage);
 
         LoginController loginController = new LoginController(applicationStateManager);
-        Pane loginScreen = Utilities.loadPane("LoginScreen.fxml", loginController);
+        Pane loginScreen = GuiUtilities.loadPane("LoginScreen.fxml", loginController);
 
         CreateProfileController createProfileController = new CreateProfileController(applicationStateManager);
-        Pane createProfileScreen = Utilities.loadPane("CreateProfileScreen.fxml", createProfileController);
+        Pane createProfileScreen = GuiUtilities.loadPane("CreateProfileScreen.fxml", createProfileController);
 
         MainScreenController mainScreenController = new MainScreenController(applicationStateManager);
-        Pane mainScreen = Utilities.loadPane("MainScreen.fxml", mainScreenController);
+        Pane mainScreen = GuiUtilities.loadPane("MainScreen.fxml", mainScreenController);
 
 
 
