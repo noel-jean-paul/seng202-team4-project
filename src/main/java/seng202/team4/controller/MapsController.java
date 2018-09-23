@@ -6,6 +6,7 @@ import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import seng202.team4.App;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.data.Position;
@@ -65,13 +66,9 @@ public class MapsController extends Controller {
      * @param activity The Activity to display on the map.
      */
     public void initMap(Activity activity) {
-        if (activity.getRawData().size() > 0) {
-            headingText.setText(String.format("Map of '%s'", activity.getName()));
-            Route newRoute = generateRoute(activity);
-            displayRoute(newRoute);
-        } else {
-            headingText.setText(String.format("No map data found for '%s'", activity.getName()));
-        }
+        headingText.setText(String.format("Map of '%s'", activity.getName()));
+        Route newRoute = generateRoute(activity);
+        displayRoute(newRoute);
 
     }
 
