@@ -11,7 +11,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import jdk.nashorn.internal.runtime.regexp.joni.Warnings;
 import seng202.team4.App;
-import seng202.team4.Utilities;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.utilities.HealthWarning;
 
@@ -61,7 +61,7 @@ public class HealthTabController extends Controller {
         HealthWarning warning = (HealthWarning) healthWarningTable.getSelectionModel().getSelectedItem();
         if (warning != null) {
             WarningDescriptionPopUpController warningPopUp = new WarningDescriptionPopUpController(applicationStateManager);
-            Pane popUp = Utilities.loadPane("HealthPopUpScreen.fxml", warningPopUp);
+            Pane popUp = GuiUtilities.loadPane("HealthPopUpScreen.fxml", warningPopUp);
             setUpPopUpLabels(warningPopUp, warning);
             applicationStateManager.displayPopUp(popUp);
         }
