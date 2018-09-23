@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.Route;
 import seng202.team4.model.data.enums.ActivityType;
 
 import java.time.LocalDate;
@@ -256,8 +257,16 @@ public class ActivityTabController extends Controller {
     public void showMaps() {
         Activity activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
         if (activity != null) {
-            applicationStateManager.displayPopUp(mapPane);
-            mapsController.initMap(activity);
+            if (activity.getRawData().size() == 0) {
+                GuiUtilities.displayErrorMessage("No data found.", String.format("'%s' seems to have no gps data.", activity.getName()));
+            } else {
+                try {
+                    mapsController.initMap(activity);
+                    applicationStateManager.displayPopUp(mapPane);
+                } catch (Exception e) {
+                    GuiUtilities.displayErrorMessage("Failed to load map.", "Try checking your internet connection.");
+                }
+            }
         }
     }
 

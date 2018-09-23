@@ -50,10 +50,15 @@ public class AddManualActivityController extends Controller {
     @FXML
     private Text errorText;
 
+    /** The controller for the activity tab. */
+    @FXML
+    private ActivityTabController activityTabController;
+
 
     /** Creates a new AddManualActivityController with the given ApplicationStateManager. */
-    public AddManualActivityController(ApplicationStateManager applicationStateManager) {
+    public AddManualActivityController(ApplicationStateManager applicationStateManager, ActivityTabController activityTabController) {
         super(applicationStateManager);
+        this.activityTabController = activityTabController;
     }
 
     /**
@@ -136,6 +141,7 @@ public class AddManualActivityController extends Controller {
             try {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
                 applicationStateManager.closePopUP(rootPane);
+                activityTabController.updateTable();
             } catch (java.sql.SQLException e) {
                 GuiUtilities.displayErrorMessage("Failed to add activity.", "The activity could not be inserted into the database.");
                 e.printStackTrace();

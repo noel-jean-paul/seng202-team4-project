@@ -82,7 +82,7 @@ public class ActivityImportTypePromptController extends Controller {
      */
     @FXML
     public void addManualActivity() {
-        Pane manualEntryPopup = GuiUtilities.loadPane("ManualActivityPopup.fxml", new AddManualActivityController(applicationStateManager));
+        Pane manualEntryPopup = GuiUtilities.loadPane("ManualActivityPopup.fxml", new AddManualActivityController(applicationStateManager, activityTabController));
         applicationStateManager.displayPopUp(manualEntryPopup);
         closePopup();
     }
