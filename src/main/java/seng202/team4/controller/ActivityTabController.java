@@ -6,10 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -95,6 +92,14 @@ public class ActivityTabController extends Controller {
     @FXML
     private Text metricsTitleText;
 
+    /** The Button that shows the map of an activity to the user. */
+    @FXML
+    private Button showMapsButton;
+
+    /** The Button that shows the graphs of an activity to the user. */
+    @FXML
+    private Button showGraphsButton;
+
     /** Boolean that stores whether the table is currently reorderable. */
     private boolean isTableReorderable = true;
 
@@ -138,6 +143,15 @@ public class ActivityTabController extends Controller {
         speedLabel.setVisible(false);
         caloriesLabel.setVisible(false);
         metricsTitleText.setVisible(false);
+
+        activityTable.setRowFactory( tv -> {
+            TableRow row = new TableRow();
+            row.setOnMouseClicked(event -> {
+                showMapsButton.setDisable(false);
+                showGraphsButton.setDisable(false);
+            });
+            return row ;
+        });
     }
 
     /** Updates the contents of the activity Table. */
@@ -316,5 +330,11 @@ public class ActivityTabController extends Controller {
             speedLabel.setText(formattedSpeed + " km/h");
             caloriesLabel.setText(formattedCalories);
         }
+    }
+
+    /** Resets the ActivityTab. */
+    public void reset() {
+        showGraphsButton.setDisable(true);
+        showMapsButton.setDisable(true);
     }
 }

@@ -192,7 +192,8 @@ public class ActivityTest {
     public void setName() throws SQLException {
        String name = "Test activity name";
        DataStorer.insertProfile(profile1);
-       DataStorer.insertActivity(activity1, profile1);
+       profile1.addActivity(activity1);
+       activity1.addDataRow(row1);
        activity1.setName(name);
        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -203,7 +204,8 @@ public class ActivityTest {
     public void setDescription() throws SQLException {
         String description= "I went running";
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         activity1.setDescription(description);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -214,7 +216,8 @@ public class ActivityTest {
     public void setDate() throws SQLException {
         String date = "2018-09-13";
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         activity1.setDate(date);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -225,7 +228,8 @@ public class ActivityTest {
     public void setStartTime() throws SQLException {
         String time = "16:32:43";
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         activity1.setStartTime(time);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -236,7 +240,8 @@ public class ActivityTest {
     public void setDuration() throws SQLException {
         String duration = "PT1H32M43S";
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         activity1.setDuration(duration);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -247,7 +252,8 @@ public class ActivityTest {
     public void setDistance() throws SQLException {
         double distance = 21.3;
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         activity1.setDistance(distance);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -258,7 +264,8 @@ public class ActivityTest {
     public void setCaloriesBurned() throws SQLException {
         double calories = 207;
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         activity1.setCaloriesBurned(calories);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
@@ -269,7 +276,8 @@ public class ActivityTest {
     public void setType() throws SQLException {
         ActivityType type = ActivityType.Walk;
         DataStorer.insertProfile(profile1);
-        DataStorer.insertActivity(activity1, profile1);
+        profile1.addActivity(activity1);
+        activity1.addDataRow(row1);
         activity1.setType(type);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
