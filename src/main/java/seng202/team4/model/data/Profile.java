@@ -293,27 +293,29 @@ public class Profile {
         goalList.remove(goal);
         DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
     }
-    // TODO JavaDoc - Kenny
     /**
-     * @param warning
+     * Adds a warning to the user's list of warnings.
+     * @param warning the warning to be added.
      */
     public void addWarning(HealthWarning warning) {
         warningList.add(warning);
     }
 
     /**
-     * @return
+     * Gets the user's warning history.
+     * @return the list of warnings.
      */
     public List<HealthWarning> getWarningList() {
         return warningList;
     }
 
     /**
-     *
+     * Used when the profile has been loaded. Goes through all the activities stored by the user and tells the activity to
+     * check for any health warnings it may have.
      */
     public void findWarnings() {
-        for (Activity acvty : activityList) {
-            acvty.addWarnings();
+        for (Activity activity : activityList) {
+            activity.addWarnings(false);
         }
     }
 }
