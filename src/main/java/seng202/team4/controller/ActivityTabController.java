@@ -5,9 +5,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
@@ -144,14 +148,46 @@ public class ActivityTabController extends Controller {
         caloriesLabel.setVisible(false);
         metricsTitleText.setVisible(false);
 
+        ContextMenu tableRowMenu = new ContextMenu();
+
+        MenuItem deleteActivityItem = new MenuItem("Delete");
+        deleteActivityItem.setOnAction(event -> {
+            try {
+                applicationStateManager.getCurrentProfile().removeActivity((Activity) activityTable.getSelectionModel().getSelectedItem());
+                updateTable();
+            } catch (java.sql.SQLException e){
+                GuiUtilities.displayErrorMessage("Failed to remove Activity.", "");
+                e.printStackTrace();
+                System.out.println("Could not remove activity from the data base.");
+            }
+        });
+
+        tableRowMenu.getItems().add(deleteActivityItem);
+
         activityTable.setRowFactory( tv -> {
             TableRow row = new TableRow();
             row.setOnMouseClicked(event -> {
                 showMapsButton.setDisable(false);
                 showGraphsButton.setDisable(false);
+                if (event.getButton() == MouseButton.PRIMARY || activityTable.getItems().size() <= row.getIndex()) {
+                    tableRowMenu.hide();
+                }
+            });
+
+            row.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+                @Override
+                public void handle(ContextMenuEvent event) {
+                    if (activityTable.getItems().get(row.getIndex()) != null) {
+                        tableRowMenu.show(activityTable, event.getScreenX(), event.getScreenY());
+                    }
+                }
             });
             return row ;
         });
+
+        tableRowMenu.setAutoHide(true);
+
+
     }
 
     /** Updates the contents of the activity Table. */
