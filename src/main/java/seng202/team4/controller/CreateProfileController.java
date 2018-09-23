@@ -110,9 +110,9 @@ public class CreateProfileController extends Controller {
         } else if (!Profile.isValidDateOfBirth(dateOfBirth)) {
             errorText.setText(String.format("Date should be between %s and %s.", Profile.MIN_DOB, LocalDate.now()));
         } else if (!isValidWeightDoubleString || !Profile.isValidWeight(weight)) {
-            errorText.setText(String.format("Weight must be a number between %s and %s", 0, Profile.MAX_WEIGHT));
+            errorText.setText(String.format("Weight must be a number between %s and %s", Profile.MIN_WEIGHT, Profile.MAX_WEIGHT));
         } else if (!isValidHeightDoubleString || !Profile.isValidHeight(height)) {
-            errorText.setText(String.format("Height must be a number between %s and %s", 0, Profile.MAX_HEIGHT));
+            errorText.setText(String.format("Height must be a number between %s and %s", Profile.MIN_HEIGHT, Profile.MAX_HEIGHT));
         } else {
             //Creates a new profile with the values provided by the user.
             Profile profile = new Profile(firstName, lastName, dateString, weight, height);

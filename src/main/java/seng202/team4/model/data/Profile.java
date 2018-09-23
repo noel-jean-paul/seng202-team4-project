@@ -22,6 +22,9 @@ public class Profile {
     public static final int MIN_NAME_SIZE = 2;
     public static final double MAX_WEIGHT = 250;
     public static final double MAX_HEIGHT = 3.0;
+    public static final double MIN_WEIGHT = 10;
+    public static final double MIN_HEIGHT = 0.5;
+
     public static final LocalDate MIN_DOB = LocalDate.parse("1900-01-01");
 
     private String firstName;
@@ -207,7 +210,7 @@ public class Profile {
      * @return true if the weight is valid, false otherwise.
      */
     public static boolean isValidWeight(double weight) {
-        return (weight > 0 && weight <= MAX_WEIGHT);
+        return (weight >= MIN_WEIGHT && weight <= MAX_WEIGHT);
     }
 
     /**
@@ -217,7 +220,7 @@ public class Profile {
      * @return true if the height is valid, false otherwise.
      */
     public static boolean isValidHeight(double height) {
-        return (height > 0 && height <= MAX_HEIGHT);
+        return (height >= MIN_HEIGHT && height <= MAX_HEIGHT);
     }
 
     /**
