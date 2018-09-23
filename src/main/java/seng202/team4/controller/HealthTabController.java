@@ -12,6 +12,7 @@ import javafx.scene.web.WebView;
 import jdk.nashorn.internal.runtime.regexp.joni.Warnings;
 import seng202.team4.App;
 import seng202.team4.Utilities;
+import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.utilities.HealthWarning;
 
 import java.time.LocalDate;
@@ -65,10 +66,42 @@ public class HealthTabController extends Controller {
     }
 
     private void setUpPopUpLabels(WarningDescriptionPopUpController warningPopUp, HealthWarning warning) {
+        String heartRateRange = setRateRange(warning);
         warningPopUp.setPopUpTitle(warning.getTypeString());
         warningPopUp.setAverageLabel(warning.getAvgHeartRate());
         warningPopUp.setMinLabel(warning.getMinHeartRate());
         warningPopUp.setMaxLabel(warning.getMaxHeartRate());
+        warningPopUp.setDescriptionText(warning.getType());
+        warningPopUp.setHeartRateRecommendation(heartRateRange);
+        warningPopUp.setRecommendedLabel(getRecommendedHeartRate(warning));
+    }
+
+    private int getRecommendedHeartRate(HealthWarning warning) {
+        int rate;
+        if (warning.getType() == WarningType.Tachy) {
+            rate = 220 - applicationStateManager.getCurrentProfile().getAge();
+        } else if (warning.getType() == WarningType.Brady) {
+            if (applicationStateManager.getCurrentProfile().getAge() >= 18) {
+                rate = 50;
+            } else {
+                rate = 60;
+            }
+        } else {
+            rate = 90;
+        }
+        return rate;
+    }
+
+    private String setRateRange(HealthWarning warning) {
+        String heartRateRange;
+        if (warning.getType() == WarningType.Tachy) {
+            heartRateRange = "Maximum";
+        } else if (warning.getType() == WarningType.Brady) {
+            heartRateRange = "Minimum";
+        } else {
+            heartRateRange = "Resting Maximum";
+        }
+        return heartRateRange;
     }
 
     @FXML
