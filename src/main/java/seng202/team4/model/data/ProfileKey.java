@@ -59,11 +59,5 @@ public class ProfileKey implements Comparable<ProfileKey> {
     public String getLastName() {
         return lastName;
     }
-
-//    public static void main(String[] args) {
-//        ProfileKey key1 = new ProfileKey("b", "c");
-//        ProfileKey key2 = new ProfileKey("a", "a");
-//        System.out.println(key1.compareTo(key2));
-//    }
 }
 
