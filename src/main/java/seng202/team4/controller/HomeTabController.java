@@ -21,10 +21,6 @@ public class HomeTabController extends Controller {
     @FXML
     private BarChart<?, ?> distanceBarGraph;
 
-    /**The goal progress bar of the home tab*/
-    @FXML
-    private ProgressBar goalProgressBar;
-
     @FXML
     private Text noDataText;
 
