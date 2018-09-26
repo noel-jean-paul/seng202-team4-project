@@ -12,6 +12,8 @@ import java.util.Objects;
 
 
 public class Goal implements Comparable<Goal> {
+    public static final double minGoalDistance = 0;
+
     private int number;
     private double progress;
     private GoalType type;

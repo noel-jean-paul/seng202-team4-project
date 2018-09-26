@@ -11,6 +11,16 @@ import java.util.Collections;
 import java.util.Objects;
 
 public class DataRow implements Comparable<DataRow> {
+    public static final double minLatitude = -90;
+    public static final double maxLatitude = 90;
+    public static final double minLongitude = -180;
+    public static final double maxLongitude = 180;
+    public static final double minElevation = -100;
+    public static final double maxElevation = 10000;
+    public static final double minHeartRate = 10;
+    public static final double maxHeartRate = 250;
+
+
     private int number;
     private LocalDate date;
     private LocalTime time;
