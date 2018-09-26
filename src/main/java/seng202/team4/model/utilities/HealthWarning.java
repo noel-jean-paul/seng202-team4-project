@@ -129,8 +129,8 @@ public class HealthWarning {
         }
     }
 
-    /**
-     * @return
+    /** //todo add javadoc M Kenny
+     * @return true if a cardio risk was detected, False otherwise
      */
     private boolean cardioRisk() {
         //TODO refine warning detection
@@ -157,51 +157,30 @@ public class HealthWarning {
         return warningURL;
     }
 
-    /**
-     * @return
-     */
     public boolean isHealthRisk() {
         return healthRisk;
     }
 
-    /**
-     * @return
-     */
     public int getAvgHeartRate() {
         return avgHeartRate;
     }
 
-    /**
-     * @return
-     */
     public String getAvgHeartRateString() {
         return Integer.toString(avgHeartRate);
     }
 
-    /**
-     * @return
-     */
     public int getMinHeartRate() {
         return avgHeartRate;
     }
 
-    /**
-     * @return
-     */
     public String getMinHeartRateString() {
         return Integer.toString(minHeartRate);
     }
 
-    /**
-     * @return
-     */
     public int getMaxHeartRate() {
         return maxHeartRate;
     }
 
-    /**
-     * @return
-     */
     public String getMaxHeartRateString() {
         return Integer.toString(maxHeartRate);
     }
