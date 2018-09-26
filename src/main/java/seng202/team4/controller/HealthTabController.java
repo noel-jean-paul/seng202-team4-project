@@ -21,6 +21,8 @@ import java.time.LocalDate;
  * Controller for the health tab.
  */
 public class HealthTabController extends Controller {
+    private WebEngine engine;
+    private String currentUrl;
 
 
     @FXML
@@ -142,15 +144,11 @@ public class HealthTabController extends Controller {
         engine.load(currentUrl);
     }
 
-    private WebEngine engine;
-    private String currentUrl;
-
-
     /**
      * The constructor for the health tab.
      * @param applicationStateManager the application state manager of the application.
      */
-    public HealthTabController(ApplicationStateManager applicationStateManager) {
+    HealthTabController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
 
@@ -177,7 +175,8 @@ public class HealthTabController extends Controller {
      * Populates the table and sets the web view back to Google.com when the health tab is selected.
      */
     public void reloadTab() {
-        ObservableList<HealthWarning> warningList = FXCollections.observableArrayList(applicationStateManager.getCurrentProfile().getWarningList());
+        ObservableList<HealthWarning> warningList = FXCollections.observableArrayList(
+                applicationStateManager.getCurrentProfile().getWarningList());
         dateColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,LocalDate>("warningDate"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,String>("typeString"));
         descColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,String>("description"));

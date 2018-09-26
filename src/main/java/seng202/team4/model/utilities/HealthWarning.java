@@ -6,8 +6,9 @@ import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.WarningType;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
-public class HealthWarning {
+public class HealthWarning implements Comparable<HealthWarning> {
     private int avgHeartRate;
     private int minHeartRate;
     private int maxHeartRate;
@@ -32,8 +33,46 @@ public class HealthWarning {
         this.url = setUpURL();
         this.typeString = calculateTypeString();
     }
-    // TODO JavaDoc - Kenny
 
+    /** Compare to another Goal based on goalNumber
+     *  Consistent with equals as defined by Comparable
+     *
+     * @param o the HealthWaring to compare to
+     * @return a negative integer, zero, or a positive integer as this object
+     *          is less than, equal to, or greater than the specified object.
+     */
+    @Override
+    public int compareTo(HealthWarning o) {
+        return getWarningDate().compareTo(o.getWarningDate());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HealthWarning that = (HealthWarning) o;
+        return getAvgHeartRate() == that.getAvgHeartRate() &&
+                getMinHeartRate() == that.getMinHeartRate() &&
+                getMaxHeartRate() == that.getMaxHeartRate() &&
+                isHealthRisk() == that.isHealthRisk() &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getUrl(), that.getUrl()) &&
+                getType() == that.getType() &&
+                Objects.equals(getTypeString(), that.getTypeString()) &&
+                Objects.equals(getWarningDate(), that.getWarningDate()) &&
+                getActivity().equals(that.getActivity()) &&
+                getOwner().getFirstName().equals(that.getOwner().getFirstName()) &&
+                getOwner().getLastName().equals(that.getOwner().getLastName());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getAvgHeartRate(), getMinHeartRate(), getMaxHeartRate(), getDescription(), getUrl(),
+                getType(), getTypeString(), getWarningDate(), isHealthRisk());
+    }
+
+    // TODO JavaDoc - Kenny
     private String calculateTypeString() {
         String typeStr;
         if (type == WarningType.Tachy) {
@@ -204,5 +243,17 @@ public class HealthWarning {
 
     public String getUrl() {
         return url;
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public Profile getOwner() {
+        return user;
+    }
+
+    public void setOwner(Profile owner) {
+        this.user = owner;
     }
 }
