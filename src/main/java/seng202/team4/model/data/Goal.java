@@ -85,8 +85,8 @@ public class Goal implements Comparable<Goal> {
      */
     @Override
     public int compareTo(Goal o) {
-        return Integer.compare(this.getNumber(), o.getNumber());
-    }
+        return Integer.compare(this.getNumber(), o.getNumber()) * -1;
+    }   // descending order
 
     public int getNumber() {
         return number;
