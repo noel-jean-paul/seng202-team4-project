@@ -76,6 +76,7 @@ abstract public class DataAccesser {
                 "dateOfBirth character(10) not null, " +
                 "height real constraint check_height check (height BETWEEN %f and %f), " +
                 "weight real constraint check_weight check (weight between %f and %f), " +
+                "pictureURL text not null, " +
                 "primary key (firstName, lastName)" +
                 ");", Profile.MIN_HEIGHT, Profile.MAX_HEIGHT, Profile.MIN_WEIGHT, Profile.MAX_WEIGHT);
 

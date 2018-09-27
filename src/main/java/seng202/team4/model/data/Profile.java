@@ -24,6 +24,7 @@ public class Profile {
     public static final double MAX_HEIGHT = 3.0;
     public static final double MIN_WEIGHT = 10;
     public static final double MIN_HEIGHT = 0.5;
+    public static final String DEFAULT_URL = "/images/default-profile-icon.png";
 
     public static final LocalDate MIN_DOB = LocalDate.parse("1900-01-01");
 
@@ -32,12 +33,13 @@ public class Profile {
     private LocalDate dateOfBirth;
     private double weight;
     private double height;
+    private String pictureURL;
     private List<Activity> activityList;    // sorted collection - use addActivity to update
     private List<Goal> goalList;    // sorted collection - use addGoal to update
-    private List<HealthWarning> warningList;
+    private List<HealthWarning> warningList;    // sorted collection - use addWarning to update
 
     /**
-     *Constructor for profile class taking in the date of birth in string format
+     *Constructor for profile class taking in the date of birth in string format. Sets pictureURL to the default
      * @param firstName is the first name of the user in string format
      * @param lastName is the last name of the user in string format
      * @param dateOfBirth is the date of birth in string format
@@ -53,6 +55,22 @@ public class Profile {
         this.goalList = new ArrayList<>();
         this.activityList = new ArrayList<>();
         this.warningList = new ArrayList<>();
+        this.pictureURL = Profile.DEFAULT_URL;
+    }
+
+    /**
+     *Constructor for profile class taking in the date of birth in string format and the picture url
+     * @param firstName is the first name of the user in string format
+     * @param lastName is the last name of the user in string format
+     * @param dateOfBirth is the date of birth in string format
+     * @param weight is the weight of the user in double format
+     * @param height is the height of the user in double format
+     */
+    public Profile(String firstName, String lastName, String dateOfBirth, double weight, double height,
+                   String pictureURL) {
+        this(firstName, lastName, dateOfBirth, weight, height);
+        this.setPictureURL(pictureURL);
+
     }
 
     /**
@@ -163,6 +181,14 @@ public class Profile {
 
     public int getAge() {
         return ((LocalDate.now()).getYear() - dateOfBirth.getYear());
+    }
+
+    public String getPictureURL() {
+        return pictureURL;
+    }
+
+    public void setPictureURL(String pictureURL) {
+        this.pictureURL = pictureURL;
     }
 
     /**

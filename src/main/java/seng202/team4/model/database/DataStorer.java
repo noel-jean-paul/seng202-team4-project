@@ -26,7 +26,8 @@ abstract public class DataStorer extends DataAccesser {
     public static void insertProfile(Profile profile) throws SQLException {
         assert profile != null;
 
-        String insert = "insert into profile(firstName, lastName, dateOfBirth, height, weight) values (?, ? , ?, ?, ?)";
+        String insert = "insert into profile(firstName, lastName, dateOfBirth, height, weight, pictureURL) " +
+                "values (?, ? , ?, ?, ?, ?)";
         statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
         statement.setString(1, profile.getFirstName());
@@ -34,6 +35,7 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(3, String.valueOf(profile.getDateOfBirth()));
         statement.setString(4, String.valueOf(profile.getHeight()));
         statement.setString(5, String.valueOf(profile.getWeight()));
+        statement.setString(6, profile.getPictureURL());
 
         statement.executeUpdate();
 
