@@ -36,10 +36,10 @@ public class ActivityTest {
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
 
-        activity1 = new Activity("Run in the park", "2000-12-12", "", ActivityType.Run,
+        activity1 = new Activity("Run in the park", "2000-12-12", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
-        activity2 = new Activity("Walk around the block", "2018-09-01", "Quick walk",
+        activity2 = new Activity("Walk around the block", "2018-09-01",
                 ActivityType.Walk, "01:28:30", "PT11M19S", 1.2, 30);
 
         // set the owners as set methods are called so db updates will occur
@@ -75,7 +75,7 @@ public class ActivityTest {
         activity1.setDate("2018-06-01");   // Earlier date
         activity2.setDate("2018-06-02");   // Later date
 
-        assert activity1.compareTo(activity2) < 0;
+        assert activity1.compareTo(activity2) > 0;
     }
 
     @Test
@@ -83,7 +83,7 @@ public class ActivityTest {
         activity1.setDate("2018-06-01");   // Earlier date
         activity2.setDate("2018-06-02");   // Later date
 
-        assert activity2.compareTo(activity1) > 0;
+        assert activity2.compareTo(activity1) < 0;
     }
 
     @Test
@@ -94,7 +94,7 @@ public class ActivityTest {
         activity1.setStartTime("11:59:59");    // Earlier time
         activity2.setStartTime("12:00:00");    // Later time
 
-        assert activity1.compareTo(activity2) < 0;
+        assert activity1.compareTo(activity2) > 0;
     }
 
     @Test
@@ -105,7 +105,7 @@ public class ActivityTest {
         activity1.setStartTime("11:59:59");    // Earlier time
         activity2.setStartTime("12:00:00");    // Later time
 
-        assert activity2.compareTo(activity1) > 0;
+        assert activity2.compareTo(activity1) < 0;
     }
 
     @Test
@@ -125,7 +125,7 @@ public class ActivityTest {
         activity1.addDataRow(row2);
         activity1.addDataRow(row1);
 
-        List<DataRow> expected = new ArrayList<>(Arrays.asList(row1, row2, row3));
+        List<DataRow> expected = new ArrayList<>(Arrays.asList(row3, row2, row1));
         assertEquals(expected, activity1.getRawData());
     }
 
@@ -158,7 +158,7 @@ public class ActivityTest {
         activity1.addAllDataRows(rows);
 
         // Create expected list
-        List<DataRow> expectedRows = new ArrayList<>(Arrays.asList(row1, row2, row3));
+        List<DataRow> expectedRows = new ArrayList<>(Arrays.asList(row3, row2, row1));
 
         assertEquals(expectedRows, activity1.getRawData());
     }
@@ -198,18 +198,6 @@ public class ActivityTest {
        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
        assertEquals(name, loadedProfile.getActivityList().get(0).getName());
-    }
-
-    @Test
-    public void setDescription() throws SQLException {
-        String description= "I went running";
-        DataStorer.insertProfile(profile1);
-        profile1.addActivity(activity1);
-        activity1.addDataRow(row1);
-        activity1.setDescription(description);
-        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-
-        assertEquals(description, loadedProfile.getActivityList().get(0).getDescription());
     }
 
     @Test

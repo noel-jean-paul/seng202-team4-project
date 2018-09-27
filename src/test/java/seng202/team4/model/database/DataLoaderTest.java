@@ -43,10 +43,10 @@ public class DataLoaderTest {
                 178.4352, 203);
 
         // create test Activities
-        activity1 = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
+        activity1 = new Activity("Run in the park", "2018-08-29", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
-        activity2 = new Activity("Walk around the block", "2018-09-01", "Quick walk",
+        activity2 = new Activity("Walk around the block", "2018-09-01",
                 ActivityType.Walk, "01:28:30", "PT11M19S", 1.2, 30);
 
         // Create test Goals
@@ -62,7 +62,10 @@ public class DataLoaderTest {
 
         profile2 = new Profile("Matthew", "Michewski", "1997-06-23", 76,
                 1.85);
+    }
 
+    @Before
+    public void setUpReccurring() throws SQLException {
         // Insert objects
         DataStorer.insertProfile(profile1);
         DataStorer.insertProfile(profile2);
@@ -77,6 +80,18 @@ public class DataLoaderTest {
 
         profile1.addGoal(goal1);
         profile1.addGoal(goal2);
+    }
+
+    @After
+    public void tearDownReccurring() throws SQLException {
+        DataAccesser.clearDatabase();
+
+        // Clear lists
+        activity1.getRawData().clear();
+        activity2.getRawData().clear();
+
+        profile1.getActivityList().clear();
+        profile1.getGoalList().clear();
     }
 
     @AfterClass
@@ -106,7 +121,7 @@ public class DataLoaderTest {
     @Test
     public void loadProfile_allListsFilled_checkDataRowOwner() throws SQLException {
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-        assertEquals(activity1, loadedProfile.getActivityList().get(0).getRawData().get(0).getOwner());
+        assertEquals(activity2, loadedProfile.getActivityList().get(0).getRawData().get(0).getOwner());
     }
 
     @Test
@@ -117,14 +132,23 @@ public class DataLoaderTest {
         DataStorer.insertProfile(profile);
         Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
         assertEquals(profile, loadedProfile);
-        // Cleanup
-        DataStorer.deleteProfile(profile);
     }
 
     @Test
     public void loadProfile_profileDoesNotExist() throws SQLException {
         Profile loadedProfile = DataLoader.loadProfile("@#&*@", "$#&*$*#");
         assertEquals(null, loadedProfile);
+    }
+
+    @Test
+    public void loadProfile_checkPictureURL() throws SQLException {
+        // Create a profile with the non-default URL
+        Profile profile = new Profile("Ghengis", "Khan", "1998-03-06", 85.0,
+                1.83, "/images/Ghengis-Khan-icon.png");
+        DataStorer.insertProfile(profile);
+        Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
+
+        assertEquals(profile, loadedProfile);
     }
 
     @Test
@@ -137,6 +161,6 @@ public class DataLoaderTest {
         expectedKeys.add(new ProfileKey(profile2.getFirstName(), profile2.getLastName()));
         java.util.Collections.sort(expectedKeys);
 
-        assertEquals(profileKeys, expectedKeys);
+        assertEquals(expectedKeys, profileKeys);
     }
 }

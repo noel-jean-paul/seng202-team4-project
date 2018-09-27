@@ -136,7 +136,7 @@ public class AddManualActivityController extends Controller {
         } else {
             double speed = DataProcessor.calculateAverageSpeed(distance, duration);
             double calories = DataProcessor.calculateCalories(speed, duration.getSeconds(), type, applicationStateManager.getCurrentProfile());
-            Activity activity = new Activity(activityName, date.toString(), "", type, time.toString(), duration.toString(), distance, calories);
+            Activity activity = new Activity(activityName, date.toString(), type, time.toString(), duration.toString(), distance, calories);
 
             try {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
