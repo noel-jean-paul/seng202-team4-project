@@ -62,7 +62,10 @@ public class DataLoaderTest {
 
         profile2 = new Profile("Matthew", "Michewski", "1997-06-23", 76,
                 1.85);
+    }
 
+    @Before
+    public void setUpReccurring() throws SQLException {
         // Insert objects
         DataStorer.insertProfile(profile1);
         DataStorer.insertProfile(profile2);
@@ -77,6 +80,18 @@ public class DataLoaderTest {
 
         profile1.addGoal(goal1);
         profile1.addGoal(goal2);
+    }
+
+    @After
+    public void tearDownReccurring() throws SQLException {
+        DataAccesser.clearDatabase();
+
+        // Clear lists
+        activity1.getRawData().clear();
+        activity2.getRawData().clear();
+
+        profile1.getActivityList().clear();
+        profile1.getGoalList().clear();
     }
 
     @AfterClass
@@ -117,14 +132,23 @@ public class DataLoaderTest {
         DataStorer.insertProfile(profile);
         Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
         assertEquals(profile, loadedProfile);
-        // Cleanup
-        DataStorer.deleteProfile(profile);
     }
 
     @Test
     public void loadProfile_profileDoesNotExist() throws SQLException {
         Profile loadedProfile = DataLoader.loadProfile("@#&*@", "$#&*$*#");
         assertEquals(null, loadedProfile);
+    }
+
+    @Test
+    public void loadProfile_checkPictureURL() throws SQLException {
+        // Create a profile with the non-default URL
+        Profile profile = new Profile("Ghengis", "Khan", "1998-03-06", 85.0,
+                1.83, "/images/Ghengis-Khan-icon.png");
+        DataStorer.insertProfile(profile);
+        Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
+
+        assertEquals(profile, loadedProfile);
     }
 
     @Test
@@ -137,6 +161,6 @@ public class DataLoaderTest {
         expectedKeys.add(new ProfileKey(profile2.getFirstName(), profile2.getLastName()));
         java.util.Collections.sort(expectedKeys);
 
-        assertEquals(profileKeys, expectedKeys);
+        assertEquals(expectedKeys, profileKeys);
     }
 }

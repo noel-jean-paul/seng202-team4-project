@@ -103,6 +103,7 @@ public class Profile {
                 Objects.equals(getFirstName(), profile.getFirstName()) &&
                 Objects.equals(getLastName(), profile.getLastName()) &&
                 Objects.equals(getDateOfBirth(), profile.getDateOfBirth()) &&
+                Objects.equals(getPictureURL(), profile.getPictureURL()) &&
                 Objects.equals(getActivityList(), profile.getActivityList()) &&
                 Objects.equals(getGoalList(), profile.getGoalList()) &&
                 Objects.equals(getWarningList(), profile.getWarningList());

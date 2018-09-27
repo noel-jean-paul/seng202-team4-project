@@ -37,7 +37,8 @@ abstract public class DataLoader extends DataAccesser {
                     set.getString("lastName"),
                     set.getString("dateOfBirth"),
                     set.getDouble("weight"),
-                    set.getDouble("height"));
+                    set.getDouble("height"),
+                    set.getString("pictureURL"));
 
             loadProfileActivities(profile);
             loadProfileGoals(profile);
