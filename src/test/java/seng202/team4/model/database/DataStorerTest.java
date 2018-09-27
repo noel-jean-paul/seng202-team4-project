@@ -63,7 +63,7 @@ public class DataStorerTest {
 
     @AfterClass
     public static void tearDown() throws SQLException {
-//        DataAccesser.clearDatabase();
+        DataAccesser.clearDatabase();
         DataAccesser.closeDatabase();
     }
 
@@ -178,6 +178,7 @@ public class DataStorerTest {
         // Insert a profile
         Profile profile = new Profile("Bis", "Jean-Paul", "1998-03-06", 85.0,
                 1.83);
+
         DataStorer.insertProfile(profile);
 
         // Add 2 goals to the profile

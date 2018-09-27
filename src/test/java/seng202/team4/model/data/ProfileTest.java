@@ -51,7 +51,7 @@ public class ProfileTest {
         activity3 = new Activity("Jog through Uni", "2018-12-12", "Quick walk",
                 ActivityType.Run, "01:28:30", "PT11M19S", 1.2, 30);
 
-        expected = new ArrayList<>(Arrays.asList(activity1, activity3, activity2));
+        expected = new ArrayList<>(Arrays.asList(activity2, activity3, activity1));
 
         // Initialise Goals
         goal1 = new Goal(1, 100, GoalType.Run,"2018-09-28", "2017-05-12",
@@ -61,7 +61,7 @@ public class ProfileTest {
         goal3 = new Goal(3, 100, GoalType.Run,"2018-09-28", "2017-01-12",
                 20, 50);
 
-        expectedGoals = new ArrayList<>(Arrays.asList(goal1, goal2, goal3));
+        expectedGoals = new ArrayList<>(Arrays.asList(goal3, goal2, goal1));
     }
 
     @Before
