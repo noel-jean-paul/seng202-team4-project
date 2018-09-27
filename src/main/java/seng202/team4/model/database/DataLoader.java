@@ -22,12 +22,12 @@ abstract public class DataLoader extends DataAccesser {
 
         // Select profile matching first name and last name
         String select = "SELECT * FROM profile WHERE firstName = (?) AND lastName = (?)";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
 
         // set the wildcards (indexed from 1)
         statement.setString(1, firstName);
         statement.setString(2, lastName);
-        ResultSet set = statement.executeQuery();
+        set = statement.executeQuery();
 
         Profile profile = null;
         // If a profile has been found, build the object
@@ -43,6 +43,9 @@ abstract public class DataLoader extends DataAccesser {
             loadProfileGoals(profile);
         }
 
+        statement.close();
+        set.close();
+
         return profile;
     }
 
@@ -56,7 +59,7 @@ abstract public class DataLoader extends DataAccesser {
 
         // Select all activities for the profile
         String select = "SELECT * FROM activity where firstName = (?) and lastName = (?)";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
 
         // Set the wildcards (indexed from 1)
         statement.setString(1, profile.getFirstName());
@@ -76,14 +79,18 @@ abstract public class DataLoader extends DataAccesser {
                     set.getDouble("distance"),
                     set.getDouble("caloriesBurned")
                     );
-            loadActivityDataRows(activity);
-            activities.add(activity);
-
             // Set the owner of the activity as the profile
             activity.setOwner(profile);
+
+            loadActivityDataRows(activity);
+            activities.add(activity);
         }
         // Add all activities to the activity list (without reinserting into the database)
         profile.addAllActivities(activities);
+
+        // Cleanup
+        statement.close();
+        set.close();
     }
 
     /** Load all goals belonging to a profile from the database into that profile's goal list
@@ -96,13 +103,13 @@ abstract public class DataLoader extends DataAccesser {
 
         // Select all activities for the profile
         String select = "SELECT * FROM goal where firstName = (?) and lastName = (?)";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
 
         // Set the wildcards (indexed from 1)
         statement.setString(1, profile.getFirstName());
         statement.setString(2, profile.getLastName());
 
-        ResultSet set = statement.executeQuery();
+        set = statement.executeQuery();
 
         // Parse the result set into a list - ResultSet cursor starts 1 before the first row
         while (set.next()) {
@@ -117,6 +124,7 @@ abstract public class DataLoader extends DataAccesser {
                     set.getDouble("goalDuration"),
                     set.getDouble("goalDistance")
                     );
+
             goals.add(goal);
 
             // Set the owner of the activity as the profile
@@ -124,6 +132,10 @@ abstract public class DataLoader extends DataAccesser {
         }
         // Add all activities to the activity list (without reinserting into the database)
         profile.addAllGoals(goals);
+
+        // Cleanup
+        statement.close();
+        set.close();
     }
 
     /** Load all dataRows belonging to an activity from the database into the activity
@@ -135,14 +147,17 @@ abstract public class DataLoader extends DataAccesser {
         List<DataRow> rows = new ArrayList<>();
 
         // Select all activities for the profile
-        String select = "SELECT * FROM dataRow where name = (?) and activityDate = (?)";
-        PreparedStatement statement = connection.prepareStatement(select);
+        String select = "SELECT * FROM dataRow where name = (?) and activityDate = (?) and firstName = (?) " +
+                "and lastName = (?)";
+        statement = connection.prepareStatement(select);
 
         // Set the wildcards (indexed from 1)
         statement.setString(1, activity.getName());
         statement.setString(2, String.valueOf(activity.getDate()));
+        statement.setString(3, String.valueOf(activity.getOwner().getFirstName()));
+        statement.setString(4, String.valueOf(activity.getOwner().getLastName()));
 
-        ResultSet set = statement.executeQuery();
+        set = statement.executeQuery();
 
         // Parse the result set into a list - ResultSet cursor starts 1 before the first row
         while (set.next()) {
@@ -162,6 +177,10 @@ abstract public class DataLoader extends DataAccesser {
         }
         // Add all activities to the activity list (without reinserting into the database)
         activity.addAllDataRows(rows);
+
+        // Cleanup
+        statement.close();
+        set.close();
     }
 
     /** Return a List of ProfileKeys - 1 key for each profile in the database. The list is sorted alphabetically
@@ -176,8 +195,8 @@ abstract public class DataLoader extends DataAccesser {
 
         // Select all profiles
         String select = "SELECT firstName, lastName FROM profile";
-        PreparedStatement statement = connection.prepareStatement(select);
-        ResultSet set = statement.executeQuery();
+        statement = connection.prepareStatement(select);
+        set = statement.executeQuery();
 
         // Parse the result set into a list of ProfileKeys - ResultSet cursor starts 1 before the first row
         while (set.next()) {
@@ -187,6 +206,10 @@ abstract public class DataLoader extends DataAccesser {
         }
         // Sort the list by its natural ordering
         java.util.Collections.sort(profileKeys);
+
+        // Cleanup
+        statement.close();
+        set.close();
 
         return profileKeys;
     }

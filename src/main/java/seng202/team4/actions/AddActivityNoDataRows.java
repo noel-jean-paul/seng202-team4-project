@@ -8,7 +8,7 @@ import seng202.team4.model.database.DataStorer;
 
 import java.sql.SQLException;
 
-public class addActivityNoDataRows {
+public class AddActivityNoDataRows {
     public static void main(String[] args) throws SQLException {
         DataAccesser.initialiseMainConnection();
 

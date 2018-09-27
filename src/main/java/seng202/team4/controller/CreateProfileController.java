@@ -3,6 +3,7 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Profile;
 import seng202.team4.model.database.DataStorer;
 
@@ -46,11 +47,11 @@ public class CreateProfileController extends Controller {
     private Text errorText;
 
 
+
     /** Creates a new CreateProfileController with the given ApplicationStateManager. */
     public CreateProfileController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
-
 
     /**
      * Action performed when the user clicks the create profile button.
@@ -109,9 +110,9 @@ public class CreateProfileController extends Controller {
         } else if (!Profile.isValidDateOfBirth(dateOfBirth)) {
             errorText.setText(String.format("Date should be between %s and %s.", Profile.MIN_DOB, LocalDate.now()));
         } else if (!isValidWeightDoubleString || !Profile.isValidWeight(weight)) {
-            errorText.setText(String.format("Weight must be a number between %s and %s", 0, Profile.MAX_WEIGHT));
+            errorText.setText(String.format("Weight must be a number between %s and %s", Profile.MIN_WEIGHT, Profile.MAX_WEIGHT));
         } else if (!isValidHeightDoubleString || !Profile.isValidHeight(height)) {
-            errorText.setText(String.format("Height must be a number between %s and %s", 0, Profile.MAX_HEIGHT));
+            errorText.setText(String.format("Height must be a number between %s and %s", Profile.MIN_HEIGHT, Profile.MAX_HEIGHT));
         } else {
             //Creates a new profile with the values provided by the user.
             Profile profile = new Profile(firstName, lastName, dateString, weight, height);
@@ -123,7 +124,7 @@ public class CreateProfileController extends Controller {
                 ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).reset();
                 this.reset();
             } catch (java.sql.SQLException e) {
-                applicationStateManager.displayErrorMessage("An error occurred storing the profile from the database.", e.getMessage());
+                GuiUtilities.displayErrorMessage("An error occurred storing the profile from the database.", e.getMessage());
                 System.out.println("Error storing new profile in the data base.");
                 e.printStackTrace();
             }
@@ -131,6 +132,10 @@ public class CreateProfileController extends Controller {
 
     }
 
+    /**
+     * Switches back to the login screen and resets the screen.
+     * Is called when the user hits the 'cancel' button.
+     */
     @FXML
     public void cancel() {
         applicationStateManager.switchToScreen("LoginScreen");
@@ -138,6 +143,9 @@ public class CreateProfileController extends Controller {
 
     }
 
+    /**
+     * Resets the screen by clearing all TextFields.
+     */
     public void reset() {
         firstNameField.setText("");
         lastNameField.setText("");
@@ -146,5 +154,6 @@ public class CreateProfileController extends Controller {
         yearField.setText("");
         weightField.setText("");
         heightField.setText("");
+        errorText.setText("");
     }
 }

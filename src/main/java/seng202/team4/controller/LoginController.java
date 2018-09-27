@@ -3,6 +3,7 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.ProfileKey;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.view.ProfileListItem;
@@ -23,18 +24,18 @@ public class LoginController extends Controller {
     /** The currently selected ProfileListItem. */
     private ProfileListItem selectedProfileItem = null;
 
+
+
     /** Creates a new LoginController with the given ApplicationStateManager. */
     public LoginController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
-
 
     /** Initializes the LoginController by updating the profile list. */
     @FXML
     public void initialize() {
         updateProfileList();
     }
-
 
     /** Updates the list of profiles displayed by loading all the profiles from the database. */
     public void updateProfileList() {
@@ -94,10 +95,13 @@ public class LoginController extends Controller {
                 applicationStateManager.switchToScreen("MainScreen");
                 ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).reset();
 
+                // TODO remove following once database stores data
+                applicationStateManager.getCurrentProfile().findWarnings();
+
 
                 System.out.println(String.format("%s %s has logged in!", profileKey.getFirstName(), profileKey.getLastName()));
             } catch (java.sql.SQLException e) {
-                applicationStateManager.displayErrorMessage("An error occurred loading the profile from the database.", e.getMessage());
+                GuiUtilities.displayErrorMessage("An error occurred loading the profile from the database.", e.getMessage());
                 System.out.println("Error: Failed to load profile.");
             }
         }

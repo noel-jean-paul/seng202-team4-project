@@ -3,11 +3,12 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.utilities.DataProcessor;
-import seng202.team4.model.utilities.FileImporter;
+import seng202.team4.model.utilities.FileParser;
 import seng202.team4.view.ActivityConfirmationRow;
 
 import java.io.File;
@@ -33,6 +34,8 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     @FXML
     private GridPane gridPane;
 
+
+
     /**
      * Constructor of the ImportActivitiesPreviewScreenController.
      *
@@ -42,7 +45,6 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         super(applicationStateManager);
         this.activityTabController = activityTabController;
     }
-
 
     /**
      * Action performed when the import activities button is pressed.
@@ -57,11 +59,19 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             if (activityConfirmationRow.isSelected()) {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
                 // Check the activity for health warnings
-                warningFound = activity.addWarnings();
+                warningFound = activity.addWarnings(true);
 
                 // Store all data rows in the database as they have not been stored yet but are in the rawData list
                 for (DataRow dataRow : activity.getRawData()) {
-                    DataStorer.insertDataRow(dataRow, activity);
+                    // Set the owner manually as addDataRow has not been called
+                    dataRow.setOwner(activity);
+                }
+                try {
+                    // Insert the datarows at once using a transaction
+                    DataStorer.insertDataRowTransaction(activity.getRawData());
+                } catch (SQLException e) {
+                    // TODO: 22/09/18 Currently displays error message for every activity failed. Want one for all activities
+                    GuiUtilities.displayErrorMessage("Failed to import one or more activities.", "");
                 }
                 activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             }
@@ -74,20 +84,19 @@ public class ImportActivitiesPreviewScreenController extends Controller {
 
     }
 
-
     /**
      * Loads all activities from the given csv file.
      *
      * @param csvFile The csv file that contains the data of the activities.
      */
     public void loadActivities(File csvFile) throws IOException {
-        FileImporter fileImporter = new FileImporter();
+        FileParser fileParser = new FileParser();
         ArrayList<Activity> validActivities = new ArrayList<>();
         ArrayList<Activity> warningActivities = new ArrayList<>();
         ArrayList<Activity> skippedActivities = new ArrayList<>();
 
         try {
-            fileImporter.readFile(csvFile, validActivities, warningActivities, skippedActivities);
+            fileParser.parseFileToActivites(csvFile, validActivities, warningActivities, skippedActivities);
         } catch (IOException exception) {
             throw exception;
         }
@@ -119,6 +128,13 @@ public class ImportActivitiesPreviewScreenController extends Controller {
 
     }
 
+    /**
+     * Adds an activity confirmation row to the screen.
+     *
+     * @param activity The activity to be added as a row to the screen.
+     * @param shaded Whether the row should be shaded.
+     * @return The controller of the ActivityConfirmationRow.
+     */
     private ActivityConfirmationRowController addNewConfirmationRow(Activity activity, boolean shaded) {
         activity.setCaloriesBurnedValue(DataProcessor.calculateCalories(activity.getAverageSpeed(), activity.getDuration().getSeconds(), activity.getType(), applicationStateManager.getCurrentProfile()));
         ActivityConfirmationRowController activityRowController = new ActivityConfirmationRowController(applicationStateManager);
@@ -126,7 +142,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         activityConfirmationRow.prefWidthProperty().bind(gridPane.widthProperty());
         activityListVbox.getChildren().add(activityConfirmationRow);
 
-        if (shaded) {
+        if (shaded) {   // If the row needs to be shaded then a shaded background is applied.
             activityConfirmationRow.applyShadedBackground();
         }
 
@@ -137,6 +153,9 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         return activityRowController;
     }
 
+    /**
+     * Cancels the import and returns to the main screen of the app.
+     */
     @FXML
     public void cancel() {
         applicationStateManager.switchToScreen("MainScreen");

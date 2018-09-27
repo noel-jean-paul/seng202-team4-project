@@ -3,8 +3,6 @@ package seng202.team4.model.utilities;
 import org.junit.Before;
 import org.junit.Test;
 import seng202.team4.model.data.Activity;
-import seng202.team4.model.data.DataRow;
-import seng202.team4.model.utilities.FileImporter;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -13,23 +11,23 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class FileImporterTest {
+public class FileParserTest {
 
-    private static FileImporter testImport;
+    private static FileParser testImport;
     private String filename = "seng202_2018_example_data.csv";
     private ArrayList<Activity> testValidActivities = new ArrayList<>();
     private ArrayList<Activity> testWarningActivities = new ArrayList<>();
     private ArrayList<Activity> testSkippedActivities = new ArrayList<>();
 
-    //FileImporter testImport = new FileImporter();
+    //FileParser testImport = new FileParser();
 
 
 
     @Before
     public void init() {
-        testImport = new FileImporter();
+        testImport = new FileParser();
         try {
-            testImport.readFile(new File(filename), testValidActivities, testWarningActivities, testSkippedActivities);
+            testImport.parseFileToActivites(new File(filename), testValidActivities, testWarningActivities, testSkippedActivities);
         } catch (IOException e) {
 
         }
@@ -42,7 +40,7 @@ public class FileImporterTest {
     public void activityListEqualTest() {
         ArrayList<Activity> expected;
         try {
-            expected = testImport.readFile(new File(filename), testValidActivities, testWarningActivities, testSkippedActivities);
+            expected = testImport.parseFileToActivites(new File(filename), testValidActivities, testWarningActivities, testSkippedActivities);
         } catch (IOException e) {
             expected = new ArrayList<Activity>();
         }

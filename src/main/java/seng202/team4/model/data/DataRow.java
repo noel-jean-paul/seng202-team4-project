@@ -1,10 +1,13 @@
 package seng202.team4.model.data;
 
+import seng202.team4.model.data.enums.DataRowFields;
 import seng202.team4.model.database.DataUpdater;
+import sun.text.resources.lt.CollationData_lt;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.Objects;
 
 public class DataRow implements Comparable<DataRow> {
@@ -20,6 +23,7 @@ public class DataRow implements Comparable<DataRow> {
 
     /**
      * Constructor for the ActivityRawData class
+     * @param number is the number of the row within the activity.
      * @param date is a date in dd/mm/yyyy format
      * @param time is a time in hh/mm/ss format
      * @param heartRate is the heart rate as an integer(BPM)
@@ -76,7 +80,7 @@ public class DataRow implements Comparable<DataRow> {
     }
 
     public void setNumber(int number) throws SQLException {
-        DataUpdater.updatDataRow(this, "rowNumber", Double.toString(number));
+        DataUpdater.updateDataRows(Collections.singletonList(this), DataRowFields.rowNumber.toString(), Double.toString(number));
         this.number = number;
     }
 
@@ -85,7 +89,7 @@ public class DataRow implements Comparable<DataRow> {
     }
 
     public void setDate(String date)throws SQLException {
-        DataUpdater.updatDataRow(this, "rowDate", date);
+        DataUpdater.updateDataRows(Collections.singletonList(this), DataRowFields.rowDate.toString(), date);
         this.date = LocalDate.parse(date);
     }
 
@@ -94,7 +98,7 @@ public class DataRow implements Comparable<DataRow> {
     }
 
     public void setTime(String time) throws SQLException {
-        DataUpdater.updatDataRow(this, "time", time);
+        DataUpdater.updateDataRows(Collections.singletonList(this), DataRowFields.time.toString(), time);
         this.time = LocalTime.parse(time);
     }
 
@@ -103,7 +107,7 @@ public class DataRow implements Comparable<DataRow> {
     }
 
     public void setHeartRate(int heartRate) throws SQLException {
-        DataUpdater.updatDataRow(this, "heartRate", Double.toString(heartRate));
+        DataUpdater.updateDataRows(Collections.singletonList(this), DataRowFields.heartRate.toString(), Double.toString(heartRate));
         this.heartRate = heartRate;
     }
 
@@ -112,7 +116,7 @@ public class DataRow implements Comparable<DataRow> {
     }
 
     public void setLatitude(double latitude) throws SQLException {
-        DataUpdater.updatDataRow(this, "latitude", Double.toString(latitude));
+        DataUpdater.updateDataRows(Collections.singletonList(this), DataRowFields.latitude.toString(), Double.toString(latitude));
         this.latitude = latitude;
     }
 
@@ -121,7 +125,7 @@ public class DataRow implements Comparable<DataRow> {
     }
 
     public void setLongitude(double longitude) throws SQLException {
-        DataUpdater.updatDataRow(this, "longitude", Double.toString(longitude));
+        DataUpdater.updateDataRows(Collections.singletonList(this), DataRowFields.longitude.toString(), Double.toString(longitude));
         this.longitude = longitude;
     }
 
@@ -130,7 +134,7 @@ public class DataRow implements Comparable<DataRow> {
     }
 
     public void setElevation(double elevation) throws SQLException {
-        DataUpdater.updatDataRow(this, "elevation", Double.toString(elevation));
+        DataUpdater.updateDataRows(Collections.singletonList(this), DataRowFields.elevation.toString(), Double.toString(elevation));
         this.elevation = elevation;
     }
 
@@ -140,5 +144,10 @@ public class DataRow implements Comparable<DataRow> {
 
     public void setOwner(Activity owner) {
         this.owner = owner;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s, %s, %s, %s", number, date, owner.getName(), owner.getOwner().getFirstName());
     }
 }

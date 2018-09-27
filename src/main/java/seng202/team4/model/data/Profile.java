@@ -1,16 +1,16 @@
 package seng202.team4.model.data;
+import seng202.team4.GuiUtilities;
+import seng202.team4.model.data.enums.ProfileFields;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;
 import seng202.team4.model.utilities.HealthWarning;
 
+import java.sql.Array;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 public class Profile {
@@ -22,6 +22,9 @@ public class Profile {
     public static final int MIN_NAME_SIZE = 2;
     public static final double MAX_WEIGHT = 250;
     public static final double MAX_HEIGHT = 3.0;
+    public static final double MIN_WEIGHT = 10;
+    public static final double MIN_HEIGHT = 0.5;
+
     public static final LocalDate MIN_DOB = LocalDate.parse("1900-01-01");
 
     private String firstName;
@@ -98,7 +101,7 @@ public class Profile {
 
     /** Set and store in database */
     public void setFirstName(String firstName) throws SQLException {
-        DataUpdater.updateProfile(this, "firstName", firstName);
+        DataUpdater.updateProfile(this, ProfileFields.firstName.toString(), firstName);
         this.firstName = firstName;
     }
 
@@ -108,7 +111,7 @@ public class Profile {
 
     /** Set and store in database */
     public void setLastName(String lastName) throws SQLException {
-        DataUpdater.updateProfile(this, "lastName", lastName);
+        DataUpdater.updateProfile(this, ProfileFields.lastName.toString(), lastName);
         this.lastName = lastName;
     }
 
@@ -119,7 +122,7 @@ public class Profile {
     /** Set and store in database */
     public void setDateOfBirth(String dateOfBirth) throws SQLException {
         this.dateOfBirth = LocalDate.parse(dateOfBirth);
-        DataUpdater.updateProfile(this, "dateOfBirth", dateOfBirth);
+        DataUpdater.updateProfile(this, ProfileFields.dateOfBirth.toString(), dateOfBirth);
     }
 
     public double getWeight() {
@@ -129,7 +132,7 @@ public class Profile {
     /** Set and store in database */
     public void setWeight(double weight) throws SQLException {
         this.weight = weight;
-        DataUpdater.updateProfile(this, "weight", Double.toString(weight));
+        DataUpdater.updateProfile(this, ProfileFields.weight.toString(), Double.toString(weight));
     }
 
     public double getHeight() {
@@ -139,7 +142,7 @@ public class Profile {
     /** Set and store in database */
     public void setHeight(double height) throws SQLException {
         this.height = height;
-        DataUpdater.updateProfile(this, "height", Double.toString(height));
+        DataUpdater.updateProfile(this, ProfileFields.height.toString(), Double.toString(height));
     }
 
     public List<Activity> getActivityList() {
@@ -191,7 +194,8 @@ public class Profile {
                 }
             }
         } catch (java.sql.SQLException e) {
-            //TODO: Bring up proper error box to the user.
+            GuiUtilities.displayErrorMessage("Error loading profile keys from the data base.", "");
+            e.printStackTrace();
             System.out.println("Error loading profile keys from the data base.");
             isUnique = false;
         }
@@ -206,7 +210,7 @@ public class Profile {
      * @return true if the weight is valid, false otherwise.
      */
     public static boolean isValidWeight(double weight) {
-        return (weight > 0 && weight <= MAX_WEIGHT);
+        return (weight >= MIN_WEIGHT && weight <= MAX_WEIGHT);
     }
 
     /**
@@ -216,7 +220,7 @@ public class Profile {
      * @return true if the height is valid, false otherwise.
      */
     public static boolean isValidHeight(double height) {
-        return (height > 0 && height <= MAX_HEIGHT);
+        return (height >= MIN_HEIGHT && height <= MAX_HEIGHT);
     }
 
     /**
@@ -236,10 +240,10 @@ public class Profile {
     public void addActivity(Activity activity) throws SQLException {
         activityList.add(activity);
         java.util.Collections.sort(activityList);   // Keep the lsit ordered
-        DataStorer.insertActivity(activity, this);
-
         // Set this as the activity owner
         activity.setOwner(this);
+
+        DataStorer.insertActivity(activity, this);
     }
 
     /** Adds all activities of the specified collection to the profile activityList and sorts the activityList
@@ -260,10 +264,10 @@ public class Profile {
     public void addGoal(Goal goal) throws SQLException {
         goalList.add(goal);
         java.util.Collections.sort(goalList);
-        DataStorer.insertGoal(goal, this);
-
         // Set this as the activity owner
         goal.setOwner(this);
+
+        DataStorer.insertGoal(goal, this);
     }
 
     /** Adds all goals of the specified collection to the goalList and sorts the goalList
@@ -283,7 +287,7 @@ public class Profile {
      */
     public void removeActivity(Activity activity) throws SQLException {
         activityList.remove(activity);
-        DataStorer.deleteActivity(activity, this);
+        DataStorer.deleteActivities(new ArrayList<>(Collections.singletonList(activity)));
     }
 
     /** Remove the goal from the goalList and the database
@@ -292,20 +296,31 @@ public class Profile {
      */
     public void removeGoal(Goal goal) throws SQLException {
         goalList.remove(goal);
-        DataStorer.deleteGoal(goal, this);
+        DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
     }
-    // TODO JavaDoc - Kenny
     /**
-     * @param warning
+     * Adds a warning to the user's list of warnings.
+     * @param warning the warning to be added.
      */
     public void addWarning(HealthWarning warning) {
         warningList.add(warning);
     }
 
     /**
-     * @return
+     * Gets the user's warning history.
+     * @return the list of warnings.
      */
     public List<HealthWarning> getWarningList() {
         return warningList;
+    }
+
+    /**
+     * Used when the profile has been loaded. Goes through all the activities stored by the user and tells the activity to
+     * check for any health warnings it may have.
+     */
+    public void findWarnings() {
+        for (Activity activity : activityList) {
+            activity.addWarnings(false);
+        }
     }
 }

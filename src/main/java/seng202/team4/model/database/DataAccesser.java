@@ -7,7 +7,9 @@ abstract public class DataAccesser {
     static ResultSet set;
     static PreparedStatement statement;
 
-    /** Initialise the connection to a the production database. */
+    /** Initialise the connection to a the production database.
+     *  @throws SQLException if the connection could not be opened
+     */
     public static void initialiseMainConnection() throws SQLException {
         String url = "jdbc:sqlite:fitness_tracker.sqlite";
         connection = DriverManager.getConnection(url);
@@ -18,22 +20,17 @@ abstract public class DataAccesser {
 //        statement.executeUpdate();
     }
 
-    /** Initialise the connection to a the test database. */
-    public static void initialiseTestConnection() {
-        String url = "jdbc:sqlite:testDatabase.sqlite";
-        initialiseConnection(url);
-    }
-
-    /** Initialise a connection to a database
-     *
-     * @param url the url of the database to connect to
+    /** Initialise the connection to a the test database.
+     *  @throws SQLException if the connection could not be opened
      */
-    private static void initialiseConnection(String url) {
-        try {
-            connection = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+    public static void initialiseTestConnection() throws SQLException {
+        String url = "jdbc:sqlite:testDatabase.sqlite";
+        connection = DriverManager.getConnection(url);
+
+//        // Turn foreign keys on
+//        String update = "PRAGMA foreign_keys = ON;";
+//        PreparedStatement statement = connection.prepareStatement(update);
+//        statement.executeUpdate();
     }
 
     /** Drop all tables from both the production and test databases and
@@ -57,10 +54,10 @@ abstract public class DataAccesser {
         Statement stmt = connection.createStatement();
 
         // Drop the tables
-        String dropProfile = "drop table if exists profile;";
-        String dropActivity = "drop table if exists activity;";
-        String dropGoal = "drop table if exists goal;";
-        String dropDataRow = "drop table if exists dataRow;";
+        String dropProfile = "drop table profile;";
+        String dropActivity = "drop table activity;";
+        String dropGoal = "drop table goal;";
+        String dropDataRow = "drop table dataRow;";
 
         stmt.addBatch(dropProfile);
         stmt.addBatch(dropActivity);
@@ -68,16 +65,16 @@ abstract public class DataAccesser {
         stmt.addBatch(dropDataRow);
 
         // Create new tables
-        String createProfile = "create table if not exists profile ("+
+        String createProfile = "create table profile ("+
                 "firstName text not null, " +
                 "lastName text not null, " +
                 "dateOfBirth character(10) not null, " +
-                "height real constraint check_height check (height BETWEEN 1.00 and 3.00), " +
-                "weight real constraint check_weight check (weight between 0 and 250), " +
+                "height real constraint check_height check (height BETWEEN 0.5 and 3.00), " +
+                "weight real constraint check_weight check (weight between 10 and 250), " +
                 "primary key (firstName, lastName)" +
                 ");";
 
-        String createActivity = "create table if not exists activity ( " +
+        String createActivity = "create table activity ( " +
                 "name text, " +
                 "activityDate character(10), " +
                 "description text, " +
@@ -92,7 +89,7 @@ abstract public class DataAccesser {
                 "foreign key (firstName, lastName) references profile" +
                 ");";
 
-        String createGoal = "create table if not exists goal (\n" +
+        String createGoal = "create table goal (\n" +
                 "goalNumber integer,\n" +
                 "progress integer constraint check_progress check (progress between 0 and 100),\n" +
                 "type character(3) constraint check_type check (type in (\"Run\", \"Walk\")),\n" +
@@ -109,14 +106,14 @@ abstract public class DataAccesser {
                 "on delete cascade on update no action\n" +
                 ");";
 
-        String createDataRow = "create table if not exists dataRow (\n" +
+        String createDataRow = "create table dataRow (\n" +
                 "  rowNumber integer,\n" +
                 "  rowDate character(10),\n" +
                 "  time character(8) not null,\n" +
-                "  heartRate integer constraint check_heartRate check (heartRate between 60 and 250),\n" +
+                "  heartRate integer constraint check_heartRate check (heartRate between 10 and 250),\n" +
                 "  latitude double constraint check_latitude check (latitude between -90 and 90),\n" +
                 "  longitude double constraint check_longitude check (longitude between -180 and 180),\n" +
-                "  elevation double constraint check_elevation check (elevation between 0 and 4000),\n" +
+                "  elevation double constraint check_elevation check (elevation between -100 and 10000),\n" +
                 "  name text,\n" +
                 "  activityDate character(10),\n" +
                 "  firstName text not NULL,\n" +
@@ -151,7 +148,7 @@ abstract public class DataAccesser {
     public static void clearDatabase() throws SQLException {
         // Delete all profiles from the database
         String select = "delete from profile";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
         statement.executeUpdate();
 
         // Delete all activities from the database
@@ -168,6 +165,8 @@ abstract public class DataAccesser {
         select = "delete from dataRow";
         statement = connection.prepareStatement(select);
         statement.executeUpdate();
+
+        statement.close();
     }
 
     /** Clear contents of all non-profile tables
@@ -178,7 +177,7 @@ abstract public class DataAccesser {
         DataAccesser.initialiseMainConnection();
         // Delete all activities from the database
         String select = "delete from activity";
-        PreparedStatement statement = connection.prepareStatement(select);
+        statement = connection.prepareStatement(select);
         statement.executeUpdate();
 
         // Delete all goals from the database
@@ -190,5 +189,9 @@ abstract public class DataAccesser {
         select = "delete from dataRow";
         statement = connection.prepareStatement(select);
         statement.executeUpdate();
+
+        // Cleanup
+        statement.close();
+        connection.close();
     }
 }
