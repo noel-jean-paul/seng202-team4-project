@@ -43,10 +43,10 @@ public class DataLoaderTest {
                 178.4352, 203);
 
         // create test Activities
-        activity1 = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
+        activity1 = new Activity("Run in the park", "2018-08-29", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
-        activity2 = new Activity("Walk around the block", "2018-09-01", "Quick walk",
+        activity2 = new Activity("Walk around the block", "2018-09-01",
                 ActivityType.Walk, "01:28:30", "PT11M19S", 1.2, 30);
 
         // Create test Goals

@@ -69,7 +69,7 @@ public class Profile {
     public Profile(String firstName, String lastName, String dateOfBirth, double weight, double height,
                    String pictureURL) {
         this(firstName, lastName, dateOfBirth, weight, height);
-        this.setPictureURL(pictureURL);
+        this.pictureURL = pictureURL;
 
     }
 
@@ -188,8 +188,9 @@ public class Profile {
         return pictureURL;
     }
 
-    public void setPictureURL(String pictureURL) {
+    public void setPictureURL(String pictureURL) throws SQLException {
         this.pictureURL = pictureURL;
+        DataUpdater.updateProfile(this, ProfileFields.pictureURL.toString(), pictureURL);
     }
 
     /**

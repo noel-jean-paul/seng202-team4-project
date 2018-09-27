@@ -42,13 +42,13 @@ public class ProfileTest {
                 1.83);
 
         // Initialise activities
-        activity1 = new Activity("Run in the park", "2017-12-12", "", ActivityType.Run,
+        activity1 = new Activity("Run in the park", "2017-12-12", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
-        activity2 = new Activity("Walk around the block", "2019-12-12", "Quick walk",
+        activity2 = new Activity("Walk around the block", "2019-12-12",
                 ActivityType.Walk, "01:28:30", "PT11M19S", 1.2, 30);
 
-        activity3 = new Activity("Jog through Uni", "2018-12-12", "Quick walk",
+        activity3 = new Activity("Jog through Uni", "2018-12-12",
                 ActivityType.Run, "01:28:30", "PT11M19S", 1.2, 30);
 
         expected = new ArrayList<>(Arrays.asList(activity2, activity3, activity1));
@@ -257,5 +257,15 @@ public class ProfileTest {
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(height, loadedProfile.getHeight(), 0.01);
+    }
+
+    @Test
+    public void setPictureURL() throws SQLException {
+        String pictureURL = "/images/Noel-Bisson-icon.png";
+        DataStorer.insertProfile(profile1);
+        profile1.setPictureURL(pictureURL);
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        assertEquals(pictureURL, loadedProfile.getPictureURL());
     }
 }

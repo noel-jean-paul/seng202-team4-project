@@ -36,10 +36,10 @@ public class ActivityTest {
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
 
-        activity1 = new Activity("Run in the park", "2000-12-12", "", ActivityType.Run,
+        activity1 = new Activity("Run in the park", "2000-12-12", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
-        activity2 = new Activity("Walk around the block", "2018-09-01", "Quick walk",
+        activity2 = new Activity("Walk around the block", "2018-09-01",
                 ActivityType.Walk, "01:28:30", "PT11M19S", 1.2, 30);
 
         // set the owners as set methods are called so db updates will occur
@@ -198,18 +198,6 @@ public class ActivityTest {
        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
        assertEquals(name, loadedProfile.getActivityList().get(0).getName());
-    }
-
-    @Test
-    public void setDescription() throws SQLException {
-        String description= "I went running";
-        DataStorer.insertProfile(profile1);
-        profile1.addActivity(activity1);
-        activity1.addDataRow(row1);
-        activity1.setDescription(description);
-        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-
-        assertEquals(description, loadedProfile.getActivityList().get(0).getDescription());
     }
 
     @Test

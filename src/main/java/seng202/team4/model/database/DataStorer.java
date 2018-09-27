@@ -1,11 +1,9 @@
 package seng202.team4.model.database;
 
 import seng202.team4.model.data.*;
-import seng202.team4.model.data.enums.*;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
-import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -54,20 +52,19 @@ abstract public class DataStorer extends DataAccesser {
     public static void insertActivity(Activity activity, Profile activityOwner) throws SQLException {
         assert activity != null;
 
-        String insert = "insert into activity(name, activityDate, description, type, startTime, duration, distance, " +
-                "caloriesBurned, firstName, lastName) values (?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insert = "insert into activity(name, activityDate, type, startTime, duration, distance, " +
+                "caloriesBurned, firstName, lastName) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
         statement.setString(1, activity.getName());
         statement.setString(2, String.valueOf(activity.getDate()));
-        statement.setString(3, activity.getDescription());
-        statement.setString(4, String.valueOf(activity.getType()));
-        statement.setString(5, String.valueOf(activity.getStartTime()));
-        statement.setString(6, String.valueOf(activity.getDuration()));
-        statement.setString(7, String.valueOf(activity.getDistance()));
-        statement.setString(8, String.valueOf(activity.getCaloriesBurned()));
-        statement.setString(9, activityOwner.getFirstName());
-        statement.setString(10, activityOwner.getLastName());
+        statement.setString(3, String.valueOf(activity.getType()));
+        statement.setString(4, String.valueOf(activity.getStartTime()));
+        statement.setString(5, String.valueOf(activity.getDuration()));
+        statement.setString(6, String.valueOf(activity.getDistance()));
+        statement.setString(7, String.valueOf(activity.getCaloriesBurned()));
+        statement.setString(8, activityOwner.getFirstName());
+        statement.setString(9, activityOwner.getLastName());
 
         statement.executeUpdate();
 

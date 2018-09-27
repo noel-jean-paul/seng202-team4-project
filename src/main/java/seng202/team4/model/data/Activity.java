@@ -24,7 +24,6 @@ public class Activity implements Comparable<Activity> {
     /* The combination of name and date must be unique for a profile */
     private String name;
     private LocalDate date;
-    private String description;
     private ActivityType type;
     private LocalTime startTime;
     private Duration duration;
@@ -37,11 +36,10 @@ public class Activity implements Comparable<Activity> {
     private int minHeartRate;
     private int maxHeartRate;
 
-    public Activity(String name, String date, String description, ActivityType type, String startTime,
+    public Activity(String name, String date, ActivityType type, String startTime,
                     String duration, double distance, double caloriesBurned) {
         this.name = name;
         this.date = LocalDate.parse(date);
-        this.description = description;
         this.type = type;
 
         this.startTime = LocalTime.parse(startTime);
@@ -81,7 +79,6 @@ public class Activity implements Comparable<Activity> {
                 Double.compare(activity.getAverageSpeed(), getAverageSpeed()) == 0 &&
                 Objects.equals(getName(), activity.getName()) &&
                 Objects.equals(getDate(), activity.getDate()) &&
-                Objects.equals(getDescription(), activity.getDescription()) &&
                 getType() == activity.getType() &&
                 Objects.equals(getStartTime(), activity.getStartTime()) &&
                 Objects.equals(getDuration(), activity.getDuration()) &&
@@ -90,7 +87,7 @@ public class Activity implements Comparable<Activity> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDate(), getDescription(), getType(), getStartTime(), getDuration(), getDistance(), getCaloriesBurned(), getAverageSpeed(), getRawData());
+        return Objects.hash(getName(), getDate(), getType(), getStartTime(), getDuration(), getDistance(), getCaloriesBurned(), getAverageSpeed(), getRawData());
     }
 
     /** Compare an Activity to another based on Date and then based on Time in case of ties.
@@ -122,17 +119,6 @@ public class Activity implements Comparable<Activity> {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.name.toString(), name, true);
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    /** Set and update in database */
-    public void setDescription(String description) throws SQLException {
-        DataUpdater.updateActivities(Collections.singletonList(this),
-                ActivityFields.description.toString(), description, false);
-        this.description = description;
     }
 
     public LocalDate getDate() {

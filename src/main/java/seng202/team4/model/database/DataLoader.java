@@ -73,7 +73,6 @@ abstract public class DataLoader extends DataAccesser {
             Activity activity = new Activity(
                     set.getString("name"),
                     set.getString("activityDate"),
-                    set.getString("description"),
                     ActivityType.valueOf(set.getString("type")),
                     set.getString("startTime"),
                     set.getString("duration"),

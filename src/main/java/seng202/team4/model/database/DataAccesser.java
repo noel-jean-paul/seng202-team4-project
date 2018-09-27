@@ -83,7 +83,6 @@ abstract public class DataAccesser {
         String createActivity = "create table activity ( " +
                 "name text, " +
                 "activityDate character(10), " +
-                "description text, " +
                 "type character(3) constraint check_type check (type in (\"Run\", \"Walk\", \"Other\")), " +
                 "startTime character(8) not null, " +
                 "duration character(8) not null, " +
