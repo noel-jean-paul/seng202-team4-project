@@ -43,7 +43,7 @@ public class HealthWarning implements Comparable<HealthWarning> {
      */
     @Override
     public int compareTo(HealthWarning o) {
-        return getWarningDate().compareTo(o.getWarningDate());
+        return getWarningDate().compareTo(o.getWarningDate()) * -1;     // Reverse order to descending
     }
 
     @Override
