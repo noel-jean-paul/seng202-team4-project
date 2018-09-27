@@ -96,7 +96,7 @@ public class Activity implements Comparable<Activity> {
     /** Compare an Activity to another based on Date and then based on Time in case of ties.
      *  Consistent with equals as defined by Comparable
      *
-     * @param o the ProfileKey to compare to
+     * @param o the Activity to compare to
      * @return a negative integer, zero, or a positive integer as this object
      *          is less than, equal to, or greater than the specified object.
      */

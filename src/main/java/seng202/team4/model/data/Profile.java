@@ -298,13 +298,28 @@ public class Profile {
         goalList.remove(goal);
         DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
     }
+
     /**
-     * Adds a warning to the user's list of warnings.
+     * Adds a warning to the user's list of warnings in order and store the warning in the database.
      * @param warning the warning to be added.
      */
     public void addWarning(HealthWarning warning) {
         warningList.add(warning);
+        Collections.sort(warningList);
     }
+
+    /** Adds all healthWarnings of the specified collection to the warningList and sorts the warningList
+     *  Intended for use by DataLoader only
+     *  WARNING: DOES NOT STORE IN THE DATABASE OR SET OWNER
+     *
+     * @param warnings the collection to be added
+     */
+    public void addAllWarnings(List<HealthWarning> warnings) {
+        warningList.addAll(warnings);
+        Collections.sort(warningList);
+    }
+
+
 
     /**
      * Gets the user's warning history.
