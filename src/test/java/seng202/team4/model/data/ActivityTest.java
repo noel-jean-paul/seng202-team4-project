@@ -125,7 +125,7 @@ public class ActivityTest {
         activity1.addDataRow(row2);
         activity1.addDataRow(row1);
 
-        List<DataRow> expected = new ArrayList<>(Arrays.asList(row1, row2, row3));
+        List<DataRow> expected = new ArrayList<>(Arrays.asList(row3, row2, row1));
         assertEquals(expected, activity1.getRawData());
     }
 
@@ -158,7 +158,7 @@ public class ActivityTest {
         activity1.addAllDataRows(rows);
 
         // Create expected list
-        List<DataRow> expectedRows = new ArrayList<>(Arrays.asList(row1, row2, row3));
+        List<DataRow> expectedRows = new ArrayList<>(Arrays.asList(row3, row2, row1));
 
         assertEquals(expectedRows, activity1.getRawData());
     }

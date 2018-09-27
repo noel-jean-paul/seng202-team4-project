@@ -82,7 +82,7 @@ public class DataRow implements Comparable<DataRow> {
      */
     @Override
     public int compareTo(DataRow o) {
-        return Integer.compare(this.getNumber(), o.getNumber());
+        return Integer.compare(this.getNumber(), o.getNumber()) * -1 ;
     }
 
     public int getNumber() {

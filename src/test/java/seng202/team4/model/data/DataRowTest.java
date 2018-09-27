@@ -62,14 +62,14 @@ public class DataRowTest {
     public void compareTo_differentNumber_checkComesBefore() throws SQLException {
         row1.setNumber(3);
         row2.setNumber(4);
-        assert row1.compareTo(row2) < 0;
+        assert row1.compareTo(row2) > 0;
     }
 
     @Test
     public void compareTo__differentNumber_checkComesAfter() throws SQLException {
         row1.setNumber(3);
         row2.setNumber(4);
-        assert row2.compareTo(row1) > 0;
+        assert row2.compareTo(row1) < 0;
     }
 
     @Test
