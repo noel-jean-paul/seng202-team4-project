@@ -109,6 +109,9 @@ public class LoginController extends Controller {
         }
     }
 
+    /**
+     * Resets the login screen by deselected the currently selected activity.
+     */
     private void reset() {
         if (selectedProfileItem != null) {
             selectedProfileItem.deselect();

@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
@@ -26,6 +27,10 @@ import java.util.List;
  * Controller for the Activity Tab.
  */
 public class ActivityTabController extends Controller {
+
+    /** the center pane that displays either an activity table or calendar. */
+    @FXML
+    private AnchorPane centerContentPane;
 
     /** The TableView that holds a list of activities. */
     @FXML
@@ -231,6 +236,18 @@ public class ActivityTabController extends Controller {
     public void addActivities() {
         Pane popUp = GuiUtilities.loadPane("ActivityImportTypePrompt.fxml", new ActivityImportTypePromptController(applicationStateManager, this));
         applicationStateManager.displayPopUp(popUp);
+    }
+
+    /**
+     * Switches to calendar view.
+     */
+    @FXML
+    public void calendarView() {
+        Pane calendarView = GuiUtilities.loadPane("CalendarView.fxml", new CalendarViewController(applicationStateManager));
+//        calendarView.prefWidthProperty().bind(centerContentPane.widthProperty());
+//        calendarView.prefHeightProperty().bind(centerContentPane.heightProperty());
+        centerContentPane.getChildren().setAll(calendarView);
+
     }
 
     /**
