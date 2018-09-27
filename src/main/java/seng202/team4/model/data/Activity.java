@@ -105,9 +105,9 @@ public class Activity implements Comparable<Activity> {
         int dateCompare;
         int timeCompare;
          if ((dateCompare = this.getDate().compareTo(o.getDate())) != 0) {
-             return dateCompare;
+             return dateCompare * -1;  // Reverse order to descending
          } else if ((timeCompare = this.getStartTime().compareTo(o.getStartTime())) != 0) {
-             return timeCompare;
+             return timeCompare * -1;   // Reverse order to descending
          } else {
              return 0;  // Same date and startTime
          }

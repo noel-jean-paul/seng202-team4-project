@@ -75,7 +75,7 @@ public class ActivityTest {
         activity1.setDate("2018-06-01");   // Earlier date
         activity2.setDate("2018-06-02");   // Later date
 
-        assert activity1.compareTo(activity2) < 0;
+        assert activity1.compareTo(activity2) > 0;
     }
 
     @Test
@@ -83,7 +83,7 @@ public class ActivityTest {
         activity1.setDate("2018-06-01");   // Earlier date
         activity2.setDate("2018-06-02");   // Later date
 
-        assert activity2.compareTo(activity1) > 0;
+        assert activity2.compareTo(activity1) < 0;
     }
 
     @Test
@@ -94,7 +94,7 @@ public class ActivityTest {
         activity1.setStartTime("11:59:59");    // Earlier time
         activity2.setStartTime("12:00:00");    // Later time
 
-        assert activity1.compareTo(activity2) < 0;
+        assert activity1.compareTo(activity2) > 0;
     }
 
     @Test
@@ -105,7 +105,7 @@ public class ActivityTest {
         activity1.setStartTime("11:59:59");    // Earlier time
         activity2.setStartTime("12:00:00");    // Later time
 
-        assert activity2.compareTo(activity1) > 0;
+        assert activity2.compareTo(activity1) < 0;
     }
 
     @Test
