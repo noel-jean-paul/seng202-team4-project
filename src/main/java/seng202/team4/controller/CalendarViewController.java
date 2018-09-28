@@ -37,7 +37,7 @@ public class CalendarViewController extends Controller {
     public void initialize() {
         Calendar calendar = Calendar.getInstance();
         currentMonth = calendar.get(Calendar.MONTH);
-        changeMonth(currentMonth);
+        changeMonth(currentMonth, 2018);
 
     }
 
@@ -45,23 +45,24 @@ public class CalendarViewController extends Controller {
     @FXML
     public void prevMonth() {
         currentMonth -= 1;
-        changeMonth(currentMonth);
+        changeMonth(currentMonth, 2018);
     }
 
     /** Change to the next month. */
     @FXML
     public void nextMonth() {
         currentMonth += 1;
-        changeMonth(currentMonth);
+        changeMonth(currentMonth, 2018);
     }
 
     /**
      * Changes the calender view to a particular month.
      * @param month The month to change to, indexed from 0.
      */
-    private void changeMonth(int month) {
+    private void changeMonth(int month, int year) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
         monthText.setText(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH));
@@ -79,7 +80,7 @@ public class CalendarViewController extends Controller {
                 Pane calendarSquare = GuiUtilities.loadPane("CalendarSquare.fxml", calendarSquareController);
 
                 int day = boxNum-dayOffSet+1;
-                if (day >= 1 && day <= calendar.getMaximum(Calendar.DAY_OF_MONTH)) {
+                if (day >= 1 && day <= calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
                     calendarSquareController.setDay(day);
                     calendarGrid.add(calendarSquare, colNum, rowNum);
                 }

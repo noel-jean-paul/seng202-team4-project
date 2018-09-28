@@ -56,7 +56,7 @@ public class App extends Application {
         }
 
         // Creates base scene.
-        Scene baseScene = new Scene(new Group(), 600, 400);
+        Scene baseScene = new Scene(new Group(), 660, 460);
 
         // Creates application state manager.
         ApplicationStateManager applicationStateManager = new ApplicationStateManager(baseScene, primaryStage);
