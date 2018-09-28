@@ -6,7 +6,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
+import seng202.team4.model.data.Activity;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -91,17 +93,26 @@ public class CalendarViewController extends Controller {
         int boxNum = 1;
         for (int rowNum = 0; rowNum < 6; rowNum++) {
             for (int colNum = 0; colNum < 7; colNum++) {
-                CalendarSquareController calendarSquareController = new CalendarSquareController(applicationStateManager);
-                Pane calendarSquare = GuiUtilities.loadPane("CalendarSquare.fxml", calendarSquareController);
 
                 int day = boxNum-dayOffSet+1;
                 if (day >= 1 && day <= calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+                    CalendarSquareController calendarSquareController = new CalendarSquareController(applicationStateManager);
+                    Pane calendarSquare = GuiUtilities.loadPane("CalendarSquare.fxml", calendarSquareController);
+
                     calendarSquareController.setDay(day);
                     calendarGrid.add(calendarSquare, colNum, rowNum);
                     calendarSquare.prefWidthProperty().bind(calendarGrid.widthProperty().divide(7));
                     calendarSquare.prefHeightProperty().bind(calendarGrid.heightProperty().divide(numberOfRows));
                     calendarSquare.minWidthProperty().bind(calendarGrid.minWidthProperty().divide(7));
                     calendarSquare.minHeightProperty().bind(calendarGrid.minHeightProperty().divide(numberOfRows));
+
+                    for (Activity activity: applicationStateManager.getCurrentProfile().getActivityList()) {
+                        if (activity.getDate().equals(LocalDate.of(year, month+1, day))) {
+                            ActivityCalendarItemController activityCalendarItemController = new ActivityCalendarItemController(applicationStateManager, activity);
+                            Pane activityItem = GuiUtilities.loadPane("ActivityCalendarItem.fxml", activityCalendarItemController);
+                            calendarSquareController.addItem(activityItem);
+                        }
+                    }
                 }
                 boxNum += 1;
             }

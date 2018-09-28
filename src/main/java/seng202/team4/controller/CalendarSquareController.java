@@ -44,5 +44,6 @@ public class CalendarSquareController extends Controller {
      */
     public void addItem(Pane item) {
         itemsVbox.getChildren().add(item);
+
     }
 }
