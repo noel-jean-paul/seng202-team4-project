@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
-<GridPane gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.CalendarViewController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.CalendarViewController">
    <columnConstraints>
       <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
       <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
@@ -20,7 +16,7 @@
    <children>
       <VBox alignment="CENTER_LEFT" prefHeight="200.0">
          <children>
-            <Text fx:id="monthText" strokeType="OUTSIDE" strokeWidth="0.0" text="Month">
+            <Text fx:id="monthYearText" strokeType="OUTSIDE" strokeWidth="0.0" text="Month">
                <font>
                   <Font size="30.0" />
                </font>
@@ -67,25 +63,29 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <GridPane fx:id="calendarGrid" GridPane.columnSpan="7" GridPane.rowIndex="1" GridPane.rowSpan="6">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" />
-                  <ColumnConstraints hgrow="SOMETIMES" />
-                  <ColumnConstraints hgrow="SOMETIMES" />
-                  <ColumnConstraints hgrow="SOMETIMES" />
-                  <ColumnConstraints hgrow="SOMETIMES" />
-                  <ColumnConstraints hgrow="SOMETIMES" />
-                  <ColumnConstraints hgrow="SOMETIMES" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints vgrow="SOMETIMES" />
-                  <RowConstraints vgrow="SOMETIMES" />
-                  <RowConstraints vgrow="SOMETIMES" />
-                  <RowConstraints vgrow="SOMETIMES" />
-                  <RowConstraints vgrow="SOMETIMES" />
-                  <RowConstraints vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
+            <AnchorPane GridPane.columnSpan="7" GridPane.rowIndex="1" GridPane.rowSpan="6">
+               <children>
+                  <GridPane fx:id="calendarGrid" layoutX="0.5" layoutY="0.5" prefHeight="10.0" prefWidth="396.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </children>
+            </AnchorPane>
             <VBox alignment="CENTER" prefHeight="200.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Monday" />

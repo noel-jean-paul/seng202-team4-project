@@ -10,6 +10,8 @@ import seng202.team4.GuiUtilities;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static java.lang.Math.ceil;
+
 /** Controller class for the calender view */
 public class CalendarViewController extends Controller {
 
@@ -23,10 +25,13 @@ public class CalendarViewController extends Controller {
 
     /** The Text that displays the current month. */
     @FXML
-    private Text monthText;
+    private Text monthYearText;
 
     /** The current month being displayed. */
     private int currentMonth = 0;
+
+    /** The current year being displayed. */
+    private int currentYear = 0;
 
     public CalendarViewController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
@@ -37,7 +42,8 @@ public class CalendarViewController extends Controller {
     public void initialize() {
         Calendar calendar = Calendar.getInstance();
         currentMonth = calendar.get(Calendar.MONTH);
-        changeMonth(currentMonth, 2018);
+        currentYear = calendar.get(Calendar.YEAR);
+        changeMonth(currentMonth, currentYear);
 
     }
 
@@ -45,14 +51,22 @@ public class CalendarViewController extends Controller {
     @FXML
     public void prevMonth() {
         currentMonth -= 1;
-        changeMonth(currentMonth, 2018);
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear -= 1;
+        }
+        changeMonth(currentMonth, currentYear);
     }
 
     /** Change to the next month. */
     @FXML
     public void nextMonth() {
         currentMonth += 1;
-        changeMonth(currentMonth, 2018);
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear += 1;
+        }
+        changeMonth(currentMonth, currentYear);
     }
 
     /**
@@ -65,7 +79,7 @@ public class CalendarViewController extends Controller {
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
-        monthText.setText(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH));
+        monthYearText.setText(String.format("%s %s", calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH), year));
 
         int dayOffSet = calendar.get(Calendar.DAY_OF_WEEK)-1;
         if (dayOffSet < 1) {
@@ -73,6 +87,7 @@ public class CalendarViewController extends Controller {
         }
 
         calendarGrid.getChildren().clear();
+        int numberOfRows = (int) ceil((dayOffSet + calendar.getActualMaximum(Calendar.DAY_OF_MONTH))/7);
         int boxNum = 1;
         for (int rowNum = 0; rowNum < 6; rowNum++) {
             for (int colNum = 0; colNum < 7; colNum++) {
@@ -83,6 +98,10 @@ public class CalendarViewController extends Controller {
                 if (day >= 1 && day <= calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
                     calendarSquareController.setDay(day);
                     calendarGrid.add(calendarSquare, colNum, rowNum);
+                    calendarSquare.prefWidthProperty().bind(calendarGrid.widthProperty().divide(7));
+                    calendarSquare.prefHeightProperty().bind(calendarGrid.heightProperty().divide(numberOfRows));
+                    calendarSquare.minWidthProperty().bind(calendarGrid.minWidthProperty().divide(7));
+                    calendarSquare.minHeightProperty().bind(calendarGrid.minHeightProperty().divide(numberOfRows));
                 }
                 boxNum += 1;
             }
