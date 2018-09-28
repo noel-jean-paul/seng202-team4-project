@@ -1,6 +1,7 @@
 package seng202.team4.model.database;
 
 import seng202.team4.model.data.*;
+import seng202.team4.model.data.enums.GoalType;
 
 import java.sql.*;
 
@@ -83,19 +84,19 @@ abstract public class DataStorer extends DataAccesser {
     public static void insertGoal(Goal goal, Profile goalOwner) throws SQLException {
         assert goal != null;
 
-        String insert = "insert into goal(goalNumber, progress, description, type, creationDate, expiryDate, completionDate, " +
-                "goalDuration, goalDistance, firstName, lastName) values (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String insert = "insert into goal(goalNumber, progress, type, creationDate, expiryDate, completionDate, " +
+                "goalDuration, goalDistance, current, firstName, lastName) values (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
         statement.setString(1, String.valueOf(goal.getNumber()));
         statement.setString(2, String.valueOf(goal.getProgress()));
-        statement.setString(3, goal.getDescription());
-        statement.setString(4, String.valueOf(goal.getType()));
-        statement.setString(5, String.valueOf(goal.getCreationDate()));
-        statement.setString(6, String.valueOf(goal.getExpiryDate()));
-        statement.setString(7, String.valueOf(goal.getCompletionDate()));
-        statement.setString(8, String.valueOf(goal.getGoalDuration()));
-        statement.setString(9, String.valueOf(goal.getGoalDistance()));
+        statement.setString(3, String.valueOf(goal.getType()));
+        statement.setString(4, String.valueOf(goal.getCreationDate()));
+        statement.setString(5, String.valueOf(goal.getExpiryDate()));
+        statement.setString(6, String.valueOf(goal.getCompletionDate()));
+        statement.setString(7, String.valueOf(goal.getGoalDuration()));
+        statement.setString(8, String.valueOf(goal.getGoalDistance()));
+        statement.setString(9, String.valueOf(goal.isCurrent()));
         statement.setString(10, goalOwner.getFirstName());
         statement.setString(11, goalOwner.getLastName());
 

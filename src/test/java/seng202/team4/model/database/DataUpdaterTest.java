@@ -12,9 +12,6 @@ import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -118,9 +115,9 @@ public class DataUpdaterTest {
     public void updateProfile_updateFirstName_checkGoalsUpdated() throws SQLException {
         // Setup
         DataStorer.insertProfile(profile1);
-        profile1.addGoal(goal1);
-        profile1.addGoal(goal2);
-        profile1.addGoal(goal3);
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
+        profile1.addCurrentGoal(goal3);
 
         // Change an aspect of the primary key
         profile1.setFirstName("Ben");
@@ -134,9 +131,9 @@ public class DataUpdaterTest {
     public void updateProfile_updateLastName_checkGoalsUpdated() throws SQLException {
         // Setup
         DataStorer.insertProfile(profile1);
-        profile1.addGoal(goal1);
-        profile1.addGoal(goal2);
-        profile1.addGoal(goal3);
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
+        profile1.addCurrentGoal(goal3);
 
         // Change an aspect of the primary key
         profile1.setLastName("Solo");
@@ -150,7 +147,7 @@ public class DataUpdaterTest {
     public void updateProfile_updateNonKey_checkNoPropagation() throws SQLException {
         // Setup
         DataStorer.insertProfile(profile1);
-        profile1.addGoal(goal1);
+        profile1.addCurrentGoal(goal1);
         profile1.addActivity(activity1);
 
         // Change something that is not part of the primary key

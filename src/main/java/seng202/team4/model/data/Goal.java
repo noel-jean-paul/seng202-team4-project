@@ -24,6 +24,7 @@ public class Goal implements Comparable<Goal> {
     private double goalDistance;
     private double goalDuration;
     private Profile owner;
+    private boolean current;
 
     /** Constructor for creating new goals */
     public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
@@ -34,24 +35,25 @@ public class Goal implements Comparable<Goal> {
         this.creationDate = LocalDate.parse(creationDate);
         this.completionDate = LocalDate.MAX;
         this.expiryDate = LocalDate.parse(expiryDate);
-        // TODO: 31/08/18 create a description based on type, distance and duration describing the goal
         this.goalDistance = goalDistance;
         this.goalDuration = goalDuration;
+        this.current = true;
+        this.description = Goal.generateDescription(this);
     }
 
     /** Constructor for loading goals from the database */
-    public Goal(int number, double progress, GoalType type, String description, String creationDate, String expiryDate,
-                String completionDate, double goalDuration, double goalDistance) {
+    public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
+                String completionDate, double goalDuration, double goalDistance, boolean current) {
         this.number = number;
         this.progress = progress;
         this.type = type;
-        this.description = description;
         this.creationDate = LocalDate.parse(creationDate);
         this.expiryDate = LocalDate.parse(expiryDate);
         this.completionDate = LocalDate.parse(completionDate);
         this.goalDuration = goalDuration;
         this.goalDistance = goalDistance;
-
+        this.current = current;
+        this.description = Goal.generateDescription(this);
     }
 
     @Override
@@ -67,7 +69,8 @@ public class Goal implements Comparable<Goal> {
                 Objects.equals(getCreationDate(), goal.getCreationDate()) &&
                 Objects.equals(getExpiryDate(), goal.getExpiryDate()) &&
                 Objects.equals(getCompletionDate(), goal.getCompletionDate()) &&
-                Objects.equals(getDescription(), goal.getDescription());
+                Objects.equals(getDescription(), goal.getDescription()) &&
+                Objects.equals(isCurrent(), goal.isCurrent());
     }
 
     @Override
@@ -147,7 +150,6 @@ public class Goal implements Comparable<Goal> {
     }
 
     public void setDescription(String description) throws SQLException {
-        DataUpdater.updateGoals(Collections.singletonList(this),GoalFields.description.toString(), description);
         this.description = description;
     }
 
@@ -183,5 +185,29 @@ public class Goal implements Comparable<Goal> {
 
     public void setOwner(Profile owner) {
         this.owner = owner;
+    }
+
+    public boolean isCurrent() {
+        return current;
+    }
+
+    public void setCurrent(boolean current) {
+        this.current = current;
+    }
+
+    /** Create a description for the goal based of its paramers
+     *
+     * @param goal the goal to generate the description for
+     * @return a description of the goal as a String.
+     */
+    private static String generateDescription(Goal goal) {
+        String description;
+
+        if (goal.getGoalDistance() > 0) {
+            description = String.format("%s %f meters", goal.getType().toString(), goal.getGoalDistance());
+        } else {
+            description = String.format("%s for %f", goal.getType().toString(), goal.getGoalDuration());
+        }
+        return description;
     }
 }

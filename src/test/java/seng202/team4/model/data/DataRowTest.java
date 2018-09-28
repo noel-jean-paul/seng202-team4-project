@@ -34,7 +34,7 @@ public class DataRowTest {
         row2 = new DataRow(2, "2018-09-28", "12:21:12", 164, 50, 50,
                 50);
 
-        // Set owner as addGoal or loadProfile are not called prior to setters
+        // Set owner as addCurrentGoal or loadProfile are not called prior to setters
         row1.setOwner(activity1);
         row2.setOwner(activity1);
     }

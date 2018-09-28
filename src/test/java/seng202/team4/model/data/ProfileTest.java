@@ -129,9 +129,9 @@ public class ProfileTest {
         profile1.getGoalList().clear();
 
         // Add goals to profile
-        profile1.addGoal(goal3);
-        profile1.addGoal(goal1);
-        profile1.addGoal(goal2);
+        profile1.addCurrentGoal(goal3);
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
 
         assertEquals(expectedGoals, profile1.getGoalList());
     }
@@ -139,14 +139,14 @@ public class ProfileTest {
     @Test
     public void addGoal_checkStoredInDatabase() throws SQLException {
         DataStorer.insertProfile(profile1);
-        profile1.addGoal(goal1);
+        profile1.addCurrentGoal(goal1);
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
         assertEquals(goal1, loadedProfile.getGoalList().get(0));
     }
 
     @Test
     public void addGoal_checkOwnerSet() throws SQLException {
-        profile1.addGoal(goal1);
+        profile1.addCurrentGoal(goal1);
         assertEquals(profile1, goal1.getOwner());
     }
 
@@ -155,14 +155,14 @@ public class ProfileTest {
         // Clear goal list
         profile1.getGoalList().clear();
 
-        // Add a goal to the profile goalList
+        // Add a goal to the profile currentGoals
         profile1.getGoalList().add(goal3);
 
         // Create a list of goals to be added - list is out of order
         List<Goal> goals = new ArrayList<>(Arrays.asList(goal2, goal1));
 
-        // Add activitities to the goalList
-        profile1.addAllGoals(goals);
+        // Add activitities to the currentGoals
+        profile1.addAllCurrentGoals(goals);
 
         assertEquals(expectedGoals, profile1.getGoalList());
     }
@@ -190,7 +190,7 @@ public class ProfileTest {
 
     @Test
     public void removeGoal_checkRemovedFromList() throws SQLException {
-        profile1.addGoal(goal1);
+        profile1.addCurrentGoal(goal1);
         profile1.removeGoal(goal1);
 
         assertEquals(0, profile1.getGoalList().size());
@@ -199,7 +199,7 @@ public class ProfileTest {
     @Test
     public void removeGoal_checkRemovedFromDatabase() throws SQLException {
         // Add the goal and profile
-        profile1.addGoal(goal1);
+        profile1.addCurrentGoal(goal1);
         DataStorer.insertProfile(profile1);
 
         profile1.removeGoal(goal1);

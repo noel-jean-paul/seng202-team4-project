@@ -9,7 +9,6 @@ import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,7 +97,7 @@ public class DataStorerTest {
     @Test
     public void insertGoal() throws SQLException {
         DataStorer.insertProfile(profile1);
-        profile1.addGoal(goal1);
+        profile1.addCurrentGoal(goal1);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(profile1, loadedProfile);
@@ -187,8 +186,8 @@ public class DataStorerTest {
         Goal goal3 = new Goal(2, 100, GoalType.Run, "2017-05-21", "2020-01-02",
                 5.00, 60);
 
-        profile.addGoal(goal2);
-        profile.addGoal(goal3);
+        profile.addCurrentGoal(goal2);
+        profile.addCurrentGoal(goal3);
 
         // Delete the profile
         DataStorer.deleteProfile(profile);
@@ -292,7 +291,7 @@ public class DataStorerTest {
 
         Goal goal = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
                 2.00, 0);
-        profile.addGoal(goal);
+        profile.addCurrentGoal(goal);
 
         DataStorer.deleteGoals(Collections.singletonList(goal));
         Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());

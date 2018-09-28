@@ -35,7 +35,8 @@ public class Profile {
     private double height;
     private String pictureURL;
     private List<Activity> activityList;    // sorted collection - use addActivity to update
-    private List<Goal> goalList;    // sorted collection - use addGoal to update
+    private List<Goal> currentGoals;    // sorted collection - use addCurrentGoal to update
+    private List<Goal> pastGoals;
     private List<HealthWarning> warningList;    // sorted collection - use addWarning to update
 
     /**
@@ -52,7 +53,8 @@ public class Profile {
         this.dateOfBirth = LocalDate.parse(dateOfBirth);
         this.weight = weight;
         this.height = height;
-        this.goalList = new ArrayList<>();
+        this.currentGoals = new ArrayList<>();
+        this.pastGoals = new ArrayList<>();
         this.activityList = new ArrayList<>();
         this.warningList = new ArrayList<>();
         this.pictureURL = Profile.DEFAULT_URL;
@@ -89,7 +91,7 @@ public class Profile {
         this.dateOfBirth = LocalDate.of(year, month, day);
         this.weight = weight;
         this.height = height;
-        goalList = new ArrayList<>();
+        currentGoals = new ArrayList<>();
         activityList = new ArrayList<>();
     }
 
@@ -169,7 +171,7 @@ public class Profile {
     }
 
     public List<Goal> getGoalList() {
-        return goalList;
+        return currentGoals;
     }
 
     /**
@@ -285,29 +287,57 @@ public class Profile {
         java.util.Collections.sort(activityList);
     }
 
-    /** Add a goal to the goal list in order and insert it into the database
+    /** Add a goal to the current goal list in order and insert it into the database
      *
      * @param goal the Goal to be added
      */
-    public void addGoal(Goal goal) throws SQLException {
-        goalList.add(goal);
-        java.util.Collections.sort(goalList);
+    public void addCurrentGoal(Goal goal) throws SQLException {
+        currentGoals.add(goal);
+        goal.setCurrent(true);  // In case the goal was moved back from past goals
+        java.util.Collections.sort(currentGoals);
         // Set this as the activity owner
         goal.setOwner(this);
 
         DataStorer.insertGoal(goal, this);
     }
 
-    /** Adds all goals of the specified collection to the goalList and sorts the goalList
+    /** Add a goal to the past goal list in order and insert it into the database
+     *
+     * @param goal the Goal to be added
+     */
+    public void addPastGoal(Goal goal) throws SQLException {
+        pastGoals.add(goal);
+        goal.setCurrent(false); // The goal is no longer current if it is in the past goals
+        java.util.Collections.sort(currentGoals);
+        // Set this as the activity owner
+        goal.setOwner(this);
+
+        DataStorer.insertGoal(goal, this);
+    }
+
+    /** Adds all goals of the specified collection to the currentGoals and sorts the currentGoals
      *  Intended for use by DataLoader only
      *  WARNING: DOES NOT STORE IN THE DATABASE OR SET OWNER
      *
      * @param goals the collection to be added
      */
-    public void addAllGoals(Collection<Goal> goals) {
-        goalList.addAll(goals);
-        java.util.Collections.sort(goalList);
+    public void addAllCurrentGoals(Collection<Goal> goals) {
+        currentGoals.addAll(goals);
+        java.util.Collections.sort(currentGoals);
     }
+
+    /** Adds all goals of the specified collection to the pastGoals and sorts the pastGoals
+     *  Intended for use by DataLoader only
+     *  WARNING: DOES NOT STORE IN THE DATABASE OR SET OWNER
+     *
+     * @param goals the collection to be added
+     */
+    public void addAllPastGoals(Collection<Goal> goals) {
+        pastGoals.addAll(goals);
+        java.util.Collections.sort(pastGoals);
+    }
+
+
 
     /** Remove the activity from the activityList and the database
      *
@@ -318,12 +348,12 @@ public class Profile {
         DataStorer.deleteActivities(new ArrayList<>(Collections.singletonList(activity)));
     }
 
-    /** Remove the goal from the goalList and the database
+    /** Remove the goal from the currentGoals and the database
      *
      * @param goal the goal to be removed
      */
     public void removeGoal(Goal goal) throws SQLException {
-        goalList.remove(goal);
+        currentGoals.remove(goal);
         DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
     }
 

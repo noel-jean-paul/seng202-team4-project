@@ -11,7 +11,6 @@ import seng202.team4.model.data.ProfileKey;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -23,6 +22,8 @@ public class DataLoaderTest {
     private static Activity activity2;
     private static Goal goal1;
     private static Goal goal2;
+    private static Goal goal3;
+    private static Goal goal4;
     private static DataRow row1;
     private static DataRow row2;
 
@@ -56,6 +57,12 @@ public class DataLoaderTest {
         goal2 = new Goal(2, 100, GoalType.Run, "2017-05-21", "2020-01-02",
                 5.00, 60);
 
+        goal3 = new Goal(3, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
+                2.00, 0);
+
+        goal4 = new Goal(4, 100, GoalType.Run, "2017-05-21", "2020-01-02",
+                5.00, 60);
+
         // Create test profiles
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
@@ -78,8 +85,11 @@ public class DataLoaderTest {
         activity2.addDataRow(row1);
         activity2.addDataRow(row2);
 
-        profile1.addGoal(goal1);
-        profile1.addGoal(goal2);
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
+
+        profile1.addPastGoal(goal3);
+        profile1.addPastGoal(goal4);
     }
 
     @After

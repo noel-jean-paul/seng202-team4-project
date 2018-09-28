@@ -32,7 +32,7 @@ public class GoalTest {
         goal2 = new Goal(2, 100, GoalType.Run,"2018-09-28", "2017-01-12",
                 20, 50);
 
-        // Set owner as addGoal or loadProfile are not called prior to setters
+        // Set owner as addCurrentGoal or loadProfile are not called prior to setters
         goal1.setOwner(profile1);
         goal2.setOwner(profile1);
     }
@@ -134,17 +134,6 @@ public class GoalTest {
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(LocalDate.parse(date), loadedProfile.getGoalList().get(0).getCompletionDate());
-    }
-
-    @Test
-    public void setDescription() throws SQLException {
-        String description = "Run 15 km";
-        DataStorer.insertProfile(profile1);
-        DataStorer.insertGoal(goal1, profile1);
-        goal1.setDescription(description);
-        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-
-        assertEquals(description, loadedProfile.getGoalList().get(0).getDescription());
     }
 
     @Test
