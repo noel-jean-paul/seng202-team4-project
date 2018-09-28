@@ -28,6 +28,10 @@ import java.util.List;
  */
 public class ActivityTabController extends Controller {
 
+    /** The button that toggles between calendar view. */
+    @FXML
+    private Button calendarViewButton;
+
     /** the center pane that displays either an activity table or calendar. */
     @FXML
     private AnchorPane centerContentPane;
@@ -116,6 +120,9 @@ public class ActivityTabController extends Controller {
 
     /** The maps popup Pane. */
     private Pane mapPane;
+
+    /** Stores whether the calendar view is current being displayed. */
+    private boolean isCalendarView = false;
 
 
 
@@ -242,11 +249,20 @@ public class ActivityTabController extends Controller {
      * Switches to calendar view.
      */
     @FXML
-    public void calendarView() {
-        Pane calendarView = GuiUtilities.loadPane("CalendarView.fxml", new CalendarViewController(applicationStateManager));
-//        calendarView.prefWidthProperty().bind(centerContentPane.widthProperty());
-//        calendarView.prefHeightProperty().bind(centerContentPane.heightProperty());
-        centerContentPane.getChildren().setAll(calendarView);
+    public void toggleCalendarView() {
+        if (!isCalendarView) {
+            Pane calendarView = GuiUtilities.loadPane("CalendarView.fxml", new CalendarViewController(applicationStateManager));
+            //toggleCalendarView.prefWidthProperty().bind(centerContentPane.widthProperty());
+            //toggleCalendarView.prefHeightProperty().bind(centerContentPane.heightProperty());
+            centerContentPane.getChildren().setAll(calendarView);
+            calendarViewButton.setText("Table View");
+            isCalendarView = true;
+        } else {
+            centerContentPane.getChildren().setAll(activityTable);
+            calendarViewButton.setText("Calendar view");
+            isCalendarView = false;
+        }
+
 
     }
 
@@ -397,5 +413,8 @@ public class ActivityTabController extends Controller {
     public void reset() {
         showGraphsButton.setDisable(true);
         showMapsButton.setDisable(true);
+
+        isCalendarView = true;
+        toggleCalendarView();
     }
 }

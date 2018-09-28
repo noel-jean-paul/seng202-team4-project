@@ -17,7 +17,7 @@
                   </Text>
                </children>
             </VBox>
-            <ScrollPane minHeight="10.0" GridPane.rowIndex="1">
+            <ScrollPane hbarPolicy="NEVER" minHeight="10.0" GridPane.rowIndex="1">
                <content>
                   <VBox fx:id="itemsVbox" />
                </content></ScrollPane>

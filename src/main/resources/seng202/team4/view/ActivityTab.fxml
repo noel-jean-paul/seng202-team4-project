@@ -36,7 +36,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#calendarView" text="Calender View">
+                        <Button fx:id="calendarViewButton" mnemonicParsing="false" onAction="#toggleCalendarView" text="Calender View">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
