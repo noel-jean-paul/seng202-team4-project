@@ -41,10 +41,10 @@ public class DataUpdaterTest {
         // Clean the database
         DataAccesser.clearDatabase();
 
-        activity2 = new Activity("Walk around the block", "2019-12-12", "Quick walk",
+        activity2 = new Activity("Walk around the block", "2019-12-12",
                 ActivityType.Walk, "01:28:30", "PT11M19S", 1.2, 30);
 
-        activity3 = new Activity("Jog through Uni", "2018-12-12", "Quick walk",
+        activity3 = new Activity("Jog through Uni", "2018-12-12",
                 ActivityType.Run, "01:28:30", "PT11M19S", 1.2, 30);
 
         // Initialise Goals
@@ -69,7 +69,7 @@ public class DataUpdaterTest {
                 1.83);
 
         // Initialise activity before every test to undo changes to the primary keys. Also clears raw data list
-        activity1 = new Activity("Run in the park", "2017-12-12", "", ActivityType.Run,
+        activity1 = new Activity("Run in the park", "2017-12-12", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
         // Clear database

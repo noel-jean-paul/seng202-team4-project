@@ -79,6 +79,7 @@ public class LoginController extends Controller {
     public void createProfile() {
         System.out.println("You want to create a profile");
         applicationStateManager.switchToScreen("CreateProfileScreen");
+        reset();
     }
 
     /**
@@ -98,6 +99,7 @@ public class LoginController extends Controller {
                 // TODO remove following once database stores data
                 applicationStateManager.getCurrentProfile().findWarnings();
 
+                reset();
 
                 System.out.println(String.format("%s %s has logged in!", profileKey.getFirstName(), profileKey.getLastName()));
             } catch (java.sql.SQLException e) {
@@ -105,6 +107,13 @@ public class LoginController extends Controller {
                 System.out.println("Error: Failed to load profile.");
             }
         }
+    }
+
+    private void reset() {
+        if (selectedProfileItem != null) {
+            selectedProfileItem.deselect();
+        }
+        selectedProfileItem = null;
     }
 
 

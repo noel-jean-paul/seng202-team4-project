@@ -24,6 +24,7 @@ public class Profile {
     public static final double MAX_HEIGHT = 3.0;
     public static final double MIN_WEIGHT = 10;
     public static final double MIN_HEIGHT = 0.5;
+    public static final String DEFAULT_URL = "/images/default-profile-icon.png";
 
     public static final LocalDate MIN_DOB = LocalDate.parse("1900-01-01");
 
@@ -32,12 +33,13 @@ public class Profile {
     private LocalDate dateOfBirth;
     private double weight;
     private double height;
+    private String pictureURL;
     private List<Activity> activityList;    // sorted collection - use addActivity to update
     private List<Goal> goalList;    // sorted collection - use addGoal to update
-    private List<HealthWarning> warningList;
+    private List<HealthWarning> warningList;    // sorted collection - use addWarning to update
 
     /**
-     *Constructor for profile class taking in the date of birth in string format
+     *Constructor for profile class taking in the date of birth in string format. Sets pictureURL to the default
      * @param firstName is the first name of the user in string format
      * @param lastName is the last name of the user in string format
      * @param dateOfBirth is the date of birth in string format
@@ -53,6 +55,22 @@ public class Profile {
         this.goalList = new ArrayList<>();
         this.activityList = new ArrayList<>();
         this.warningList = new ArrayList<>();
+        this.pictureURL = Profile.DEFAULT_URL;
+    }
+
+    /**
+     *Constructor for profile class taking in the date of birth in string format and the picture url
+     * @param firstName is the first name of the user in string format
+     * @param lastName is the last name of the user in string format
+     * @param dateOfBirth is the date of birth in string format
+     * @param weight is the weight of the user in double format
+     * @param height is the height of the user in double format
+     */
+    public Profile(String firstName, String lastName, String dateOfBirth, double weight, double height,
+                   String pictureURL) {
+        this(firstName, lastName, dateOfBirth, weight, height);
+        this.pictureURL = pictureURL;
+
     }
 
     /**
@@ -85,6 +103,7 @@ public class Profile {
                 Objects.equals(getFirstName(), profile.getFirstName()) &&
                 Objects.equals(getLastName(), profile.getLastName()) &&
                 Objects.equals(getDateOfBirth(), profile.getDateOfBirth()) &&
+                Objects.equals(getPictureURL(), profile.getPictureURL()) &&
                 Objects.equals(getActivityList(), profile.getActivityList()) &&
                 Objects.equals(getGoalList(), profile.getGoalList()) &&
                 Objects.equals(getWarningList(), profile.getWarningList());
@@ -163,6 +182,15 @@ public class Profile {
 
     public int getAge() {
         return ((LocalDate.now()).getYear() - dateOfBirth.getYear());
+    }
+
+    public String getPictureURL() {
+        return pictureURL;
+    }
+
+    public void setPictureURL(String pictureURL) throws SQLException {
+        this.pictureURL = pictureURL;
+        DataUpdater.updateProfile(this, ProfileFields.pictureURL.toString(), pictureURL);
     }
 
     /**
@@ -298,13 +326,28 @@ public class Profile {
         goalList.remove(goal);
         DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
     }
+
     /**
-     * Adds a warning to the user's list of warnings.
+     * Adds a warning to the user's list of warnings in order and store the warning in the database.
      * @param warning the warning to be added.
      */
     public void addWarning(HealthWarning warning) {
         warningList.add(warning);
+        Collections.sort(warningList);
     }
+
+    /** Adds all healthWarnings of the specified collection to the warningList and sorts the warningList
+     *  Intended for use by DataLoader only
+     *  WARNING: DOES NOT STORE IN THE DATABASE OR SET OWNER
+     *
+     * @param warnings the collection to be added
+     */
+    public void addAllWarnings(List<HealthWarning> warnings) {
+        warningList.addAll(warnings);
+        Collections.sort(warningList);
+    }
+
+
 
     /**
      * Gets the user's warning history.

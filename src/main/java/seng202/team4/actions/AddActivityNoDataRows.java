@@ -15,7 +15,7 @@ public class AddActivityNoDataRows {
         Profile profile = new Profile("Maew", "Micki", "1997-06-23", 76,
                 3.00);
         DataStorer.insertProfile(profile);
-        Activity activity = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
+        Activity activity = new Activity("Run in the park", "2018-08-29", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
         profile.addActivity(activity);
 

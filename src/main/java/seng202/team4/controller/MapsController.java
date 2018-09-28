@@ -11,6 +11,7 @@ import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.data.Position;
 import seng202.team4.model.data.Route;
+import seng202.team4.model.data.enums.ActivityType;
 
 import java.util.ArrayList;
 

@@ -11,12 +11,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
-import seng202.team4.model.data.Route;
 import seng202.team4.model.data.enums.ActivityType;
 
 import java.time.LocalDate;
@@ -265,6 +263,7 @@ public class ActivityTabController extends Controller {
                     applicationStateManager.displayPopUp(mapPane);
                 } catch (Exception e) {
                     GuiUtilities.displayErrorMessage("Failed to load map.", "Try checking your internet connection.");
+                    e.printStackTrace();
                 }
             }
         }
