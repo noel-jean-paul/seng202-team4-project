@@ -5,6 +5,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -308,8 +310,27 @@ public class ActivityTabController extends Controller {
                 GuiUtilities.displayErrorMessage("No data found.", String.format("'%s' seems to have no gps data.", activity.getName()));
             } else {
                 try {
-                    mapsController.initMap(activity);
+                    mapsController.initMap(activity);   //Trys to display route, will raise and exception if it fails.
+                    Task<Void> sleeper = new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+
+                            }
+                            return null;
+                        }
+                    };
+                    sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                        @Override
+                        public void handle(WorkerStateEvent event) {
+                            mapsController.initMap(activity);
+                        }
+                    });
+                    new Thread(sleeper).start();
                     applicationStateManager.displayPopUp(mapPane);
+
                 } catch (Exception e) {
                     GuiUtilities.displayErrorMessage("Failed to load map.", "Try checking your internet connection.");
                     e.printStackTrace();
