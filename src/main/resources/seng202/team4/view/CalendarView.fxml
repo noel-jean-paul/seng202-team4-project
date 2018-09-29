@@ -98,12 +98,12 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" GridPane.columnIndex="2">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wendsday" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wednesday" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" GridPane.columnIndex="3">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thurday" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Thursday" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" GridPane.columnIndex="4">
@@ -113,7 +113,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" GridPane.columnIndex="5">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Saterday" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Saturday" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" GridPane.columnIndex="6">
