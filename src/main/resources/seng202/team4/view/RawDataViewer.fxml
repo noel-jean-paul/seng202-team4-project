@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="643.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.RawDataViewerController">
+<AnchorPane fx:id="popupPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="643.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.RawDataViewerController">
    <children>
       <GridPane layoutY="-7.0" prefHeight="650.0" prefWidth="582.0">
         <columnConstraints>
@@ -36,14 +36,14 @@
                   <Font size="17.0" />
                </font>
             </Text>
-            <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TableView fx:id="dataRowTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
               <columns>
-                <TableColumn fx:id="dateColumn" prefWidth="88.0" text="Date" />
-                <TableColumn fx:id="timeColumn" prefWidth="85.0" text="Time" />
-                  <TableColumn fx:id="heartRateColumn" prefWidth="86.0" text="Heart Rate" />
-                  <TableColumn fx:id="latitudeColumn" prefWidth="76.0" text="Latitude" />
-                  <TableColumn fx:id="longitudeColumn" prefWidth="83.0" text="Longitude" />
-                  <TableColumn fx:id="elevationColumn" prefWidth="79.0" text="Elevation" />
+                <TableColumn fx:id="dateColumn" prefWidth="91.0" text="Date" />
+                <TableColumn fx:id="timeColumn" prefWidth="69.0" text="Time" />
+                  <TableColumn fx:id="heartRateColumn" prefWidth="91.0" text="Heart Rate" />
+                  <TableColumn fx:id="latitudeColumn" prefWidth="69.0" text="Latitude" />
+                  <TableColumn fx:id="longitudeColumn" prefWidth="82.0" text="Longitude" />
+                  <TableColumn fx:id="elevationColumn" prefWidth="78.0" text="Elevation" />
               </columns>
             </TableView>
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="5">
@@ -57,7 +57,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="closeButton" mnemonicParsing="false" text="Close" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+                  <Button mnemonicParsing="false" onAction="#closePopUp" text="Close" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
                </children>
             </GridPane>
          </children>

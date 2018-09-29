@@ -173,7 +173,19 @@ public class ActivityTabController extends Controller {
             }
         });
 
+
+        MenuItem displayRawData = new MenuItem("View Raw Data Rows");
+        displayRawData.setOnAction(event -> {
+            Activity selectedActivity = (Activity) activityTable.getSelectionModel().getSelectedItem();
+            if (selectedActivity != null) {
+                Pane rawDataViewerPopup = GuiUtilities.loadPane("RawDataViewer.fxml", new RawDataViewerController(applicationStateManager, selectedActivity));
+                applicationStateManager.displayPopUp(rawDataViewerPopup);
+            }
+        });
+
+
         tableRowMenu.getItems().add(deleteActivityItem);
+        tableRowMenu.getItems().add(displayRawData);
 
         activityTable.setRowFactory( tv -> {
             TableRow row = new TableRow();
@@ -399,8 +411,9 @@ public class ActivityTabController extends Controller {
             caloriesLabel.setVisible(true);
             caloriesText.setVisible(true);
             distanceLabel.setVisible(true);
-            averageSpeed = (totalDistance / 1000.0) / (totalTime / 60.0);
-            String formattedDistance = String.format("%.00f", totalDistance);
+            double speedKm = totalDistance / 1000.0;
+            averageSpeed = (speedKm) / (totalTime / 60.0);
+            String formattedDistance = String.format("%.01f", speedKm);
             String formattedSpeed = String.format("%.01f", averageSpeed);
             String formattedCalories = String.format("%.01f", totalCalories);
             distanceLabel.setText(formattedDistance + " km");
