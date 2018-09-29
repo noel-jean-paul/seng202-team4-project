@@ -36,14 +36,14 @@
                   <Font size="17.0" />
                </font>
             </Text>
-            <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TableView fx:id="dataRowTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
               <columns>
-                <TableColumn fx:id="dateColumn" prefWidth="88.0" text="Date" />
-                <TableColumn fx:id="timeColumn" prefWidth="85.0" text="Time" />
+                <TableColumn fx:id="dateColumn" prefWidth="82.0" text="Date" />
+                <TableColumn fx:id="timeColumn" prefWidth="84.0" text="Time" />
                   <TableColumn fx:id="heartRateColumn" prefWidth="86.0" text="Heart Rate" />
-                  <TableColumn fx:id="latitudeColumn" prefWidth="76.0" text="Latitude" />
-                  <TableColumn fx:id="longitudeColumn" prefWidth="83.0" text="Longitude" />
-                  <TableColumn fx:id="elevationColumn" prefWidth="79.0" text="Elevation" />
+                  <TableColumn fx:id="latitudeColumn" prefWidth="68.0" text="Latitude" />
+                  <TableColumn fx:id="longitudeColumn" prefWidth="82.0" text="Longitude" />
+                  <TableColumn fx:id="elevationColumn" prefWidth="78.0" text="Elevation" />
               </columns>
             </TableView>
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="5">
