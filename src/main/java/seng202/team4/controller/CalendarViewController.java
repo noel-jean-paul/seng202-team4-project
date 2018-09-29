@@ -35,6 +35,9 @@ public class CalendarViewController extends Controller {
     /** The current year being displayed. */
     private int currentYear = 0;
 
+    /** The currently selected activity. */
+    private ActivityCalendarItemController selectedActivityCalendarItemController = null;
+
     public CalendarViewController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
@@ -106,16 +109,40 @@ public class CalendarViewController extends Controller {
                     calendarSquare.minWidthProperty().bind(calendarGrid.minWidthProperty().divide(7));
                     calendarSquare.minHeightProperty().bind(calendarGrid.minHeightProperty().divide(numberOfRows));
 
+                    //TODO: Increase the efficiency of this
                     for (Activity activity: applicationStateManager.getCurrentProfile().getActivityList()) {
                         if (activity.getDate().equals(LocalDate.of(year, month+1, day))) {
                             ActivityCalendarItemController activityCalendarItemController = new ActivityCalendarItemController(applicationStateManager, activity);
                             Pane activityItem = GuiUtilities.loadPane("ActivityCalendarItem.fxml", activityCalendarItemController);
                             calendarSquareController.addItem(activityItem);
+
+                            activityItem.prefWidthProperty().bind(calendarSquare.prefWidthProperty());
+
+                            activityItem.setOnMouseClicked(event -> {
+                                if (selectedActivityCalendarItemController != null) {
+                                    selectedActivityCalendarItemController.deselect();
+                                }
+                                selectedActivityCalendarItemController = activityCalendarItemController;
+                                selectedActivityCalendarItemController.select();
+                            });
                         }
                     }
                 }
                 boxNum += 1;
             }
         }
+    }
+
+    /**
+     * Gets the selected activity in the calendar.
+     *
+     * @return The selected Activity if one is selected, null otherwise.
+     */
+    public Activity getSelectedActivity() {
+        Activity activity = null;
+        if (selectedActivityCalendarItemController != null) {
+            activity = selectedActivityCalendarItemController.getActivity();
+        }
+        return activity;
     }
 }

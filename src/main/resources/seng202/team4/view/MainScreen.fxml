@@ -43,7 +43,7 @@
             <MenuButton fx:id="profileDropDown" mnemonicParsing="false" prefHeight="40.0" prefWidth="140.0" text="Profile">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#viewProfile" text="View Profile" />
-                <MenuItem mnemonicParsing="false" onAction="#switchProfile" text="Switch Profile" />
+                <MenuItem mnemonicParsing="false" onAction="#switchProfile" text="Switch Profile               " />
               </items>
                <graphic>
                   <ImageView fx:id="profilePictureImageView" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />

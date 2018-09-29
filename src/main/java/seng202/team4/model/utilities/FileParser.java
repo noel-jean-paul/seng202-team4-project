@@ -70,7 +70,6 @@ public class FileParser {
                                         // TODO: If an invalid elevation is found approximate what it should be based on other data rows.
                                         elevation = 0;  // Set elevation to a sensible value.
                                     }
-                                    System.out.println(time);
                                     rows.add(new DataRow(counter, date, time, heartRate, latitude, longitude, elevation));   //add the data to a new ActivityRawData element
                                 } else {
                                     warning = true;

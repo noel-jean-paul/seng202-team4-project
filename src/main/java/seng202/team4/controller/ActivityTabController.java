@@ -124,6 +124,9 @@ public class ActivityTabController extends Controller {
     /** Stores whether the calendar view is current being displayed. */
     private boolean isCalendarView = false;
 
+    /** CalendarViewController of the calendar. */
+    private CalendarViewController calendarViewController;
+
 
 
     /**
@@ -263,7 +266,8 @@ public class ActivityTabController extends Controller {
     @FXML
     public void toggleCalendarView() {
         if (!isCalendarView) {
-            Pane calendarView = GuiUtilities.loadPane("CalendarView.fxml", new CalendarViewController(applicationStateManager));
+            calendarViewController = new CalendarViewController(applicationStateManager);
+            Pane calendarView = GuiUtilities.loadPane("CalendarView.fxml", calendarViewController);
             //toggleCalendarView.prefWidthProperty().bind(centerContentPane.widthProperty());
             //toggleCalendarView.prefHeightProperty().bind(centerContentPane.heightProperty());
             centerContentPane.getChildren().setAll(calendarView);
@@ -284,7 +288,7 @@ public class ActivityTabController extends Controller {
      */
     @FXML
     public void showGraphsPopup() {
-        Activity activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
+        Activity activity = getSelectedActivity();
         if (activity != null) {
             Pane activityPopUp = GuiUtilities.loadPane("ActivityPopUpScreen.fxml", new ActivityPopUpScreenController(applicationStateManager, activity));
             applicationStateManager.displayPopUp(activityPopUp);
@@ -298,7 +302,7 @@ public class ActivityTabController extends Controller {
      */
     @FXML
     public void showMaps() {
-        Activity activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
+        Activity activity = getSelectedActivity();
         if (activity != null) {
             if (activity.getRawData().size() == 0) {
                 GuiUtilities.displayErrorMessage("No data found.", String.format("'%s' seems to have no gps data.", activity.getName()));
@@ -420,6 +424,20 @@ public class ActivityTabController extends Controller {
             speedLabel.setText(formattedSpeed + " km/h");
             caloriesLabel.setText(formattedCalories);
         }
+    }
+
+    /** Gets the selected activity from either the Table or calendar.
+     *
+     * @return The selected activity if there is one, null otherwise.
+     */
+    private Activity getSelectedActivity() {
+        Activity activity;
+        if (isCalendarView) {
+            activity = calendarViewController.getSelectedActivity();
+        } else {
+            activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
+        }
+        return activity;
     }
 
     /** Resets the ActivityTab. */
