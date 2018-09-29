@@ -4,12 +4,16 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import seng202.team4.App;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Profile;
 
+import java.net.URL;
 import java.time.LocalDate;
 
 /** Controller class for the view profile controller. */
@@ -79,6 +83,10 @@ public class ProfileScreenController extends Controller {
     @FXML
     private Button editCancelButton;
 
+    /** ImageView for the users profile picture. */
+    @FXML
+    private ImageView profilePictureImageView;
+
     /** TextField for the users first name. */
     private TextField firstNameTextField;
 
@@ -128,6 +136,12 @@ public class ProfileScreenController extends Controller {
         dayTextField.setAlignment(Pos.CENTER);
         monthTextField.setAlignment(Pos.CENTER);
         yearTextField.setAlignment(Pos.CENTER);
+
+        // Load the users profile picture
+        URL profileImageUrl = App.class.getResource(applicationStateManager.getCurrentProfile().getPictureURL());
+        if (profileImageUrl != null) {
+            profilePictureImageView.setImage(GuiUtilities.maskProfileImage(new Image(profileImageUrl.toString())));
+        }
     }
 
     /**
@@ -264,6 +278,11 @@ public class ProfileScreenController extends Controller {
         dayText.setText(Integer.toString(applicationStateManager.getCurrentProfile().getDateOfBirth().getDayOfMonth()));
         monthText.setText(Integer.toString(applicationStateManager.getCurrentProfile().getDateOfBirth().getMonthValue()));
         yearText.setText(Integer.toString(applicationStateManager.getCurrentProfile().getDateOfBirth().getYear()));
+
+        URL profileImageUrl = App.class.getResource(applicationStateManager.getCurrentProfile().getPictureURL());
+        if (profileImageUrl != null) {
+            profilePictureImageView.setImage(GuiUtilities.maskProfileImage(new Image(profileImageUrl.toString())));
+        }
     }
 
     /**
