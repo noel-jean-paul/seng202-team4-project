@@ -75,6 +75,8 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     public void initialize() {
+        dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));
+
         ObservableList<DataRow> dataList = FXCollections.observableArrayList(activity.getRawData());
         Collections.reverse(dataList);
 
