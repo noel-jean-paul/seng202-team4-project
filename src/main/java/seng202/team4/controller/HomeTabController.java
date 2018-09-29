@@ -67,7 +67,7 @@ public class HomeTabController extends Controller {
             noDataText.setVisible(true); //if there is no data to display, then show this message to the user
         } else {
             noDataText.setVisible(false);
-            for (int i = activityList.size() - 1; i >= 0 && i > (activityList.size() - 1 - 5); i -= 1) {
+            for (int i = 0; i < activityList.size() && i < 5; i += 1) {
                 set1.getData().add(new XYChart.Data(activityList.get(i).getName(), activityList.get(i).getDistance()));
             }
         }
@@ -110,13 +110,14 @@ public class HomeTabController extends Controller {
     }
 
     /**
-     * The method which populates the graph on the home page with required data
+     * The method which populates the graph on the home page with either walk or run data
      * @param type is the type of the activity, whether walk or run
      */
     void displayGraph(ActivityType type) {
         distanceBarGraph.getData().clear();
         distanceBarGraph.layout();
         List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
+
         XYChart.Series dataSet = new XYChart.Series<>();
 
         if (activityList.size() == 0) {
@@ -124,7 +125,8 @@ public class HomeTabController extends Controller {
         } else {
             noDataText.setVisible(false);
             int counter = 0;
-            for (int i = activityList.size() - 1; i >= 0 && counter < 5; i -= 1) {
+            for (int i = 0; i < activityList.size() && counter < 5; i += 1) {
+                System.out.println(activityList.get(0).getName());
                 if (activityList.get(i).getType() == type) {
                     dataSet.getData().add(new XYChart.Data(activityList.get(i).getName(), activityList.get(i).getDistance()));
                     counter++;

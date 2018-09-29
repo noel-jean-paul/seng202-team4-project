@@ -75,7 +75,8 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     public void initialize() {
-        dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));
+        dataTableTitleText.setText("Data Rows for " + activity.getName());
+        dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
 
         ObservableList<DataRow> dataList = FXCollections.observableArrayList(activity.getRawData());
         Collections.reverse(dataList);
