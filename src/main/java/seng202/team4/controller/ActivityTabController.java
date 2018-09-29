@@ -173,7 +173,19 @@ public class ActivityTabController extends Controller {
             }
         });
 
+
+        MenuItem displayRawData = new MenuItem("View Raw Data Rows");
+        displayRawData.setOnAction(event -> {
+            Activity selectedActivity = (Activity) activityTable.getSelectionModel().getSelectedItem();
+            if (selectedActivity != null) {
+                Pane rawDataViewerPopup = GuiUtilities.loadPane("RawDataViewer.fxml", new RawDataViewerController(applicationStateManager, selectedActivity));
+                applicationStateManager.displayPopUp(rawDataViewerPopup);
+            }
+        });
+
+
         tableRowMenu.getItems().add(deleteActivityItem);
+        tableRowMenu.getItems().add(displayRawData);
 
         activityTable.setRowFactory( tv -> {
             TableRow row = new TableRow();
