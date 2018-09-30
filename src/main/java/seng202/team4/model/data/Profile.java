@@ -1,5 +1,6 @@
 package seng202.team4.model.data;
 import seng202.team4.GuiUtilities;
+import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.ProfileFields;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
@@ -440,7 +441,8 @@ public class Profile {
         }
     }
 
-    /* Move any goals in currentGoals which have expired into pastGoal */
+    /* Move any goals in currentGoals which have expired into pastGoal
+     * Should be called before updateGoalsForProgress */
     public void updateGoalsForExpiry() throws SQLException {
         // Iterate over a copy of the list as we are modifying the currentGoals as we iterate over them
         List<Goal> currentGoalsCopy = new ArrayList<>(currentGoals);
@@ -448,6 +450,27 @@ public class Profile {
             if (goal.getExpiryDate().isBefore(LocalDate.now())) {
                 removeCurrentGoal(goal, false);
                 addPastGoal(goal, false);
+            }
+        }
+    }
+
+    /** Update goal progress for current goals with the activities in the collection.
+     *  Should be called after updateGoalsForExpiry
+     *
+     * @param activites the list of activities to update the goals
+     */
+    public void updateGoalsForProgress(Collection<Activity> activites) {
+        for (Goal goal: currentGoals) {
+            for (Activity activity: activites) {
+                // Check the activity is in the correct date range and of the correct type - compare enums by the string
+                if (activity.getDate().isAfter(goal.getCreationDate())
+                        && (activity.getType().toString().equals(goal.getType().toString()))) {
+                    if (goal.isDistanceGoal()) {
+                        // Increment progress
+                        goal.incrementProgress((activity.getDistance() / goal.getGoalDistance()) * 100);
+                    }
+                    // TODO: 1/10/18 N Bisson Duration goal and test edge scenarios 
+                }
             }
         }
     }

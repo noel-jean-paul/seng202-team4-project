@@ -22,6 +22,7 @@ public class ProfileTest {
     private static Activity activity1;
     private static Activity activity2;
     private static Activity activity3;
+    private static List<Activity> activities;
     private static List<Activity> expected;
 
     private static Goal goal1;
@@ -45,6 +46,7 @@ public class ProfileTest {
         // Initialise activities
         activity1 = new Activity("Run in the park", "2017-12-12", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
+        // test dependent on progress and distance of this activity
 
         activity2 = new Activity("Walk around the block", "2019-12-12",
                 ActivityType.Walk, "01:28:30", "PT11M19S", 1.2, 30);
@@ -53,14 +55,15 @@ public class ProfileTest {
                 ActivityType.Run, "01:28:30", "PT11M19S", 1.2, 30);
 
         expected = new ArrayList<>(Arrays.asList(activity2, activity3, activity1));
+        activities = new ArrayList<>();
 
         // Initialise Goals
-        goal1 = new Goal(1, 100, GoalType.Run,"2018-09-28", "2017-05-12",
-                20, 50);
+        goal1 = new Goal(1, 0, GoalType.Run,"2017-01-01", "2018-05-12",
+                20, 0);
         goal2 = new Goal(2, 100, GoalType.Run,"2018-09-28", "2050-01-12",
-                20, 50);
+                0, 50);
         goal3 = new Goal(3, 100, GoalType.Run,"2018-09-28", "2017-01-12",
-                20, 50);
+                20, 0);
 
         expectedGoals = new ArrayList<>();
     }
@@ -72,6 +75,7 @@ public class ProfileTest {
         profile1.getCurrentGoals().clear();
         profile1.getPastGoals().clear();
         expectedGoals.clear();
+        activities.clear();
         DataAccesser.clearDatabase();
     }
 
@@ -303,5 +307,16 @@ public class ProfileTest {
 
         // Check the past goals are correct
         assertEquals(expectedGoals, profile1.getPastGoals());
+    }
+
+    @Test
+    public void updateGoalsForProgress_distanceGoal_checkProgressUpdated() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal1);
+        activities.add(activity1);
+
+        profile1.updateGoalsForProgress(activities);
+
+        assertEquals(25.65, goal1.getProgress(), 0.0001);
     }
 }

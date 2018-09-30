@@ -84,7 +84,7 @@ public class GoalTest {
 
     @Test
     public void setProgress() throws SQLException {
-        int progress = 57;
+        double progress = 57;
         DataStorer.insertProfile(profile1);
         DataStorer.insertGoal(goal1, profile1);
         goal1.setProgress(progress);
@@ -163,8 +163,8 @@ public class GoalTest {
     public void incrementProgress() {
         Goal goal = new Goal(2, 99, GoalType.Run,"2018-09-28", "2017-01-12",
                 20, 50);
-        int originalProgress = goal.getProgress();
+        double originalProgress = goal.getProgress();
         goal.incrementProgress(100);
-        assertEquals(100, goal.getProgress());
+        assertEquals(100, goal.getProgress(), 0.001);
     }
 }
