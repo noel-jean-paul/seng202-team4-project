@@ -15,7 +15,7 @@ public class Goal implements Comparable<Goal> {
     public static final double minGoalDistance = 0;
 
     private int number;
-    private double progress;
+    private int progress;
     private GoalType type;
     private LocalDate creationDate;
     private LocalDate expiryDate;
@@ -27,7 +27,7 @@ public class Goal implements Comparable<Goal> {
     private boolean current;
 
     /** Constructor for creating new goals */
-    public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
+    public Goal(int number, int progress, GoalType type, String creationDate, String expiryDate,
                 double goalDistance, double goalDuration) {
         this.number = number;
         this.progress = progress;
@@ -42,7 +42,7 @@ public class Goal implements Comparable<Goal> {
     }
 
     /** Constructor for loading goals from the database */
-    public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
+    public Goal(int number, int progress, GoalType type, String creationDate, String expiryDate,
                 String completionDate, double goalDuration, double goalDistance, boolean current) {
         this.number = number;
         this.progress = progress;
@@ -100,11 +100,11 @@ public class Goal implements Comparable<Goal> {
         this.number = number;
     }
 
-    public double getProgress() {
+    public int getProgress() {
         return progress;
     }
 
-    public void setProgress(double progress) throws SQLException {
+    public void setProgress(int progress) throws SQLException {
         DataUpdater.updateGoals(Collections.singletonList(this), GoalFields.progress.toString(), Double.toString(progress));
         this.progress = progress;
     }
@@ -209,5 +209,24 @@ public class Goal implements Comparable<Goal> {
             description = String.format("%s for %f", goal.getType().toString(), goal.getGoalDuration());
         }
         return description;
+    }
+
+    /** Increase the goal's progress by an amount up to a max of 100
+     *
+     * @param amount the amount to increment the goal by as an Integer
+     */
+    public void incrementProgress(int amount) {
+        progress += amount;
+        if (progress > 100) {
+            progress = 100;
+        }
+    }
+
+    /** Check whether a goal has been completed
+     *
+     * @return true if the goal is completed, false otherwise
+     */
+    public boolean isCompleted() {
+        return progress == 100;
     }
 }

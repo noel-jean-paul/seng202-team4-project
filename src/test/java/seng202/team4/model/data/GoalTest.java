@@ -32,6 +32,7 @@ public class GoalTest {
         goal2 = new Goal(2, 100, GoalType.Run,"2018-09-28", "2017-01-12",
                 20, 50);
 
+
         // Set owner as addCurrentGoal or loadProfile are not called prior to setters
         goal1.setOwner(profile1);
         goal2.setOwner(profile1);
@@ -156,5 +157,14 @@ public class GoalTest {
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(duration, loadedProfile.getGoalList().get(0).getGoalDuration(), 0.01);
+    }
+
+    @Test
+    public void incrementProgress() {
+        Goal goal = new Goal(2, 99, GoalType.Run,"2018-09-28", "2017-01-12",
+                20, 50);
+        int originalProgress = goal.getProgress();
+        goal.incrementProgress(100);
+        assertEquals(100, goal.getProgress());
     }
 }

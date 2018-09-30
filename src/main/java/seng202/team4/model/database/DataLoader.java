@@ -115,7 +115,7 @@ abstract public class DataLoader extends DataAccesser {
         while (set.next()) {
             Goal goal = new Goal(
                     set.getInt("goalNumber"),
-                    set.getDouble("progress"),
+                    set.getInt("progress"),
                     GoalType.valueOf(set.getString("type")),
                     set.getString("creationDate"),
                     set.getString("expiryDate"),
