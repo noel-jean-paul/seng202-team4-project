@@ -5,6 +5,8 @@ import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -93,14 +95,19 @@ public class DataProcessor {
      */
     public static Duration calculateDuration(List<DataRow> dataList) {
         Duration totalDuration = Duration.ZERO;
-        int j = 0;
+        LocalDateTime startTime = LocalDateTime.MAX;
+        LocalDateTime endTime = LocalDateTime.MIN;
+        LocalDateTime testTime;
         if (dataList != null && dataList.size() > 1) {
-            for (int i = 1; i < dataList.size(); i++) {
-                LocalTime startTime = dataList.get(j).getTime();
-                LocalTime endTime = dataList.get(i).getTime();
-                totalDuration = totalDuration.plus(Duration.between(startTime, endTime));
-                j++;
+            for (int i = 0; i < dataList.size(); i++) {
+                testTime = LocalDateTime.of(dataList.get(i).getDate(), dataList.get(i).getTime());
+                if (testTime.isBefore(startTime)) {
+                    startTime = testTime;
+                } else if (testTime.isAfter(endTime)) {
+                    endTime = testTime;
+                }
             }
+            totalDuration = Duration.between(startTime, endTime);
         }
         return totalDuration;
     }
