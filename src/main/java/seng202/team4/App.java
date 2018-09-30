@@ -3,14 +3,18 @@ package seng202.team4;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import seng202.team4.controller.*;
+import seng202.team4.controller.ApplicationStateManager;
+import seng202.team4.controller.CreateProfileController;
+import seng202.team4.controller.LoginController;
+import seng202.team4.controller.MainScreenController;
 import seng202.team4.model.database.DataAccesser;
 
-import java.io.*;
-
-import static javafx.application.Application.launch;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 
 /**
  * The App class is the main class of the program. It initializes many of the different screens that application will
@@ -80,6 +84,7 @@ public class App extends Application {
 
         // Sets parameters of the window the app runs in.
         primaryStage.setTitle("Step by Step");
+        primaryStage.getIcons().add(new Image(App.class.getResource("images/footprints.png").toString()));
         primaryStage.setScene(baseScene);
         primaryStage.show();
         primaryStage.setMinWidth(primaryStage.getWidth());

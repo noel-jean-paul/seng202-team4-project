@@ -43,7 +43,13 @@ public class FileParser {
                     while ((line != null) && (!(line.contains("#")))) { //read up until the next # symbol, signifying the start of a new activity
                         //the next lines split the line by comma into its unique fields
                         counter++;  //update the line counter
+                        line = line.trim();
                         dataPoints = line.split(csvSplitBy);
+
+                        if (line.length() == 0) {
+                            line = bufferedReader.readLine();
+                            continue;
+                        }
 
                         if (dataPoints.length == 6) {
                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
