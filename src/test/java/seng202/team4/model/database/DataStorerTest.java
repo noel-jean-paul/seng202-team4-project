@@ -71,7 +71,7 @@ public class DataStorerTest {
         DataAccesser.clearDatabase();
         for (Profile profile : profiles) {
             profile.getActivityList().clear();
-            profile.getGoalList().clear();
+            profile.getCurrentGoals().clear();
         }
         activity1.getRawData().clear();
     }
@@ -199,7 +199,7 @@ public class DataStorerTest {
         Profile loaded = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
 
         // Check the goals have been removed from the database
-        assertEquals(0, loaded.getGoalList().size());
+        assertEquals(0, loaded.getCurrentGoals().size());
     }
 
     @Test
@@ -296,7 +296,7 @@ public class DataStorerTest {
         DataStorer.deleteGoals(Collections.singletonList(goal));
         Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
 
-        assertEquals(0, loadedProfile.getGoalList().size());
+        assertEquals(0, loadedProfile.getCurrentGoals().size());
     }
 
     @Test

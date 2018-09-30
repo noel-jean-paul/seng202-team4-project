@@ -28,6 +28,7 @@ public class ProfileTest {
     private static Goal goal2;
     private static Goal goal3;
     private static List<Goal> expectedGoals;
+    List<Goal> original;
 
     @BeforeClass
     public static void setUp() throws SQLException {
@@ -56,19 +57,21 @@ public class ProfileTest {
         // Initialise Goals
         goal1 = new Goal(1, 100, GoalType.Run,"2018-09-28", "2017-05-12",
                 20, 50);
-        goal2 = new Goal(2, 100, GoalType.Run,"2018-09-28", "2017-01-12",
+        goal2 = new Goal(2, 100, GoalType.Run,"2018-09-28", "2050-01-12",
                 20, 50);
         goal3 = new Goal(3, 100, GoalType.Run,"2018-09-28", "2017-01-12",
                 20, 50);
 
-        expectedGoals = new ArrayList<>(Arrays.asList(goal3, goal2, goal1));
+        expectedGoals = new ArrayList<>();
     }
 
     @Before
     public void setUpReccuring() throws SQLException {
         // clear lists and database
         profile1.getActivityList().clear();
-        profile1.getGoalList().clear();
+        profile1.getCurrentGoals().clear();
+        profile1.getPastGoals().clear();
+        expectedGoals.clear();
         DataAccesser.clearDatabase();
     }
 
@@ -126,14 +129,17 @@ public class ProfileTest {
     @Test
     public void addGoal_checkList() throws SQLException {
         // Clear goal list
-        profile1.getGoalList().clear();
+        profile1.getCurrentGoals().clear();
 
         // Add goals to profile
         profile1.addCurrentGoal(goal3);
         profile1.addCurrentGoal(goal1);
         profile1.addCurrentGoal(goal2);
 
-        assertEquals(expectedGoals, profile1.getGoalList());
+        // Fill expectedGoals
+        expectedGoals.addAll(Arrays.asList(goal3, goal2, goal1));
+
+        assertEquals(expectedGoals, profile1.getCurrentGoals());
     }
 
     @Test
@@ -141,7 +147,7 @@ public class ProfileTest {
         DataStorer.insertProfile(profile1);
         profile1.addCurrentGoal(goal1);
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-        assertEquals(goal1, loadedProfile.getGoalList().get(0));
+        assertEquals(goal1, loadedProfile.getCurrentGoals().get(0));
     }
 
     @Test
@@ -153,10 +159,10 @@ public class ProfileTest {
     @Test
     public void addAllGoals() {
         // Clear goal list
-        profile1.getGoalList().clear();
+        profile1.getCurrentGoals().clear();
 
         // Add a goal to the profile currentGoals
-        profile1.getGoalList().add(goal3);
+        profile1.getCurrentGoals().add(goal3);
 
         // Create a list of goals to be added - list is out of order
         List<Goal> goals = new ArrayList<>(Arrays.asList(goal2, goal1));
@@ -164,7 +170,10 @@ public class ProfileTest {
         // Add activitities to the currentGoals
         profile1.addAllCurrentGoals(goals);
 
-        assertEquals(expectedGoals, profile1.getGoalList());
+        // Fill expectedGoals
+        expectedGoals.addAll(Arrays.asList(goal3, goal2, goal1));
+
+        assertEquals(expectedGoals, profile1.getCurrentGoals());
     }
 
     @Test
@@ -191,9 +200,9 @@ public class ProfileTest {
     @Test
     public void removeGoal_checkRemovedFromList() throws SQLException {
         profile1.addCurrentGoal(goal1);
-        profile1.removeGoal(goal1);
+        profile1.removeCurrentGoal(goal1);
 
-        assertEquals(0, profile1.getGoalList().size());
+        assertEquals(0, profile1.getCurrentGoals().size());
     }
 
     @Test
@@ -202,11 +211,11 @@ public class ProfileTest {
         profile1.addCurrentGoal(goal1);
         DataStorer.insertProfile(profile1);
 
-        profile1.removeGoal(goal1);
+        profile1.removeCurrentGoal(goal1);
 
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(0, loadedProfile.getGoalList().size());
+        assertEquals(0, loadedProfile.getCurrentGoals().size());
     }
 
     @Test
@@ -267,5 +276,32 @@ public class ProfileTest {
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(pictureURL, loadedProfile.getPictureURL());
+    }
+
+    @Test
+    public void updateGoalsForExpiry_checkRemovedFromCurrent() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
+        expectedGoals.add(goal2);
+
+        profile1.updateGoalsForExpiry();
+
+        // Check the current goals are correct
+        assertEquals(expectedGoals, profile1.getCurrentGoals());
+    }
+
+    @Test
+    public void updateGoalsForExpiry_checkAddedToPast() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
+        expectedGoals.clear();
+        expectedGoals.add(goal1);
+
+        profile1.updateGoalsForExpiry();
+
+        // Check the past goals are correct
+        assertEquals(expectedGoals, profile1.getPastGoals());
     }
 }

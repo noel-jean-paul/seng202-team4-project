@@ -6,7 +6,6 @@ import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;
 import seng202.team4.model.utilities.HealthWarning;
 
-import java.sql.Array;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
@@ -107,13 +106,13 @@ public class Profile {
                 Objects.equals(getDateOfBirth(), profile.getDateOfBirth()) &&
                 Objects.equals(getPictureURL(), profile.getPictureURL()) &&
                 Objects.equals(getActivityList(), profile.getActivityList()) &&
-                Objects.equals(getGoalList(), profile.getGoalList()) &&
+                Objects.equals(getCurrentGoals(), profile.getCurrentGoals()) &&
                 Objects.equals(getWarningList(), profile.getWarningList());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getFirstName(), getLastName(), getDateOfBirth(), getWeight(), getHeight(), getActivityList(), getGoalList());
+        return Objects.hash(getFirstName(), getLastName(), getDateOfBirth(), getWeight(), getHeight(), getActivityList(), getCurrentGoals());
     }
 
     public String getFirstName() {
@@ -170,8 +169,12 @@ public class Profile {
         return activityList;
     }
 
-    public List<Goal> getGoalList() {
+    public List<Goal> getCurrentGoals() {
         return currentGoals;
+    }
+
+    public List<Goal> getPastGoals() {
+        return pastGoals;
     }
 
     /**
@@ -306,13 +309,24 @@ public class Profile {
      * @param goal the Goal to be added
      */
     public void addPastGoal(Goal goal) throws SQLException {
+        addPastGoal(goal, true);
+    }
+
+    /** Add a goal to the past goal list in order and insert it into the database if insert is true
+     *
+     * @param goal the Goal to be added
+     * @param insert the flag determining whether the goal should be inserted into the database or not
+     */
+    private void addPastGoal(Goal goal, boolean insert) throws SQLException {
         pastGoals.add(goal);
         goal.setCurrent(false); // The goal is no longer current if it is in the past goals
         java.util.Collections.sort(currentGoals);
         // Set this as the activity owner
         goal.setOwner(this);
 
-        DataStorer.insertGoal(goal, this);
+        if (insert) {
+            DataStorer.insertGoal(goal, this);
+        }
     }
 
     /** Adds all goals of the specified collection to the currentGoals and sorts the currentGoals
@@ -352,10 +366,39 @@ public class Profile {
      *
      * @param goal the goal to be removed
      */
-    public void removeGoal(Goal goal) throws SQLException {
-        currentGoals.remove(goal);
-        DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
+    public void removeCurrentGoal(Goal goal) throws SQLException {
+        removeCurrentGoal(goal, true);
     }
+
+    /** Remove the goal from the currentGoals and from the database if the delete flag is true
+     *
+     * @param goal the goal to be removed
+     */
+    private void removeCurrentGoal(Goal goal, boolean delete) throws SQLException {
+        currentGoals.remove(goal);
+        if (delete) {
+            DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
+        }
+    }
+
+//    /** Remove the goal from the currentGoals and the database
+//     *
+//     * @param goal the goal to be removed
+//     */
+//    public void removePastGoal(Goal goal) throws SQLException {
+//        removePastGoal(goal, true);
+//    }
+//
+//    /** Remove the goal from the currentGoals and from the database if the delete flag is true
+//     *
+//     * @param goal the goal to be removed
+//     */
+//    private void removePastGoal(Goal goal, boolean delete) throws SQLException {
+//        pastGoals.remove(goal);
+//        if (delete) {
+//            DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
+//        }
+//    }
 
     /**
      * Adds a warning to the user's list of warnings in order and store the warning in the database.
@@ -396,4 +439,17 @@ public class Profile {
             activity.addWarnings(false);
         }
     }
+
+    /* Move any goals in currentGoals which have expired into pastGoal */
+    public void updateGoalsForExpiry() throws SQLException {
+        // Iterate over a copy of the list as we are modifying the currentGoals as we iterate over them
+        List<Goal> currentGoalsCopy = new ArrayList<>(currentGoals);
+        for (Goal goal: currentGoalsCopy) {
+            if (goal.getExpiryDate().isBefore(LocalDate.now())) {
+                removeCurrentGoal(goal, false);
+                addPastGoal(goal, false);
+            }
+        }
+    }
+
 }

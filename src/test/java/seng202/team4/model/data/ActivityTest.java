@@ -4,8 +4,6 @@ import org.junit.*;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.database.*;
 
-import javax.xml.crypto.Data;
-import java.sql.Array;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -64,7 +62,7 @@ public class ActivityTest {
     @Before
     public void setUpReccurring() throws SQLException {
         profile1.getActivityList().clear();
-        profile1.getGoalList().clear();
+        profile1.getCurrentGoals().clear();
         DataAccesser.clearDatabase();
         activity1.getRawData().clear();
         activity2.getRawData().clear();

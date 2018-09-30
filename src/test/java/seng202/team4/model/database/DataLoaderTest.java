@@ -101,7 +101,7 @@ public class DataLoaderTest {
         activity2.getRawData().clear();
 
         profile1.getActivityList().clear();
-        profile1.getGoalList().clear();
+        profile1.getCurrentGoals().clear();
     }
 
     @AfterClass

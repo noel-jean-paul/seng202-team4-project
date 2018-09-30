@@ -124,7 +124,7 @@ public class DataUpdaterTest {
 
         // Check that the goals were updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-        assertEquals(profile1.getGoalList(), loadedProfile.getGoalList());
+        assertEquals(profile1.getCurrentGoals(), loadedProfile.getCurrentGoals());
     }
 
     @Test
@@ -140,7 +140,7 @@ public class DataUpdaterTest {
 
         // Check that the goals were updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-        assertEquals(profile1.getGoalList(), loadedProfile.getGoalList());
+        assertEquals(profile1.getCurrentGoals(), loadedProfile.getCurrentGoals());
     }
     
     @Test 

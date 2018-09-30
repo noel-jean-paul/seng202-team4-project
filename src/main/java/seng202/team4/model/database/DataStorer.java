@@ -1,7 +1,6 @@
 package seng202.team4.model.database;
 
 import seng202.team4.model.data.*;
-import seng202.team4.model.data.enums.GoalType;
 
 import java.sql.*;
 
@@ -193,7 +192,7 @@ abstract public class DataStorer extends DataAccesser {
         deleteActivities(profile.getActivityList());
 
         // Delete all goals belonging to a profile
-        deleteGoals(profile.getGoalList());
+        deleteGoals(profile.getCurrentGoals());
 
     }
 

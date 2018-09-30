@@ -91,6 +91,13 @@ public class Goal implements Comparable<Goal> {
         return Integer.compare(this.getNumber(), o.getNumber()) * -1;
     }   // descending order
 
+    @Override
+    public String toString() {
+        return "Goal{" +
+                "number=" + number +
+                '}';
+    }
+
     public int getNumber() {
         return number;
     }
@@ -149,7 +156,7 @@ public class Goal implements Comparable<Goal> {
         return description;
     }
 
-    public void setDescription(String description) throws SQLException {
+    public void setDescription(String description) {
         this.description = description;
     }
 

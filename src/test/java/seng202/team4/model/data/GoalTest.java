@@ -40,7 +40,7 @@ public class GoalTest {
 
     @Before
     public void setUpReccurring() throws SQLException {
-        profile1.getGoalList().clear();
+        profile1.getCurrentGoals().clear();
         DataAccesser.clearDatabase();
     }
 
@@ -79,7 +79,7 @@ public class GoalTest {
         goal1.setNumber(num);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(num, loadedProfile.getGoalList().get(0).getNumber());
+        assertEquals(num, loadedProfile.getCurrentGoals().get(0).getNumber());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class GoalTest {
         goal1.setProgress(progress);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(progress, loadedProfile.getGoalList().get(0).getProgress(), 0.01);
+        assertEquals(progress, loadedProfile.getCurrentGoals().get(0).getProgress(), 0.01);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class GoalTest {
         goal1.setType(type);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(type, loadedProfile.getGoalList().get(0).getType());
+        assertEquals(type, loadedProfile.getCurrentGoals().get(0).getType());
     }
 
     @Test
@@ -112,7 +112,7 @@ public class GoalTest {
         goal1.setCreationDate(date);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(LocalDate.parse(date), loadedProfile.getGoalList().get(0).getCreationDate());
+        assertEquals(LocalDate.parse(date), loadedProfile.getCurrentGoals().get(0).getCreationDate());
     }
 
     @Test
@@ -123,7 +123,7 @@ public class GoalTest {
         goal1.setExpiryDate(date);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(LocalDate.parse(date), loadedProfile.getGoalList().get(0).getExpiryDate());
+        assertEquals(LocalDate.parse(date), loadedProfile.getCurrentGoals().get(0).getExpiryDate());
     }
 
     @Test
@@ -134,7 +134,7 @@ public class GoalTest {
         goal1.setCompletionDate(date);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(LocalDate.parse(date), loadedProfile.getGoalList().get(0).getCompletionDate());
+        assertEquals(LocalDate.parse(date), loadedProfile.getCurrentGoals().get(0).getCompletionDate());
     }
 
     @Test
@@ -145,7 +145,7 @@ public class GoalTest {
         goal1.setGoalDistance(distance);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(distance, loadedProfile.getGoalList().get(0).getGoalDistance(), 0.01);
+        assertEquals(distance, loadedProfile.getCurrentGoals().get(0).getGoalDistance(), 0.01);
     }
 
     @Test
@@ -156,7 +156,7 @@ public class GoalTest {
         goal1.setGoalDuration(duration);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(duration, loadedProfile.getGoalList().get(0).getGoalDuration(), 0.01);
+        assertEquals(duration, loadedProfile.getCurrentGoals().get(0).getGoalDuration(), 0.01);
     }
 
     @Test
