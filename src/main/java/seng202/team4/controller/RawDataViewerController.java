@@ -87,7 +87,6 @@ public class RawDataViewerController extends Controller {
         MenuItem deleteDataRowItem = new MenuItem("Delete Row");
         deleteDataRowItem.setOnAction(event -> {
             try {
-                System.out.println("Hi");
                 activity.removeDataRow((DataRow) dataRowTable.getSelectionModel().getSelectedItem());
                 updateDataRows();
             } catch (java.sql.SQLException e){
