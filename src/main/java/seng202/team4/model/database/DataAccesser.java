@@ -26,14 +26,11 @@ abstract public class DataAccesser {
     public static void initialiseTestConnection() throws SQLException {
         String url = "jdbc:sqlite:testDatabase.sqlite";
         connection = DriverManager.getConnection(url);
-    }
 
-    /** Check if a connection to the database is currently open
-     *
-     * @return true if there is an open connection, false otherwise
-     */
-    public static boolean checkNullConnection() {
-        return connection == null;
+//        // Turn foreign keys on
+//        String update = "PRAGMA foreign_keys = ON;";
+//        PreparedStatement statement = connection.prepareStatement(update);
+//        statement.executeUpdate();
     }
 
     /** Drop all tables from both the production and test databases and

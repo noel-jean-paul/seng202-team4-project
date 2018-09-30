@@ -5,6 +5,7 @@ import seng202.team4.model.data.enums.*;
 
 import javax.xml.crypto.Data;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -155,6 +156,7 @@ abstract public class DataStorer extends DataAccesser {
             statement = connection.prepareStatement(dataRowInsertSQL);
             setDataRowInsertStatement(statement, dataRow);
             statement.executeUpdate();
+            statement.close();
         }
 
         connection.commit();
@@ -183,125 +185,113 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(1, profile.getFirstName());
         statement.setString(2, profile.getLastName());
 
+
         statement.executeUpdate();
         statement.close();
 
         // Delete all activities belonging to the profile
-        for (Activity activity : profile.getActivityList()) {
-            deleteActivity(activity, profile);
-        }
+        deleteActivities(profile.getActivityList());
 
         // Delete all goals belonging to a profile
-        for (Goal goal: profile.getGoalList()) {
-            deleteGoal(goal, profile);
-        }
+        deleteGoals(profile.getGoalList());
 
     }
 
-    /** Delete an activity from the database along with its associated data rows
+    /** Delete a list of activities from the database along with its associated data rows
      *
-     * @param activity the activity to be deleted
-     * @param profile the profile which the activity belongs to
+     * @param activities the activities to be deleted
      * @throws SQLException if an error occurred regarding the database
      */
-    public static void deleteActivity(Activity activity, Profile profile) throws SQLException {
-        assert activity != null;
+    public static void deleteActivities(List<Activity> activities) throws SQLException {
+        // Set auto-commit mode to false
+        connection.setAutoCommit(false);
 
-        // Delete Activity
-        String select = "delete from activity where " +
+        String select = "DELETE FROM activity WHERE " +
                 "name = (?) " +
-                "and activityDate = (?)" +
-                "and firstName = (?)" +
-                "and lastName = (?)";
-        statement = connection.prepareStatement(select);
-        statement.setString(1, activity.getName());
-        statement.setString(2, String.valueOf(activity.getDate()));
-        statement.setString(3, profile.getFirstName());
-        statement.setString(4, profile.getLastName());
+                "AND activityDate = (?)" +
+                "AND firstName = (?)" +
+                "AND lastName = (?)";
 
-        statement.executeUpdate();
-        statement.close();
+        for (Activity activity : activities) {
+            // Delete Activity
+            statement = connection.prepareStatement(select);
+            statement.setString(1, activity.getName());
+            statement.setString(2, String.valueOf(activity.getDate()));
+            statement.setString(3, activity.getOwner().getFirstName());
+            statement.setString(4, activity.getOwner().getLastName());
 
-        // Delete all dataRows belonging to the activity
-        for (DataRow row : activity.getRawData()) {
-            System.out.println("deleting row");
-            deleteDataRow(row, activity);
+            statement.executeUpdate();
+            statement.close();
+
+            // Delete all dataRows belonging to the activity
+            deleteDataRows(activity.getRawData());
+
+            // Reset auto-commit mode to false every iteration as it will be set true by deleteDataRows
+            connection.setAutoCommit(false);
         }
+
+        connection.commit();
+        connection.setAutoCommit(true);
     }
 
-    /** Delete a goal from the database
+    /** Delete a list of goals from the database
      *
-     * @param goal the goal to be deleted
-     * @param profile the profile which the goal belongs to
+     * @param goals the goals to be deleted
      * @throws SQLException if an error occurred regarding the database
      */
-    public static void deleteGoal(Goal goal, Profile profile) throws SQLException {
-        assert goal != null;
+    public static void deleteGoals(List<Goal> goals) throws SQLException {
+        // Set auto-commit mode to false
+        connection.setAutoCommit(false);
 
-        //Delete Goal
-        String select = "delete from goal where " +
+        String select = "DELETE FROM goal WHERE " +
                 "goalNumber = (?) " +
-                "and firstName = (?) " +
-                "and lastName = (?)";
-        statement = connection.prepareStatement(select);
-        statement.setString(1, String.valueOf(goal.getNumber()));
-        statement.setString(2, profile.getFirstName());
-        statement.setString(3, profile.getLastName());
+                "AND firstName = (?) " +
+                "AND lastName = (?)";
 
-        statement.executeUpdate();
-        statement.close();
+        for (Goal goal : goals) {
+            statement = connection.prepareStatement(select);
+            statement.setString(1, String.valueOf(goal.getNumber()));
+            statement.setString(2, goal.getOwner().getFirstName());
+            statement.setString(3, goal.getOwner().getLastName());
+
+            statement.executeUpdate();
+            statement.close();
+        }
+
+        connection.commit();
+        connection.setAutoCommit(true);
+
     }
 
-    /** Delete a dataRow from the database
+    /** Delete a list of dataRows from the database
      *
-     * @param row the dataRow to be deleted
-     * @param activity the activity which the dataRow belongs to
+     * @param dataRows the list of dataRows to be deleted
      * @throws SQLException if an error occurred regarding the database
      */
-    public static void deleteDataRow(DataRow row, Activity activity) throws SQLException {
-        assert row != null;
+    public static void deleteDataRows(List<DataRow> dataRows) throws SQLException {
+        // Set auto-commit mode to false
+        connection.setAutoCommit(false);
 
-        // Delete dataRow
-        String select = "delete from dataRow where " +
-                "rowNumber = (?) " +
-                "and name = (?) " +
-                "and activityDate = (?)";
-        statement = connection.prepareStatement(select);
-        statement.setString(1, String.valueOf(row.getNumber()));
-        statement.setString(2, activity.getName());
-        statement.setString(3, String.valueOf(activity.getDate()));
+        String select = "DELETE FROM dataRow " +
+                "WHERE rowNumber = (?) " +
+                "AND name = (?) " +
+                "AND activityDate = (?)" +
+                "AND firstName = (?)" +
+                "AND lastName = (?)";
 
-        statement.executeUpdate();
-        statement.close();
-    }
+        for (DataRow row : dataRows) {
+            statement = connection.prepareStatement(select);
+            statement.setString(1, String.valueOf(row.getNumber()));
+            statement.setString(2, row.getOwner().getName());
+            statement.setString(3, String.valueOf(row.getOwner().getDate()));
+            statement.setString(4, String.valueOf(row.getOwner().getOwner().getFirstName()));
+            statement.setString(5, String.valueOf(row.getOwner().getOwner().getLastName()));
 
+            statement.executeUpdate();
+            statement.close();
+        }
 
-    public static void main(String[] args) throws SQLException {
-        DataAccesser.initialiseMainConnection();
-        DataAccesser.clearDatabase();
-
-
-//        // Delete all dataRows from the database
-//        String select = "delete from dataRow";
-//        PreparedStatement statement = connection.prepareStatement(select);
-//        statement.executeUpdate();
-
-        Profile profile = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
-                1.83);
-        insertProfile(profile);
-
-        Activity activity = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
-                "12:15:01", "PT40M", 5.13, 18);
-        insertActivity(activity, profile);
-
-//        Goal goal = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
-//                "2019-01-15", "Go for a walk", 2.00, 0);
-//
-//        insertGoal(goal, profile);
-//
-        DataRow row = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
-                178.4352, 203);
-//
-        activity.addDataRow(row);
+        connection.commit();
+        connection.setAutoCommit(true);
     }
 }

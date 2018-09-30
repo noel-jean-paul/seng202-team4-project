@@ -1,16 +1,15 @@
 package seng202.team4.model.data;
+import seng202.team4.model.data.enums.ProfileFields;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;
 import seng202.team4.model.utilities.HealthWarning;
 
+import java.sql.Array;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 public class Profile {
@@ -98,7 +97,7 @@ public class Profile {
 
     /** Set and store in database */
     public void setFirstName(String firstName) throws SQLException {
-        DataUpdater.updateProfile(this, "firstName", firstName);
+        DataUpdater.updateProfile(this, ProfileFields.firstName.toString(), firstName);
         this.firstName = firstName;
     }
 
@@ -108,7 +107,7 @@ public class Profile {
 
     /** Set and store in database */
     public void setLastName(String lastName) throws SQLException {
-        DataUpdater.updateProfile(this, "lastName", lastName);
+        DataUpdater.updateProfile(this, ProfileFields.lastName.toString(), lastName);
         this.lastName = lastName;
     }
 
@@ -119,7 +118,7 @@ public class Profile {
     /** Set and store in database */
     public void setDateOfBirth(String dateOfBirth) throws SQLException {
         this.dateOfBirth = LocalDate.parse(dateOfBirth);
-        DataUpdater.updateProfile(this, "dateOfBirth", dateOfBirth);
+        DataUpdater.updateProfile(this, ProfileFields.dateOfBirth.toString(), dateOfBirth);
     }
 
     public double getWeight() {
@@ -129,7 +128,7 @@ public class Profile {
     /** Set and store in database */
     public void setWeight(double weight) throws SQLException {
         this.weight = weight;
-        DataUpdater.updateProfile(this, "weight", Double.toString(weight));
+        DataUpdater.updateProfile(this, ProfileFields.weight.toString(), Double.toString(weight));
     }
 
     public double getHeight() {
@@ -139,7 +138,7 @@ public class Profile {
     /** Set and store in database */
     public void setHeight(double height) throws SQLException {
         this.height = height;
-        DataUpdater.updateProfile(this, "height", Double.toString(height));
+        DataUpdater.updateProfile(this, ProfileFields.height.toString(), Double.toString(height));
     }
 
     public List<Activity> getActivityList() {
@@ -283,7 +282,7 @@ public class Profile {
      */
     public void removeActivity(Activity activity) throws SQLException {
         activityList.remove(activity);
-        DataStorer.deleteActivity(activity, this);
+        DataStorer.deleteActivities(new ArrayList<>(Collections.singletonList(activity)));
     }
 
     /** Remove the goal from the goalList and the database
@@ -292,7 +291,7 @@ public class Profile {
      */
     public void removeGoal(Goal goal) throws SQLException {
         goalList.remove(goal);
-        DataStorer.deleteGoal(goal, this);
+        DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
     }
     /**
      * Adds a warning to the user's list of warnings.

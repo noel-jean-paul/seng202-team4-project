@@ -7,7 +7,7 @@ import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.utilities.DataProcessor;
-import seng202.team4.model.utilities.FileImporter;
+import seng202.team4.model.utilities.FileParser;
 import seng202.team4.view.ActivityConfirmationRow;
 
 import java.io.File;
@@ -33,6 +33,8 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     @FXML
     private GridPane gridPane;
 
+
+
     /**
      * Constructor of the ImportActivitiesPreviewScreenController.
      *
@@ -42,7 +44,6 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         super(applicationStateManager);
         this.activityTabController = activityTabController;
     }
-
 
     /**
      * Action performed when the import activities button is pressed.
@@ -68,8 +69,8 @@ public class ImportActivitiesPreviewScreenController extends Controller {
                     // Insert the datarows at once using a transaction
                     DataStorer.insertDataRowTransaction(activity.getRawData());
                 } catch (SQLException e) {
-                    System.out.println(e.getMessage());
-                    // TODO: 21/09/18 Change to print error to file
+                    // TODO: 22/09/18 Currently displays error message for every activity failed. Want one for all activities
+                    applicationStateManager.displayErrorMessage("Failed to import one or more activities.", "");
                 }
                 activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             }
@@ -82,20 +83,19 @@ public class ImportActivitiesPreviewScreenController extends Controller {
 
     }
 
-
     /**
      * Loads all activities from the given csv file.
      *
      * @param csvFile The csv file that contains the data of the activities.
      */
     public void loadActivities(File csvFile) throws IOException {
-        FileImporter fileImporter = new FileImporter();
+        FileParser fileParser = new FileParser();
         ArrayList<Activity> validActivities = new ArrayList<>();
         ArrayList<Activity> warningActivities = new ArrayList<>();
         ArrayList<Activity> skippedActivities = new ArrayList<>();
 
         try {
-            fileImporter.readFile(csvFile, validActivities, warningActivities, skippedActivities);
+            fileParser.parseFileToActivites(csvFile, validActivities, warningActivities, skippedActivities);
         } catch (IOException exception) {
             throw exception;
         }

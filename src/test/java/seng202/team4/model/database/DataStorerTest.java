@@ -13,6 +13,7 @@ import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class DataStorerTest {
@@ -23,6 +24,8 @@ public class DataStorerTest {
     private static Goal goal1;
     private static DataRow row1;
     private static DataRow row2;
+
+    private static List<Profile> profiles;
 
 
     @BeforeClass
@@ -37,6 +40,9 @@ public class DataStorerTest {
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
 
+        profile2 = new Profile("Ben", "Kenobi", "1998-03-06", 85.0,
+                1.83);
+
         activity1 = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
@@ -48,19 +54,26 @@ public class DataStorerTest {
 
         row2 = new DataRow(2, "2018-07-18", "14:02:30", 182, -87.01902489,
                 178.4352, 203);
+
+        // Track profiles so they can have their lists cleared after every test
+        profiles = new ArrayList<>();
+        profiles.add(profile1);
+        profiles.add(profile2);
     }
 
     @AfterClass
     public static void tearDown() throws SQLException {
-        DataAccesser.clearDatabase();
+//        DataAccesser.clearDatabase();
         DataAccesser.closeDatabase();
     }
 
     @Before
     public void setUpReccurring() throws SQLException {
         DataAccesser.clearDatabase();
-        profile1.getActivityList().clear();
-        profile1.getGoalList().clear();
+        for (Profile profile : profiles) {
+            profile.getActivityList().clear();
+            profile.getGoalList().clear();
+        }
         activity1.getRawData().clear();
     }
 
@@ -124,13 +137,11 @@ public class DataStorerTest {
     @Test
     public void deleteProfile_checkProfileDeleted() throws SQLException {
         // Insert a profile
-        Profile profile = new Profile("Noel", "Jean-Paul", "1998-03-06", 85.0,
-                1.83);
-        DataStorer.insertProfile(profile);
+        DataStorer.insertProfile(profile1);
 
         // Delete the profile and attempt to load it
-        DataStorer.deleteProfile(profile);
-        Profile loaded = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
+        DataStorer.deleteProfile(profile1);
+        Profile loaded = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertNull(loaded);
     }
@@ -138,9 +149,7 @@ public class DataStorerTest {
     @Test
     public void deleteProfile_checkActivitiesDeleted() throws SQLException {
         // Insert a profile
-        Profile profile = new Profile("Noel", "Jean-Paul", "1998-03-06", 85.0,
-                1.83);
-        DataStorer.insertProfile(profile);
+        DataStorer.insertProfile(profile1);
 
         // Add 2 activities to the profile
         Activity activity2 = new Activity("Jog", "2018-08-29", "", ActivityType.Run,
@@ -148,17 +157,17 @@ public class DataStorerTest {
         Activity activity3 = new Activity("Other", "2018-08-29", "", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
-        profile.addActivity(activity2);
-        profile.addActivity(activity3);
+        profile1.addActivity(activity2);
+        profile1.addActivity(activity3);
 
         // Delete the profile
-        DataStorer.deleteProfile(profile);
+        DataStorer.deleteProfile(profile1);
 
         // Reinsert the profile so the activities can be accessed
-        DataStorer.insertProfile(profile);
+        DataStorer.insertProfile(profile1);
 
         // Load the profile
-        Profile loaded = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
+        Profile loaded = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         // Check the activities have been removed from the database
         assertEquals(0, loaded.getActivityList().size());
@@ -194,19 +203,54 @@ public class DataStorerTest {
     }
 
     @Test
+    /* Check that the other profiles do not have their information removed by deleteProfile */
+    public void deleteProfile_checkOtherProfileUnchanged() throws SQLException {
+        // Insert an activity for the profile
+        Activity activity = new Activity("Walk in the woods", "2019-08-30", "", ActivityType.Run,
+                "12:15:01", "PT40M", 5.13, 187);
+
+        Activity activity1 = new Activity("Walk in the woods", "2019-08-30", "", ActivityType.Run,
+                "12:15:01", "PT40M", 5.13, 187);
+
+        // Insert profiles with identical activities/data - use different objects with same fields
+        DataStorer.insertProfile(profile1);
+        DataStorer.insertProfile(profile2);
+
+        profile1.addActivity(activity);
+        activity.addDataRow(row1);
+        activity.addDataRow(row2);
+
+        DataRow row1Clone = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
+                178.4352, 203);
+
+        DataRow row2Clone = new DataRow(2, "2018-07-18", "14:02:30", 182, -87.01902489,
+                178.4352, 203);
+
+        profile2.addActivity(activity1);
+        activity1.addDataRow(row1Clone);
+        activity1.addDataRow(row2Clone);
+
+        // Delete Noel Bisson profile
+        DataStorer.deleteProfile(profile1);
+
+        // Check the other profile in the database is the same as the original
+        loadedProfile = DataLoader.loadProfile(profile2.getFirstName(), profile2.getLastName());
+
+        assertEquals(profile2, loadedProfile);
+    }
+
+    @Test
     public void deleteActivity_checkActivityGone() throws SQLException {
-        Profile profile = new Profile("Ben", "Kenobi", "1998-03-06", 85.0,
-                1.83);
-        DataStorer.insertProfile(profile);
+        DataStorer.insertProfile(profile2);
 
         // Insert an activity for the profile
         Activity activity = new Activity("Walk in the woods", "2019-08-30", "", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
-        DataStorer.insertActivity(activity, profile);
+        profile2.addActivity(activity);
 
         // Delete the activty and load the profile
-        DataStorer.deleteActivity(activity, profile);
-        Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
+        DataStorer.deleteActivities(profile2.getActivityList());
+        Profile loadedProfile = DataLoader.loadProfile(profile2.getFirstName(), profile2.getLastName());
 
         // Check the activty was not loaded
         assertEquals(0, loadedProfile.getActivityList().size());
@@ -221,10 +265,13 @@ public class DataStorerTest {
         // Insert an activity for the profile
         Activity activity = new Activity("Walk in the woods", "2019-08-30", "", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
-        DataStorer.insertActivity(activity, profile);
+        profile.addActivity(activity);
+
+        activity.addDataRow(row1);
+        activity.addDataRow(row2);
 
         // Delete the activty
-        DataStorer.deleteActivity(activity, profile);
+        DataStorer.deleteActivities(profile.getActivityList());
 
         // Readd the activity so the dataRows can be accessed
         DataStorer.insertActivity(activity, profile);
@@ -244,16 +291,16 @@ public class DataStorerTest {
 
         Goal goal = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
                 2.00, 0);
-        DataStorer.insertGoal(goal, profile);
+        profile.addGoal(goal);
 
-        DataStorer.deleteGoal(goal, profile);
+        DataStorer.deleteGoals(Collections.singletonList(goal));
         Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
 
         assertEquals(0, loadedProfile.getGoalList().size());
     }
 
     @Test
-    public void deleteDataRow() throws  SQLException {
+    public void deleteDataRows() throws  SQLException {
         Profile profile = new Profile("N", "B", "1998-03-06", 85.0,
                 1.83);
         DataStorer.insertProfile(profile);
@@ -266,7 +313,7 @@ public class DataStorerTest {
                 178.4352, 203);
         activity.addDataRow(row3);
 
-        DataStorer.deleteDataRow(row3, activity);
+        DataStorer.deleteDataRows(Collections.singletonList(row3));
         Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
 
         assertEquals(0, loadedProfile.getActivityList().get(0).getRawData().size());
