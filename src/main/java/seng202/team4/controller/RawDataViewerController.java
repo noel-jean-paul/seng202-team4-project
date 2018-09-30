@@ -2,12 +2,16 @@ package seng202.team4.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 
@@ -77,9 +81,54 @@ public class RawDataViewerController extends Controller {
     public void initialize() {
         dataTableTitleText.setText("Data Rows for " + activity.getName());
         dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
+        updateDataRows();   //updates the table
+        ContextMenu dataTableRowMenu = new ContextMenu();
 
+        MenuItem deleteDataRowItem = new MenuItem("Delete Row");
+        deleteDataRowItem.setOnAction(event -> {
+            try {
+                System.out.println("Hi");
+                activity.removeDataRow((DataRow) dataRowTable.getSelectionModel().getSelectedItem());
+                updateDataRows();
+            } catch (java.sql.SQLException e){
+                GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
+                e.printStackTrace();
+                System.out.println("Could not remove data row from the data base.");
+            }
+        });
+
+
+        dataTableRowMenu.getItems().add(deleteDataRowItem);
+
+        dataRowTable.setRowFactory( tv -> {
+            TableRow row = new TableRow();
+            row.setOnMouseClicked(event -> {
+                if (event.getButton() == MouseButton.PRIMARY || dataRowTable.getItems().size() <= row.getIndex()) {
+                    dataTableRowMenu.hide();
+                }
+            });
+
+            row.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+                @Override
+                public void handle(ContextMenuEvent event) {
+                    if (dataRowTable.getItems().get(row.getIndex()) != null) {
+                        dataTableRowMenu.show(dataRowTable, event.getScreenX(), event.getScreenY());
+                    }
+                }
+            });
+            return row ;
+        });
+
+        dataTableRowMenu.setAutoHide(true);
+    }
+
+
+    /**
+     * Updates the current state of the data row list
+     */
+    public void updateDataRows() {
         ObservableList<DataRow> dataList = FXCollections.observableArrayList(activity.getRawData());
-        Collections.reverse(dataList);
+        Collections.reverse(dataList); //reverses the list to ensure the data is displayed in the correct order in the table
 
         dateColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalDate>("date"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalTime>("time"));
@@ -90,8 +139,6 @@ public class RawDataViewerController extends Controller {
 
         dataRowTable.setItems(dataList);
     }
-
-
 
 
     /**

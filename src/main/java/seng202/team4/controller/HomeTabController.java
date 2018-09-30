@@ -52,7 +52,8 @@ public class HomeTabController extends Controller {
     }
 
     /**
-     * every time the home tab is clicked, it clears the old bar graph, and loads it again with any new updated data
+     * every time the home tab is clicked, it clears the old bar graph, and loads it again with any new updated data. This function doesn't
+     * deal with the behaviour of the graph when the walk or run buttons are clicked (see below for that function)
      */
     public void loadData() {
         runDataButton.setSelected(false);
