@@ -1,6 +1,7 @@
 package seng202.team4.model.utilities;
 
 import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.CorruptActivity;
 import seng202.team4.model.data.DataRow;
 
 import java.io.BufferedReader;
@@ -23,7 +24,7 @@ public class FileParser {
      * @param skippedActivities ArrayList that will be filled with the activities that had to be skipped due to lack of valid data.
      * @return the arrayList of all activities' data points.
      */
-    public ArrayList parseFileToActivites(File file, ArrayList<Activity> validActivities, ArrayList<Activity> warningActivities, ArrayList<Activity> skippedActivities) throws IOException {
+    public ArrayList parseFileToActivites(File file, ArrayList<Activity> validActivities, ArrayList<CorruptActivity> warningActivities, ArrayList<Activity> skippedActivities) throws IOException {
 
         String line;   //empty line into which data will be read
         String csvSplitBy = ",";    //split on the comma
@@ -38,8 +39,8 @@ public class FileParser {
                     activityName = line.split(csvSplitBy)[1];   //grab the activity name and store it
 
                     line = bufferedReader.readLine();
-                    boolean warning = false;
                     int counter = 0;
+                    int numCorruptRows = 0;
                     while ((line != null) && (!(line.contains("#")))) { //read up until the next # symbol, signifying the start of a new activity
                         //the next lines split the line by comma into its unique fields
                         counter++;  //update the line counter
@@ -78,27 +79,29 @@ public class FileParser {
                                     }
                                     rows.add(new DataRow(counter, date, time, heartRate, latitude, longitude, elevation));   //add the data to a new ActivityRawData element
                                 } else {
-                                    warning = true;
+                                    numCorruptRows += 1;
                                 }
 
                             } catch (Exception e) {
-                                warning = true;
+                                numCorruptRows += 1;
                             }
                         } else {
-                            warning = true;
+                            numCorruptRows += 1;
                         }
                         line = bufferedReader.readLine();
                     }
 
                     ArrayList<DataRow> rowCopy = new ArrayList<>(rows);     //create a copy of the row list
-                    Activity activity = new Activity(activityName, rowCopy);
                     if (rows.size() > 1) {
-                        if (warning) {
-                            warningActivities.add(activity);
+                        if (numCorruptRows > 0) {
+                            CorruptActivity corruptActivity = new CorruptActivity(activityName, rowCopy, numCorruptRows);
+                            warningActivities.add(corruptActivity);
                         } else {
+                            Activity activity = new Activity(activityName, rowCopy);
                             validActivities.add(activity);   //add each of the raw activity data for that specific activity, along with the activity name into an Activity object
                         }
                     } else {
+                        Activity activity = new Activity(activityName, rowCopy);
                         skippedActivities.add(activity);
                     }
                     rows.clear();    //clear the arrayList of rows in preparation for the next lot of data for the next activity

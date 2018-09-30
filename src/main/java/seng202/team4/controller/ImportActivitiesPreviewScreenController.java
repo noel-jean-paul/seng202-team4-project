@@ -5,6 +5,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.CorruptActivity;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.utilities.DataProcessor;
@@ -92,7 +93,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     public void loadActivities(File csvFile) throws IOException {
         FileParser fileParser = new FileParser();
         ArrayList<Activity> validActivities = new ArrayList<>();
-        ArrayList<Activity> warningActivities = new ArrayList<>();
+        ArrayList<CorruptActivity> warningActivities = new ArrayList<>();
         ArrayList<Activity> skippedActivities = new ArrayList<>();
 
         try {
@@ -119,11 +120,11 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         }
 
         for (int i=0; i < warningActivities.size(); i++) {
-            Activity activity = warningActivities.get(i);
-            if (!activityStringKeySet.contains(activity.getName()+activity.getDate().toString())) {
-                ActivityConfirmationRowController activityRowController = addNewConfirmationRow(activity, rowNumber % 2 == 0);
-                activityRowController.setError("WARNING: One or more activity data rows had to be skipped on import.");
-                activityStringKeySet.add(activity.getName()+activity.getDate().toString());
+            CorruptActivity corruptActivity = warningActivities.get(i);
+            if (!activityStringKeySet.contains(corruptActivity.getName()+corruptActivity.getDate().toString())) {
+                ActivityConfirmationRowController activityRowController = addNewConfirmationRow(corruptActivity, rowNumber % 2 == 0);
+                activityRowController.setError(String.format("WARNING: %.2f%% of activity data rows have to be skipped on import.", corruptActivity.getPercentageCorrupt()));
+                activityStringKeySet.add(corruptActivity.getName()+corruptActivity.getDate().toString());
                 rowNumber += 1;
             }
         }
