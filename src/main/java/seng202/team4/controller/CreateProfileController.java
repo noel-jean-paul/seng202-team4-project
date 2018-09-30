@@ -66,6 +66,7 @@ public class CreateProfileController extends Controller {
         super(applicationStateManager);
         profilePictures = new ArrayList<Image>();
         for (int i=0; i < 17; i++) {
+            System.out.println(String.format("images/profilePictures/ProfilePic%s.png", i));
             profilePictures.add(new Image(App.class.getResource(String.format("images/profilePictures/ProfilePic%s.png", i)).toString()));
         }
     }
