@@ -1,10 +1,16 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import seng202.team4.App;
 import seng202.team4.GuiUtilities;
+
+import java.net.URL;
 
 /** Controller for the main screen of the App. */
 public class MainScreenController extends Controller {
@@ -28,6 +34,14 @@ public class MainScreenController extends Controller {
     /** The TabPane of the main screen. */
     @FXML
     private TabPane tabPane;
+
+    /** MenuButton that allows the user to change or view profile. */
+    @FXML
+    private MenuButton profileDropDown;
+
+    /** ImageView for the users profile picture. */
+    @FXML
+    private ImageView profilePictureImageView;
 
     /** The ActivityTabController of the activity tab. */
     private ActivityTabController activityTabController;
@@ -144,6 +158,13 @@ public class MainScreenController extends Controller {
         tabPane.getSelectionModel().selectFirst();
         if (applicationStateManager.getCurrentProfile() != null) {
             homeTabController.loadData();
+            profileDropDown.setText(applicationStateManager.getCurrentProfile().getFirstName());
+
+            // Load the users profile picture
+            URL profileImageUrl = App.class.getResource(applicationStateManager.getCurrentProfile().getPictureURL());
+            if (profileImageUrl != null) {
+                profilePictureImageView.setImage(GuiUtilities.maskProfileImage(new Image(profileImageUrl.toString())));
+            }
         }
         activityTabController.reset();
     }
