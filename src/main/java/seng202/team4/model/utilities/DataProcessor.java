@@ -103,7 +103,8 @@ public class DataProcessor {
                 testTime = LocalDateTime.of(dataList.get(i).getDate(), dataList.get(i).getTime());
                 if (testTime.isBefore(startTime)) {
                     startTime = testTime;
-                } else if (testTime.isAfter(endTime)) {
+                }
+                if (testTime.isAfter(endTime)) {
                     endTime = testTime;
                 }
             }
