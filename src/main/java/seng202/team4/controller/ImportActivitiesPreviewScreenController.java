@@ -41,9 +41,11 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     @FXML
     private Button importActivitiesButton;
 
+    /** ScrollPane that has the VBox of activities. */
     @FXML
     private ScrollPane scrollPane;
 
+    /** HBox that keeps content centered in the scroll pane. */
     @FXML
     private HBox scrollHbox;
 
