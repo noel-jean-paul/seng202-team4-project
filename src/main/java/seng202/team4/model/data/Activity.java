@@ -57,7 +57,7 @@ public class Activity implements Comparable<Activity> {
     public Activity(String name, ArrayList<DataRow> rawActivityList) {
         this.name = name;
         this.rawData = rawActivityList;
-        updateActivity();
+        this.updateActivity();
     }
 
     public void updateActivity() {
