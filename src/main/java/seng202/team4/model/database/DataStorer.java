@@ -1,9 +1,12 @@
 package seng202.team4.model.database;
 
-import seng202.team4.model.data.*;
+import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.DataRow;
+import seng202.team4.model.data.Goal;
+import seng202.team4.model.data.Profile;
 
-import java.sql.*;
-
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -84,7 +87,7 @@ abstract public class DataStorer extends DataAccesser {
         assert goal != null;
 
         String insert = "insert into goal(goalNumber, progress, type, creationDate, expiryDate, completionDate, " +
-                "goalDuration, goalDistance, current, firstName, lastName) values (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "goalDuration, goalDistance, caloriesBurned, current, firstName, lastName) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         statement = connection.prepareStatement(insert);
         // set the wildcards (indexed from 1)
         statement.setString(1, String.valueOf(goal.getNumber()));
@@ -95,9 +98,10 @@ abstract public class DataStorer extends DataAccesser {
         statement.setString(6, String.valueOf(goal.getCompletionDate()));
         statement.setString(7, String.valueOf(goal.getGoalDuration()));
         statement.setString(8, String.valueOf(goal.getGoalDistance()));
-        statement.setString(9, String.valueOf(goal.isCurrent()));
-        statement.setString(10, goalOwner.getFirstName());
-        statement.setString(11, goalOwner.getLastName());
+        statement.setInt(9, goal.getCaloriesBurned());
+        statement.setString(10, String.valueOf(goal.isCurrent()));
+        statement.setString(11, goalOwner.getFirstName());
+        statement.setString(12, goalOwner.getLastName());
 
         statement.executeUpdate();
 

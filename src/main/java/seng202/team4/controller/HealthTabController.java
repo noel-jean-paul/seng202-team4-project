@@ -9,7 +9,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import jdk.nashorn.internal.runtime.regexp.joni.Warnings;
 import seng202.team4.App;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.enums.WarningType;

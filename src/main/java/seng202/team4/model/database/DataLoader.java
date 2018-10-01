@@ -3,9 +3,10 @@ package seng202.team4.model.database;
 import seng202.team4.model.data.*;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
-import seng202.team4.model.data.ProfileKey;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,8 +121,9 @@ abstract public class DataLoader extends DataAccesser {
                     set.getString("creationDate"),
                     set.getString("expiryDate"),
                     set.getString("completionDate"),
-                    set.getDouble("goalDuration"),
+                    set.getString("goalDuration"),
                     set.getDouble("goalDistance"),
+                    set.getInt("caloriesBurned"),
                     Boolean.valueOf(set.getString("current"))
                     );
 

@@ -5,6 +5,7 @@ import seng202.team4.model.data.enums.GoalType;
 import seng202.team4.model.database.DataUpdater;
 
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Collections;
@@ -22,13 +23,14 @@ public class Goal implements Comparable<Goal> {
     private LocalDate completionDate;
     private String description;
     private double goalDistance;
-    private double goalDuration;
+    private Duration goalDuration;
+    private int caloriesBurned;
     private Profile owner;
     private boolean current;
 
-    /** Constructor for creating new goals */
-    public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
-                double goalDistance, double goalDuration) {
+    /** Base constructor for goals */
+    private Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
+                double goalDistance, String goalDuration, int caloriesBurned) {
         this.number = number;
         this.progress = progress;
         this.type = type;
@@ -36,24 +38,38 @@ public class Goal implements Comparable<Goal> {
         this.completionDate = LocalDate.MAX;
         this.expiryDate = LocalDate.parse(expiryDate);
         this.goalDistance = goalDistance;
-        this.goalDuration = goalDuration;
+        this.goalDuration = Duration.parse(goalDuration);
+        this.caloriesBurned = caloriesBurned;
         this.current = true;
         this.description = Goal.generateDescription(this);
+
+    }
+
+    /** Constructor for a distance goal */
+    public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
+                double goalDistance) {
+        this(number, progress, type, creationDate, expiryDate, goalDistance, "PT0M", 0);
+    }
+
+    /** Constructor for a duration goal */
+    public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
+                String goalDuration) {
+        this(number, progress, type, creationDate, expiryDate, 0, goalDuration, 0);
+    }
+
+    /** Constructor for a calories goal */
+    public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
+                int caloriesBurned) {
+        this(number, progress, type, creationDate, expiryDate, 0, "PT0M", caloriesBurned);
     }
 
     /** Constructor for loading goals from the database */
     public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
-                String completionDate, double goalDuration, double goalDistance, boolean current) {
-        this.number = number;
-        this.progress = progress;
-        this.type = type;
-        this.creationDate = LocalDate.parse(creationDate);
-        this.expiryDate = LocalDate.parse(expiryDate);
+                String completionDate, String goalDuration, double goalDistance, int caloriesBurned, boolean current) {
+        this(number, progress, type, creationDate, expiryDate, goalDistance, goalDuration, caloriesBurned);
         this.completionDate = LocalDate.parse(completionDate);
-        this.goalDuration = goalDuration;
-        this.goalDistance = goalDistance;
         this.current = current;
-        this.description = Goal.generateDescription(this);
+
     }
 
     @Override
@@ -64,7 +80,8 @@ public class Goal implements Comparable<Goal> {
         return getNumber() == goal.getNumber() &&
                 Double.compare(goal.getProgress(), getProgress()) == 0 &&
                 Double.compare(goal.getGoalDistance(), getGoalDistance()) == 0 &&
-                Double.compare(goal.getGoalDuration(), getGoalDuration()) == 0 &&
+                Objects.equals(goal.getGoalDuration(), getGoalDuration()) &&
+                getCaloriesBurned() == goal.getCaloriesBurned() &&
                 getType() == goal.getType() &&
                 Objects.equals(getCreationDate(), goal.getCreationDate()) &&
                 Objects.equals(getExpiryDate(), goal.getExpiryDate()) &&
@@ -116,6 +133,11 @@ public class Goal implements Comparable<Goal> {
         this.progress = progress;
     }
 
+    /* Set without updating the database */
+    public void updateProgressValue(double progress) {
+        this.progress = progress;
+    }
+
     public GoalType getType() {
         return type;
     }
@@ -152,6 +174,16 @@ public class Goal implements Comparable<Goal> {
         this.completionDate = LocalDate.parse(completionDate);
     }
 
+    public int getCaloriesBurned() {
+        return caloriesBurned;
+    }
+
+    public void setCaloriesBurned(int caloriesBurned) throws SQLException {
+        DataUpdater.updateGoals(Collections.singletonList(this), GoalFields.caloriesBurned.toString(),
+                Integer.toString(caloriesBurned));
+        this.caloriesBurned = caloriesBurned;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -169,12 +201,12 @@ public class Goal implements Comparable<Goal> {
         this.goalDistance = goalDistance;
     }
 
-    public double getGoalDuration() {
+    public Duration getGoalDuration() {
         return goalDuration;
     }
 
-    public void setGoalDuration(double goalDuration) throws SQLException {
-        DataUpdater.updateGoals(Collections.singletonList(this),GoalFields.goalDuration.toString(), Double.toString(goalDuration));
+    public void setGoalDuration(Duration goalDuration) throws SQLException {
+        DataUpdater.updateGoals(Collections.singletonList(this), GoalFields.goalDuration.toString(), goalDuration.toString());
         this.goalDuration = goalDuration;
     }
 
@@ -213,7 +245,7 @@ public class Goal implements Comparable<Goal> {
         if (goal.getGoalDistance() > 0) {
             description = String.format("%s %f meters", goal.getType().toString(), goal.getGoalDistance());
         } else {
-            description = String.format("%s for %f", goal.getType().toString(), goal.getGoalDuration());
+            description = String.format("%s for %s", goal.getType().toString(), goal.getGoalDuration());
         }
         return description;
     }
@@ -251,6 +283,6 @@ public class Goal implements Comparable<Goal> {
      * @return true if the goal is a duration goal (goalDuration not zero)
      */
     public boolean isDurationGoal() {
-        return goalDuration != 0;
+        return goalDuration != Duration.ZERO;
     }
 }

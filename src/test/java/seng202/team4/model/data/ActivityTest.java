@@ -1,8 +1,13 @@
 package seng202.team4.model.data;
 
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import seng202.team4.model.data.enums.ActivityType;
-import seng202.team4.model.database.*;
+import seng202.team4.model.database.DataAccesser;
+import seng202.team4.model.database.DataLoader;
+import seng202.team4.model.database.DataStorer;
 
 import java.sql.SQLException;
 import java.time.Duration;
@@ -12,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ActivityTest {
     private static Profile profile1;

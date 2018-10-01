@@ -10,9 +10,10 @@ import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
 
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDate;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class GoalTest {
     private static Profile profile1;
@@ -28,10 +29,9 @@ public class GoalTest {
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
         goal1 = new Goal(1, 100, GoalType.Run,"2018-09-28", "2017-05-12",
-                20, 50);
+                 "PT50M");
         goal2 = new Goal(2, 100, GoalType.Run,"2018-09-28", "2017-01-12",
-                20, 50);
-
+                "PT50M");
 
         // Set owner as addCurrentGoal or loadProfile are not called prior to setters
         goal1.setOwner(profile1);
@@ -150,19 +150,19 @@ public class GoalTest {
 
     @Test
     public void setGoalDuration() throws SQLException {
-        double duration = 65;
+        Duration duration = Duration.parse("PT65M");
         DataStorer.insertProfile(profile1);
         DataStorer.insertGoal(goal1, profile1);
         goal1.setGoalDuration(duration);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(duration, loadedProfile.getCurrentGoals().get(0).getGoalDuration(), 0.01);
+        assertEquals(duration, loadedProfile.getCurrentGoals().get(0).getGoalDuration());
     }
 
     @Test
     public void incrementProgress() {
         Goal goal = new Goal(2, 99, GoalType.Run,"2018-09-28", "2017-01-12",
-                20, 50);
+                "PT50M");
         double originalProgress = goal.getProgress();
         goal.incrementProgress(100);
         assertEquals(100, goal.getProgress(), 0.001);

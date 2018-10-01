@@ -3,7 +3,6 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.RadioButton;
 import javafx.scene.text.Text;
 import seng202.team4.model.data.Activity;

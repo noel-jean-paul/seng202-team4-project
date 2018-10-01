@@ -13,7 +13,7 @@ import seng202.team4.model.data.enums.GoalType;
 
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DataUpdaterTest {
     private static Profile profile1;
@@ -46,11 +46,11 @@ public class DataUpdaterTest {
 
         // Initialise Goals
         goal1 = new Goal(1, 100, GoalType.Run,"2018-09-28", "2017-05-12",
-                20, 50);
+                20);
         goal2 = new Goal(2, 100, GoalType.Run,"2018-09-28", "2017-01-12",
-                20, 50);
+                "PT50M");
         goal3 = new Goal(3, 100, GoalType.Run,"2018-09-28", "2017-01-12",
-                20, 50);
+                20.0);
 
         row1 = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
                 178.4352, 203);

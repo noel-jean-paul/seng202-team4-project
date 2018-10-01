@@ -1,7 +1,9 @@
 package seng202.team4.model.database;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.data.Goal;
@@ -9,11 +11,14 @@ import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
 
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class DataStorerTest {
     private static Profile profile1;
@@ -46,7 +51,7 @@ public class DataStorerTest {
                 "12:15:01", "PT40M", 5.13, 187);
 
         goal1 = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
-                2.00, 0);
+                2.00);
 
         row1 = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
                 178.4352, 203);
@@ -182,9 +187,9 @@ public class DataStorerTest {
 
         // Add 2 goals to the profile
         Goal goal2 = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
-                2.00, 0);
+               "PT0M");
         Goal goal3 = new Goal(2, 100, GoalType.Run, "2017-05-21", "2020-01-02",
-                5.00, 60);
+                5.00);
 
         profile.addCurrentGoal(goal2);
         profile.addCurrentGoal(goal3);
@@ -290,7 +295,7 @@ public class DataStorerTest {
         DataStorer.insertProfile(profile);
 
         Goal goal = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
-                2.00, 0);
+                2.00);
         profile.addCurrentGoal(goal);
 
         DataStorer.deleteGoals(Collections.singletonList(goal));

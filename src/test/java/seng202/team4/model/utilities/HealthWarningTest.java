@@ -1,6 +1,5 @@
 package seng202.team4.model.utilities;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import seng202.team4.model.data.Activity;
@@ -10,11 +9,9 @@ import seng202.team4.model.data.Profile;
 import java.time.Month;
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
-
 public class HealthWarningTest {
 
-    static Profile testProfile;
+    private static Profile testProfile;
 
     @BeforeClass
     public static void setUpProfile() {

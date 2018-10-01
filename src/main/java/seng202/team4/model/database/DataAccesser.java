@@ -4,7 +4,6 @@ import seng202.team4.model.data.DataRow;
 import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.Profile;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 
 abstract public class DataAccesser {
@@ -103,6 +102,7 @@ abstract public class DataAccesser {
                 "completionDate character(10),\n" +
                 "goalDuration character(8),\n" +
                 "goalDistance real constraint check_goalDistance check (goalDistance >= %f),\n" +
+                "caloriesBurned integer not null, \n" +
                 "current text constratint check_current check (current in (\"true\", \"false\")), \n" +
                 "firstName text,\n" +
                 "lastName text,\n" +

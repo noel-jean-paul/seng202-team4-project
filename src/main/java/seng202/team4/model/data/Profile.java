@@ -1,6 +1,6 @@
 package seng202.team4.model.data;
+
 import seng202.team4.GuiUtilities;
-import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.ProfileFields;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
@@ -455,7 +455,8 @@ public class Profile {
     }
 
     /** Update goal progress for current goals with the activities in the collection.
-     *  Should be called after updateGoalsForExpiry
+     *  Should be called after updateGoalsForExpiry.
+     *  Assumes that each goal is one of distance, duration or calories goal
      *
      * @param activites the list of activities to update the goals
      */
@@ -469,7 +470,13 @@ public class Profile {
                         // Increment progress
                         goal.incrementProgress((activity.getDistance() / goal.getGoalDistance()) * 100);
                     }
-                    // TODO: 1/10/18 N Bisson Duration goal and test edge scenarios 
+                    else if (goal.isDurationGoal()) {
+                        // Convert from long go double to allow for non-integer division
+                        Double activityDuration = Double.valueOf(Long.toString(activity.getDuration().toMinutes()));
+                        Double goalDuration = Double.valueOf(Long.toString(goal.getGoalDuration().toMinutes()));
+                        // Increment progress
+                        goal.incrementProgress((activityDuration / goalDuration) * 100);
+                    }
                 }
             }
         }

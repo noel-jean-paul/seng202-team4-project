@@ -6,7 +6,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
-import seng202.team4.model.database.*;
+import seng202.team4.model.database.DataAccesser;
+import seng202.team4.model.database.DataLoader;
+import seng202.team4.model.database.DataStorer;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ProfileTest {
     private static Profile profile1;
@@ -45,7 +47,7 @@ public class ProfileTest {
 
         // Initialise activities
         activity1 = new Activity("Run in the park", "2017-12-12", ActivityType.Run,
-                "12:15:01", "PT40M", 5.13, 187);
+                "12:15:01", "PT40M36S", 5.13, 187);
         // test dependent on progress and distance of this activity
 
         activity2 = new Activity("Walk around the block", "2019-12-12",
@@ -59,11 +61,11 @@ public class ProfileTest {
 
         // Initialise Goals
         goal1 = new Goal(1, 0, GoalType.Run,"2017-01-01", "2018-05-12",
-                20, 0);
-        goal2 = new Goal(2, 100, GoalType.Run,"2018-09-28", "2050-01-12",
-                0, 50);
-        goal3 = new Goal(3, 100, GoalType.Run,"2018-09-28", "2017-01-12",
-                20, 0);
+                20.0);
+        goal2 = new Goal(2, 0, GoalType.Run,"2017-01-01", "2050-01-12",
+                 "PT50M");
+        goal3 = new Goal(3, 0, GoalType.Run,"2020-09-28", "2017-01-12",
+                20.0);
 
         expectedGoals = new ArrayList<>();
     }
@@ -76,6 +78,11 @@ public class ProfileTest {
         profile1.getPastGoals().clear();
         expectedGoals.clear();
         activities.clear();
+
+        // Reset goal progress
+        goal1.updateProgressValue(0);
+        goal2.updateProgressValue(0);
+        goal3.updateProgressValue(0);
         DataAccesser.clearDatabase();
     }
 
@@ -310,7 +317,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void updateGoalsForProgress_distanceGoal_checkProgressUpdated() throws SQLException {
+    public void updateGoalsForProgress_validDate_distanceGoal_checkProgressUpdated() throws SQLException {
         // Setup
         profile1.addCurrentGoal(goal1);
         activities.add(activity1);
@@ -319,4 +326,27 @@ public class ProfileTest {
 
         assertEquals(25.65, goal1.getProgress(), 0.0001);
     }
+
+    @Test
+    public void updateGoalsForProgress_validDate_durationGoal_checkProgressUpdated() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal2); //Duration goal
+        activities.add(activity1);
+
+        profile1.updateGoalsForProgress(activities);
+
+        assertEquals(80.0, goal2.getProgress(), 0.0001);
+    }
+
+    @Test
+    public void updateGoalsForProgress_invalidDate_checkProgressUnchanged() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal3); // Creation date in 2020
+        activities.add(activity3);  // Date in 2018
+
+        profile1.updateGoalsForProgress(activities);
+
+        assertEquals(0, goal3.getProgress(), 0.0001);
+    }
+
 }

@@ -2,7 +2,6 @@ package seng202.team4.model.data;
 
 import seng202.team4.model.data.enums.DataRowFields;
 import seng202.team4.model.database.DataUpdater;
-import sun.text.resources.lt.CollationData_lt;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
