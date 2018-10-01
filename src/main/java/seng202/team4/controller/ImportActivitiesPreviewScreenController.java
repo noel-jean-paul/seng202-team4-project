@@ -1,8 +1,15 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.CorruptActivity;
@@ -21,12 +28,6 @@ import java.util.HashSet;
 /** Controller for the import activities preview screen. */
 public class ImportActivitiesPreviewScreenController extends Controller {
 
-    /** ArrayList of activityConfirmationRows that listed */
-    private ArrayList<ActivityConfirmationRow> activityConfirmationRows = new ArrayList<>();
-
-    /** ActivityTabController of the activity tab. */
-    private ActivityTabController activityTabController;
-
     /** VBox that holds the rows of activities. */
     @FXML
     private VBox activityListVbox;
@@ -35,6 +36,21 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     @FXML
     private GridPane gridPane;
 
+    /** Button for importing activites. */
+    @FXML
+    private Button importActivitiesButton;
+
+    @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
+    private HBox scrollHbox;
+
+    /** ArrayList of activityConfirmationRows that listed */
+    private ArrayList<ActivityConfirmationRow> activityConfirmationRows = new ArrayList<>();
+
+    /** ActivityTabController of the activity tab. */
+    private ActivityTabController activityTabController;
 
 
     /**
@@ -45,6 +61,11 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     public ImportActivitiesPreviewScreenController(ApplicationStateManager applicationStateManager, ActivityTabController activityTabController) {
         super(applicationStateManager);
         this.activityTabController = activityTabController;
+    }
+
+    @FXML
+    public void initialize() {
+        scrollHbox.prefWidthProperty().bind(scrollPane.widthProperty());
     }
 
     /**
@@ -109,6 +130,8 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             activityStringKeySet.add(activity.getName()+activity.getDate().toString());
         }
 
+        ArrayList<Activity> duplicateActivities = new ArrayList<>();
+
         int rowNumber = 0;
         for (int i=0; i < validActivities.size(); i++) {
             Activity activity = validActivities.get(i);
@@ -116,6 +139,8 @@ public class ImportActivitiesPreviewScreenController extends Controller {
                 addNewConfirmationRow(activity, rowNumber % 2 == 0);
                 activityStringKeySet.add(activity.getName()+activity.getDate().toString());
                 rowNumber += 1;
+            } else {
+                duplicateActivities.add(activity);
             }
         }
 
@@ -126,7 +151,35 @@ public class ImportActivitiesPreviewScreenController extends Controller {
                 activityRowController.setError(String.format("WARNING: %.2f%% of activity data rows have to be skipped on import.", corruptActivity.getPercentageCorrupt()));
                 activityStringKeySet.add(corruptActivity.getName()+corruptActivity.getDate().toString());
                 rowNumber += 1;
+            } else {
+                duplicateActivities.add(corruptActivity);
             }
+        }
+
+
+        if (skippedActivities.size() > 0 || duplicateActivities.size() > 0) {
+            ActivityImportWarningPopUpController activityImportWarningPopUpController = new ActivityImportWarningPopUpController(applicationStateManager);
+            Pane activityImportWarningPop = GuiUtilities.loadPane("ActivityImportWarningPopUp.fxml", activityImportWarningPopUpController);
+
+            for (int i=0; i < skippedActivities.size(); i++) {
+                Activity skippedActivity = warningActivities.get(i);
+                activityImportWarningPopUpController.addWarning(String.format("Not enough valid data to import '%s'.", skippedActivity.getName()));
+            }
+
+            for (int i=0; i < duplicateActivities.size(); i++) {
+                Activity duplicateActivity = duplicateActivities.get(i);
+                activityImportWarningPopUpController.addWarning(String.format("%s on %s already exists, so it has been skipped.", duplicateActivity.getName(), duplicateActivity.getDate()));
+            }
+
+            applicationStateManager.displayPopUp(activityImportWarningPop);
+        }
+
+        if (activityConfirmationRows.size() == 0) {
+            Label label = new Label("No new valid activity data found.");
+            label.setTextFill(Color.RED);
+            label.setFont(Font.font(24));
+            activityListVbox.getChildren().add(label);
+            importActivitiesButton.setDisable(true);
         }
 
     }

@@ -1,9 +1,11 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 /**
  * Controller class for the activity import warning pop up.
@@ -34,8 +36,10 @@ public class ActivityImportWarningPopUpController extends Controller {
 
     /** Adds a new warning to the pop up. */
     public void addWarning(String warning) {
-        Text text = new Text(warning);
-        warningsVbox.getChildren().add(text);
+        Label label = new Label(warning);
+        label.setTextFill(Color.RED);
+        label.setFont(Font.font(15));
+        warningsVbox.getChildren().add(label);
     }
 
 }
