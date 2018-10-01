@@ -81,6 +81,7 @@ public class HealthTabController extends Controller {
     private void setUpPopUpLabels(WarningDescriptionPopUpController warningPopUp, HealthWarning warning) {
         String heartRateRange = setRateRange(warning);
         warningPopUp.setPopUpTitle(warning.getTypeString());
+        warningPopUp.setActivityNameLabel(warning.getActivity().getName());
         warningPopUp.setAverageLabel(warning.getAvgHeartRate());
         warningPopUp.setMinLabel(warning.getMinHeartRate());
         warningPopUp.setMaxLabel(warning.getMaxHeartRate());
