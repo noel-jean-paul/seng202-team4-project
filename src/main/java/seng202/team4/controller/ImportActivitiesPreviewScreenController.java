@@ -22,6 +22,7 @@ import seng202.team4.view.ActivityConfirmationRow;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -136,7 +137,10 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         for (int i=0; i < validActivities.size(); i++) {
             Activity activity = validActivities.get(i);
             if (!activityStringKeySet.contains(activity.getName()+activity.getDate().toString())) {
-                addNewConfirmationRow(activity, rowNumber % 2 == 0);
+                ActivityConfirmationRowController activityRowController = addNewConfirmationRow(activity, rowNumber % 2 == 0);
+                if (activity.getDate().compareTo(LocalDate.now()) > 0) {
+                    activityRowController.setError("WARNING: Activity occurs in the future.");
+                }
                 activityStringKeySet.add(activity.getName()+activity.getDate().toString());
                 rowNumber += 1;
             } else {
