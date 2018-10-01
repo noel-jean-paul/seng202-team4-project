@@ -272,7 +272,7 @@ public class Goal implements Comparable<Goal> {
 
     /** Check whether the goal is a distance goal
      *
-     * @return true if the goal is a distance goal (goalDstance not zero)
+     * @return true if the goal is a distance goal (goalDstance not zero), false otherwise
      */
     public boolean isDistanceGoal() {
         return goalDistance != 0;
@@ -280,9 +280,17 @@ public class Goal implements Comparable<Goal> {
 
     /** Check whether the goal is a duration goal
      *
-     * @return true if the goal is a duration goal (goalDuration not zero)
+     * @return true if the goal is a duration goal (goalDuration not zero), false otherwise
      */
     public boolean isDurationGoal() {
         return goalDuration != Duration.ZERO;
+    }
+
+    /** Check whether the goal is a calories goal
+     *
+     * @return true if the goal is a calories goal, false otherwise
+     */
+    public boolean isCaloriesGoal() {
+        return caloriesBurned != 0;
     }
 }

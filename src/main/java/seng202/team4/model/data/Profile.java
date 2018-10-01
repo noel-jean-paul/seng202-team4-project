@@ -476,6 +476,12 @@ public class Profile {
                         Double goalDuration = Double.valueOf(Long.toString(goal.getGoalDuration().toMinutes()));
                         // Increment progress
                         goal.incrementProgress((activityDuration / goalDuration) * 100);
+                    } else if (goal.isCaloriesGoal()) {
+                        // Convert from int to double to allow for non-integer division
+                        Double activityCalories = activity.getCaloriesBurned();
+                        Double goalCalories = (double) goal.getCaloriesBurned();
+                        // Increment progress
+                        goal.incrementProgress((activityCalories / goalCalories) * 100);
                     }
                 }
             }
