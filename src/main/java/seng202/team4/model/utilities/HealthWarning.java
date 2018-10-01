@@ -93,12 +93,9 @@ public class HealthWarning {
         if (type == WarningType.Tachy) {
             atRisk = tachyRisk();
             description = "Heart rate in over recommended maximum.";
-        } else if (type == WarningType.Brady) {
+        } else {
             atRisk = bradyRisk();
             description = "Heart rate under recommended minimum.";
-        } else {
-            atRisk = cardioRisk();
-            description = "Resting heart rate over recommend maximum";
         }
         return atRisk;
     }
@@ -123,18 +120,6 @@ public class HealthWarning {
         if (user.getAge() >= 18 && minHeartRate < 50) {
             return true;
         } else if (user.getAge() < 18 && minHeartRate < 60) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @return
-     */
-    private boolean cardioRisk() {
-        //TODO refine warning detection
-        if (minHeartRate > 90) {
             return true;
         } else {
             return false;
@@ -225,5 +210,9 @@ public class HealthWarning {
 
     public String getUrl() {
         return url;
+    }
+
+    public Activity getActivity() {
+        return activity;
     }
 }

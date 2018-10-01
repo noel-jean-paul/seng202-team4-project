@@ -363,7 +363,6 @@ public class Activity implements Comparable<Activity> {
         ArrayList<HealthWarning> warnings = new ArrayList<>();
         warnings.add(new HealthWarning(this, owner, WarningType.Tachy, avgHeartRate, minHeartRate, maxHeartRate));
         warnings.add(new HealthWarning(this, owner, WarningType.Brady, avgHeartRate, minHeartRate, maxHeartRate));
-        warnings.add(new HealthWarning(this, owner, WarningType.Cardiovascular, avgHeartRate, minHeartRate, maxHeartRate));
         for (HealthWarning warning : warnings) {
             if (warning.isHealthRisk()) {
                 owner.addWarning(warning);
