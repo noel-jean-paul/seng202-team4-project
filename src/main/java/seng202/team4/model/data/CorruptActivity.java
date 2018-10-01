@@ -20,7 +20,7 @@ public class CorruptActivity extends Activity {
     public CorruptActivity(String name, ArrayList<DataRow> rawActivityList, int corruptRows) {
         super(name, rawActivityList);
         this.corruptRows = corruptRows;
-        this.totalRows = rawActivityList.size();
+        this.totalRows = rawActivityList.size() + corruptRows;
     }
 
     /**

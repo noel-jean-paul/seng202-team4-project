@@ -39,11 +39,11 @@ public class FileParser {
                     activityName = line.split(csvSplitBy)[1];   //grab the activity name and store it
 
                     line = bufferedReader.readLine();
-                    int counter = 0;
+                    int rowNumber = 1;
                     int numCorruptRows = 0;
+
                     while ((line != null) && (!(line.contains("#")))) { //read up until the next # symbol, signifying the start of a new activity
                         //the next lines split the line by comma into its unique fields
-                        counter++;  //update the line counter
                         line = line.trim();
                         dataPoints = line.split(csvSplitBy);
 
@@ -77,7 +77,8 @@ public class FileParser {
                                         // TODO: If an invalid elevation is found approximate what it should be based on other data rows.
                                         elevation = 0;  // Set elevation to a sensible value.
                                     }
-                                    rows.add(new DataRow(counter, date, time, heartRate, latitude, longitude, elevation));   //add the data to a new ActivityRawData element
+                                    rows.add(new DataRow(rowNumber, date, time, heartRate, latitude, longitude, elevation));   //add the data to a new ActivityRawData element
+                                    rowNumber += 1;  //update the line rowNumber
                                 } else {
                                     numCorruptRows += 1;
                                 }
