@@ -7,79 +7,111 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import seng202.team4.Utilities;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Profile;
-import seng202.team4.model.database.DataStorer;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 
+/** Controller class for the view profile controller. */
 public class ProfileScreenController extends Controller {
 
+    /* Text that displays the users first name. */
     @FXML
     private Text firstNameText;
 
+    /* Text that displays the users height. */
     @FXML
     private Text heightText;
 
+    /* Text that displays the users last name. */
     @FXML
     private Text lastNameText;
 
+    /* Text that displays the users weight name. */
     @FXML
     private Text weightText;
 
+    /* Text that displays the year of the users date of birth. */
     @FXML
     private Text yearText;
 
+    /* Text that displays the month of the users date of birth. */
     @FXML
     private Text monthText;
 
+    /* Text that displays the day of the users date of birth. */
     @FXML
     private Text dayText;
 
+    /* Text that displays any errors that occur if a user edits a value incorrectly. */
     @FXML
     private Text errorText;
 
+    /* VBox for first name information. */
     @FXML
     private VBox firstNameVbox;
 
+    /* VBox for last name information. */
     @FXML
     private VBox lastNameVbox;
 
+    /* VBox for height information. */
     @FXML
     private VBox heightVbox;
 
+    /* VBox for weight information. */
     @FXML
     private VBox weightVbox;
 
+    /* VBox for day of date of birth information. */
     @FXML
     private VBox dayVbox;
 
+    /* VBox for month of date of birth information. */
     @FXML
     private VBox monthVbox;
 
+    /* VBox for year of date of birth information. */
     @FXML
     private VBox yearVbox;
 
+    /** Button used to edit and cancel edit of user information. */
     @FXML
     private Button editCancelButton;
 
+    /** TextField for the users first name. */
     private TextField firstNameTextField;
+
+    /** TextField for the users last name. */
     private TextField lastNameTextField;
+
+    /** TextField for the users height. */
     private TextField heightTextField;
+
+    /** TextField for the users weight. */
     private TextField weightTextField;
+
+    /** TextField for the day of the users date of birth. */
     private TextField dayTextField;
+
+    /** TextField for the month of the users date of birth. */
     private TextField monthTextField;
+
+    /** TextField for the year of the users date of birth. */
     private TextField yearTextField;
 
+    /** Boolean that stores whether the user is currently editing. */
     private boolean isEditing = false;
 
+    /** Creates a new ProfileScreenController with the given ApplicationStateManager. */
     public ProfileScreenController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
 
+    /** Initializes the profile screen. */
     @FXML
     public void initialize() {
+        // Creates new TextFields for all of the different profile attributes.
         firstNameTextField = new TextField();
         lastNameTextField = new TextField();
         heightTextField = new TextField();
@@ -88,6 +120,7 @@ public class ProfileScreenController extends Controller {
         monthTextField = new TextField();
         yearTextField = new TextField();
 
+        // Aligns all the text in the TextFields to center
         firstNameTextField.setAlignment(Pos.CENTER);
         lastNameTextField.setAlignment(Pos.CENTER);
         heightTextField.setAlignment(Pos.CENTER);
@@ -97,6 +130,11 @@ public class ProfileScreenController extends Controller {
         yearTextField.setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Action performed when the user clicks done.
+     * If the user is editing then this saves their edits and changes all the TextFields to Text.
+     * If the user is not editing then the profile screen is closed.
+     */
     @FXML
     public void done() {
         if (isEditing) {
@@ -150,9 +188,9 @@ public class ProfileScreenController extends Controller {
             } else if (!Profile.isValidDateOfBirth(dateOfBirth)) {
                 errorText.setText(String.format("Date should be between %s and %s.", Profile.MIN_DOB, LocalDate.now()));
             } else if (!isValidWeightDoubleString || !Profile.isValidWeight(weight)) {
-                errorText.setText(String.format("Weight must be a number between %s and %s", 0, Profile.MAX_WEIGHT));
+                errorText.setText(String.format("Weight must be a number between %s and %s", Profile.MIN_WEIGHT, Profile.MAX_WEIGHT));
             } else if (!isValidHeightDoubleString || !Profile.isValidHeight(height)) {
-                errorText.setText(String.format("Height must be a number between %s and %s", 0, Profile.MAX_HEIGHT));
+                errorText.setText(String.format("Height must be a number between %s and %s", Profile.MIN_HEIGHT, Profile.MAX_HEIGHT));
             } else {
                 Profile profile = applicationStateManager.getCurrentProfile();
 
@@ -169,7 +207,7 @@ public class ProfileScreenController extends Controller {
                     isEditing = false;
                     errorText.setText("");
                 } catch (java.sql.SQLException e) {
-                    applicationStateManager.displayErrorMessage("Error encountered editing profile.", e.getMessage());
+                    GuiUtilities.displayErrorMessage("Error encountered editing profile.", e.getMessage());
                 }
             }
 
@@ -178,6 +216,12 @@ public class ProfileScreenController extends Controller {
         }
     }
 
+    /**
+     * Action performed when the user clicks the edit/cancel button.
+     * If the user is not editing, then they enter edit mode and all the Text of attributes changes to TextFields.
+     * If the user is editing then the TextFields are changed to Text and any changes made to profile attributes are
+     * reverted.
+     */
     @FXML void editProfile() {
         if (!isEditing){
             firstNameTextField.setText(applicationStateManager.getCurrentProfile().getFirstName());
@@ -208,6 +252,10 @@ public class ProfileScreenController extends Controller {
 
     }
 
+
+    /**
+     * Updates the information being displayed as text to the current values of the users profile.
+     */
     public void updateInformation() {
         firstNameText.setText(applicationStateManager.getCurrentProfile().getFirstName());
         lastNameText.setText(applicationStateManager.getCurrentProfile().getLastName());
@@ -218,6 +266,9 @@ public class ProfileScreenController extends Controller {
         yearText.setText(Integer.toString(applicationStateManager.getCurrentProfile().getDateOfBirth().getYear()));
     }
 
+    /**
+     * Changes all of the TextFields to Text.
+     */
     private void changeValuesToText() {
         firstNameVbox.getChildren().setAll(firstNameText);
         lastNameVbox.getChildren().setAll(lastNameText);
@@ -228,8 +279,13 @@ public class ProfileScreenController extends Controller {
         yearVbox.getChildren().setAll(yearText);
     }
 
+    /**
+     * Action that is performed when the user clicks the delete profile button.
+     * Displays a prompt asking the user if they want to delete there profile.
+     */
+    @FXML
     public void deleteProfile() {
-        Pane deletionPopup = Utilities.loadPane("ProfileDeletionConfirmation.fxml", new ProfileDeletionConfirmationController(applicationStateManager));
+        Pane deletionPopup = GuiUtilities.loadPane("ProfileDeletionConfirmation.fxml", new ProfileDeletionConfirmationController(applicationStateManager));
         applicationStateManager.displayPopUp(deletionPopup);
     }
 

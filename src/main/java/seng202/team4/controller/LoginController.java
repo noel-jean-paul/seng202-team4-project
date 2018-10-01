@@ -3,6 +3,7 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.ProfileKey;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.view.ProfileListItem;
@@ -100,7 +101,7 @@ public class LoginController extends Controller {
 
                 System.out.println(String.format("%s %s has logged in!", profileKey.getFirstName(), profileKey.getLastName()));
             } catch (java.sql.SQLException e) {
-                applicationStateManager.displayErrorMessage("An error occurred loading the profile from the database.", e.getMessage());
+                GuiUtilities.displayErrorMessage("An error occurred loading the profile from the database.", e.getMessage());
                 System.out.println("Error: Failed to load profile.");
             }
         }

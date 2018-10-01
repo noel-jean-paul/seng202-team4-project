@@ -69,8 +69,8 @@ abstract public class DataAccesser {
                 "firstName text not null, " +
                 "lastName text not null, " +
                 "dateOfBirth character(10) not null, " +
-                "height real constraint check_height check (height BETWEEN 1.00 and 3.00), " +
-                "weight real constraint check_weight check (weight between 0 and 250), " +
+                "height real constraint check_height check (height BETWEEN 0.5 and 3.00), " +
+                "weight real constraint check_weight check (weight between 10 and 250), " +
                 "primary key (firstName, lastName)" +
                 ");";
 
@@ -110,10 +110,10 @@ abstract public class DataAccesser {
                 "  rowNumber integer,\n" +
                 "  rowDate character(10),\n" +
                 "  time character(8) not null,\n" +
-                "  heartRate integer constraint check_heartRate check (heartRate between 20 and 250),\n" +
+                "  heartRate integer constraint check_heartRate check (heartRate between 10 and 250),\n" +
                 "  latitude double constraint check_latitude check (latitude between -90 and 90),\n" +
                 "  longitude double constraint check_longitude check (longitude between -180 and 180),\n" +
-                "  elevation double constraint check_elevation check (elevation between 0 and 4000),\n" +
+                "  elevation double constraint check_elevation check (elevation between -100 and 10000),\n" +
                 "  name text,\n" +
                 "  activityDate character(10),\n" +
                 "  firstName text not NULL,\n" +

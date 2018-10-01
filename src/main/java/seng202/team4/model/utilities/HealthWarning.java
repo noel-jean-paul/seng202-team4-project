@@ -92,13 +92,13 @@ public class HealthWarning {
         boolean atRisk;
         if (type == WarningType.Tachy) {
             atRisk = tachyRisk();
-            description = "Heart rate in excess of recommended maximum.";
+            description = "Heart rate in over recommended maximum.";
         } else if (type == WarningType.Brady) {
             atRisk = bradyRisk();
             description = "Heart rate under recommended minimum.";
         } else {
             atRisk = cardioRisk();
-            description = "Resting heart rate in excess of recommend maximum";
+            description = "Resting heart rate over recommend maximum";
         }
         return atRisk;
     }

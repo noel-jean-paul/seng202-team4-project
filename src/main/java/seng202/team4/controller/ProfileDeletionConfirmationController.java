@@ -2,6 +2,7 @@ package seng202.team4.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.database.DataStorer;
 
 import java.sql.SQLException;
@@ -28,7 +29,7 @@ public class ProfileDeletionConfirmationController extends Controller {
             ((LoginController) applicationStateManager.getScreenController("LoginScreen")).updateProfileList();
             applicationStateManager.switchToScreen("LoginScreen");
         } catch (SQLException e) {
-            applicationStateManager.displayErrorMessage("Failed to delete profile.", "");
+            GuiUtilities.displayErrorMessage("Failed to delete profile.", "");
         }
         applicationStateManager.closePopUP(rootPane);
 

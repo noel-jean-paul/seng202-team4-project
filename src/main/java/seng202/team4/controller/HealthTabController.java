@@ -11,7 +11,7 @@ import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import seng202.team4.App;
-import seng202.team4.Utilities;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.utilities.HealthWarning;
 
@@ -67,7 +67,7 @@ public class HealthTabController extends Controller {
         HealthWarning warning = (HealthWarning) healthWarningTable.getSelectionModel().getSelectedItem();
         if (warning != null) {
             WarningDescriptionPopUpController warningPopUp = new WarningDescriptionPopUpController(applicationStateManager);
-            Pane popUp = Utilities.loadPane("HealthPopUpScreen.fxml", warningPopUp);
+            Pane popUp = GuiUtilities.loadPane("HealthPopUpScreen.fxml", warningPopUp);
             setUpPopUpLabels(warningPopUp, warning);
             applicationStateManager.displayPopUp(popUp);
         }
@@ -181,9 +181,9 @@ public class HealthTabController extends Controller {
     @FXML
     public void initialize() {
         healthWarningTable.setPlaceholder(new Text("No warnings have been detected."));
-        healthWarningTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        healthWarningTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-        descColumn.prefWidthProperty().bind(healthWarningTable.widthProperty().divide( 4));
+        //descColumn.prefWidthProperty().bind(healthWarningTable.widthProperty().divide( 3));
 
 
 
@@ -207,7 +207,6 @@ public class HealthTabController extends Controller {
 
         ScrollBar scrollBarHorizontal = (ScrollBar) healthWarningTable.lookup(".scroll-bar:hotizontal");
         scrollBarHorizontal.setVisible(false);
-
         currentUrl = "https://www.google.com/";
         engine.load(currentUrl);
     }

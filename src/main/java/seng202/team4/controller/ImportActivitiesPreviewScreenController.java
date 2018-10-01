@@ -3,6 +3,7 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.database.DataStorer;
@@ -70,7 +71,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
                     DataStorer.insertDataRowTransaction(activity.getRawData());
                 } catch (SQLException e) {
                     // TODO: 22/09/18 Currently displays error message for every activity failed. Want one for all activities
-                    applicationStateManager.displayErrorMessage("Failed to import one or more activities.", "");
+                    GuiUtilities.displayErrorMessage("Failed to import one or more activities.", "");
                 }
                 activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
             }
@@ -112,6 +113,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             Activity activity = validActivities.get(i);
             if (!activityStringKeySet.contains(activity.getName()+activity.getDate().toString())) {
                 addNewConfirmationRow(activity, rowNumber % 2 == 0);
+                activityStringKeySet.add(activity.getName()+activity.getDate().toString());
                 rowNumber += 1;
             }
         }
@@ -121,6 +123,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             if (!activityStringKeySet.contains(activity.getName()+activity.getDate().toString())) {
                 ActivityConfirmationRowController activityRowController = addNewConfirmationRow(activity, rowNumber % 2 == 0);
                 activityRowController.setError("WARNING: One or more activity data rows had to be skipped on import.");
+                activityStringKeySet.add(activity.getName()+activity.getDate().toString());
                 rowNumber += 1;
             }
         }

@@ -1,17 +1,14 @@
 package seng202.team4;
 
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seng202.team4.controller.*;
 import seng202.team4.model.database.DataAccesser;
 
 import java.io.*;
-import java.sql.SQLException;
 
 import static javafx.application.Application.launch;
 
@@ -21,7 +18,7 @@ import static javafx.application.Application.launch;
  */
 public class App extends Application {
 
-
+    /** Starts the app/ */
     @Override
     public void start(Stage primaryStage) {
 
@@ -38,16 +35,18 @@ public class App extends Application {
 //            System.exit(1);
 //        }
 
+        // Redirects System Out and System Err to ErrorLog.txt
         try {
             File errorLog = new File("ErrorLog.txt");
             PrintStream errorLogStream = new PrintStream(errorLog);
             System.setOut(errorLogStream);
             System.setErr(errorLogStream);
         } catch (IOException e) {
-
+            e.printStackTrace();
+            System.out.println("Failed to open ErrorLog.txt, This is not critical.");
         }
 
-
+        // Establishes connection with the data base.
         try {
             DataAccesser.initialiseMainConnection();
         } catch (java.sql.SQLException e) {
@@ -56,26 +55,30 @@ public class App extends Application {
             System.exit(1);
         }
 
+        // Creates base scene.
         Scene baseScene = new Scene(new Group(), 600, 400);
 
+        // Creates application state manager.
         ApplicationStateManager applicationStateManager = new ApplicationStateManager(baseScene, primaryStage);
 
+
+        //Creates and adds several important screens to the application state manager.
+
         LoginController loginController = new LoginController(applicationStateManager);
-        Pane loginScreen = Utilities.loadPane("LoginScreen.fxml", loginController);
+        Pane loginScreen = GuiUtilities.loadPane("LoginScreen.fxml", loginController);
 
         CreateProfileController createProfileController = new CreateProfileController(applicationStateManager);
-        Pane createProfileScreen = Utilities.loadPane("CreateProfileScreen.fxml", createProfileController);
+        Pane createProfileScreen = GuiUtilities.loadPane("CreateProfileScreen.fxml", createProfileController);
 
         MainScreenController mainScreenController = new MainScreenController(applicationStateManager);
-        Pane mainScreen = Utilities.loadPane("MainScreen.fxml", mainScreenController);
-
-
+        Pane mainScreen = GuiUtilities.loadPane("MainScreen.fxml", mainScreenController);
 
         applicationStateManager.addScreen("LoginScreen", loginScreen, loginController);
         applicationStateManager.addScreen("CreateProfileScreen", createProfileScreen, createProfileController);
         applicationStateManager.addScreen("MainScreen", mainScreen, mainScreenController);
         applicationStateManager.switchToScreen("LoginScreen");
 
+        // Sets parameters of the window the app runs in.
         primaryStage.setTitle("Step by Step");
         primaryStage.setScene(baseScene);
         primaryStage.show();
@@ -84,8 +87,10 @@ public class App extends Application {
 
         primaryStage.setWidth(1280);
         primaryStage.setHeight(720);
+        primaryStage.centerOnScreen();
     }
 
+    /** Main method of the program. */
     public static void main(String[] args) {
         launch(args);
     }

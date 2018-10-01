@@ -61,11 +61,18 @@ public class FileParser {
                                 double elevation = (Double.parseDouble(dataPoints[5]));
 
                                 if ((latitude >= -90 && latitude <= 90) && (longitude >= -180 && longitude <= 180)) {
+                                    if (heartRate < 10 || heartRate > 250) {
+                                        // TODO: If an invalid heart rate is found approximate what it should be based on other data rows.
+                                        heartRate = 80; // Set heart rate to a sensible value.
+                                    }
+
+                                    if (elevation < -100 || elevation > 10000) {
+                                        // TODO: If an invalid elevation is found approximate what it should be based on other data rows.
+                                        elevation = 0;  // Set elevation to a sensible value.
+                                    }
                                     rows.add(new DataRow(counter, date, time, heartRate, latitude, longitude, elevation));   //add the data to a new ActivityRawData element
                                 } else {
                                     warning = true;
-                                    System.out.println(latitude);
-                                    System.out.println(longitude);
                                 }
 
                             } catch (Exception e) {
@@ -100,25 +107,25 @@ public class FileParser {
         return validActivities;
     }
 
-    public static void main(String[] args) {
-        String filename = "seng202_2018_example_data.csv";  //example file for testing purposes
-        FileParser fileParser = new FileParser();
-        ArrayList<Activity> validActivities = new ArrayList<>(); // Creates a list of all activities parsed in the file
-        ArrayList<Activity> warningActivities = new ArrayList<>();
-        ArrayList<Activity> skippedActivities = new ArrayList<>();
-        ArrayList<DataRow> rows = new ArrayList<>();
-        try {
-            fileParser.parseFileToActivites(new File(filename), validActivities, warningActivities, skippedActivities);
-        } catch (IOException e) {
-
-        }
-
-
-        for(Activity oneActivity : validActivities) {     //print out each activity's name. Purely for testing purposes
-            System.out.println(oneActivity.getName());
-            System.out.println(oneActivity.getRawData().size());
-            System.out.println(oneActivity.getStartTime());
-        }
-    }
+//    public static void main(String[] args) {
+//        String filename = "seng202_2018_example_data.csv";  //example file for testing purposes
+//        FileParser fileParser = new FileParser();
+//        ArrayList<Activity> validActivities = new ArrayList<>(); // Creates a list of all activities parsed in the file
+//        ArrayList<Activity> warningActivities = new ArrayList<>();
+//        ArrayList<Activity> skippedActivities = new ArrayList<>();
+//        ArrayList<DataRow> rows = new ArrayList<>();
+//        try {
+//            fileParser.parseFileToActivites(new File(filename), validActivities, warningActivities, skippedActivities);
+//        } catch (IOException e) {
+//
+//        }
+//
+//
+//        for(Activity oneActivity : validActivities) {     //print out each activity's name. Purely for testing purposes
+//            System.out.println(oneActivity.getName());
+//            System.out.println(oneActivity.getRawData().size());
+//            System.out.println(oneActivity.getStartTime());
+//        }
+//    }
 
 }
