@@ -164,6 +164,7 @@ public class RawDataViewerController extends Controller {
      */
     public void updateDataRows() {
         ObservableList<DataRow> dataList = FXCollections.observableArrayList(activity.getRawData());
+        //System.out.println(activity.getRawData());
 
         dateColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalDate>("date"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalTime>("time"));
@@ -207,6 +208,7 @@ public class RawDataViewerController extends Controller {
             dataRowTable.getSelectionModel().getSelectedItem().setLatitude(Double.parseDouble(latitudeTextField.getText()));
             dataRowTable.getSelectionModel().getSelectedItem().setLongitude(Double.parseDouble(longitudeTextField.getText()));
             dataRowTable.getSelectionModel().getSelectedItem().setElevation(Double.parseDouble(elevationTextField.getText()));
+            // Sort the raw data to account for changes to
             displayPopUp();
         } catch (java.sql.SQLException e) {
             GuiUtilities.displayErrorMessage("One of your edits was outside of the accepted range.", e.getMessage());

@@ -108,6 +108,8 @@ public class DataRow implements Comparable<DataRow> {
     public void setDate(String date)throws SQLException {
         DataUpdater.updateDataRows(Collections.singletonList(this), DataRowFields.rowDate.toString(), date);
         this.date = LocalDate.parse(date);
+        // Sort the raw data which this row belongs to as its order within the list may have changed
+        Collections.sort(owner.getRawData());
     }
 
     public LocalTime getTime() {
@@ -117,6 +119,8 @@ public class DataRow implements Comparable<DataRow> {
     public void setTime(String time) throws SQLException {
         DataUpdater.updateDataRows(Collections.singletonList(this), DataRowFields.time.toString(), time);
         this.time = LocalTime.parse(time);
+        // Sort the raw data which this row belongs to as its order within the list may have changed
+        Collections.sort(owner.getRawData());
     }
 
     public int getHeartRate() {
