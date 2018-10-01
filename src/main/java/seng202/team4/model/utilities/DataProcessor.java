@@ -5,9 +5,7 @@ import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 public class DataProcessor {
@@ -32,7 +30,6 @@ public class DataProcessor {
             double horizDistance = haversineCalculation(earthRadius, lat1, lat2, long1, long2);
             totalDistance += Math.sqrt(Math.pow(horizDistance, 2) + Math.pow(vertDistance, 2));
             i++;
-
         }
         return totalDistance;
     }

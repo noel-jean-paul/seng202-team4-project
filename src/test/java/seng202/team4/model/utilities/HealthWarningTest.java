@@ -10,7 +10,7 @@ import seng202.team4.model.data.enums.WarningType;
 import java.time.Month;
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 public class HealthWarningTest {
 
@@ -37,8 +37,18 @@ public class HealthWarningTest {
         noIssuesRunning.add(new DataRow(0, "2015-04-12", "22:09:41", 143, 30.24915, -97.820722, 206.8));
 
 
+        ArrayList<DataRow> noIssuesOther = new ArrayList<>();
+        noIssuesOther.add(new DataRow(0,"2015-01-01", "14:49:18", 155, 30.27140097, -97.83250907, 181.8));
+        noIssuesOther.add(new DataRow(0,"2015-01-01", "14:49:31", 160, 30.2713112, -97.83239139, 181.8));
+        noIssuesOther.add(new DataRow(0,"2015-01-01", "14:50:42", 161, 30.27114474, -97.83244051, 182.3));
+        noIssuesOther.add(new DataRow(0,"2015-01-01", "14:50:50", 165, 30.27101104, -97.83245644, 180.9));
+        noIssuesOther.add(new DataRow(0,"2015-01-01", "14:50:55", 168, 30.27094273, -97.83243976, 180.4));
+        noIssuesOther.add(new DataRow(0,"2015-01-01", "14:51:05", 168, 30.2707476, -97.83242081, 175.1));
+
+
         activityList.add(new Activity("Walk in the woods", noIssueWalking));
         activityList.add(new Activity("Run around the block", noIssuesRunning));
+        activityList.add(new Activity("Exercise with friends", noIssuesOther));
 
         testProfile.addAllActivities(activityList);
     }
@@ -68,27 +78,29 @@ public class HealthWarningTest {
     }
 
     @Test
-    public void noWarningsWalking() {
-        Activity testedActivity = testProfile.getActivityList().get(0);
+    public void noWarningsWalking() { // Walk in the woods is in position 1 after sorting.
+        Activity testedActivity = testProfile.getActivityList().get(1);
         HealthWarning tachyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Tachy, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
         HealthWarning bradyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Brady, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
-        HealthWarning cardioWarning = new HealthWarning(testedActivity, testProfile, WarningType.Cardiovascular, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
-        boolean hasHealthRisks = (tachyWarning.isHealthRisk() || bradyWarning.isHealthRisk() || cardioWarning.isHealthRisk());
+        boolean hasHealthRisks = (tachyWarning.isHealthRisk() || bradyWarning.isHealthRisk());
         assertFalse(hasHealthRisks);
     }
 
     @Test
-    public void noWarningsRunning() {
-        Activity testedActivity = testProfile.getActivityList().get(1);
+    public void noWarningsRunning() { // Run around the block is in position 0 after sorting.
+        Activity testedActivity = testProfile.getActivityList().get(2);
         HealthWarning tachyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Tachy, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
         HealthWarning bradyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Brady, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
-        HealthWarning cardioWarning = new HealthWarning(testedActivity, testProfile, WarningType.Cardiovascular, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
-        boolean hasHealthRisks = (tachyWarning.isHealthRisk() || bradyWarning.isHealthRisk() || cardioWarning.isHealthRisk());
+        boolean hasHealthRisks = (tachyWarning.isHealthRisk() || bradyWarning.isHealthRisk());
         assertFalse(hasHealthRisks);
     }
 
     @Test
     public void noWarningsOther() {
-
+        Activity testedActivity = testProfile.getActivityList().get(0); // Exercise with friends is in position 0 after sorting.
+        HealthWarning tachyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Tachy, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
+        HealthWarning bradyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Brady, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
+        boolean hasHealthRisks = (tachyWarning.isHealthRisk() || bradyWarning.isHealthRisk());
+        assertFalse(hasHealthRisks);
     }
 }
