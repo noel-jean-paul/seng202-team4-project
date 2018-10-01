@@ -61,6 +61,31 @@ public class RawDataViewerController extends Controller {
     @FXML
     private Text dataTableTitleText;
 
+    /**The date picker which displays the selected date */
+    @FXML
+    private DatePicker dateDatePicker;
+
+    /**The text field which displays the selected time */
+    @FXML
+    private TextField timeTextField;
+
+    /**The text field which displays the selected heart rate */
+    @FXML
+    private TextField heartRateTextField;
+
+    /**The text field which displays the selected latitude */
+    @FXML
+    private TextField latitudeTextField;
+
+    /**The text field which displays the selected longitude */
+    @FXML
+    private TextField longitudeTextField;
+
+    /**The text field which displays the selected elevation */
+    @FXML
+    private TextField elevationTextField;
+
+
     /** Activity variable, holds the current activity's data */
     private Activity activity;
 
@@ -82,6 +107,18 @@ public class RawDataViewerController extends Controller {
         dataTableTitleText.setText("Data Rows for " + activity.getName());
         dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
         updateDataRows();   //updates the table
+
+        //checks to see if a data row has been selected
+        dataRowTable.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                dateDatePicker.setValue(newSelection.getDate());
+                timeTextField.setText(newSelection.getTime().toString());
+                heartRateTextField.setText(Integer.toString(newSelection.getHeartRate()));
+                latitudeTextField.setText((Double.toString(newSelection.getLatitude())));
+                longitudeTextField.setText((Double.toString(newSelection.getLongitude())));
+                elevationTextField.setText((Double.toString(newSelection.getElevation())));
+            }
+        });
         ContextMenu dataTableRowMenu = new ContextMenu();
 
         MenuItem deleteDataRowItem = new MenuItem("Delete Row");
@@ -139,6 +176,22 @@ public class RawDataViewerController extends Controller {
         dataRowTable.setItems(dataList);
     }
 
+
+    /**
+     * Auto fills all the edit boxes, which the user can then edit if they wish
+     */
+    public void fillEditBoxes() {
+        System.out.println(dataRowTable.getSelectionModel().getSelectedItem());
+    }
+
+
+    /**
+     * All edits made by the user are applied to the raw data rows
+     */
+    @FXML
+    void applyEdits() {
+
+    }
 
     /**
      * The function which closes the popup
