@@ -240,12 +240,18 @@ public class Goal implements Comparable<Goal> {
      * @return a description of the goal as a String.
      */
     private static String generateDescription(Goal goal) {
-        String description;
+        String description = "";
 
-        if (goal.getGoalDistance() > 0) {
-            description = String.format("%s %f meters", goal.getType().toString(), goal.getGoalDistance());
-        } else {
-            description = String.format("%s for %s", goal.getType().toString(), goal.getGoalDuration());
+        if (goal.isDistanceGoal()) {
+            description = String.format("%s %.0f meters", goal.getType().toString(),
+                    goal.getGoalDistance() * 1000);    // Convert kms to meters
+        } else if (goal.isDurationGoal()) {
+            description = String.format("%s for %d hours and %d minutes",
+                    goal.getType().toString(), goal.getGoalDuration().toHours(),
+                    goal.getGoalDuration().toMinutes() - goal.getGoalDuration().toHours() * 60);    // toMinutes() includes the hours as well
+        } else if (goal.isCaloriesGoal()) {
+            description = String.format("Burn %s calories while %sning",
+                    goal.getCaloriesBurned(), goal.getType().toString().toLowerCase());
         }
         return description;
     }

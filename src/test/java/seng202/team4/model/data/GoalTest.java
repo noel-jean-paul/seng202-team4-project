@@ -20,6 +20,8 @@ public class GoalTest {
     private Profile loadedProfile;
     private static Goal goal1;
     private static Goal goal2;
+    private String expectedDescription;
+    private String description;
 
     @BeforeClass
     public static void setUp() throws SQLException {
@@ -166,5 +168,38 @@ public class GoalTest {
         double originalProgress = goal.getProgress();
         goal.incrementProgress(100);
         assertEquals(100, goal.getProgress(), 0.001);
+    }
+
+    @Test
+    public void generateDescription_distanceGoal() {
+        Goal goal = new Goal(2, 99, GoalType.Run,"2018-09-28", "2017-01-12",
+                14.0);
+        description = goal.getDescription();
+
+        expectedDescription = "Run 14000 meters";
+
+        assertEquals(expectedDescription, description);
+    }
+
+    @Test
+    public void generateDescription_durationGoal() {
+        Goal goal = new Goal(2, 99, GoalType.Walk,"2018-09-28", "2017-01-12",
+                "PT2H40M");
+        description = goal.getDescription();
+
+        expectedDescription = "Walk for 2 hours and 40 minutes";
+
+        assertEquals(expectedDescription, description);
+    }
+
+    @Test
+    public void generateDescription_caloriesGoal() {
+        Goal goal = new Goal(2, 99, GoalType.Run, "2018-09-28", "2017-01-12",
+                400);
+        description = goal.getDescription();
+
+        expectedDescription = "Burn 400 calories while running";
+
+        assertEquals(expectedDescription, description);
     }
 }
