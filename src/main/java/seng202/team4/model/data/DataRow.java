@@ -81,7 +81,15 @@ public class DataRow implements Comparable<DataRow> {
      */
     @Override
     public int compareTo(DataRow o) {
-        return Integer.compare(this.getNumber(), o.getNumber()) * -1 ;
+        int dateCompare;
+        int timeCompare;
+        if ((dateCompare = this.getDate().compareTo(o.getDate())) != 0) {
+            return dateCompare * -1;  // Reverse order to descending
+        } else if ((timeCompare = this.getTime().compareTo(o.getTime())) != 0) {
+            return timeCompare * -1;   // Reverse order to descending
+        } else {
+            return 0;  // Same date and startTime
+        }
     }
 
     public int getNumber() {

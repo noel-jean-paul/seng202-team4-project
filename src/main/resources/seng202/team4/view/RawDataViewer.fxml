@@ -86,7 +86,7 @@
                   <TextField fx:id="timeTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
             </GridPane>
-            <Button fx:id="applyEditsButton" mnemonicParsing="false" onAction="#applyEdits" text="Apply Edits" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+            <Button fx:id="applyEditsButton" mnemonicParsing="false" onAction="#applyEdits" text="Apply changes" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </children>

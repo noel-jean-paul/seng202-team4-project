@@ -29,7 +29,7 @@ public class DataRowTest {
         activity1 = new Activity("Run in the park", "2000-12-12", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
-        row1 = new DataRow(1, "2018-09-28", "12:21:12", 164, 50, 50,
+        row1 = new DataRow(1, "2017-09-28", "12:21:12", 164, 50, 50,
                 50);
         row2 = new DataRow(2, "2018-09-28", "12:21:12", 164, 50, 50,
                 50);
@@ -59,23 +59,50 @@ public class DataRowTest {
     }
 
     @Test
-    public void compareTo_differentNumber_checkComesBefore() throws SQLException {
-        row1.setNumber(3);
-        row2.setNumber(4);
-        assert row1.compareTo(row2) > 0;
+    public void compareTo_differentDate_checkComesAfter() throws SQLException {
+        row1.setDate("2017-05-05");
+        row2.setDate("2018-05-05");
+        assert row1.compareTo(row2) > 0;    // row 2 comes after row 1
     }
 
     @Test
-    public void compareTo__differentNumber_checkComesAfter() throws SQLException {
-        row1.setNumber(3);
-        row2.setNumber(4);
-        assert row2.compareTo(row1) < 0;
+    public void compareTo__differentDate_checkComesBefore() throws SQLException {
+        row1.setDate("2018-05-05");
+        row2.setDate("2017-05-05");
+        assert row1.compareTo(row2) < 0;    // Row 2 comes before row 1
     }
 
     @Test
-    public void compareTo_sameNumber() throws SQLException {
-        row1.setNumber(1);
-        row2.setNumber(1);
+    public void compareTo_SameDate__differentTime_checkComesAfter() throws SQLException {
+        row1.setDate("2018-05-05");
+        row2.setDate("2018-05-05");
+
+        row1.setTime("12:21:12");
+        row2.setTime("12:21:13");
+
+        assert row1.compareTo(row2) > 0;    // row 2 comes after row 1
+    }
+
+    @Test
+    public void compareTo__SameDate__differentTime_checkComesBefore() throws SQLException {
+        row1.setDate("2018-05-05");
+        row2.setDate("2018-05-05");
+
+        row1.setTime("12:21:12");
+        row2.setTime("12:21:11");
+
+        assert row1.compareTo(row2) < 0;    // Row 2 comes before row 1
+    }
+
+
+    @Test
+    public void compareTo_sameDate_SameTime() throws SQLException {
+        row1.setDate("2018-05-05");
+        row2.setDate("2018-05-05");
+
+        row1.setTime("12:21:12");
+        row2.setTime("12:21:12");
+
         assert row1.compareTo(row2) == 0;
     }
 
