@@ -2,6 +2,7 @@ package seng202.team4.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
@@ -79,7 +80,10 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         }
         activityTabController.updateTable();
         if (warningFound) {
-            // TODO warning popup - Kenny
+
+            HealthWarningDetectedPopup detectedPopup = new HealthWarningDetectedPopup(applicationStateManager);
+            Pane popUp = GuiUtilities.loadPane("WarningDetectedPopup.fxml", detectedPopup);
+            applicationStateManager.displayPopUp(popUp);
         }
 
     }
