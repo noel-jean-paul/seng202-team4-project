@@ -29,6 +29,7 @@ public class ActivityTest {
     private static DataRow row1;
     private static DataRow row2;
     private static DataRow row3;
+    private static List<DataRow> expectedRows;
 
     @BeforeClass
     public static void setUp() throws SQLException {
@@ -56,6 +57,8 @@ public class ActivityTest {
                 178.4352, 203);
         row3 = new DataRow(3, "2018-07-18", "14:02:30", 182, -87.01902489,
                 178.4352, 203);
+
+        expectedRows = new ArrayList<>(Arrays.asList(row1, row2, row3));
     }
 
     @AfterClass
@@ -125,11 +128,10 @@ public class ActivityTest {
     @Test
     public void addDataRow_checkRawData() throws SQLException {
         activity1.addDataRow(row3);
-        activity1.addDataRow(row2);
         activity1.addDataRow(row1);
+        activity1.addDataRow(row2);
 
-        List<DataRow> expected = new ArrayList<>(Arrays.asList(row3, row2, row1));
-        assertEquals(expected, activity1.getRawData());
+        assertEquals(expectedRows, activity1.getRawData());
     }
 
     @Test
@@ -159,9 +161,6 @@ public class ActivityTest {
 
         // Add rows to the activity rawData
         activity1.addAllDataRows(rows);
-
-        // Create expected list
-        List<DataRow> expectedRows = new ArrayList<>(Arrays.asList(row3, row2, row1));
 
         assertEquals(expectedRows, activity1.getRawData());
     }

@@ -129,7 +129,7 @@ public class RawDataViewerController extends Controller {
             } catch (java.sql.SQLException e){
                 GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
                 e.printStackTrace();
-                System.out.println("Could not remove data row from the data base.");
+                System.out.println("Could not remove data row from the database.");
             }
         });
 
@@ -164,7 +164,6 @@ public class RawDataViewerController extends Controller {
      */
     public void updateDataRows() {
         ObservableList<DataRow> dataList = FXCollections.observableArrayList(activity.getRawData());
-        Collections.reverse(dataList); //reverses the list to ensure the data is displayed in the correct order in the table
 
         dateColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalDate>("date"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalTime>("time"));

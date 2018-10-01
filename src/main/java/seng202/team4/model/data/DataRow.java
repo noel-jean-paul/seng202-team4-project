@@ -84,9 +84,9 @@ public class DataRow implements Comparable<DataRow> {
         int dateCompare;
         int timeCompare;
         if ((dateCompare = this.getDate().compareTo(o.getDate())) != 0) {
-            return dateCompare * -1;  // Reverse order to descending
+            return dateCompare;
         } else if ((timeCompare = this.getTime().compareTo(o.getTime())) != 0) {
-            return timeCompare * -1;   // Reverse order to descending
+            return timeCompare;
         } else {
             return 0;  // Same date and startTime
         }
@@ -165,6 +165,6 @@ public class DataRow implements Comparable<DataRow> {
 
     @Override
     public String toString() {
-        return String.format("%s, %s, %s, %s", number, date, owner.getName(), owner.getOwner().getFirstName());
+        return String.format("(%s, %s)", date, time);
     }
 }

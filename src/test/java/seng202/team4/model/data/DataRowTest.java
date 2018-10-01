@@ -59,39 +59,39 @@ public class DataRowTest {
     }
 
     @Test
-    public void compareTo_differentDate_checkComesAfter() throws SQLException {
+    public void compareTo_differentDate_checkComesBefore() throws SQLException {
         row1.setDate("2017-05-05");
         row2.setDate("2018-05-05");
-        assert row1.compareTo(row2) > 0;    // row 2 comes after row 1
+        assert row1.compareTo(row2) < 0;    // row 2 comes before row 1
     }
 
     @Test
-    public void compareTo__differentDate_checkComesBefore() throws SQLException {
+    public void compareTo__differentDate_checkComesAfter() throws SQLException {
         row1.setDate("2018-05-05");
         row2.setDate("2017-05-05");
-        assert row1.compareTo(row2) < 0;    // Row 2 comes before row 1
+        assert row1.compareTo(row2) > 0;    // Row 2 comes after row 1
     }
 
     @Test
-    public void compareTo_SameDate__differentTime_checkComesAfter() throws SQLException {
+    public void compareTo_SameDate__differentTime_checkComesBefore() throws SQLException {
         row1.setDate("2018-05-05");
         row2.setDate("2018-05-05");
 
         row1.setTime("12:21:12");
         row2.setTime("12:21:13");
 
-        assert row1.compareTo(row2) > 0;    // row 2 comes after row 1
+        assert row1.compareTo(row2) < 0;    // row 2 comes before row 1
     }
 
     @Test
-    public void compareTo__SameDate__differentTime_checkComesBefore() throws SQLException {
+    public void compareTo__SameDate__differentTime_checkComesAfter() throws SQLException {
         row1.setDate("2018-05-05");
         row2.setDate("2018-05-05");
 
         row1.setTime("12:21:12");
         row2.setTime("12:21:11");
 
-        assert row1.compareTo(row2) < 0;    // Row 2 comes before row 1
+        assert row1.compareTo(row2) > 0;    // Row 2 comes after row 1
     }
 
 
