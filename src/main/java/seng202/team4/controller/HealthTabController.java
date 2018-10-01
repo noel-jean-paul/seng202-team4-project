@@ -1,5 +1,6 @@
 package seng202.team4.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,7 +10,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import jdk.nashorn.internal.runtime.regexp.joni.Warnings;
 import seng202.team4.App;
 import seng202.team4.Utilities;
 import seng202.team4.model.data.enums.WarningType;
@@ -37,6 +37,12 @@ public class HealthTabController extends Controller {
 
     @FXML
     private WebView webBrowser;
+
+    @FXML
+    private Button backButton;
+
+    @FXML
+    private Button forwardButton;
 
     @FXML
     private Button viewInfoButton;
@@ -140,6 +146,21 @@ public class HealthTabController extends Controller {
     @FXML
     void webViewReturn() {
         engine.load(currentUrl);
+    }
+
+
+    @FXML
+    void webViewForward() {
+        Platform.runLater(() -> {
+            engine.executeScript("history.forward()");
+        });
+    }
+
+    @FXML
+    void webViewBack() {
+        Platform.runLater(() -> {
+            engine.executeScript("history.back()");
+        });
     }
 
     private WebEngine engine;
