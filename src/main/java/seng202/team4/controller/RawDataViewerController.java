@@ -87,6 +87,9 @@ public class RawDataViewerController extends Controller {
     @FXML
     private TextField elevationTextField;
 
+    /** The button which when clicked applies any edits made to the data */
+    @FXML
+    private Button applyEditsButton;
 
     /** Activity variable, holds the current activity's data */
     private Activity activity;
@@ -111,6 +114,7 @@ public class RawDataViewerController extends Controller {
 
 
     public void displayPopUp() {
+        applyEditsButton.setDisable(true);
         dataTableTitleText.setText("Data Rows for " + activity.getName());
         dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
         updateDataRows();   //updates the table
@@ -180,6 +184,7 @@ public class RawDataViewerController extends Controller {
     public void fillEditBoxes() {
         dataRowTable.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
             if (newSelection != null) {
+                applyEditsButton.setDisable(false);
                 dateDatePicker.setValue(newSelection.getDate());
                 timeTextField.setText(newSelection.getTime().toString());
                 heartRateTextField.setText(Integer.toString(newSelection.getHeartRate()));
