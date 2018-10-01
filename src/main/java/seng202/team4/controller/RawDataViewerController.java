@@ -15,8 +15,10 @@ import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -104,21 +106,16 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     public void initialize() {
+        displayPopUp();
+    }
+
+
+    public void displayPopUp() {
         dataTableTitleText.setText("Data Rows for " + activity.getName());
         dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
         updateDataRows();   //updates the table
+        fillEditBoxes();
 
-        //checks to see if a data row has been selected
-        dataRowTable.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                dateDatePicker.setValue(newSelection.getDate());
-                timeTextField.setText(newSelection.getTime().toString());
-                heartRateTextField.setText(Integer.toString(newSelection.getHeartRate()));
-                latitudeTextField.setText((Double.toString(newSelection.getLatitude())));
-                longitudeTextField.setText((Double.toString(newSelection.getLongitude())));
-                elevationTextField.setText((Double.toString(newSelection.getElevation())));
-            }
-        });
         ContextMenu dataTableRowMenu = new ContextMenu();
 
         MenuItem deleteDataRowItem = new MenuItem("Delete Row");
@@ -181,22 +178,42 @@ public class RawDataViewerController extends Controller {
      * Auto fills all the edit boxes, which the user can then edit if they wish
      */
     public void fillEditBoxes() {
-        System.out.println(dataRowTable.getSelectionModel().getSelectedItem());
+        dataRowTable.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                dateDatePicker.setValue(newSelection.getDate());
+                timeTextField.setText(newSelection.getTime().toString());
+                heartRateTextField.setText(Integer.toString(newSelection.getHeartRate()));
+                latitudeTextField.setText((Double.toString(newSelection.getLatitude())));
+                longitudeTextField.setText((Double.toString(newSelection.getLongitude())));
+                elevationTextField.setText((Double.toString(newSelection.getElevation())));
+            }
+        });
     }
 
 
     /**
-     * All edits made by the user are applied to the raw data rows
+     * All edits made by the user are applied to the raw data row
      */
     @FXML
-    void applyEdits() {
-
+    public void applyEdits() throws SQLException {
+        try {
+            String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            dataRowTable.getSelectionModel().getSelectedItem().setDate(date);
+            dataRowTable.getSelectionModel().getSelectedItem().setTime(timeTextField.getText());
+            dataRowTable.getSelectionModel().getSelectedItem().setHeartRate(Integer.parseInt(heartRateTextField.getText()));
+            dataRowTable.getSelectionModel().getSelectedItem().setLatitude(Double.parseDouble(latitudeTextField.getText()));
+            dataRowTable.getSelectionModel().getSelectedItem().setLongitude(Double.parseDouble(longitudeTextField.getText()));
+            dataRowTable.getSelectionModel().getSelectedItem().setElevation(Double.parseDouble(elevationTextField.getText()));
+            displayPopUp();
+        } catch (java.sql.SQLException e) {
+            GuiUtilities.displayErrorMessage("One of your edits was outside of the accepted range.", e.getMessage());
+        }
     }
+
 
     /**
      * The function which closes the popup
      */
-
     @FXML
     void closePopUp() {
         applicationStateManager.closePopUP(popupPane);
