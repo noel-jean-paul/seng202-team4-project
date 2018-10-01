@@ -15,8 +15,10 @@ import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -61,6 +63,34 @@ public class RawDataViewerController extends Controller {
     @FXML
     private Text dataTableTitleText;
 
+    /**The date picker which displays the selected date */
+    @FXML
+    private DatePicker dateDatePicker;
+
+    /**The text field which displays the selected time */
+    @FXML
+    private TextField timeTextField;
+
+    /**The text field which displays the selected heart rate */
+    @FXML
+    private TextField heartRateTextField;
+
+    /**The text field which displays the selected latitude */
+    @FXML
+    private TextField latitudeTextField;
+
+    /**The text field which displays the selected longitude */
+    @FXML
+    private TextField longitudeTextField;
+
+    /**The text field which displays the selected elevation */
+    @FXML
+    private TextField elevationTextField;
+
+    /** The button which when clicked applies any edits made to the data */
+    @FXML
+    private Button applyEditsButton;
+
     /** Activity variable, holds the current activity's data */
     private Activity activity;
 
@@ -79,9 +109,17 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     public void initialize() {
+        displayPopUp();
+    }
+
+
+    public void displayPopUp() {
+        applyEditsButton.setDisable(true);
         dataTableTitleText.setText("Data Rows for " + activity.getName());
         dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
         updateDataRows();   //updates the table
+        fillEditBoxes();
+
         ContextMenu dataTableRowMenu = new ContextMenu();
 
         MenuItem deleteDataRowItem = new MenuItem("Delete Row");
@@ -141,9 +179,46 @@ public class RawDataViewerController extends Controller {
 
 
     /**
+     * Auto fills all the edit boxes, which the user can then edit if they wish
+     */
+    public void fillEditBoxes() {
+        dataRowTable.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                applyEditsButton.setDisable(false);
+                dateDatePicker.setValue(newSelection.getDate());
+                timeTextField.setText(newSelection.getTime().toString());
+                heartRateTextField.setText(Integer.toString(newSelection.getHeartRate()));
+                latitudeTextField.setText((Double.toString(newSelection.getLatitude())));
+                longitudeTextField.setText((Double.toString(newSelection.getLongitude())));
+                elevationTextField.setText((Double.toString(newSelection.getElevation())));
+            }
+        });
+    }
+
+
+    /**
+     * All edits made by the user are applied to the raw data row
+     */
+    @FXML
+    public void applyEdits() throws SQLException {
+        try {
+            String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            dataRowTable.getSelectionModel().getSelectedItem().setDate(date);
+            dataRowTable.getSelectionModel().getSelectedItem().setTime(timeTextField.getText());
+            dataRowTable.getSelectionModel().getSelectedItem().setHeartRate(Integer.parseInt(heartRateTextField.getText()));
+            dataRowTable.getSelectionModel().getSelectedItem().setLatitude(Double.parseDouble(latitudeTextField.getText()));
+            dataRowTable.getSelectionModel().getSelectedItem().setLongitude(Double.parseDouble(longitudeTextField.getText()));
+            dataRowTable.getSelectionModel().getSelectedItem().setElevation(Double.parseDouble(elevationTextField.getText()));
+            displayPopUp();
+        } catch (java.sql.SQLException e) {
+            GuiUtilities.displayErrorMessage("One of your edits was outside of the accepted range.", e.getMessage());
+        }
+    }
+
+
+    /**
      * The function which closes the popup
      */
-
     @FXML
     void closePopUp() {
         applicationStateManager.closePopUP(popupPane);
