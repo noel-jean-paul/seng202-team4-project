@@ -35,7 +35,7 @@
                   <Button mnemonicParsing="false" onAction="#close" text="Close" />
                </children>
             </VBox>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
                </GridPane.margin>
