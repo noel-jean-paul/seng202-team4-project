@@ -86,6 +86,7 @@ public class App extends Application {
         primaryStage.setTitle("Step by Step");
         primaryStage.getIcons().add(new Image(App.class.getResource("images/footprints.png").toString()));
         primaryStage.setScene(baseScene);
+        baseScene.getStylesheets().add(App.class.getResource("view/TabViewStyle.css").toExternalForm());
         primaryStage.show();
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
