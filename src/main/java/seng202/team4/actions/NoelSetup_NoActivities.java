@@ -1,6 +1,5 @@
 package seng202.team4.actions;
 
-import seng202.team4.App;
 import seng202.team4.model.data.Profile;
 import seng202.team4.model.database.DataAccesser;
 import seng202.team4.model.database.DataStorer;

@@ -6,7 +6,6 @@ import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ProfileFields;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
@@ -38,7 +37,7 @@ public abstract class DataUpdater extends DataAccesser {
             updateActivities(profile.getActivityList(), field, value, true);
 
             // Update the goals
-            updateGoals(profile.getGoalList(), field, value);
+            updateGoals(profile.getCurrentGoals(), field, value);
         }
 
         // Cleanup

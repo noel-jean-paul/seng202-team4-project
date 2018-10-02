@@ -1,4 +1,5 @@
 package seng202.team4.model.data;
+
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.enums.ProfileFields;
 import seng202.team4.model.database.DataLoader;
@@ -6,7 +7,6 @@ import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;
 import seng202.team4.model.utilities.HealthWarning;
 
-import java.sql.Array;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
@@ -24,7 +24,7 @@ public class Profile {
     public static final double MAX_HEIGHT = 3.0;
     public static final double MIN_WEIGHT = 10;
     public static final double MIN_HEIGHT = 0.5;
-    public static final String DEFAULT_URL = "/images/default-profile-icon.png";
+    private static final String DEFAULT_URL = "/images/default-profile-icon.png";
 
     public static final LocalDate MIN_DOB = LocalDate.parse("1900-01-01");
 
@@ -35,7 +35,8 @@ public class Profile {
     private double height;
     private String pictureURL;
     private List<Activity> activityList;    // sorted collection - use addActivity to update
-    private List<Goal> goalList;    // sorted collection - use addGoal to update
+    private List<Goal> currentGoals;    // sorted collection - use addCurrentGoal to update
+    private List<Goal> pastGoals;
     private List<HealthWarning> warningList;    // sorted collection - use addWarning to update
 
     /**
@@ -52,7 +53,8 @@ public class Profile {
         this.dateOfBirth = LocalDate.parse(dateOfBirth);
         this.weight = weight;
         this.height = height;
-        this.goalList = new ArrayList<>();
+        this.currentGoals = new ArrayList<>();
+        this.pastGoals = new ArrayList<>();
         this.activityList = new ArrayList<>();
         this.warningList = new ArrayList<>();
         this.pictureURL = Profile.DEFAULT_URL;
@@ -89,7 +91,7 @@ public class Profile {
         this.dateOfBirth = LocalDate.of(year, month, day);
         this.weight = weight;
         this.height = height;
-        goalList = new ArrayList<>();
+        currentGoals = new ArrayList<>();
         activityList = new ArrayList<>();
     }
 
@@ -105,13 +107,13 @@ public class Profile {
                 Objects.equals(getDateOfBirth(), profile.getDateOfBirth()) &&
                 Objects.equals(getPictureURL(), profile.getPictureURL()) &&
                 Objects.equals(getActivityList(), profile.getActivityList()) &&
-                Objects.equals(getGoalList(), profile.getGoalList()) &&
+                Objects.equals(getCurrentGoals(), profile.getCurrentGoals()) &&
                 Objects.equals(getWarningList(), profile.getWarningList());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getFirstName(), getLastName(), getDateOfBirth(), getWeight(), getHeight(), getActivityList(), getGoalList());
+        return Objects.hash(getFirstName(), getLastName(), getDateOfBirth(), getWeight(), getHeight(), getActivityList(), getCurrentGoals());
     }
 
     public String getFirstName() {
@@ -168,8 +170,12 @@ public class Profile {
         return activityList;
     }
 
-    public List<Goal> getGoalList() {
-        return goalList;
+    public List<Goal> getCurrentGoals() {
+        return currentGoals;
+    }
+
+    public List<Goal> getPastGoals() {
+        return pastGoals;
     }
 
     /**
@@ -285,29 +291,68 @@ public class Profile {
         java.util.Collections.sort(activityList);
     }
 
-    /** Add a goal to the goal list in order and insert it into the database
+    /** Add a goal to the current goal list in order and insert it into the database
      *
      * @param goal the Goal to be added
      */
-    public void addGoal(Goal goal) throws SQLException {
-        goalList.add(goal);
-        java.util.Collections.sort(goalList);
+    public void addCurrentGoal(Goal goal) throws SQLException {
+        currentGoals.add(goal);
+        goal.setCurrent(true);  // In case the goal was moved back from past goals
+        java.util.Collections.sort(currentGoals);
         // Set this as the activity owner
         goal.setOwner(this);
 
         DataStorer.insertGoal(goal, this);
     }
 
-    /** Adds all goals of the specified collection to the goalList and sorts the goalList
+    /** Add a goal to the past goal list in order and insert it into the database
+     *
+     * @param goal the Goal to be added
+     */
+    public void addPastGoal(Goal goal) throws SQLException {
+        addPastGoal(goal, true);
+    }
+
+    /** Add a goal to the past goal list in order and insert it into the database if insert is true
+     *
+     * @param goal the Goal to be added
+     * @param insert the flag determining whether the goal should be inserted into the database or not
+     */
+    private void addPastGoal(Goal goal, boolean insert) throws SQLException {
+        pastGoals.add(goal);
+        goal.setCurrent(false); // The goal is no longer current if it is in the past goals
+        java.util.Collections.sort(currentGoals);
+        // Set this as the activity owner
+        goal.setOwner(this);
+
+        if (insert) {
+            DataStorer.insertGoal(goal, this);
+        }
+    }
+
+    /** Adds all goals of the specified collection to the currentGoals and sorts the currentGoals
      *  Intended for use by DataLoader only
      *  WARNING: DOES NOT STORE IN THE DATABASE OR SET OWNER
      *
      * @param goals the collection to be added
      */
-    public void addAllGoals(Collection<Goal> goals) {
-        goalList.addAll(goals);
-        java.util.Collections.sort(goalList);
+    public void addAllCurrentGoals(Collection<Goal> goals) {
+        currentGoals.addAll(goals);
+        java.util.Collections.sort(currentGoals);
     }
+
+    /** Adds all goals of the specified collection to the pastGoals and sorts the pastGoals
+     *  Intended for use by DataLoader only
+     *  WARNING: DOES NOT STORE IN THE DATABASE OR SET OWNER
+     *
+     * @param goals the collection to be added
+     */
+    public void addAllPastGoals(Collection<Goal> goals) {
+        pastGoals.addAll(goals);
+        java.util.Collections.sort(pastGoals);
+    }
+
+
 
     /** Remove the activity from the activityList and the database
      *
@@ -318,14 +363,43 @@ public class Profile {
         DataStorer.deleteActivities(new ArrayList<>(Collections.singletonList(activity)));
     }
 
-    /** Remove the goal from the goalList and the database
+    /** Remove the goal from the currentGoals and the database
      *
      * @param goal the goal to be removed
      */
-    public void removeGoal(Goal goal) throws SQLException {
-        goalList.remove(goal);
-        DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
+    public void removeCurrentGoal(Goal goal) throws SQLException {
+        removeCurrentGoal(goal, true);
     }
+
+    /** Remove the goal from the currentGoals and from the database if the delete flag is true
+     *
+     * @param goal the goal to be removed
+     */
+    private void removeCurrentGoal(Goal goal, boolean delete) throws SQLException {
+        currentGoals.remove(goal);
+        if (delete) {
+            DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
+        }
+    }
+
+//    /** Remove the goal from the currentGoals and the database
+//     *
+//     * @param goal the goal to be removed
+//     */
+//    public void removePastGoal(Goal goal) throws SQLException {
+//        removePastGoal(goal, true);
+//    }
+//
+//    /** Remove the goal from the currentGoals and from the database if the delete flag is true
+//     *
+//     * @param goal the goal to be removed
+//     */
+//    private void removePastGoal(Goal goal, boolean delete) throws SQLException {
+//        pastGoals.remove(goal);
+//        if (delete) {
+//            DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
+//        }
+//    }
 
     /**
      * Adds a warning to the user's list of warnings in order and store the warning in the database.
@@ -366,4 +440,52 @@ public class Profile {
             activity.addWarnings(false);
         }
     }
+
+    /* Move any goals in currentGoals which have expired into pastGoal
+     * Should be called before updateGoalsForProgress */
+    public void updateGoalsForExpiry() throws SQLException {
+        // Iterate over a copy of the list as we are modifying the currentGoals as we iterate over them
+        List<Goal> currentGoalsCopy = new ArrayList<>(currentGoals);
+        for (Goal goal: currentGoalsCopy) {
+            if (goal.getExpiryDate().isBefore(LocalDate.now())) {
+                removeCurrentGoal(goal, false);
+                addPastGoal(goal, false);
+            }
+        }
+    }
+
+    /** Update goal progress for current goals with the activities in the collection.
+     *  Should be called after updateGoalsForExpiry.
+     *  Assumes that each goal is one of distance, duration or calories goal
+     *
+     * @param activites the list of activities to update the goals
+     */
+    public void updateGoalsForProgress(Collection<Activity> activites) {
+        for (Goal goal: currentGoals) {
+            for (Activity activity: activites) {
+                // Check the activity is in the correct date range and of the correct type - compare enums by the string
+                if (activity.getDate().isAfter(goal.getCreationDate())
+                        && (activity.getType().toString().equals(goal.getType().toString()))) {
+                    if (goal.isDistanceGoal()) {
+                        // Increment progress
+                        goal.incrementProgress((activity.getDistance() / goal.getGoalDistance()) * 100);
+                    }
+                    else if (goal.isDurationGoal()) {
+                        // Convert from long go double to allow for non-integer division
+                        Double activityDuration = Double.valueOf(Long.toString(activity.getDuration().toMinutes()));
+                        Double goalDuration = Double.valueOf(Long.toString(goal.getGoalDuration().toMinutes()));
+                        // Increment progress
+                        goal.incrementProgress((activityDuration / goalDuration) * 100);
+                    } else if (goal.isCaloriesGoal()) {
+                        // Convert from int to double to allow for non-integer division
+                        Double activityCalories = activity.getCaloriesBurned();
+                        Double goalCalories = (double) goal.getCaloriesBurned();
+                        // Increment progress
+                        goal.incrementProgress((activityCalories / goalCalories) * 100);
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -1,7 +1,6 @@
 package seng202.team4.model.data;
 
 import org.junit.Test;
-import seng202.team4.model.data.ProfileKey;
 
 public class ProfileKeyTest {
     private static ProfileKey key1;
@@ -13,7 +12,7 @@ public class ProfileKeyTest {
         key1 = new ProfileKey("Alfred", "BatKeeper");   // Lower alphabetic first name
         key2 = new ProfileKey("Zeus", "A god");
 
-        assert key1.compareTo(key2) < 0;
+        assert key1.compareTo(key2) > 0;
     }
 
     @Test
@@ -21,7 +20,7 @@ public class ProfileKeyTest {
         key1 = new ProfileKey("Alfred", "BatKeeper");   // Lower alphabetic first name
         key2 = new ProfileKey("Zeus", "A god");
 
-        assert key2.compareTo(key1) > 0;
+        assert key2.compareTo(key1) < 0;
     }
 
     @Test
@@ -29,7 +28,7 @@ public class ProfileKeyTest {
         key1 = new ProfileKey("Alfred", "BatKeeper");   // Earlier aphabetic last name
         key2 = new ProfileKey("Alfred", "Son of Zeus");
 
-        assert key1.compareTo(key2) < 0;
+        assert key1.compareTo(key2) > 0;
     }
 
     @Test
@@ -37,7 +36,7 @@ public class ProfileKeyTest {
         key1 = new ProfileKey("Alfred", "BatKeeper");   // Earlier aphabetic last name
         key2 = new ProfileKey("Alfred", "Son of Zeus");
 
-        assert key2.compareTo(key1) > 0;
+        assert key2.compareTo(key1) < 0;
     }
 
     @Test

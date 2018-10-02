@@ -10,15 +10,18 @@ import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
 
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDate;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class GoalTest {
     private static Profile profile1;
     private Profile loadedProfile;
     private static Goal goal1;
     private static Goal goal2;
+    private String expectedDescription;
+    private String description;
 
     @BeforeClass
     public static void setUp() throws SQLException {
@@ -28,18 +31,18 @@ public class GoalTest {
         profile1 = new Profile("Noel", "Bisson", "1998-03-06", 85.0,
                 1.83);
         goal1 = new Goal(1, 100, GoalType.Run,"2018-09-28", "2017-05-12",
-                20, 50);
+                 "PT50M");
         goal2 = new Goal(2, 100, GoalType.Run,"2018-09-28", "2017-01-12",
-                20, 50);
+                "PT50M");
 
-        // Set owner as addGoal or loadProfile are not called prior to setters
+        // Set owner as addCurrentGoal or loadProfile are not called prior to setters
         goal1.setOwner(profile1);
         goal2.setOwner(profile1);
     }
 
     @Before
     public void setUpReccurring() throws SQLException {
-        profile1.getGoalList().clear();
+        profile1.getCurrentGoals().clear();
         DataAccesser.clearDatabase();
     }
 
@@ -78,18 +81,18 @@ public class GoalTest {
         goal1.setNumber(num);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(num, loadedProfile.getGoalList().get(0).getNumber());
+        assertEquals(num, loadedProfile.getCurrentGoals().get(0).getNumber());
     }
 
     @Test
     public void setProgress() throws SQLException {
-        int progress = 57;
+        double progress = 57;
         DataStorer.insertProfile(profile1);
         DataStorer.insertGoal(goal1, profile1);
         goal1.setProgress(progress);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(progress, loadedProfile.getGoalList().get(0).getProgress(), 0.01);
+        assertEquals(progress, loadedProfile.getCurrentGoals().get(0).getProgress(), 0.01);
     }
 
     @Test
@@ -100,7 +103,7 @@ public class GoalTest {
         goal1.setType(type);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(type, loadedProfile.getGoalList().get(0).getType());
+        assertEquals(type, loadedProfile.getCurrentGoals().get(0).getType());
     }
 
     @Test
@@ -111,7 +114,7 @@ public class GoalTest {
         goal1.setCreationDate(date);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(LocalDate.parse(date), loadedProfile.getGoalList().get(0).getCreationDate());
+        assertEquals(LocalDate.parse(date), loadedProfile.getCurrentGoals().get(0).getCreationDate());
     }
 
     @Test
@@ -122,7 +125,7 @@ public class GoalTest {
         goal1.setExpiryDate(date);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(LocalDate.parse(date), loadedProfile.getGoalList().get(0).getExpiryDate());
+        assertEquals(LocalDate.parse(date), loadedProfile.getCurrentGoals().get(0).getExpiryDate());
     }
 
     @Test
@@ -133,18 +136,7 @@ public class GoalTest {
         goal1.setCompletionDate(date);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(LocalDate.parse(date), loadedProfile.getGoalList().get(0).getCompletionDate());
-    }
-
-    @Test
-    public void setDescription() throws SQLException {
-        String description = "Run 15 km";
-        DataStorer.insertProfile(profile1);
-        DataStorer.insertGoal(goal1, profile1);
-        goal1.setDescription(description);
-        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-
-        assertEquals(description, loadedProfile.getGoalList().get(0).getDescription());
+        assertEquals(LocalDate.parse(date), loadedProfile.getCurrentGoals().get(0).getCompletionDate());
     }
 
     @Test
@@ -155,17 +147,59 @@ public class GoalTest {
         goal1.setGoalDistance(distance);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(distance, loadedProfile.getGoalList().get(0).getGoalDistance(), 0.01);
+        assertEquals(distance, loadedProfile.getCurrentGoals().get(0).getGoalDistance(), 0.01);
     }
 
     @Test
     public void setGoalDuration() throws SQLException {
-        double duration = 65;
+        Duration duration = Duration.parse("PT65M");
         DataStorer.insertProfile(profile1);
         DataStorer.insertGoal(goal1, profile1);
         goal1.setGoalDuration(duration);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(duration, loadedProfile.getGoalList().get(0).getGoalDuration(), 0.01);
+        assertEquals(duration, loadedProfile.getCurrentGoals().get(0).getGoalDuration());
+    }
+
+    @Test
+    public void incrementProgress() {
+        Goal goal = new Goal(2, 99, GoalType.Run,"2018-09-28", "2017-01-12",
+                "PT50M");
+        double originalProgress = goal.getProgress();
+        goal.incrementProgress(100);
+        assertEquals(100, goal.getProgress(), 0.001);
+    }
+
+    @Test
+    public void generateDescription_distanceGoal() {
+        Goal goal = new Goal(2, 99, GoalType.Run,"2018-09-28", "2017-01-12",
+                14.0);
+        description = goal.getDescription();
+
+        expectedDescription = "Run 14000 meters";
+
+        assertEquals(expectedDescription, description);
+    }
+
+    @Test
+    public void generateDescription_durationGoal() {
+        Goal goal = new Goal(2, 99, GoalType.Walk,"2018-09-28", "2017-01-12",
+                "PT2H40M");
+        description = goal.getDescription();
+
+        expectedDescription = "Walk for 2 hours and 40 minutes";
+
+        assertEquals(expectedDescription, description);
+    }
+
+    @Test
+    public void generateDescription_caloriesGoal() {
+        Goal goal = new Goal(2, 99, GoalType.Run, "2018-09-28", "2017-01-12",
+                400);
+        description = goal.getDescription();
+
+        expectedDescription = "Burn 400 calories while running";
+
+        assertEquals(expectedDescription, description);
     }
 }
