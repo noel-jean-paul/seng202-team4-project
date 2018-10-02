@@ -119,24 +119,33 @@ public class ActivityPopUpScreenController extends Controller {
         heartRateGraph.setVisible(false);
         distanceGraph.setVisible(true);
 
-        //Next two lines will need the correct activity parsed in
+
         distanceGraph.setTitle("Distance Travelled During " + activity.getName());
         List<DataRow> dataRow = activity.getRawData();
 
         XYChart.Series set2 = new XYChart.Series<>();
+
+        LocalTime startTime = dataRow.get(0).getTime();
+        long timeMinutes;
+
         if (dataRow.size() > 50) {
             for (int i = 0; i < dataRow.size(); i += 10) {
                 List<DataRow> twoPoints = dataRow.subList(0, i + 1);
                 double distance = seng202.team4.model.utilities.DataProcessor.totalDistance(twoPoints);
-                String strInt = Integer.toString(i);
-                set2.getData().add(new XYChart.Data(strInt, distance));
+
+                timeMinutes = Duration.between(startTime, dataRow.get(i).getTime()).toMinutes();
+                String strLong = Long.toString(timeMinutes);
+
+                set2.getData().add(new XYChart.Data(strLong, distance));
             }
         } else {
             for (int i = 0; i < dataRow.size(); i += 1) {
                 List<DataRow> twoPoints = dataRow.subList(0, i + 1);
                 double distance = seng202.team4.model.utilities.DataProcessor.totalDistance(twoPoints);
-                String strInt = Integer.toString(i);
-                set2.getData().add(new XYChart.Data(strInt, distance));
+                timeMinutes = Duration.between(startTime, dataRow.get(i).getTime()).toMinutes();
+                String strLong = Long.toString(timeMinutes);
+
+                set2.getData().add(new XYChart.Data(strLong, distance));
             }
         }
         distanceGraph.getXAxis().setAnimated(false); //these two lines avoid errors where only the last value in the x axis was loaded
