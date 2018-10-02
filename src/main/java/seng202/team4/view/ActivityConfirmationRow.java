@@ -9,13 +9,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import seng202.team4.App;
 import seng202.team4.controller.ActivityConfirmationRowController;
-import seng202.team4.controller.Controller;
 import seng202.team4.model.data.Activity;
-import seng202.team4.model.data.enums.ActivityType;
-
-import java.sql.SQLException;
-import java.time.Duration;
-import java.time.LocalTime;
 
 /** The confirmation row that is displayed when activities are imported */
 public class ActivityConfirmationRow extends AnchorPane {

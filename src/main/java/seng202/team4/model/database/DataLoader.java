@@ -1,12 +1,12 @@
 package seng202.team4.model.database;
 
-import javafx.scene.chart.XYChart;
 import seng202.team4.model.data.*;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
-import seng202.team4.model.data.ProfileKey;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,7 +99,8 @@ abstract public class DataLoader extends DataAccesser {
      */
     private static void loadProfileGoals(Profile profile) throws SQLException {
         //Initialise list
-        List<Goal> goals = new ArrayList<>();
+        List<Goal> currentGoals = new ArrayList<>();
+        List<Goal> pastGoals = new ArrayList<>();
 
         // Select all activities for the profile
         String select = "SELECT * FROM goal where firstName = (?) and lastName = (?)";
@@ -117,21 +118,27 @@ abstract public class DataLoader extends DataAccesser {
                     set.getInt("goalNumber"),
                     set.getDouble("progress"),
                     GoalType.valueOf(set.getString("type")),
-                    set.getString("description"),
                     set.getString("creationDate"),
                     set.getString("expiryDate"),
                     set.getString("completionDate"),
-                    set.getDouble("goalDuration"),
-                    set.getDouble("goalDistance")
+                    set.getString("goalDuration"),
+                    set.getDouble("goalDistance"),
+                    set.getInt("caloriesBurned"),
+                    Boolean.valueOf(set.getString("current"))
                     );
 
-            goals.add(goal);
-
+            // Add the goal to the relevant list based on whether it is current or not
+            if (goal.isCurrent()) {
+                currentGoals.add(goal);
+            } else {
+                pastGoals.add(goal);
+            }
             // Set the owner of the activity as the profile
             goal.setOwner(profile);
         }
-        // Add all activities to the activity list (without reinserting into the database)
-        profile.addAllGoals(goals);
+        // Add all goals to the goal lists (without reinserting into the database)
+        profile.addAllCurrentGoals(currentGoals);
+        profile.addAllPastGoals(pastGoals);
 
         // Cleanup
         statement.close();

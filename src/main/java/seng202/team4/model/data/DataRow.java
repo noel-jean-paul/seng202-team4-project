@@ -2,7 +2,6 @@ package seng202.team4.model.data;
 
 import seng202.team4.model.data.enums.DataRowFields;
 import seng202.team4.model.database.DataUpdater;
-import sun.text.resources.lt.CollationData_lt;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -82,7 +81,15 @@ public class DataRow implements Comparable<DataRow> {
      */
     @Override
     public int compareTo(DataRow o) {
-        return Integer.compare(this.getNumber(), o.getNumber()) * -1 ;
+        int dateCompare;
+        int timeCompare;
+        if ((dateCompare = this.getDate().compareTo(o.getDate())) != 0) {
+            return dateCompare;
+        } else if ((timeCompare = this.getTime().compareTo(o.getTime())) != 0) {
+            return timeCompare;
+        } else {
+            return 0;  // Same date and startTime
+        }
     }
 
     public int getNumber() {
@@ -101,6 +108,8 @@ public class DataRow implements Comparable<DataRow> {
     public void setDate(String date)throws SQLException {
         DataUpdater.updateDataRows(Collections.singletonList(this), DataRowFields.rowDate.toString(), date);
         this.date = LocalDate.parse(date);
+        // Sort the raw data which this row belongs to as its order within the list may have changed
+        Collections.sort(owner.getRawData());
     }
 
     public LocalTime getTime() {
@@ -110,6 +119,8 @@ public class DataRow implements Comparable<DataRow> {
     public void setTime(String time) throws SQLException {
         DataUpdater.updateDataRows(Collections.singletonList(this), DataRowFields.time.toString(), time);
         this.time = LocalTime.parse(time);
+        // Sort the raw data which this row belongs to as its order within the list may have changed
+        Collections.sort(owner.getRawData());
     }
 
     public int getHeartRate() {
@@ -158,6 +169,6 @@ public class DataRow implements Comparable<DataRow> {
 
     @Override
     public String toString() {
-        return String.format("%s, %s, %s, %s", number, date, owner.getName(), owner.getOwner().getFirstName());
+        return String.format("(%s, %s)", date, time);
     }
 }

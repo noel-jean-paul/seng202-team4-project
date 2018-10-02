@@ -5,12 +5,13 @@ import org.junit.Test;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.CorruptActivity;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class FileParserTest {
 

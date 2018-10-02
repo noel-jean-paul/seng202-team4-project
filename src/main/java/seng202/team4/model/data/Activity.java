@@ -134,6 +134,8 @@ public class Activity implements Comparable<Activity> {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.activityDate.toString(), date, true);
         this.date = LocalDate.parse(date);
+        // Sort the activities which this activity belongs to as its order within the list may have changed
+        Collections.sort(owner.getActivityList());
     }
 
     public LocalTime getStartTime() {
@@ -145,6 +147,8 @@ public class Activity implements Comparable<Activity> {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.startTime.toString(), startTime, false);
         this.startTime = LocalTime.parse(startTime);
+        // Sort the activities which this activity belongs to as its order within the list may have changed
+        Collections.sort(owner.getActivityList());
     }
 
     public Duration getDuration() {
@@ -353,7 +357,6 @@ public class Activity implements Comparable<Activity> {
         ArrayList<HealthWarning> warnings = new ArrayList<>();
         warnings.add(new HealthWarning(this, owner, WarningType.Tachy, avgHeartRate, minHeartRate, maxHeartRate));
         warnings.add(new HealthWarning(this, owner, WarningType.Brady, avgHeartRate, minHeartRate, maxHeartRate));
-        warnings.add(new HealthWarning(this, owner, WarningType.Cardiovascular, avgHeartRate, minHeartRate, maxHeartRate));
         for (HealthWarning warning : warnings) {
             if (warning.isHealthRisk()) {
                 owner.addWarning(warning);

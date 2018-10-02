@@ -84,7 +84,6 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             if (activityConfirmationRow.isSelected()) {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
                 // Check the activity for health warnings
-                warningFound = activity.addWarnings(true);
 
                 // Store all data rows in the database as they have not been stored yet but are in the rawData list
                 for (DataRow dataRow : activity.getRawData()) {
@@ -99,12 +98,17 @@ public class ImportActivitiesPreviewScreenController extends Controller {
                     GuiUtilities.displayErrorMessage("Failed to import one or more activities.", "");
                 }
                 activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
+                if (activity.addWarnings(true)) {
+                    warningFound = true;
+                }
             }
 
         }
         activityTabController.updateTable();
         if (warningFound) {
-            // TODO warning popup - Kenny
+            HealthWarningDetectedPopup detectedPopup = new HealthWarningDetectedPopup(applicationStateManager);
+            Pane popUp = GuiUtilities.loadPane("WarningDetectedPopup.fxml", detectedPopup);
+            applicationStateManager.displayPopUp(popUp);
         }
 
     }

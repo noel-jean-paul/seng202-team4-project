@@ -138,7 +138,8 @@ public class CreateProfileController extends Controller {
             errorText.setText(String.format("Height must be a number between %s and %s", Profile.MIN_HEIGHT, Profile.MAX_HEIGHT));
         } else {
             //Creates a new profile with the values provided by the user.
-            Profile profile = new Profile(firstName, lastName, dateString, weight, height, String.format("images/profilePictures/ProfilePic%s.png", currentImageIndex));
+            Profile profile = new Profile(firstName, lastName, dateString, weight, height,
+                    String.format("images/profilePictures/ProfilePic%s.png", currentImageIndex));
             applicationStateManager.setCurrentProfile(profile);    //Sets the current profile to the new profile.
             System.out.println("profile Created!");
             try {

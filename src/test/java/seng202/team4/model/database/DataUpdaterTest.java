@@ -12,11 +12,8 @@ import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DataUpdaterTest {
     private static Profile profile1;
@@ -49,11 +46,11 @@ public class DataUpdaterTest {
 
         // Initialise Goals
         goal1 = new Goal(1, 100, GoalType.Run,"2018-09-28", "2017-05-12",
-                20, 50);
+                20);
         goal2 = new Goal(2, 100, GoalType.Run,"2018-09-28", "2017-01-12",
-                20, 50);
+                "PT50M");
         goal3 = new Goal(3, 100, GoalType.Run,"2018-09-28", "2017-01-12",
-                20, 50);
+                20.0);
 
         row1 = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
                 178.4352, 203);
@@ -118,39 +115,39 @@ public class DataUpdaterTest {
     public void updateProfile_updateFirstName_checkGoalsUpdated() throws SQLException {
         // Setup
         DataStorer.insertProfile(profile1);
-        profile1.addGoal(goal1);
-        profile1.addGoal(goal2);
-        profile1.addGoal(goal3);
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
+        profile1.addCurrentGoal(goal3);
 
         // Change an aspect of the primary key
         profile1.setFirstName("Ben");
 
         // Check that the goals were updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-        assertEquals(profile1.getGoalList(), loadedProfile.getGoalList());
+        assertEquals(profile1.getCurrentGoals(), loadedProfile.getCurrentGoals());
     }
 
     @Test
     public void updateProfile_updateLastName_checkGoalsUpdated() throws SQLException {
         // Setup
         DataStorer.insertProfile(profile1);
-        profile1.addGoal(goal1);
-        profile1.addGoal(goal2);
-        profile1.addGoal(goal3);
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
+        profile1.addCurrentGoal(goal3);
 
         // Change an aspect of the primary key
         profile1.setLastName("Solo");
 
         // Check that the goals were updated
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-        assertEquals(profile1.getGoalList(), loadedProfile.getGoalList());
+        assertEquals(profile1.getCurrentGoals(), loadedProfile.getCurrentGoals());
     }
     
     @Test 
     public void updateProfile_updateNonKey_checkNoPropagation() throws SQLException {
         // Setup
         DataStorer.insertProfile(profile1);
-        profile1.addGoal(goal1);
+        profile1.addCurrentGoal(goal1);
         profile1.addActivity(activity1);
 
         // Change something that is not part of the primary key

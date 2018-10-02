@@ -9,7 +9,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
@@ -19,7 +18,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Collections;
 
 
 /**
@@ -130,7 +129,7 @@ public class RawDataViewerController extends Controller {
             } catch (java.sql.SQLException e){
                 GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
                 e.printStackTrace();
-                System.out.println("Could not remove data row from the data base.");
+                System.out.println("Could not remove data row from the database.");
             }
         });
 
@@ -165,7 +164,7 @@ public class RawDataViewerController extends Controller {
      */
     public void updateDataRows() {
         ObservableList<DataRow> dataList = FXCollections.observableArrayList(activity.getRawData());
-        Collections.reverse(dataList); //reverses the list to ensure the data is displayed in the correct order in the table
+        //System.out.println(activity.getRawData());
 
         dateColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalDate>("date"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalTime>("time"));
