@@ -91,6 +91,10 @@ public class RawDataViewerController extends Controller {
     @FXML
     private Button applyEditsButton;
 
+    /** The button which when clicked adds a new row to the data list */
+    @FXML
+    private Button addRowButton;
+
     /** Activity variable, holds the current activity's data */
     private Activity activity;
 
@@ -212,6 +216,24 @@ public class RawDataViewerController extends Controller {
             displayPopUp();
         } catch (java.sql.SQLException e) {
             GuiUtilities.displayErrorMessage("One of your edits was outside of the accepted range.", e.getMessage());
+        }
+    }
+
+
+    /**
+     *
+     * A new row is added to the current data row list
+     */
+    @FXML
+    void addNewRow() throws SQLException {
+        try {
+            String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            DataRow newRow = new DataRow(activity.getRawData().size() + 1, date, timeTextField.getText(), Integer.parseInt(heartRateTextField.getText()),
+                    Double.parseDouble(latitudeTextField.getText()), Double.parseDouble(longitudeTextField.getText()), Double.parseDouble(elevationTextField.getText()));
+            activity.addDataRow(newRow);
+            displayPopUp();
+        } catch (java.sql.SQLException e) {
+            GuiUtilities.displayErrorMessage("One of your fields was outside of the accepted range.", e.getMessage());
         }
     }
 
