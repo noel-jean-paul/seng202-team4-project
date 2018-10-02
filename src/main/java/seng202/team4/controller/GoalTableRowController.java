@@ -41,6 +41,10 @@ public class GoalTableRowController extends Controller {
     public GoalTableRowController(ApplicationStateManager applicationStateManager, Goal goal) {
         super(applicationStateManager);
         this.goal = goal;
+    }
+
+    @FXML
+    public void initialize() {
         initialiseRow();
     }
 
