@@ -1,5 +1,6 @@
 package seng202.team4.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,9 +21,6 @@ import java.time.LocalDate;
  * Controller for the health tab.
  */
 public class HealthTabController extends Controller {
-    private WebEngine engine;
-    private String currentUrl;
-
 
     @FXML
     private TableView healthWarningTable;
@@ -38,6 +36,12 @@ public class HealthTabController extends Controller {
 
     @FXML
     private WebView webBrowser;
+
+    @FXML
+    private Button backButton;
+
+    @FXML
+    private Button forwardButton;
 
     @FXML
     private Button viewInfoButton;
@@ -76,6 +80,7 @@ public class HealthTabController extends Controller {
     private void setUpPopUpLabels(WarningDescriptionPopUpController warningPopUp, HealthWarning warning) {
         String heartRateRange = setRateRange(warning);
         warningPopUp.setPopUpTitle(warning.getTypeString());
+        warningPopUp.setActivityNameLabel(warning.getActivity().getName());
         warningPopUp.setAverageLabel(warning.getAvgHeartRate());
         warningPopUp.setMinLabel(warning.getMinHeartRate());
         warningPopUp.setMaxLabel(warning.getMaxHeartRate());
@@ -142,6 +147,25 @@ public class HealthTabController extends Controller {
     void webViewReturn() {
         engine.load(currentUrl);
     }
+
+
+    @FXML
+    void webViewForward() {
+        Platform.runLater(() -> {
+            engine.executeScript("history.forward()");
+        });
+    }
+
+    @FXML
+    void webViewBack() {
+        Platform.runLater(() -> {
+            engine.executeScript("history.back()");
+        });
+    }
+
+    private WebEngine engine;
+    private String currentUrl;
+
 
     /**
      * The constructor for the health tab.

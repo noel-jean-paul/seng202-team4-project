@@ -34,15 +34,16 @@
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="40.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="87.0" minHeight="0.0" prefHeight="87.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="40.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="40.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="40.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="40.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="40.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <VBox alignment="CENTER_LEFT" GridPane.rowIndex="3">
+            <VBox alignment="CENTER_LEFT" GridPane.rowIndex="4">
                <children>
                   <Label text="Minimum Heart Rate:" GridPane.rowIndex="2" />
                </children>
@@ -50,7 +51,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </VBox>
-            <VBox alignment="CENTER_LEFT" GridPane.rowIndex="2">
+            <VBox alignment="CENTER_LEFT" GridPane.rowIndex="3">
                <children>
                   <Label text="Average Heart Rate:" GridPane.rowIndex="1" />
                </children>
@@ -58,7 +59,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </VBox>
-            <VBox alignment="CENTER_LEFT" GridPane.rowIndex="4">
+            <VBox alignment="CENTER_LEFT" GridPane.rowIndex="5">
                <children>
                   <Label text="Maximum Heart Rate:" GridPane.rowIndex="3" />
                </children>
@@ -66,7 +67,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </VBox>
-            <VBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <VBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
                   <Label fx:id="averageLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
@@ -74,7 +75,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </VBox>
-            <VBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <VBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
                   <Label fx:id="minLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
@@ -82,7 +83,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </VBox>
-            <VBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <VBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <children>
                   <Label fx:id="maxLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
@@ -90,7 +91,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </VBox>
-            <VBox alignment="CENTER_LEFT">
+            <VBox alignment="CENTER_LEFT" GridPane.rowIndex="1">
                <children>
                   <Label text="Warning Description: " />
                </children>
@@ -98,12 +99,12 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </VBox>
-            <TextArea fx:id="descriptionText" editable="false" GridPane.columnIndex="1" GridPane.rowSpan="2">
+            <TextArea fx:id="descriptionText" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </TextArea>
-            <VBox alignment="CENTER_LEFT" GridPane.rowIndex="5">
+            <VBox alignment="CENTER_LEFT" GridPane.rowIndex="6">
                <children>
                   <Label fx:id="heartRateRecommendation" alignment="CENTER" text="Recommended &lt;value&gt;:" GridPane.rowIndex="4" />
                </children>
@@ -111,9 +112,22 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </VBox>
-            <VBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <VBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <children>
                   <Label fx:id="recommendedLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               </children>
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
+            </VBox>
+            <VBox alignment="CENTER_LEFT">
+               <children>
+                  <Label text="Activity Name:" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" GridPane.columnIndex="1">
+               <children>
+                  <Label fx:id="activityNameLabel" text="Label" GridPane.columnIndex="1" />
                </children>
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
