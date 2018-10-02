@@ -75,7 +75,7 @@
                   <RowConstraints minHeight="120.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <ProgressIndicator fx:id="goalProgressIndicator" prefHeight="131.0" prefWidth="133.0" progress="0.27">
+                  <ProgressIndicator fx:id="goalProgressIndicator" prefHeight="131.0" prefWidth="133.0" progress="0.0">
                      <GridPane.margin>
                         <Insets bottom="10.0" top="10.0" />
                      </GridPane.margin></ProgressIndicator>
@@ -108,7 +108,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                              <VBox fx:id="currentAmountText" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                                  <children>
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Amount" />
                                  </children>
@@ -116,7 +116,7 @@
                            </children></VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total" />
+                              <Text fx:id="totalAmountText" strokeType="OUTSIDE" strokeWidth="0.0" text="Total" />
                            </children></VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <children>
@@ -124,6 +124,11 @@
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="3" GridPane.rowSpan="3">
+                           <children>
+                              <Text fx:id="noGoalSelectedText" strokeType="OUTSIDE" strokeWidth="0.0" />
+                           </children>
+                        </VBox>
                      </children>
                   </GridPane>
                   <GridPane GridPane.columnIndex="2">
@@ -137,7 +142,7 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#edit" text="Edit" />
+                              <Button fx:id="editButton" mnemonicParsing="false" onAction="#edit" text="Edit" />
                            </children>
                         </VBox>
                      </children>
