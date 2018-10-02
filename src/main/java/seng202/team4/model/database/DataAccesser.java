@@ -1,5 +1,10 @@
 package seng202.team4.model.database;
 
+import seng202.team4.model.data.DataRow;
+import seng202.team4.model.data.Goal;
+import seng202.team4.model.data.Profile;
+
+import javax.xml.crypto.Data;
 import java.sql.*;
 
 abstract public class DataAccesser {
@@ -65,19 +70,19 @@ abstract public class DataAccesser {
         stmt.addBatch(dropDataRow);
 
         // Create new tables
-        String createProfile = "create table profile ("+
+        String createProfile = String.format("create table profile ("+
                 "firstName text not null, " +
                 "lastName text not null, " +
                 "dateOfBirth character(10) not null, " +
-                "height real constraint check_height check (height BETWEEN 1.00 and 3.00), " +
-                "weight real constraint check_weight check (weight between 0 and 250), " +
+                "height real constraint check_height check (height BETWEEN %f and %f), " +
+                "weight real constraint check_weight check (weight between %f and %f), " +
+                "pictureURL text not null, " +
                 "primary key (firstName, lastName)" +
-                ");";
+                ");", Profile.MIN_HEIGHT, Profile.MAX_HEIGHT, Profile.MIN_WEIGHT, Profile.MAX_WEIGHT);
 
         String createActivity = "create table activity ( " +
                 "name text, " +
                 "activityDate character(10), " +
-                "description text, " +
                 "type character(3) constraint check_type check (type in (\"Run\", \"Walk\", \"Other\")), " +
                 "startTime character(8) not null, " +
                 "duration character(8) not null, " +
@@ -89,7 +94,7 @@ abstract public class DataAccesser {
                 "foreign key (firstName, lastName) references profile" +
                 ");";
 
-        String createGoal = "create table goal (\n" +
+        String createGoal = String.format("create table goal (\n" +
                 "goalNumber integer,\n" +
                 "progress integer constraint check_progress check (progress between 0 and 100),\n" +
                 "type character(3) constraint check_type check (type in (\"Run\", \"Walk\")),\n" +
@@ -98,22 +103,22 @@ abstract public class DataAccesser {
                 "expiryDate character(10),\n" +
                 "completionDate character(10),\n" +
                 "goalDuration character(8),\n" +
-                "goalDistance real,\n" +
+                "goalDistance real constraint check_goalDistance check (goalDistance >= %f),\n" +
                 "firstName text,\n" +
                 "lastName text,\n" +
                 "primary key (firstName, lastName, goalNumber),\n" +
                 "foreign key (firstName, lastName) references profile\n" +
                 "on delete cascade on update no action\n" +
-                ");";
+                ");", Goal.minGoalDistance);
 
-        String createDataRow = "create table dataRow (\n" +
+        String createDataRow = String.format("create table dataRow (\n" +
                 "  rowNumber integer,\n" +
                 "  rowDate character(10),\n" +
                 "  time character(8) not null,\n" +
-                "  heartRate integer constraint check_heartRate check (heartRate between 20 and 250),\n" +
-                "  latitude double constraint check_latitude check (latitude between -90 and 90),\n" +
-                "  longitude double constraint check_longitude check (longitude between -180 and 180),\n" +
-                "  elevation double constraint check_elevation check (elevation between 0 and 4000),\n" +
+                "  heartRate integer constraint check_heartRate check (heartRate between %f and %f),\n" +
+                "  latitude double constraint check_latitude check (latitude between %f and %f),\n" +
+                "  longitude double constraint check_longitude check (longitude between %f and %f),\n" +
+                "  elevation double constraint check_elevation check (elevation between %f and %f),\n" +
                 "  name text,\n" +
                 "  activityDate character(10),\n" +
                 "  firstName text not NULL,\n" +
@@ -121,7 +126,8 @@ abstract public class DataAccesser {
                 "  foreign key (name, activityDate) references activity,\n" +
                 "  foreign key (firstName, lastName) references Profile, \n" +
                 "  primary key (firstName, lastName, name, activityDate, rowNumber)\n" +
-                ");";
+                ");", DataRow.minHeartRate, DataRow.maxHeartRate, DataRow.minLatitude, DataRow.maxLatitude,
+                DataRow.minLongitude, DataRow.maxLongitude, DataRow.minElevation, DataRow.maxElevation);
 
         stmt.addBatch(createProfile);
         stmt.addBatch(createActivity);

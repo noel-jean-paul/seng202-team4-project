@@ -6,8 +6,9 @@ import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.WarningType;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
-public class HealthWarning {
+public class HealthWarning implements Comparable<HealthWarning> {
     private int avgHeartRate;
     private int minHeartRate;
     private int maxHeartRate;
@@ -32,14 +33,52 @@ public class HealthWarning {
         this.url = setUpURL();
         this.typeString = calculateTypeString();
     }
-    // TODO JavaDoc - Kenny
 
+    /** Compare to another Goal based on goalNumber
+     *  Consistent with equals as defined by Comparable
+     *
+     * @param o the HealthWaring to compare to
+     * @return a negative integer, zero, or a positive integer as this object
+     *          is less than, equal to, or greater than the specified object.
+     */
+    @Override
+    public int compareTo(HealthWarning o) {
+        return getWarningDate().compareTo(o.getWarningDate()) * -1;     // Reverse order to descending
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HealthWarning that = (HealthWarning) o;
+        return getAvgHeartRate() == that.getAvgHeartRate() &&
+                getMinHeartRate() == that.getMinHeartRate() &&
+                getMaxHeartRate() == that.getMaxHeartRate() &&
+                isHealthRisk() == that.isHealthRisk() &&
+                Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(getUrl(), that.getUrl()) &&
+                getType() == that.getType() &&
+                Objects.equals(getTypeString(), that.getTypeString()) &&
+                Objects.equals(getWarningDate(), that.getWarningDate()) &&
+                getActivity().equals(that.getActivity()) &&
+                getOwner().getFirstName().equals(that.getOwner().getFirstName()) &&
+                getOwner().getLastName().equals(that.getOwner().getLastName());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getAvgHeartRate(), getMinHeartRate(), getMaxHeartRate(), getDescription(), getUrl(),
+                getType(), getTypeString(), getWarningDate(), isHealthRisk());
+    }
+
+    // TODO JavaDoc - Kenny
     private String calculateTypeString() {
         String typeStr;
         if (type == WarningType.Tachy) {
             typeStr = "Tachycardia";
         } else if (type == WarningType.Brady) {
-            typeStr = "Bradycaria";
+            typeStr = "Bradycardia";
         } else {
             typeStr = "Cardiovascular Mortality";
         }
@@ -47,7 +86,8 @@ public class HealthWarning {
     }
 
     /**
-     * @return
+     * Checks the activity to see if a health risk was detected.
+     * @return whether a risk was detected or not.
      */
     private boolean checkRisk() {
         boolean atRisk;
@@ -68,7 +108,8 @@ public class HealthWarning {
     // TODO - Create modular approach to description setting
 
     /**
-     * @return
+     * Checks all the relevant risks which are easily detectable while the user is performing a running activity.
+     * @return whether a running risk was detected.
      */
     private boolean runningRisk() {
         boolean atRisk = false;
@@ -83,25 +124,27 @@ public class HealthWarning {
     }
 
     /**
-     * @return
+     * Checks all the relevant risks which are easily detectable while the user is performing a walking activity.
+     * @return whether a walking risk was detected.
      */
     private boolean walkingRisk() {
         boolean atRisk;
         if (type == WarningType.Tachy) {
             atRisk = tachyRisk();
-            description = "Heart rate in excess of recommended maximum.";
+            description = "Heart rate in over recommended maximum.";
         } else if (type == WarningType.Brady) {
             atRisk = bradyRisk();
             description = "Heart rate under recommended minimum.";
         } else {
             atRisk = cardioRisk();
-            description = "Resting heart rate in excess of recommend maximum";
+            description = "Resting heart rate over recommend maximum";
         }
         return atRisk;
     }
 
     /**
-     * @return
+     * Calculates the user's maximum heart rate for their age and evaluates their own heart rate against this max.
+     * @return whether the user's heart rate was of their recommended maximum.
      */
     private boolean tachyRisk() {
         if (maxHeartRate > (220 - user.getAge())) {
@@ -112,7 +155,8 @@ public class HealthWarning {
     }
 
     /**
-     * @return
+     * Calculates the user's minimum heart rate for their age bracket and evaluates their own heart rate against this minimum.
+     * @return whether the user's heart rate was under the minimum.
      */
     private boolean bradyRisk() {
         if (user.getAge() >= 18 && minHeartRate < 50) {
@@ -124,12 +168,12 @@ public class HealthWarning {
         }
     }
 
-    /**
-     * @return
+    /** //todo add javadoc M Kenny
+     * @return true if a cardio risk was detected, False otherwise
      */
     private boolean cardioRisk() {
-        //TODO refine wrning detection
-        if (minHeartRate > 83) {
+        //TODO refine warning detection
+        if (minHeartRate > 90) {
             return true;
         } else {
             return false;
@@ -137,7 +181,8 @@ public class HealthWarning {
     }
 
     /**
-     * @return
+     * Sets the URL to search for the specific health warning depending on the type.
+     * @return the web search URL of the warning.
      */
     private String setUpURL() {
         String warningURL;
@@ -151,51 +196,30 @@ public class HealthWarning {
         return warningURL;
     }
 
-    /**
-     * @return
-     */
     public boolean isHealthRisk() {
         return healthRisk;
     }
 
-    /**
-     * @return
-     */
     public int getAvgHeartRate() {
         return avgHeartRate;
     }
 
-    /**
-     * @return
-     */
     public String getAvgHeartRateString() {
         return Integer.toString(avgHeartRate);
     }
 
-    /**
-     * @return
-     */
     public int getMinHeartRate() {
         return avgHeartRate;
     }
 
-    /**
-     * @return
-     */
     public String getMinHeartRateString() {
         return Integer.toString(minHeartRate);
     }
 
-    /**
-     * @return
-     */
     public int getMaxHeartRate() {
         return maxHeartRate;
     }
 
-    /**
-     * @return
-     */
     public String getMaxHeartRateString() {
         return Integer.toString(maxHeartRate);
     }
@@ -205,7 +229,7 @@ public class HealthWarning {
         return warningDate;
     }
 
-    public WarningType geType() {
+    public WarningType getType() {
         return type;
     }
 
@@ -219,5 +243,17 @@ public class HealthWarning {
 
     public String getUrl() {
         return url;
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public Profile getOwner() {
+        return user;
+    }
+
+    public void setOwner(Profile owner) {
+        this.user = owner;
     }
 }

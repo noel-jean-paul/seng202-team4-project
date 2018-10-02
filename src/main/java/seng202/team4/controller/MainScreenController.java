@@ -1,10 +1,16 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import seng202.team4.Utilities;
+import seng202.team4.App;
+import seng202.team4.GuiUtilities;
+
+import java.net.URL;
 
 /** Controller for the main screen of the App. */
 public class MainScreenController extends Controller {
@@ -28,6 +34,14 @@ public class MainScreenController extends Controller {
     /** The TabPane of the main screen. */
     @FXML
     private TabPane tabPane;
+
+    /** MenuButton that allows the user to change or view profile. */
+    @FXML
+    private MenuButton profileDropDown;
+
+    /** ImageView for the users profile picture. */
+    @FXML
+    private ImageView profilePictureImageView;
 
     /** The ActivityTabController of the activity tab. */
     private ActivityTabController activityTabController;
@@ -54,42 +68,34 @@ public class MainScreenController extends Controller {
     }
 
     /**
-     * Creates, loads and initialize        //List<Activity> activityList = applicationStateManager.getCurrentProfile().getActivityList();
-        XYChart.Series set1 = new XYChart.Series<>();
-
-//        for (int i = 0; i < 5; i++) {
-//            set1.getData().add(new XYChart.Data(activityList.get(i).getName(), activityList.get(i).getDistance()));
-//        }
-import javafx.scene.text.Text;
-        set1.getData().add(new XYChart.Data("Walk in woods", 1.5));
-//        set1.getData().add(new XYChart.Data("fun run", 2));
-//        set1.getData().add(new XYChart.Data("Run through town", 12));
-//        set1.getData().add(new XYChart.Data("Marathon", 42));
-        distanceBarGraph.getData().addAll(set1);s the different tabs of the main screen.
+     * Initializes the main screen and creates all of the tabs of the main screen.
      */
     @FXML
     public void initialize() {
+        // Creates the activity tab.
         Pane pane = new Pane();
         activityTabController = new ActivityTabController(applicationStateManager);
-        pane = Utilities.loadPane("ActivityTab.fxml", activityTabController);
+        pane = GuiUtilities.loadPane("ActivityTab.fxml", activityTabController);
         activityPane.getChildren().setAll(pane);
 
-        // TODO: Figure out how to get these tabs to fit to parent, so they can expand
+        // Creates the home tab.
         Pane home = new Pane();
         homeTabController = new HomeTabController(applicationStateManager);
-        home = Utilities.loadPane("HomeTab.fxml", homeTabController);
+        home = GuiUtilities.loadPane("HomeTab.fxml", homeTabController);
         homePane.getChildren().setAll(home);
 
+        // Creates the goals tab.
         Pane goals = new Pane();
         goalsTabController = new GoalsTabController(applicationStateManager);
-        goals = Utilities.loadPane("GoalsTab.fxml", goalsTabController);
+        //TODO: Implement a proper goals tab.
+        //goals = GuiUtilities.loadPane("GoalsTab.fxml", goalsTabController);
         goalsPane.getChildren().setAll(goals);
 
+        // Creates the health tab.
         Pane health = new Pane();
         healthTabController = new HealthTabController(applicationStateManager);
-        health = Utilities.loadPane("HealthTab.fxml", healthTabController);
+        health = GuiUtilities.loadPane("HealthTab.fxml", healthTabController);
         healthPane.getChildren().setAll(health);
-
     }
 
     /**
@@ -109,7 +115,7 @@ import javafx.scene.text.Text;
     @FXML
     public void viewProfile() {
         ProfileScreenController profileScreenController = new ProfileScreenController(applicationStateManager);
-        Pane profileScreen = Utilities.loadPane("ProfileScreen.fxml", profileScreenController);
+        Pane profileScreen = GuiUtilities.loadPane("ProfileScreen.fxml", profileScreenController);
         applicationStateManager.addScreen("ProfileScreen", profileScreen, profileScreenController);
         applicationStateManager.switchToScreen("ProfileScreen");
         profileScreenController.updateInformation();
@@ -152,6 +158,13 @@ import javafx.scene.text.Text;
         tabPane.getSelectionModel().selectFirst();
         if (applicationStateManager.getCurrentProfile() != null) {
             homeTabController.loadData();
+            profileDropDown.setText(applicationStateManager.getCurrentProfile().getFirstName());
+
+            // Load the users profile picture
+            URL profileImageUrl = App.class.getResource(applicationStateManager.getCurrentProfile().getPictureURL());
+            if (profileImageUrl != null) {
+                profilePictureImageView.setImage(GuiUtilities.maskProfileImage(new Image(profileImageUrl.toString())));
+            }
         }
         activityTabController.reset();
     }

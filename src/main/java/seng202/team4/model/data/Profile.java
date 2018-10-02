@@ -1,4 +1,5 @@
 package seng202.team4.model.data;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.enums.ProfileFields;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
@@ -21,6 +22,10 @@ public class Profile {
     public static final int MIN_NAME_SIZE = 2;
     public static final double MAX_WEIGHT = 250;
     public static final double MAX_HEIGHT = 3.0;
+    public static final double MIN_WEIGHT = 10;
+    public static final double MIN_HEIGHT = 0.5;
+    public static final String DEFAULT_URL = "/images/default-profile-icon.png";
+
     public static final LocalDate MIN_DOB = LocalDate.parse("1900-01-01");
 
     private String firstName;
@@ -28,12 +33,13 @@ public class Profile {
     private LocalDate dateOfBirth;
     private double weight;
     private double height;
+    private String pictureURL;
     private List<Activity> activityList;    // sorted collection - use addActivity to update
     private List<Goal> goalList;    // sorted collection - use addGoal to update
-    private List<HealthWarning> warningList;
+    private List<HealthWarning> warningList;    // sorted collection - use addWarning to update
 
     /**
-     *Constructor for profile class taking in the date of birth in string format
+     *Constructor for profile class taking in the date of birth in string format. Sets pictureURL to the default
      * @param firstName is the first name of the user in string format
      * @param lastName is the last name of the user in string format
      * @param dateOfBirth is the date of birth in string format
@@ -49,6 +55,22 @@ public class Profile {
         this.goalList = new ArrayList<>();
         this.activityList = new ArrayList<>();
         this.warningList = new ArrayList<>();
+        this.pictureURL = Profile.DEFAULT_URL;
+    }
+
+    /**
+     *Constructor for profile class taking in the date of birth in string format and the picture url
+     * @param firstName is the first name of the user in string format
+     * @param lastName is the last name of the user in string format
+     * @param dateOfBirth is the date of birth in string format
+     * @param weight is the weight of the user in double format
+     * @param height is the height of the user in double format
+     */
+    public Profile(String firstName, String lastName, String dateOfBirth, double weight, double height,
+                   String pictureURL) {
+        this(firstName, lastName, dateOfBirth, weight, height);
+        this.pictureURL = pictureURL;
+
     }
 
     /**
@@ -81,6 +103,7 @@ public class Profile {
                 Objects.equals(getFirstName(), profile.getFirstName()) &&
                 Objects.equals(getLastName(), profile.getLastName()) &&
                 Objects.equals(getDateOfBirth(), profile.getDateOfBirth()) &&
+                Objects.equals(getPictureURL(), profile.getPictureURL()) &&
                 Objects.equals(getActivityList(), profile.getActivityList()) &&
                 Objects.equals(getGoalList(), profile.getGoalList()) &&
                 Objects.equals(getWarningList(), profile.getWarningList());
@@ -161,6 +184,15 @@ public class Profile {
         return ((LocalDate.now()).getYear() - dateOfBirth.getYear());
     }
 
+    public String getPictureURL() {
+        return pictureURL;
+    }
+
+    public void setPictureURL(String pictureURL) throws SQLException {
+        this.pictureURL = pictureURL;
+        DataUpdater.updateProfile(this, ProfileFields.pictureURL.toString(), pictureURL);
+    }
+
     /**
      * Checks that the given name is valid for a profile name.
      *
@@ -190,7 +222,8 @@ public class Profile {
                 }
             }
         } catch (java.sql.SQLException e) {
-            //TODO: Bring up proper error box to the user.
+            GuiUtilities.displayErrorMessage("Error loading profile keys from the data base.", "");
+            e.printStackTrace();
             System.out.println("Error loading profile keys from the data base.");
             isUnique = false;
         }
@@ -205,7 +238,7 @@ public class Profile {
      * @return true if the weight is valid, false otherwise.
      */
     public static boolean isValidWeight(double weight) {
-        return (weight > 0 && weight <= MAX_WEIGHT);
+        return (weight >= MIN_WEIGHT && weight <= MAX_WEIGHT);
     }
 
     /**
@@ -215,7 +248,7 @@ public class Profile {
      * @return true if the height is valid, false otherwise.
      */
     public static boolean isValidHeight(double height) {
-        return (height > 0 && height <= MAX_HEIGHT);
+        return (height >= MIN_HEIGHT && height <= MAX_HEIGHT);
     }
 
     /**
@@ -293,27 +326,44 @@ public class Profile {
         goalList.remove(goal);
         DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
     }
-    // TODO JavaDoc - Kenny
+
     /**
-     * @param warning
+     * Adds a warning to the user's list of warnings in order and store the warning in the database.
+     * @param warning the warning to be added.
      */
     public void addWarning(HealthWarning warning) {
         warningList.add(warning);
+        Collections.sort(warningList);
     }
 
+    /** Adds all healthWarnings of the specified collection to the warningList and sorts the warningList
+     *  Intended for use by DataLoader only
+     *  WARNING: DOES NOT STORE IN THE DATABASE OR SET OWNER
+     *
+     * @param warnings the collection to be added
+     */
+    public void addAllWarnings(List<HealthWarning> warnings) {
+        warningList.addAll(warnings);
+        Collections.sort(warningList);
+    }
+
+
+
     /**
-     * @return
+     * Gets the user's warning history.
+     * @return the list of warnings.
      */
     public List<HealthWarning> getWarningList() {
         return warningList;
     }
 
     /**
-     *
+     * Used when the profile has been loaded. Goes through all the activities stored by the user and tells the activity to
+     * check for any health warnings it may have.
      */
     public void findWarnings() {
-        for (Activity acvty : activityList) {
-            acvty.addWarnings();
+        for (Activity activity : activityList) {
+            activity.addWarnings(false);
         }
     }
 }

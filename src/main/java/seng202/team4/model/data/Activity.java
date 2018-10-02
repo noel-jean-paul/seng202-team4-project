@@ -24,7 +24,6 @@ public class Activity implements Comparable<Activity> {
     /* The combination of name and date must be unique for a profile */
     private String name;
     private LocalDate date;
-    private String description;
     private ActivityType type;
     private LocalTime startTime;
     private Duration duration;
@@ -37,11 +36,10 @@ public class Activity implements Comparable<Activity> {
     private int minHeartRate;
     private int maxHeartRate;
 
-    public Activity(String name, String date, String description, ActivityType type, String startTime,
+    public Activity(String name, String date, ActivityType type, String startTime,
                     String duration, double distance, double caloriesBurned) {
         this.name = name;
         this.date = LocalDate.parse(date);
-        this.description = description;
         this.type = type;
 
         this.startTime = LocalTime.parse(startTime);
@@ -50,9 +48,6 @@ public class Activity implements Comparable<Activity> {
         this.caloriesBurned = caloriesBurned;
         this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.rawData = new ArrayList<>();
-        this.avgHeartRate = calculateAvgHeartRate();
-        this.minHeartRate = calculateMinHeartRate();
-        this.maxHeartRate = calculateMaxHeartRate();
     }
 
     /**
@@ -62,11 +57,15 @@ public class Activity implements Comparable<Activity> {
     public Activity(String name, ArrayList<DataRow> rawActivityList) {
         this.name = name;
         this.rawData = rawActivityList;
+        this.updateActivity();
+    }
+
+    public void updateActivity() {
         java.util.Collections.sort(this.rawData);   // ensure the data is in order
-        this.date = (rawActivityList.get(0)).getDate();
-        this.startTime = (rawActivityList.get(0)).getTime();
-        this.distance = DataProcessor.totalDistance(rawActivityList);
-        this.duration = DataProcessor.calculateDuration(rawActivityList);
+        this.date = (this.rawData.get(0)).getDate();
+        this.startTime = (this.rawData.get(0)).getTime();
+        this.distance = DataProcessor.totalDistance(this.rawData);
+        this.duration = DataProcessor.calculateDuration(this.rawData);
         this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.type = findActivityType(name);
         this.avgHeartRate = calculateAvgHeartRate();
@@ -84,7 +83,6 @@ public class Activity implements Comparable<Activity> {
                 Double.compare(activity.getAverageSpeed(), getAverageSpeed()) == 0 &&
                 Objects.equals(getName(), activity.getName()) &&
                 Objects.equals(getDate(), activity.getDate()) &&
-                Objects.equals(getDescription(), activity.getDescription()) &&
                 getType() == activity.getType() &&
                 Objects.equals(getStartTime(), activity.getStartTime()) &&
                 Objects.equals(getDuration(), activity.getDuration()) &&
@@ -93,13 +91,13 @@ public class Activity implements Comparable<Activity> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDate(), getDescription(), getType(), getStartTime(), getDuration(), getDistance(), getCaloriesBurned(), getAverageSpeed(), getRawData());
+        return Objects.hash(getName(), getDate(), getType(), getStartTime(), getDuration(), getDistance(), getCaloriesBurned(), getAverageSpeed(), getRawData());
     }
 
     /** Compare an Activity to another based on Date and then based on Time in case of ties.
      *  Consistent with equals as defined by Comparable
      *
-     * @param o the ProfileKey to compare to
+     * @param o the Activity to compare to
      * @return a negative integer, zero, or a positive integer as this object
      *          is less than, equal to, or greater than the specified object.
      */
@@ -108,9 +106,9 @@ public class Activity implements Comparable<Activity> {
         int dateCompare;
         int timeCompare;
          if ((dateCompare = this.getDate().compareTo(o.getDate())) != 0) {
-             return dateCompare;
+             return dateCompare * -1;  // Reverse order to descending
          } else if ((timeCompare = this.getStartTime().compareTo(o.getStartTime())) != 0) {
-             return timeCompare;
+             return timeCompare * -1;   // Reverse order to descending
          } else {
              return 0;  // Same date and startTime
          }
@@ -125,17 +123,6 @@ public class Activity implements Comparable<Activity> {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.name.toString(), name, true);
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    /** Set and update in database */
-    public void setDescription(String description) throws SQLException {
-        DataUpdater.updateActivities(Collections.singletonList(this),
-                ActivityFields.description.toString(), description, false);
-        this.description = description;
     }
 
     public LocalDate getDate() {
@@ -254,14 +241,26 @@ public class Activity implements Comparable<Activity> {
     }
 
 
+    /**
+     * Getter method for the average heart rate.
+     * @return the average heart rate.
+     */
     public int getAvgHeartRate() {
         return avgHeartRate;
     }
 
+    /**
+     * Getter method for the minimum heart rate.
+     * @return the minimum heart rate.
+     */
     public int getMinHeartRate() {
         return minHeartRate;
     }
 
+    /**
+     * Getter method for the maximum heart rate.
+     * @return the maximum heart rate.
+     */
     public int getMaxHeartRate() {
         return maxHeartRate;
     }
@@ -298,41 +297,6 @@ public class Activity implements Comparable<Activity> {
         rawData.remove(row);
         DataStorer.deleteDataRows(Collections.singletonList(row));
     }
-
-
-    //The functions detailed below will likely be moved to DataProcessor -Matt M
-
-
-    /**
-     * A function to calculate the distance between two points
-     * @param lat1 The latitude of the first point
-     * @param lat2 The latitude of the second point
-     * @param lon1 The longitude of the first point
-     * @param lon2 The longitude of the second point
-     * @param el1 The elevation of the first point
-     * @param el2 The elevation of the second point
-     * @return a double representing the distance between the two points in metres
-     */
-    public double calcDistance(double lat1, double lat2, double lon1,
-                               double lon2, double el1, double el2) {
-
-        final int R = 6371; // Radius of the earth
-
-        double latDistance = Math.toRadians(lat2 - lat1);
-        double lonDistance = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c * 1000; // convert to meters
-
-        double height = el1 - el2;
-
-        distance = Math.pow(distance, 2) + Math.pow(height, 2);
-
-        return Math.sqrt(distance);
-    }
-
 
     /**
      * Finds the ActivityType of an Activity from its name.
@@ -374,14 +338,17 @@ public class Activity implements Comparable<Activity> {
         return type;
     }
 
-    // TODO JavaDoc - Kenny
-
     /**
      * Creates all 3 different warning types for the activities, and if the warning in fact is a health issue, adds it to
      * the user's list of warnings.
      * @return whether or not a warning was added to the user's warning list.
      */
-    public boolean addWarnings() {
+    public boolean addWarnings(boolean heartRatesCalculated) {
+        if (!heartRatesCalculated) {
+            this.avgHeartRate = calculateAvgHeartRate();
+            this.minHeartRate = calculateMinHeartRate();
+            this.maxHeartRate = calculateMaxHeartRate();
+        }
         boolean hasWarning = false;
         ArrayList<HealthWarning> warnings = new ArrayList<>();
         warnings.add(new HealthWarning(this, owner, WarningType.Tachy, avgHeartRate, minHeartRate, maxHeartRate));
@@ -397,7 +364,8 @@ public class Activity implements Comparable<Activity> {
     }
 
     /**
-     * @return
+     * Calculates the average heart rate of the user over the course of the activity.
+     * @return the user's average heart rate.
      */
     private int calculateAvgHeartRate() {
         int avgBPM = 0;
@@ -411,7 +379,8 @@ public class Activity implements Comparable<Activity> {
     }
 
     /**
-     * @return
+     * Calculate the minimum heart rate of the user over the course of the activity.
+     * @return the user's minimum heart rate.
      */
     private int calculateMinHeartRate() {
         int minBPM = Integer.MAX_VALUE;
@@ -424,7 +393,8 @@ public class Activity implements Comparable<Activity> {
     }
 
     /**
-     * @return
+     * Calculate the maximum heart rate of the user over the course of the activity.
+     * @return the user's maximum heart rate.
      */
     private int calculateMaxHeartRate() {
         int maxBPM = Integer.MIN_VALUE;
@@ -435,21 +405,4 @@ public class Activity implements Comparable<Activity> {
         }
         return maxBPM;
     }
-
-//    /**
-//     * Calculates the total distance covered in meters for an activity
-//     */
-//    public void calcTotalDistance() {
-//        double totalDistance = 0;
-//        ActivityRawData previous = null;
-//        for (ActivityRawData data: rawActivityList) {
-//            if (!(previous == null)) {
-//                totalDistance += calcDistance(previous.getLatitude(), data.getLatitude(),
-//                        previous.getLongitude(), data.getLongitude(),
-//                        previous.getElevation(), data.getElevation());
-//            }
-//            previous = data;
-//        }
-//        this.distance = totalDistance;
-//    }
 }

@@ -43,7 +43,7 @@ public class DataStorerTest {
         profile2 = new Profile("Ben", "Kenobi", "1998-03-06", 85.0,
                 1.83);
 
-        activity1 = new Activity("Run in the park", "2018-08-29", "", ActivityType.Run,
+        activity1 = new Activity("Run in the park", "2018-08-29", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
         goal1 = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
@@ -63,7 +63,7 @@ public class DataStorerTest {
 
     @AfterClass
     public static void tearDown() throws SQLException {
-//        DataAccesser.clearDatabase();
+        DataAccesser.clearDatabase();
         DataAccesser.closeDatabase();
     }
 
@@ -152,9 +152,9 @@ public class DataStorerTest {
         DataStorer.insertProfile(profile1);
 
         // Add 2 activities to the profile
-        Activity activity2 = new Activity("Jog", "2018-08-29", "", ActivityType.Run,
+        Activity activity2 = new Activity("Jog", "2018-08-29", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
-        Activity activity3 = new Activity("Other", "2018-08-29", "", ActivityType.Run,
+        Activity activity3 = new Activity("Other", "2018-08-29", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
         profile1.addActivity(activity2);
@@ -178,6 +178,7 @@ public class DataStorerTest {
         // Insert a profile
         Profile profile = new Profile("Bis", "Jean-Paul", "1998-03-06", 85.0,
                 1.83);
+
         DataStorer.insertProfile(profile);
 
         // Add 2 goals to the profile
@@ -206,10 +207,10 @@ public class DataStorerTest {
     /* Check that the other profiles do not have their information removed by deleteProfile */
     public void deleteProfile_checkOtherProfileUnchanged() throws SQLException {
         // Insert an activity for the profile
-        Activity activity = new Activity("Walk in the woods", "2019-08-30", "", ActivityType.Run,
+        Activity activity = new Activity("Walk in the woods", "2019-08-30", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
-        Activity activity1 = new Activity("Walk in the woods", "2019-08-30", "", ActivityType.Run,
+        Activity activity1 = new Activity("Walk in the woods", "2019-08-30", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
 
         // Insert profiles with identical activities/data - use different objects with same fields
@@ -244,7 +245,7 @@ public class DataStorerTest {
         DataStorer.insertProfile(profile2);
 
         // Insert an activity for the profile
-        Activity activity = new Activity("Walk in the woods", "2019-08-30", "", ActivityType.Run,
+        Activity activity = new Activity("Walk in the woods", "2019-08-30", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
         profile2.addActivity(activity);
 
@@ -263,7 +264,7 @@ public class DataStorerTest {
         DataStorer.insertProfile(profile);
 
         // Insert an activity for the profile
-        Activity activity = new Activity("Walk in the woods", "2019-08-30", "", ActivityType.Run,
+        Activity activity = new Activity("Walk in the woods", "2019-08-30", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
         profile.addActivity(activity);
 
@@ -305,7 +306,7 @@ public class DataStorerTest {
                 1.83);
         DataStorer.insertProfile(profile);
 
-        Activity activity = new Activity("Run in the Woods", "2019-08-30", "", ActivityType.Run,
+        Activity activity = new Activity("Run in the Woods", "2019-08-30", ActivityType.Run,
                 "12:15:01", "PT40M", 5.13, 187);
         profile.addActivity(activity);
 

@@ -6,8 +6,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
-import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.utilities.DataProcessor;
 
@@ -50,10 +50,15 @@ public class AddManualActivityController extends Controller {
     @FXML
     private Text errorText;
 
+    /** The controller for the activity tab. */
+    @FXML
+    private ActivityTabController activityTabController;
+
 
     /** Creates a new AddManualActivityController with the given ApplicationStateManager. */
-    public AddManualActivityController(ApplicationStateManager applicationStateManager) {
+    public AddManualActivityController(ApplicationStateManager applicationStateManager, ActivityTabController activityTabController) {
         super(applicationStateManager);
+        this.activityTabController = activityTabController;
     }
 
     /**
@@ -131,13 +136,14 @@ public class AddManualActivityController extends Controller {
         } else {
             double speed = DataProcessor.calculateAverageSpeed(distance, duration);
             double calories = DataProcessor.calculateCalories(speed, duration.getSeconds(), type, applicationStateManager.getCurrentProfile());
-            Activity activity = new Activity(activityName, date.toString(), "", type, time.toString(), duration.toString(), distance, calories);
+            Activity activity = new Activity(activityName, date.toString(), type, time.toString(), duration.toString(), distance, calories);
 
             try {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
                 applicationStateManager.closePopUP(rootPane);
+                activityTabController.updateTable();
             } catch (java.sql.SQLException e) {
-                applicationStateManager.displayErrorMessage("Failed to add activity.", "The activity could not be inserted into the database.");
+                GuiUtilities.displayErrorMessage("Failed to add activity.", "The activity could not be inserted into the database.");
                 e.printStackTrace();
             }
         }

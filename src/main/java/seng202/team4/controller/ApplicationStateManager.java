@@ -2,7 +2,6 @@ package seng202.team4.controller;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -52,6 +51,7 @@ public class ApplicationStateManager {
         this.stackPane.getChildren().add(new Pane());
 
         this.glassPane = new Pane();
+        glassPane.setBackground(new Background( new BackgroundFill( new Color(0, 0, 0, 0.7), CornerRadii.EMPTY, Insets.EMPTY )));
         glassPane.prefWidthProperty().bind(rootScene.widthProperty());
         glassPane.prefHeightProperty().bind(rootScene.heightProperty());
     }
@@ -101,36 +101,6 @@ public class ApplicationStateManager {
         }
         stackPane.getChildren().remove(popUp);
 
-    }
-
-    /**
-     * Displays an error popup to the user.
-     * If the error is critical then the App is closed.
-     *
-     * @param userMessage User friendly message to display.
-     * @param detail More detailed error message to display.
-     * @param isCritical Whether the error is critical.
-     */
-    public void displayErrorMessage(String userMessage, String detail, boolean isCritical) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(userMessage);
-        alert.setContentText(detail);
-        alert.showAndWait();
-        if (isCritical) {
-            System.exit(1);
-        }
-    }
-
-    /**
-     * Displays an error popup to the user.
-     * Shortcut method that does not require the 'isCritical' flag to be supplied.
-     *
-     * @param userMessage User friendly message to display.
-     * @param detail More detailed error message to display.
-     */
-    public void displayErrorMessage(String userMessage, String detail) {
-        displayErrorMessage(userMessage, detail, false);
     }
 
     /**

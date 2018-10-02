@@ -2,11 +2,16 @@ package seng202.team4.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import seng202.team4.App;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Profile;
 import seng202.team4.model.database.DataStorer;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  * Controller for the create profile screen.
@@ -45,11 +50,30 @@ public class CreateProfileController extends Controller {
     @FXML
     private Text errorText;
 
+    /** The profile picture image view. */
+    @FXML
+    private ImageView profilePicImageView;
+
+    /** List of all profile pictures the user can choose from */
+    private ArrayList<Image> profilePictures;
+
+    /** Index of the current profile image selected. */
+    private int currentImageIndex = 0;
 
 
     /** Creates a new CreateProfileController with the given ApplicationStateManager. */
     public CreateProfileController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
+        profilePictures = new ArrayList<Image>();
+        for (int i=0; i < 17; i++) {
+            profilePictures.add(new Image(App.class.getResource(String.format("images/profilePictures/ProfilePic%s.png", i)).toString()));
+        }
+    }
+
+    /** Initializes the create profile screen by setting the profile picture. */
+    @FXML
+    public void initialize() {
+        profilePicImageView.setImage(GuiUtilities.maskProfileImage(profilePictures.get(currentImageIndex)));
     }
 
     /**
@@ -109,12 +133,12 @@ public class CreateProfileController extends Controller {
         } else if (!Profile.isValidDateOfBirth(dateOfBirth)) {
             errorText.setText(String.format("Date should be between %s and %s.", Profile.MIN_DOB, LocalDate.now()));
         } else if (!isValidWeightDoubleString || !Profile.isValidWeight(weight)) {
-            errorText.setText(String.format("Weight must be a number between %s and %s", 0, Profile.MAX_WEIGHT));
+            errorText.setText(String.format("Weight must be a number between %s and %s", Profile.MIN_WEIGHT, Profile.MAX_WEIGHT));
         } else if (!isValidHeightDoubleString || !Profile.isValidHeight(height)) {
-            errorText.setText(String.format("Height must be a number between %s and %s", 0, Profile.MAX_HEIGHT));
+            errorText.setText(String.format("Height must be a number between %s and %s", Profile.MIN_HEIGHT, Profile.MAX_HEIGHT));
         } else {
             //Creates a new profile with the values provided by the user.
-            Profile profile = new Profile(firstName, lastName, dateString, weight, height);
+            Profile profile = new Profile(firstName, lastName, dateString, weight, height, String.format("images/profilePictures/ProfilePic%s.png", currentImageIndex));
             applicationStateManager.setCurrentProfile(profile);    //Sets the current profile to the new profile.
             System.out.println("profile Created!");
             try {
@@ -123,7 +147,7 @@ public class CreateProfileController extends Controller {
                 ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).reset();
                 this.reset();
             } catch (java.sql.SQLException e) {
-                applicationStateManager.displayErrorMessage("An error occurred storing the profile from the database.", e.getMessage());
+                GuiUtilities.displayErrorMessage("An error occurred storing the profile from the database.", e.getMessage());
                 System.out.println("Error storing new profile in the data base.");
                 e.printStackTrace();
             }
@@ -142,6 +166,26 @@ public class CreateProfileController extends Controller {
 
     }
 
+    /** Changes to the next image. */
+    @FXML
+    public void nextImage() {
+        currentImageIndex += 1;
+        if (currentImageIndex >= profilePictures.size()) {
+            currentImageIndex = 0;
+        }
+        profilePicImageView.setImage(GuiUtilities.maskProfileImage(profilePictures.get(currentImageIndex)));
+    }
+
+    /** Changes to the previous image. */
+    @FXML
+    public void prevImage() {
+        currentImageIndex -= 1;
+        if (currentImageIndex < 0) {
+            currentImageIndex = profilePictures.size()-1;
+        }
+        profilePicImageView.setImage(GuiUtilities.maskProfileImage(profilePictures.get(currentImageIndex)));
+    }
+
     /**
      * Resets the screen by clearing all TextFields.
      */
@@ -154,5 +198,8 @@ public class CreateProfileController extends Controller {
         weightField.setText("");
         heightField.setText("");
         errorText.setText("");
+
+        currentImageIndex = 0;
+        profilePicImageView.setImage(GuiUtilities.maskProfileImage(profilePictures.get(currentImageIndex)));
     }
 }

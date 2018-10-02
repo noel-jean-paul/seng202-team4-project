@@ -53,14 +53,14 @@ public class GoalTest {
     public void compareTo_differentNumber_checkComesBefore() throws SQLException {
         goal1.setNumber(3);
         goal2.setNumber(4);
-        assert goal1.compareTo(goal2) < 0;
+        assert goal1.compareTo(goal2) > 0;
     }
 
     @Test
     public void compareTo__differentNumber_checkComesAfter() throws SQLException  {
         goal1.setNumber(3);
         goal2.setNumber(4);
-        assert goal2.compareTo(goal1) > 0;
+        assert goal2.compareTo(goal1) < 0;
     }
 
     @Test

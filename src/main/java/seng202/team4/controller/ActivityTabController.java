@@ -5,12 +5,18 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import seng202.team4.Utilities;
+import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.enums.ActivityType;
 
@@ -23,6 +29,14 @@ import java.util.List;
  * Controller for the Activity Tab.
  */
 public class ActivityTabController extends Controller {
+
+    /** The button that toggles between calendar view. */
+    @FXML
+    private Button calendarViewButton;
+
+    /** the center pane that displays either an activity table or calendar. */
+    @FXML
+    private AnchorPane centerContentPane;
 
     /** The TableView that holds a list of activities. */
     @FXML
@@ -109,6 +123,12 @@ public class ActivityTabController extends Controller {
     /** The maps popup Pane. */
     private Pane mapPane;
 
+    /** Stores whether the calendar view is current being displayed. */
+    private boolean isCalendarView = false;
+
+    /** CalendarViewController of the calendar. */
+    private CalendarViewController calendarViewController;
+
 
 
     /**
@@ -120,7 +140,7 @@ public class ActivityTabController extends Controller {
         super(applicationStateManager);
 
         mapsController = new MapsController(applicationStateManager);
-        mapPane = Utilities.loadPane("Maps.fxml", mapsController);
+        mapPane = GuiUtilities.loadPane("Maps.fxml", mapsController);
     }
 
     /** Initializes the activity tab. */
@@ -144,14 +164,58 @@ public class ActivityTabController extends Controller {
         caloriesLabel.setVisible(false);
         metricsTitleText.setVisible(false);
 
+        ContextMenu tableRowMenu = new ContextMenu();
+
+        MenuItem deleteActivityItem = new MenuItem("Delete");
+        deleteActivityItem.setOnAction(event -> {
+            try {
+                applicationStateManager.getCurrentProfile().removeActivity((Activity) activityTable.getSelectionModel().getSelectedItem());
+                updateTable();
+            } catch (java.sql.SQLException e){
+                GuiUtilities.displayErrorMessage("Failed to remove Activity.", "");
+                e.printStackTrace();
+                System.out.println("Could not remove activity from the data base.");
+            }
+        });
+
+
+        MenuItem displayRawData = new MenuItem("View Raw Data Rows");
+        displayRawData.setOnAction(event -> {
+            Activity selectedActivity = (Activity) activityTable.getSelectionModel().getSelectedItem();
+            if (selectedActivity != null) {
+                Pane rawDataViewerPopup = GuiUtilities.loadPane("RawDataViewer.fxml", new RawDataViewerController(applicationStateManager, selectedActivity));
+                applicationStateManager.displayPopUp(rawDataViewerPopup);
+            }
+        });
+
+
+        tableRowMenu.getItems().add(deleteActivityItem);
+        tableRowMenu.getItems().add(displayRawData);
+
         activityTable.setRowFactory( tv -> {
             TableRow row = new TableRow();
             row.setOnMouseClicked(event -> {
                 showMapsButton.setDisable(false);
                 showGraphsButton.setDisable(false);
+                if (event.getButton() == MouseButton.PRIMARY || activityTable.getItems().size() <= row.getIndex()) {
+                    tableRowMenu.hide();
+                }
+            });
+
+            row.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+                @Override
+                public void handle(ContextMenuEvent event) {
+                    if (activityTable.getItems().get(row.getIndex()) != null) {
+                        tableRowMenu.show(activityTable, event.getScreenX(), event.getScreenY());
+                    }
+                }
             });
             return row ;
         });
+
+        tableRowMenu.setAutoHide(true);
+
+
     }
 
     /** Updates the contents of the activity Table. */
@@ -194,8 +258,30 @@ public class ActivityTabController extends Controller {
      */
     @FXML
     public void addActivities() {
-        Pane popUp = Utilities.loadPane("ActivityImportTypePrompt.fxml", new ActivityImportTypePromptController(applicationStateManager, this));
+        Pane popUp = GuiUtilities.loadPane("ActivityImportTypePrompt.fxml", new ActivityImportTypePromptController(applicationStateManager, this));
         applicationStateManager.displayPopUp(popUp);
+    }
+
+    /**
+     * Switches to calendar view.
+     */
+    @FXML
+    public void toggleCalendarView() {
+        if (!isCalendarView) {
+            calendarViewController = new CalendarViewController(applicationStateManager);
+            Pane calendarView = GuiUtilities.loadPane("CalendarView.fxml", calendarViewController);
+            //toggleCalendarView.prefWidthProperty().bind(centerContentPane.widthProperty());
+            //toggleCalendarView.prefHeightProperty().bind(centerContentPane.heightProperty());
+            centerContentPane.getChildren().setAll(calendarView);
+            calendarViewButton.setText("Table View");
+            isCalendarView = true;
+        } else {
+            centerContentPane.getChildren().setAll(activityTable);
+            calendarViewButton.setText("Calendar view");
+            isCalendarView = false;
+        }
+
+
     }
 
     /**
@@ -204,9 +290,9 @@ public class ActivityTabController extends Controller {
      */
     @FXML
     public void showGraphsPopup() {
-        Activity activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
+        Activity activity = getSelectedActivity();
         if (activity != null) {
-            Pane activityPopUp = Utilities.loadPane("ActivityPopUpScreen.fxml", new ActivityPopUpScreenController(applicationStateManager, activity));
+            Pane activityPopUp = GuiUtilities.loadPane("ActivityPopUpScreen.fxml", new ActivityPopUpScreenController(applicationStateManager, activity));
             applicationStateManager.displayPopUp(activityPopUp);
         }
 
@@ -218,10 +304,38 @@ public class ActivityTabController extends Controller {
      */
     @FXML
     public void showMaps() {
-        Activity activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
+        Activity activity = getSelectedActivity();
         if (activity != null) {
-            applicationStateManager.displayPopUp(mapPane);
-            mapsController.initMap(activity);
+            if (activity.getRawData().size() == 0) {
+                GuiUtilities.displayErrorMessage("No data found.", String.format("'%s' seems to have no gps data.", activity.getName()));
+            } else {
+                try {
+                    mapsController.initMap(activity);   //Trys to display route, will raise and exception if it fails.
+                    Task<Void> sleeper = new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+
+                            }
+                            return null;
+                        }
+                    };
+                    sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                        @Override
+                        public void handle(WorkerStateEvent event) {
+                            mapsController.initMap(activity);
+                        }
+                    });
+                    new Thread(sleeper).start();
+                    applicationStateManager.displayPopUp(mapPane);
+
+                } catch (Exception e) {
+                    GuiUtilities.displayErrorMessage("Failed to load map.", "Try checking your internet connection.");
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -322,8 +436,9 @@ public class ActivityTabController extends Controller {
             caloriesLabel.setVisible(true);
             caloriesText.setVisible(true);
             distanceLabel.setVisible(true);
-            averageSpeed = (totalDistance / 1000.0) / (totalTime / 60.0);
-            String formattedDistance = String.format("%.00f", totalDistance);
+            double speedKm = totalDistance / 1000.0;
+            averageSpeed = (speedKm) / (totalTime / 60.0);
+            String formattedDistance = String.format("%.01f", speedKm);
             String formattedSpeed = String.format("%.01f", averageSpeed);
             String formattedCalories = String.format("%.01f", totalCalories);
             distanceLabel.setText(formattedDistance + " km");
@@ -332,9 +447,26 @@ public class ActivityTabController extends Controller {
         }
     }
 
+    /** Gets the selected activity from either the Table or calendar.
+     *
+     * @return The selected activity if there is one, null otherwise.
+     */
+    private Activity getSelectedActivity() {
+        Activity activity;
+        if (isCalendarView) {
+            activity = calendarViewController.getSelectedActivity();
+        } else {
+            activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
+        }
+        return activity;
+    }
+
     /** Resets the ActivityTab. */
     public void reset() {
         showGraphsButton.setDisable(true);
         showMapsButton.setDisable(true);
+
+        isCalendarView = true;
+        toggleCalendarView();
     }
 }
