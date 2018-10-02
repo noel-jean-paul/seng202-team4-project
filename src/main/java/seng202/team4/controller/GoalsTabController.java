@@ -3,6 +3,8 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 
@@ -11,72 +13,26 @@ import javafx.scene.text.Text;
  */
 public class GoalsTabController extends Controller {
 
-    /** Contains the name of the first goal */
     @FXML
-    private Text goal1text;
-
-    /** Contains the name of the second goal */
-    @FXML
-    private Text goal2text;
-
-    /** Contains the name of the third goal */
-    @FXML
-    private Text goal3text;
-
-    /** Contains the name of the fourth goal */
-    @FXML
-    private Text goal4text;
-
-    /** Contains the name of the fifth goal */
-    @FXML
-    private Text goal5text;
-
-    /** Button to remove the first goal */
-    @FXML
-    private Button removeGoal1Button;
-
-    /** Button to remove the second goal */
-    @FXML
-    private Button removeGoal2Button;
-
-    /** Button to remove the third goal */
-    @FXML
-    private Button removeGoal3Button;
-
-    /** Progress bar of the fourth goal */
-    @FXML
-    private Button removeGoal4Button;
-
-    /** Progress bar of the fifth goal */
-    @FXML
-    private Button removeGoal5Button;
+    private Button calendarViewButton;
 
     @FXML
-    private ProgressBar goal1Bar;
+    private Text startDateText;
 
-    /** Progress bar of the second goal */
     @FXML
-    private ProgressBar goal2Bar;
+    private Text remainingTimeText;
 
-    /** Progress bar of the third goal */
     @FXML
-    private ProgressBar goal3Bar;
+    private ProgressIndicator goalProgressIndicator;
 
-    /** Progress bar of the fourth goal */
     @FXML
-    private ProgressBar goal4Bar;
+    private Text descriptionText;
 
-    /** Progress bar of the fifth goal */
     @FXML
-    private ProgressBar goal5Bar;
+    private VBox goalsListVbox;
 
-    /** Button to view the calendar */
     @FXML
-    private Button calenderButton;
-
-    /** Button to set a new goal */
-    @FXML
-    private Button setNewGoalButton;
+    private Text expiryDateText;
 
 
     /**
@@ -92,6 +48,21 @@ public class GoalsTabController extends Controller {
     /** Initializes the goals tab. */
     @FXML
     public void initialize() {
+
+    }
+
+    @FXML
+    void addGoal() {
+
+    }
+
+    @FXML
+    void toggleCalendarView() {
+
+    }
+
+    @FXML
+    void edit() {
 
     }
 }
