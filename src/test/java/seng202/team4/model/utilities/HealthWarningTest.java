@@ -37,7 +37,7 @@ public class HealthWarningTest {
         noIssuesRunning.add(new DataRow(0, "2015-04-12", "22:08:42", 143, 30.248482, -97.820708, 207.3));
         noIssuesRunning.add(new DataRow(0, "2015-04-12", "22:09:41", 143, 30.24915, -97.820722, 206.8));
 
-        ArrayList<DataRow> noIssuesOther = new ArrayList<>();
+        ArrayList<DataRow> noIssuesOther = new ArrayList<>(); // Other activity with no issues
         noIssuesOther.add(new DataRow(0,"2015-01-01", "14:49:18", 155, 30.27140097, -97.83250907, 181.8));
         noIssuesOther.add(new DataRow(0,"2015-01-01", "14:49:31", 160, 30.2713112, -97.83239139, 181.8));
         noIssuesOther.add(new DataRow(0,"2015-01-01", "14:50:42", 161, 30.27114474, -97.83244051, 182.3));
@@ -85,13 +85,13 @@ public class HealthWarningTest {
 
 
 
-        activityList.add(new Activity("Walk in the woods", noIssueWalking));
-        activityList.add(new Activity("Run around the block", noIssuesRunning));
-        activityList.add(new Activity("Exercise with friends", noIssuesOther));
-        activityList.add(new Activity("Longer Run", runningTachy));
-        activityList.add(new Activity("Shorter Run", runningBrady));
-        activityList.add(new Activity("Walk up the mountains", walkingTachy));
-        activityList.add(new Activity("Hike up the mountains", walkingBrady));
+        activityList.add(new Activity("No issues walking", noIssueWalking));
+        activityList.add(new Activity("No issues running", noIssuesRunning));
+        activityList.add(new Activity("No issues other", noIssuesOther));
+        activityList.add(new Activity("Tachycardia Run", runningTachy));
+        activityList.add(new Activity("Bradycardia Run", runningBrady));
+        activityList.add(new Activity("Tachycardia walk", walkingTachy));
+        activityList.add(new Activity("Bradycardia walk", walkingBrady));
 
 
         testProfile.addAllActivities(activityList);
@@ -99,7 +99,7 @@ public class HealthWarningTest {
 
     @Test
     public void tachycardiaRunning() {
-        Activity testedActivity = testProfile.getActivityList().get(5);
+        Activity testedActivity = testProfile.getActivityList().get(0);
         HealthWarning tachyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Tachy, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
         boolean hasHealthRisks = tachyWarning.isHealthRisk();
         assertTrue(hasHealthRisks);
@@ -107,7 +107,7 @@ public class HealthWarningTest {
 
     @Test
     public void  tachycardiaWalking() {
-        Activity testedActivity = testProfile.getActivityList().get(3);
+        Activity testedActivity = testProfile.getActivityList().get(2);
         HealthWarning tachyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Tachy, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
         boolean hasHealthRisks = tachyWarning.isHealthRisk();
         assertTrue(hasHealthRisks);
@@ -115,7 +115,7 @@ public class HealthWarningTest {
 
     @Test
     public void bradycardiaRunning() {
-        Activity testedActivity = testProfile.getActivityList().get(6);
+        Activity testedActivity = testProfile.getActivityList().get(1);
         HealthWarning tachyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Brady, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
         boolean hasHealthRisks = tachyWarning.isHealthRisk();
         assertTrue(hasHealthRisks);
@@ -123,7 +123,7 @@ public class HealthWarningTest {
 
     @Test
     public void bradycardiaWalking() {
-        Activity testedActivity = testProfile.getActivityList().get(4);
+        Activity testedActivity = testProfile.getActivityList().get(3);
         HealthWarning tachyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Brady, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
         boolean hasHealthRisks = tachyWarning.isHealthRisk();
         assertTrue(hasHealthRisks);
@@ -131,7 +131,7 @@ public class HealthWarningTest {
 
     @Test
     public void noWarningsWalking() { // Walk in the woods is in position 1 after sorting.
-        Activity testedActivity = testProfile.getActivityList().get(1);
+        Activity testedActivity = testProfile.getActivityList().get(5);
         HealthWarning tachyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Tachy, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
         HealthWarning bradyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Brady, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
         boolean hasHealthRisks = (tachyWarning.isHealthRisk() || bradyWarning.isHealthRisk());
@@ -140,7 +140,7 @@ public class HealthWarningTest {
 
     @Test
     public void noWarningsRunning() { // Run around the block is in position 2 after sorting.
-        Activity testedActivity = testProfile.getActivityList().get(2);
+        Activity testedActivity = testProfile.getActivityList().get(4);
         HealthWarning tachyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Tachy, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
         HealthWarning bradyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Brady, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
         boolean hasHealthRisks = (tachyWarning.isHealthRisk() || bradyWarning.isHealthRisk());
@@ -149,7 +149,7 @@ public class HealthWarningTest {
 
     @Test
     public void noWarningsOther() {
-        Activity testedActivity = testProfile.getActivityList().get(0); // Exercise with friends is in position 0 after sorting.
+        Activity testedActivity = testProfile.getActivityList().get(6); // Exercise with friends is in position 0 after sorting.
         HealthWarning tachyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Tachy, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
         HealthWarning bradyWarning = new HealthWarning(testedActivity, testProfile, WarningType.Brady, testedActivity.getAvgHeartRate(), testedActivity.getMinHeartRate(), testedActivity.getMaxHeartRate());
         boolean hasHealthRisks = (tachyWarning.isHealthRisk() || bradyWarning.isHealthRisk());
