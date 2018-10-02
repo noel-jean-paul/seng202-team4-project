@@ -6,7 +6,6 @@ import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import seng202.team4.App;
-import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.data.Position;
@@ -69,7 +68,6 @@ public class MapsController extends Controller {
         headingText.setText(String.format("Map of '%s'", activity.getName()));
         Route newRoute = generateRoute(activity);
         displayRoute(newRoute);
-
     }
 
     /**

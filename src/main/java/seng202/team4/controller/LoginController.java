@@ -2,12 +2,15 @@ package seng202.team4.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import seng202.team4.App;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.ProfileKey;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.view.ProfileListItem;
 
+import java.net.URL;
 import java.util.List;
 
 /** Controller for the login screen. */
@@ -23,8 +26,6 @@ public class LoginController extends Controller {
 
     /** The currently selected ProfileListItem. */
     private ProfileListItem selectedProfileItem = null;
-
-
 
     /** Creates a new LoginController with the given ApplicationStateManager. */
     public LoginController(ApplicationStateManager applicationStateManager) {
@@ -51,6 +52,19 @@ public class LoginController extends Controller {
         for (ProfileKey profileKey: profileKeys) {
             ProfileListItemController controller = new ProfileListItemController(applicationStateManager);
             ProfileListItem profileListItem = new ProfileListItem(controller, profileKey);
+
+            // Load the users profile picture
+            URL profileImageUrl = null;
+            try {
+                profileImageUrl = App.class.getResource(DataLoader.loadProfile(profileKey.getFirstName(), profileKey.getLastName()).getPictureURL());
+            } catch (java.sql.SQLException e) {
+                e.printStackTrace();
+            }
+
+            if (profileImageUrl != null) {
+                controller.setProfilePicture(new Image(profileImageUrl.toString()));
+            }
+
             profileListItem.setOnMouseClicked(event -> {changeSelectedProfile(profileListItem);});
             profileListVbox.getChildren().add(profileListItem);
 
@@ -79,6 +93,7 @@ public class LoginController extends Controller {
     public void createProfile() {
         System.out.println("You want to create a profile");
         applicationStateManager.switchToScreen("CreateProfileScreen");
+        reset();
     }
 
     /**
@@ -98,6 +113,7 @@ public class LoginController extends Controller {
                 // TODO remove following once database stores data
                 applicationStateManager.getCurrentProfile().findWarnings();
 
+                reset();
 
                 System.out.println(String.format("%s %s has logged in!", profileKey.getFirstName(), profileKey.getLastName()));
             } catch (java.sql.SQLException e) {
@@ -105,6 +121,16 @@ public class LoginController extends Controller {
                 System.out.println("Error: Failed to load profile.");
             }
         }
+    }
+
+    /**
+     * Resets the login screen by deselected the currently selected activity.
+     */
+    private void reset() {
+        if (selectedProfileItem != null) {
+            selectedProfileItem.deselect();
+        }
+        selectedProfileItem = null;
     }
 
 

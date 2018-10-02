@@ -12,6 +12,8 @@ import java.util.Objects;
 
 
 public class Goal implements Comparable<Goal> {
+    public static final double minGoalDistance = 0;
+
     private int number;
     private double progress;
     private GoalType type;
@@ -83,8 +85,8 @@ public class Goal implements Comparable<Goal> {
      */
     @Override
     public int compareTo(Goal o) {
-        return Integer.compare(this.getNumber(), o.getNumber());
-    }
+        return Integer.compare(this.getNumber(), o.getNumber()) * -1;
+    }   // descending order
 
     public int getNumber() {
         return number;

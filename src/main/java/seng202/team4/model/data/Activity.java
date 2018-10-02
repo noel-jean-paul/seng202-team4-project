@@ -24,7 +24,6 @@ public class Activity implements Comparable<Activity> {
     /* The combination of name and date must be unique for a profile */
     private String name;
     private LocalDate date;
-    private String description;
     private ActivityType type;
     private LocalTime startTime;
     private Duration duration;
@@ -37,11 +36,10 @@ public class Activity implements Comparable<Activity> {
     private int minHeartRate;
     private int maxHeartRate;
 
-    public Activity(String name, String date, String description, ActivityType type, String startTime,
+    public Activity(String name, String date, ActivityType type, String startTime,
                     String duration, double distance, double caloriesBurned) {
         this.name = name;
         this.date = LocalDate.parse(date);
-        this.description = description;
         this.type = type;
 
         this.startTime = LocalTime.parse(startTime);
@@ -59,11 +57,15 @@ public class Activity implements Comparable<Activity> {
     public Activity(String name, ArrayList<DataRow> rawActivityList) {
         this.name = name;
         this.rawData = rawActivityList;
+        this.updateActivity();
+    }
+
+    public void updateActivity() {
         java.util.Collections.sort(this.rawData);   // ensure the data is in order
-        this.date = (rawActivityList.get(0)).getDate();
-        this.startTime = (rawActivityList.get(0)).getTime();
-        this.distance = DataProcessor.totalDistance(rawActivityList);
-        this.duration = DataProcessor.calculateDuration(rawActivityList);
+        this.date = (this.rawData.get(0)).getDate();
+        this.startTime = (this.rawData.get(0)).getTime();
+        this.distance = DataProcessor.totalDistance(this.rawData);
+        this.duration = DataProcessor.calculateDuration(this.rawData);
         this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.type = findActivityType(name);
         this.avgHeartRate = calculateAvgHeartRate();
@@ -81,7 +83,6 @@ public class Activity implements Comparable<Activity> {
                 Double.compare(activity.getAverageSpeed(), getAverageSpeed()) == 0 &&
                 Objects.equals(getName(), activity.getName()) &&
                 Objects.equals(getDate(), activity.getDate()) &&
-                Objects.equals(getDescription(), activity.getDescription()) &&
                 getType() == activity.getType() &&
                 Objects.equals(getStartTime(), activity.getStartTime()) &&
                 Objects.equals(getDuration(), activity.getDuration()) &&
@@ -90,13 +91,13 @@ public class Activity implements Comparable<Activity> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDate(), getDescription(), getType(), getStartTime(), getDuration(), getDistance(), getCaloriesBurned(), getAverageSpeed(), getRawData());
+        return Objects.hash(getName(), getDate(), getType(), getStartTime(), getDuration(), getDistance(), getCaloriesBurned(), getAverageSpeed(), getRawData());
     }
 
     /** Compare an Activity to another based on Date and then based on Time in case of ties.
      *  Consistent with equals as defined by Comparable
      *
-     * @param o the ProfileKey to compare to
+     * @param o the Activity to compare to
      * @return a negative integer, zero, or a positive integer as this object
      *          is less than, equal to, or greater than the specified object.
      */
@@ -105,9 +106,9 @@ public class Activity implements Comparable<Activity> {
         int dateCompare;
         int timeCompare;
          if ((dateCompare = this.getDate().compareTo(o.getDate())) != 0) {
-             return dateCompare;
+             return dateCompare * -1;  // Reverse order to descending
          } else if ((timeCompare = this.getStartTime().compareTo(o.getStartTime())) != 0) {
-             return timeCompare;
+             return timeCompare * -1;   // Reverse order to descending
          } else {
              return 0;  // Same date and startTime
          }
@@ -122,17 +123,6 @@ public class Activity implements Comparable<Activity> {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.name.toString(), name, true);
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    /** Set and update in database */
-    public void setDescription(String description) throws SQLException {
-        DataUpdater.updateActivities(Collections.singletonList(this),
-                ActivityFields.description.toString(), description, false);
-        this.description = description;
     }
 
     public LocalDate getDate() {

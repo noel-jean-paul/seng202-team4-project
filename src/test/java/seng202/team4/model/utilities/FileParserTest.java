@@ -3,6 +3,7 @@ package seng202.team4.model.utilities;
 import org.junit.Before;
 import org.junit.Test;
 import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.CorruptActivity;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -16,7 +17,7 @@ public class FileParserTest {
     private static FileParser testImport;
     private String filename = "seng202_2018_example_data.csv";
     private ArrayList<Activity> testValidActivities = new ArrayList<>();
-    private ArrayList<Activity> testWarningActivities = new ArrayList<>();
+    private ArrayList<CorruptActivity> testWarningActivities = new ArrayList<>();
     private ArrayList<Activity> testSkippedActivities = new ArrayList<>();
 
     //FileParser testImport = new FileParser();
