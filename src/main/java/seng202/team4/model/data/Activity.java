@@ -55,8 +55,6 @@ public class Activity implements Comparable<Activity> {
      * @param name is the name of the activity as a string
      */
     public Activity(String name, ArrayList<DataRow> rawActivityList) {
-        java.util.Collections.sort(this.rawData);   // ensure the data is in order
-
         this.name = name;
         this.rawData = rawActivityList;
         this.date = this.rawData.get(0).getDate();
@@ -66,6 +64,8 @@ public class Activity implements Comparable<Activity> {
         this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.type = findActivityType(name);
         updateHeartRateAttributes();
+
+        java.util.Collections.sort(this.rawData);   // ensure the data is in order
     }
 
     /** Update the activity attributes
@@ -74,13 +74,16 @@ public class Activity implements Comparable<Activity> {
      * @throws SQLException if an error occurred regarding the database
      */
     public void updateActivity() throws SQLException {
-        setDate(this.rawData.get(0).getDate().toString());
-        setStartTime(this.rawData.get(0).getTime().toString());
-        setDistance(DataProcessor.totalDistance(this.rawData));
-        setDuration(DataProcessor.calculateDuration(this.rawData).toString());
-        setAverageSpeed(DataProcessor.calculateAverageSpeed(distance, this.duration));
-        setType(findActivityType(name));
-        updateHeartRateAttributes();
+        // Only update the data if there are at least 2 datarows to prevent IndexOutOfBounds Exceptions
+        if (rawData.size() >= 2) {
+            setDate(this.rawData.get(0).getDate().toString());
+            setStartTime(this.rawData.get(0).getTime().toString());
+            setDistance(DataProcessor.totalDistance(this.rawData));
+            setDuration(DataProcessor.calculateDuration(this.rawData).toString());
+            setAverageSpeed(DataProcessor.calculateAverageSpeed(distance, this.duration));
+            setType(findActivityType(name));
+            updateHeartRateAttributes();
+        }
     }
 
     /* Recalculate and update the min, max and average heart rates of the activity. */

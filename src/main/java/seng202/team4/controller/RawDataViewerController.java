@@ -253,6 +253,15 @@ public class RawDataViewerController extends Controller {
      * checks each of the fields of data row to see if they are within the accepted range, before adding them as a data row
      */
     public void fieldErrorChecking(int buttonType) {
+        // TODO: 4/10/18 This is part of the hack 
+        // Remove the activity from the observed list to trick the observer
+        try {
+            applicationStateManager.getCurrentProfile().removeActivity(activity);
+        } catch (SQLException e) {
+            GuiUtilities.displayErrorMessage("A problem occurred with the database.", e.getMessage());
+            System.out.println("A database error occurred when adding/removing the activity from the database.");
+        }
+        
 
         // Try to parse the date string to check that it is in a valid format.
         String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -321,7 +330,7 @@ public class RawDataViewerController extends Controller {
             isValidAddition = true;
         }
 
-
+        
 
         if (!isValidDateFormat) {
             errorMessage.setText("Date should be in the form dd/mm/yyyy");
@@ -374,9 +383,36 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     void closePopUp() {
-        activity.updateActivity();
+        // Update the activity attributes as the raw data may have changed
+        try {
+            activity.updateActivity();
+        } catch (SQLException e) {
+            GuiUtilities.displayErrorMessage("A problem occurred with the database.", e.getMessage());
+            System.out.println("A database error occurred when updating the activity.");
+        }
+        // Trigger the observer observing the activity list
+        //removeAndAddActivity();
+
+        // Update the table
         activityTabController.updateTable();    //@ToDo this line should update the activities table when the popup is closed
         applicationStateManager.closePopUP(popupPane);
+    }
+
+
+    /** Removes the class variable activity from the activity list of the currently loaded profile
+     *  then adds it again.
+     *  This triggers the observer observing the list and causes the activity table to update correctly.
+     */
+    private void removeAndAddActivity() {
+        // TODO: 4/10/18 part of the hack too
+        // Try to add and remove the activity - will be removed / readded to the database
+        try {
+            applicationStateManager.getCurrentProfile().addActivity(activity);
+        } catch (SQLException e) {
+            GuiUtilities.displayErrorMessage("A problem occurred with the database.", e.getMessage());
+            System.out.println("A database error occurred when adding/removing the activity from the database.");
+        }
+
     }
 
 

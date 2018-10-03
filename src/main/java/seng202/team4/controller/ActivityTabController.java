@@ -221,6 +221,8 @@ public class ActivityTabController extends Controller {
 
     /** Updates the contents of the activity Table. */
     public void updateTable() {
+        //System.out.println("I have been called");
+        //applicationStateManager.getCurrentProfile().getActivityList().remove(0);
         ObservableList<Activity> activitiesList = FXCollections.observableArrayList(applicationStateManager.getCurrentProfile().getActivityList());
 
         //Sets where the columns should get their values from.
