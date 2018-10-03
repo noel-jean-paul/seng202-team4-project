@@ -9,7 +9,7 @@ import seng202.team4.model.data.Goal;
 /**
  * The controller for the rows in the goal tables
  */
-public class GoalTableRowController extends Controller {
+public class CurrentGoalRowController extends Controller {
 
     /* Text that displays the description of the goal */
     @FXML
@@ -40,11 +40,11 @@ public class GoalTableRowController extends Controller {
 
 
     /**
-     * Constructor of the GoalTableRowController.
+     * Constructor of the CurrentGoalRowController.
      *
      * @param applicationStateManager The ApplicationStateManager of the application.
      */
-    public GoalTableRowController(ApplicationStateManager applicationStateManager, Goal goal) {
+    public CurrentGoalRowController(ApplicationStateManager applicationStateManager, Goal goal) {
         super(applicationStateManager);
         this.goal = goal;
     }
@@ -79,7 +79,8 @@ public class GoalTableRowController extends Controller {
      * @param progress the progress to set as an int.
      */
     private void setProgress (double progress) {
-        this.progressValue.setText(Double.toString(progress));
+        String percentSign = "%";
+        this.progressValue.setText(String.format("%.0f%s", progress, percentSign));
         this.progressBar.setProgress(progress / 100);
     }
 
@@ -89,5 +90,13 @@ public class GoalTableRowController extends Controller {
      */
     public AnchorPane getRowPane() {
         return rowPane;
+    }
+
+    /** Get the goal this row describes
+     *
+     * @return the goal object this row describes
+     */
+    public Goal getGoal() {
+        return goal;
     }
 }
