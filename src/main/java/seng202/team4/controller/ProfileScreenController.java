@@ -111,7 +111,8 @@ public class ProfileScreenController extends Controller {
     /** Boolean that stores whether the user is currently editing. */
     private boolean isEditing = false;
 
-    /** Creates a new ProfileScreenController with the given ApplicationStateManager. */
+    /** Creates a new ProfileScreenController with the given ApplicationStateManager.
+     **/
     public ProfileScreenController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }

@@ -2,6 +2,7 @@ package seng202.team4.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import seng202.team4.model.data.Goal;
 
@@ -30,6 +31,11 @@ public class GoalTableRowController extends Controller {
     @FXML
     private Text progressValue;
 
+    /* Top level pane of the GoalTableRow */
+    @FXML
+    private AnchorPane rowPane;
+
+    /* The goal which the row presents infomation about */
     private Goal goal;
 
 
@@ -75,5 +81,13 @@ public class GoalTableRowController extends Controller {
     private void setProgress (double progress) {
         this.progressValue.setText(Double.toString(progress));
         this.progressBar.setProgress(progress / 100);
+    }
+
+    /** Get the rowPane
+     *
+     * @return the rowPane as an AnchorPane
+     */
+    public AnchorPane getRowPane() {
+        return rowPane;
     }
 }

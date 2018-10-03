@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -11,6 +12,8 @@ import seng202.team4.model.data.Goal;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.enums.GoalType;
+
+import java.util.List;
 
 
 /**
@@ -61,16 +64,25 @@ public class GoalsTabController extends Controller {
     @FXML
     private Text noGoalSelectedText;
 
+    /* The scroll pane containing the goals */
+    @FXML
+    private ScrollPane scrollPane;
+
     /** The currently selected goal. */
     private Goal selectedGoal = null;
 
+    /* List of the GoalTableRows in the current goal table */
+    private List<GoalTableRowController> currentGoalRows;
+
+    /* List of the GoalTableRows in the past goal table */
+    private List<GoalTableRowController> pasttGoalRows;
 
     /**
      * Constructor for the Goals Tab Controller.
      *
      * @param applicationStateManager The ApplicationStateManager of the application.
      */
-    public GoalsTabController(ApplicationStateManager applicationStateManager) {
+    GoalsTabController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
 
@@ -79,14 +91,22 @@ public class GoalsTabController extends Controller {
     @FXML
     public void initialize() {
         reset();
-        Goal goal = new Goal(2, 100, GoalType.Run,"2018-09-28", "2017-01-12",
+        Goal goal = new Goal(2, 67, GoalType.Run,"2018-09-28", "2017-01-12",
                 "PT50M");
         GoalTableRowController goalTableRowController = new GoalTableRowController(applicationStateManager, goal);
-        Pane goalPane = GuiUtilities.loadPane("GoalTableRow.fxml", goalTableRowController);
+        Pane goalPane = GuiUtilities.loadPane("GoalTableRow.fxml", goalTableRowController); //This is what gets displayed
         goalsListVbox.getChildren().add(goalPane);
 
+        // Make the scrollPane match the width of the GoalTableRow
+        goalPane.prefWidthProperty().bind(scrollPane.widthProperty());
+    }
+
+    /* Fills the current and past GoalRow lists using the currently loaded profile's goals */
+    @FXML
+    private void fillGoalRowLists() {
 
     }
+
 
     @FXML
     void addGoal() {
