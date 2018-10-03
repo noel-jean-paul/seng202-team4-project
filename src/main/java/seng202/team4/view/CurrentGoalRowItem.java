@@ -30,7 +30,7 @@ public class CurrentGoalRowItem extends AnchorPane {
      * @param goal the goal that is being displayed.
      */
     public CurrentGoalRowItem(CurrentGoalRowController controller, Goal goal) {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("seng202/team4/view/CurrentGoalRow.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("view/CurrentGoalRow.fxml"));
         loader.setControllerFactory(c -> {return controller;});
         loader.setRoot(this);
         try {
