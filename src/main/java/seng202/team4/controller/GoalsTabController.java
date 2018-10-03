@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import seng202.team4.model.data.Goal;
 import seng202.team4.GuiUtilities;
+import seng202.team4.view.CurrentGoalRowItem;
 
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class GoalsTabController extends Controller {
     private ScrollPane scrollPane;
 
     /** The currently selected goal. */
-    private Goal selectedGoal = null;
+    private CurrentGoalRowItem selectedGoalRow = null;
 
     /* List of the GoalTableRows in the current goal table */
     private List<CurrentGoalRowController> currentGoalRows;
@@ -118,6 +119,19 @@ public class GoalsTabController extends Controller {
         fillGoalRowLists();
     }
 
+    /**
+     * Changes the selected goalRow
+     *
+     * @param goalRow the goalRow to select
+     */
+    public void changeSelectedGoalRow(CurrentGoalRowItem goalRow) {
+        if (selectedGoalRow != null) {
+            selectedGoalRow.deselect();
+        }
+        selectedGoalRow = goalRow;
+        selectedGoalRow.select();
+    }
+
     /** Remove a goalRow from the display and the GoalRow list it is contained in
      *
      * @param goalRow the goalRow to be removed
@@ -143,8 +157,8 @@ public class GoalsTabController extends Controller {
 
     }
 
-    public void reset() {
-        selectedGoal = null;
+    private void reset() {
+        selectedGoalRow = null;
         goalProgressIndicator.setProgress(0);
         goalProgressIndicator.setDisable(true);
         editButton.setDisable(true);

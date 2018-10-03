@@ -9,7 +9,7 @@ import seng202.team4.model.data.Goal;
 /**
  * The controller for the rows in the goal tables
  */
-public class CurrentGoalRowController extends Controller {
+public class CurrentGoalRowController extends GoalRowController {
 
     /* Text that displays the description of the goal */
     @FXML
@@ -35,9 +35,6 @@ public class CurrentGoalRowController extends Controller {
     @FXML
     private AnchorPane rowPane;
 
-    /* The goal which the row presents infomation about */
-    private Goal goal;
-
 
     /**
      * Constructor of the CurrentGoalRowController.
@@ -46,31 +43,22 @@ public class CurrentGoalRowController extends Controller {
      */
     public CurrentGoalRowController(ApplicationStateManager applicationStateManager, Goal goal) {
         super(applicationStateManager);
-        this.goal = goal;
     }
 
     @FXML
     public void initialize() {
-        initialiseRow();
+        // TODO: 3/10/18 initialise
     }
 
-    /* Initializes the GoalTableRow using goal parameter */
-    private void initialiseRow() {
-        setDescription(goal.getDescription());
-        setCreationDate(goal.getCreationDate().toString());
-        setExpiryDate(goal.getExpiryDate().toString());
-        setProgress(goal.getProgress());
-    }
-
-    private void setDescription(String description) {
+    public void setDescription(String description) {
         this.description.setText(description);
     }
 
-    private void setCreationDate(String creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate.setText(creationDate);
     }
 
-    private void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(String expiryDate) {
         this.expiryDate.setText(expiryDate);
     }
 
@@ -78,7 +66,7 @@ public class CurrentGoalRowController extends Controller {
      *
      * @param progress the progress to set as an int.
      */
-    private void setProgress (double progress) {
+    public void setProgress (double progress) {
         String percentSign = "%";
         this.progressValue.setText(String.format("%.0f%s", progress, percentSign));
         this.progressBar.setProgress(progress / 100);
@@ -91,12 +79,5 @@ public class CurrentGoalRowController extends Controller {
     public AnchorPane getRowPane() {
         return rowPane;
     }
-
-    /** Get the goal this row describes
-     *
-     * @return the goal object this row describes
-     */
-    public Goal getGoal() {
-        return goal;
-    }
 }
+
