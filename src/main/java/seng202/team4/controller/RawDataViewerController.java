@@ -90,6 +90,10 @@ public class RawDataViewerController extends Controller {
     @FXML
     private Button applyEditsButton;
 
+    /** The button which when clicked adds a new data row to the raw data */
+    @FXML
+    private Button addRowButton;
+
     /** The text which displays the error message if you enter incorrect data */
     @FXML
     private Text errorMessage;
@@ -118,6 +122,7 @@ public class RawDataViewerController extends Controller {
 
     public void displayPopUp() {
         applyEditsButton.setDisable(true);
+        addRowButton.setDisable(true);
         dataTableTitleText.setText("Data Rows for " + activity.getName());
         dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
         updateDataRows();   //updates the table
@@ -168,7 +173,6 @@ public class RawDataViewerController extends Controller {
      */
     public void updateDataRows() {
         ObservableList<DataRow> dataList = FXCollections.observableArrayList(activity.getRawData());
-        //System.out.println(activity.getRawData());
 
         dateColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalDate>("date"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalTime>("time"));
@@ -188,6 +192,7 @@ public class RawDataViewerController extends Controller {
         dataRowTable.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 applyEditsButton.setDisable(false);
+                addRowButton.setDisable(false);
                 dateDatePicker.setValue(newSelection.getDate());
                 timeTextField.setText(newSelection.getTime().toString());
                 heartRateTextField.setText(Integer.toString(newSelection.getHeartRate()));
