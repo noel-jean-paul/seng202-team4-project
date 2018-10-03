@@ -105,12 +105,13 @@ public class GoalsTabController extends Controller {
     private void fillGoalRowLists() {
         // Add each current Goal to the vbox children
         for (Goal goal: applicationStateManager.getCurrentProfile().getCurrentGoals()) {
-            CurrentGoalRowController currentGoalRowController = new CurrentGoalRowController(applicationStateManager, goal);
-            Pane goalPane = GuiUtilities.loadPane("CurrentGoalRow.fxml", currentGoalRowController); //This is what gets displayed
-            goalsListVbox.getChildren().add(goalPane);
+            CurrentGoalRowController controller = new CurrentGoalRowController(applicationStateManager);
+            CurrentGoalRowItem currentGoalRowItem = new CurrentGoalRowItem(controller, goal);
+            //Pane goalPane = GuiUtilities.loadPane("CurrentGoalRow.fxml", controller); //This is what gets displayed
+            goalsListVbox.getChildren().add(currentGoalRowItem);
 
             // Make the scrollPane match the width of the GoalTableRow
-            goalPane.prefWidthProperty().bind(scrollPane.widthProperty());
+            currentGoalRowItem.prefWidthProperty().bind(scrollPane.widthProperty());
         }
     }
 

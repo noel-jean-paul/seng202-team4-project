@@ -23,9 +23,6 @@ public class CurrentGoalRowItem extends AnchorPane {
     /* The goal which the row presents infomation about */
     private Goal goal;
 
-
-
-
     /**
      * Constructor for the currentGoalRowItem
      *
@@ -33,7 +30,7 @@ public class CurrentGoalRowItem extends AnchorPane {
      * @param goal the goal that is being displayed.
      */
     public CurrentGoalRowItem(CurrentGoalRowController controller, Goal goal) {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("view/ProfileListItem.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("seng202/team4/view/CurrentGoalRow.fxml"));
         loader.setControllerFactory(c -> {return controller;});
         loader.setRoot(this);
         try {
@@ -55,8 +52,6 @@ public class CurrentGoalRowItem extends AnchorPane {
         controller.setExpiryDate(goal.getExpiryDate().toString());
         controller.setProgress(goal.getProgress());
     }
-
-
 
     /** Select the GoalRow  by applying the selected background. */
     public void select() {
