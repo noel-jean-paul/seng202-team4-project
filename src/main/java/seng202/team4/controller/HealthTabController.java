@@ -10,7 +10,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import seng202.team4.App;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.utilities.HealthWarning;
@@ -183,15 +182,26 @@ public class HealthTabController extends Controller {
         healthWarningTable.setPlaceholder(new Text("No warnings have been detected."));
         healthWarningTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-        //descColumn.prefWidthProperty().bind(healthWarningTable.widthProperty().divide( 3));
-
-
-
         currentUrl = "https://www.google.co.nz/";
-        webBrowser.setZoom(0.9);
+        webBrowser.setZoom(0.8);
         engine = webBrowser.getEngine();
-        engine.setUserStyleSheetLocation(App.class.getResource("view/webViewStyle.css").toExternalForm());
+        //engine.setUserStyleSheetLocation(App.class.getResource("view/webViewStyle.css").toExternalForm());
         engine.load(currentUrl);
+    }
+
+    private String getBMIStatusString() {
+        double BMI = applicationStateManager.getCurrentProfile().getBmi();
+        String status;
+        if (BMI < 18.5) {
+            status = "Underweight";
+        } else if (18.5 <= BMI && BMI < 25) {
+            status = "Normal Weight";
+        } else if (25 <= BMI && BMI < 30) {
+            status = "Overweight";
+        } else {
+            status = "Obese";
+        }
+        return  status;
     }
 
     /**
@@ -208,6 +218,8 @@ public class HealthTabController extends Controller {
 
         ScrollBar scrollBarHorizontal = (ScrollBar) healthWarningTable.lookup(".scroll-bar:hotizontal");
         scrollBarHorizontal.setVisible(false);
+
+
         currentUrl = "https://www.google.com/";
         engine.load(currentUrl);
     }
@@ -218,6 +230,6 @@ public class HealthTabController extends Controller {
     public void setLabels() {
         ageLabel.setText(String.format("%d", (applicationStateManager.getCurrentProfile().getAge())));
         weightLabel.setText(String.format("%.1f", applicationStateManager.getCurrentProfile().getWeight()) + "kg");
-        bmiLabel.setText(String.format("%.2f", applicationStateManager.getCurrentProfile().getBmi()));
+        bmiLabel.setText(String.format("%.2f    (%s)", applicationStateManager.getCurrentProfile().getBmi(), getBMIStatusString()));
     }
 }
