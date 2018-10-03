@@ -101,7 +101,7 @@
                               <Text fx:id="startDateText" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date" />
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <VBox fx:id="expireryDateVbox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
                               <Text fx:id="expiryDateText" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry Date" />
                            </children>
@@ -110,7 +110,7 @@
                            <children>
                               <Text fx:id="currentAmountText" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount" />
                            </children></VBox>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <VBox fx:id="totalVbox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
                               <Text fx:id="totalAmountText" strokeType="OUTSIDE" strokeWidth="0.0" text="Total" />
                            </children></VBox>
