@@ -131,6 +131,15 @@ public class MainScreenController extends Controller {
     }
 
     /**
+     * Called when the goal tab is clicked.
+     * Updates the goal tables in the goal tab.
+     */
+    @FXML
+    void goalTabSelected() {
+        goalsTabController.updateTables();
+    }
+
+    /**
      * Called when the home tab is clicked.
      * Loads data into the graphs of the home tab.
      */

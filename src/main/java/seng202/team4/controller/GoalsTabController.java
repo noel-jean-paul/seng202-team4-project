@@ -89,6 +89,7 @@ public class GoalsTabController extends Controller {
     public void initialize() {
         reset();
         //fillGoalRowLists();
+        //System.out.println(applicationStateManager.getCurrentProfile());
 //        Goal goal = new Goal(2, 67, GoalType.Run,"2018-09-28", "2017-01-12",
 //                "PT50M");
 //        CurrentGoalRowController goalTableRowController = new CurrentGoalRowController(applicationStateManager, goal);
@@ -110,6 +111,11 @@ public class GoalsTabController extends Controller {
             // Make the scrollPane match the width of the GoalTableRow
             goalPane.prefWidthProperty().bind(scrollPane.widthProperty());
         }
+    }
+
+    /* Query the goal lists of the currentProfile and update the goal tables to display their contents */
+    public void updateTables() {
+        fillGoalRowLists();
     }
 
     /** Remove a goalRow from the display and the GoalRow list it is contained in

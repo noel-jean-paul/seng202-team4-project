@@ -153,6 +153,10 @@ public class ApplicationStateManager {
         this.currentUserProfile = profile;
     }
 
+    /** Get the profile which is currently loaded
+     *
+     * @return the currently loaded profile
+     */
     public Profile getCurrentProfile() {
         return currentUserProfile;
     }

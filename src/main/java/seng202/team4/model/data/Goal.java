@@ -42,7 +42,6 @@ public class Goal implements Comparable<Goal> {
         this.caloriesBurned = caloriesBurned;
         this.current = true;
         this.description = Goal.generateDescription(this);
-
     }
 
     /** Constructor for a distance goal */
