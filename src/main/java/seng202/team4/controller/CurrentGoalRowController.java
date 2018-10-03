@@ -41,13 +41,11 @@ public class CurrentGoalRowController extends GoalRowController {
      *
      * @param applicationStateManager The ApplicationStateManager of the application.
      */
-    public CurrentGoalRowController(ApplicationStateManager applicationStateManager) {
+    CurrentGoalRowController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
 
     public void setDescription(String description) {
-        System.out.println(this.description);
-        System.out.println(this.creationDate);
         this.description.setText(description);
     }
 
