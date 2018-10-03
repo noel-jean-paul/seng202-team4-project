@@ -126,6 +126,7 @@ public class ActivityTabController extends Controller {
     /** Stores whether the calendar view is current being displayed. */
     private boolean isCalendarView = false;
 
+
     /** CalendarViewController of the calendar. */
     private CalendarViewController calendarViewController;
 
@@ -183,7 +184,7 @@ public class ActivityTabController extends Controller {
         displayRawData.setOnAction(event -> {
             Activity selectedActivity = (Activity) activityTable.getSelectionModel().getSelectedItem();
             if (selectedActivity != null) {
-                Pane rawDataViewerPopup = GuiUtilities.loadPane("RawDataViewer.fxml", new RawDataViewerController(applicationStateManager, selectedActivity));
+                Pane rawDataViewerPopup = GuiUtilities.loadPane("RawDataViewer.fxml", new RawDataViewerController(applicationStateManager, selectedActivity, this));
                 applicationStateManager.displayPopUp(rawDataViewerPopup);
             }
         });
@@ -220,6 +221,9 @@ public class ActivityTabController extends Controller {
 
     /** Updates the contents of the activity Table. */
     public void updateTable() {
+        for (Activity activity : applicationStateManager.getCurrentProfile().getActivityList()) {
+            activity.updateActivity();
+        }
         ObservableList<Activity> activitiesList = FXCollections.observableArrayList(applicationStateManager.getCurrentProfile().getActivityList());
 
         //Sets where the columns should get their values from.
