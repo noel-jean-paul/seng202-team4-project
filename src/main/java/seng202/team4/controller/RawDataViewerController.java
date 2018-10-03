@@ -101,6 +101,9 @@ public class RawDataViewerController extends Controller {
     /** Activity variable, holds the current activity's data */
     private Activity activity;
 
+    /** The maximum row number currently in the data row list */
+    private int maxRowNum = 0;
+
     /**
      *
      * @param applicationStateManager the application state manager of the application
@@ -116,6 +119,11 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     public void initialize() {
+        for (DataRow row : activity.getRawData()) {
+            if (row.getNumber() > maxRowNum) {
+                maxRowNum = row.getNumber();
+            }
+        }
         displayPopUp();
     }
 
@@ -295,11 +303,16 @@ public class RawDataViewerController extends Controller {
         } else if (!isValidElevation) {
             errorMessage.setText("Longitude must be between " + DataRow.minElevation + " and " + DataRow.maxElevation);
         } else {
+            errorMessage.setText("");
             if (buttonType == 1) {
                 try {
-                    DataRow newRow = new DataRow(activity.getRawData().size() + 1, date, timeTextField.getText(), Integer.parseInt(heartRateTextField.getText()),
+                    int rowNum = maxRowNum + 1;
+                    DataRow newRow = new DataRow(rowNum, date, timeTextField.getText(), Integer.parseInt(heartRateTextField.getText()),
                             Double.parseDouble(latitudeTextField.getText()), Double.parseDouble(longitudeTextField.getText()), Double.parseDouble(elevationTextField.getText()));
                     activity.addDataRow(newRow);
+                    System.out.println(maxRowNum);
+                    maxRowNum++;
+                    System.out.println(activity.getRawData().size());
                     displayPopUp();
                 } catch (java.sql.SQLException e) {
                     GuiUtilities.displayErrorMessage("An SQL exception was raised", e.getMessage());
