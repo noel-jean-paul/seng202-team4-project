@@ -55,22 +55,39 @@ public class Activity implements Comparable<Activity> {
      * @param name is the name of the activity as a string
      */
     public Activity(String name, ArrayList<DataRow> rawActivityList) {
+        java.util.Collections.sort(this.rawData);   // ensure the data is in order
+
         this.name = name;
         this.rawData = rawActivityList;
-        this.updateActivity();
-    }
-
-    public void updateActivity() {
-        java.util.Collections.sort(this.rawData);   // ensure the data is in order
-        this.date = (this.rawData.get(0)).getDate();
+        this.date = this.rawData.get(0).getDate();
         this.startTime = (this.rawData.get(0)).getTime();
         this.distance = DataProcessor.totalDistance(this.rawData);
         this.duration = DataProcessor.calculateDuration(this.rawData);
         this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.type = findActivityType(name);
-        this.avgHeartRate = calculateAvgHeartRate();
-        this.minHeartRate = calculateMinHeartRate();
-        this.maxHeartRate = calculateMaxHeartRate();
+        updateHeartRateAttributes();
+    }
+
+    /** Update the activity attributes
+     *  Used by the raw data editor
+     *
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public void updateActivity() throws SQLException {
+        setDate(this.rawData.get(0).getDate().toString());
+        setStartTime(this.rawData.get(0).getTime().toString());
+        setDistance(DataProcessor.totalDistance(this.rawData));
+        setDuration(DataProcessor.calculateDuration(this.rawData).toString());
+        setAverageSpeed(DataProcessor.calculateAverageSpeed(distance, this.duration));
+        setType(findActivityType(name));
+        updateHeartRateAttributes();
+    }
+
+    /* Recalculate and update the min, max and average heart rates of the activity. */
+    private void updateHeartRateAttributes() {
+        avgHeartRate = calculateAvgHeartRate();
+        minHeartRate = calculateMinHeartRate();
+        maxHeartRate = calculateMaxHeartRate();
     }
 
     @Override
