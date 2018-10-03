@@ -90,17 +90,42 @@ public class RawDataViewerController extends Controller {
     @FXML
     private Button applyEditsButton;
 
+    /** The button which when clicked adds a new data row to the raw data */
+    @FXML
+    private Button addRowButton;
+
+    /** The text which displays the error message if you enter incorrect data */
+    @FXML
+    private Text errorMessage;
+
     /** Activity variable, holds the current activity's data */
     private Activity activity;
+
+    /** The activity tab controller of the activities tab */
+    private ActivityTabController activityTabController;
+
+    /** The maximum row number currently in the data row list */
+    private int maxRowNum = 0;
+
+    /**The strings which store the state of the selected data row */
+    private String prevDate;
+    private String prevTime;
+    private String prevHeartRate;
+    private String prevLatitude;
+    private String prevLongitude;
+    private String prevElevation;
+
+
 
     /**
      *
      * @param applicationStateManager the application state manager of the application
      * @param activity the current selected activity, of which we wish to view the raw data
      */
-    public RawDataViewerController(ApplicationStateManager applicationStateManager, Activity activity) {
+    public RawDataViewerController(ApplicationStateManager applicationStateManager, Activity activity, ActivityTabController activityTabController) {
         super(applicationStateManager);
         this.activity = activity;
+        this.activityTabController = activityTabController;
     }
 
     /**
@@ -108,12 +133,18 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     public void initialize() {
+        for (DataRow row : activity.getRawData()) {
+            if (row.getNumber() > maxRowNum) {
+                maxRowNum = row.getNumber();
+            }
+        }
         displayPopUp();
     }
 
 
     public void displayPopUp() {
         applyEditsButton.setDisable(true);
+        addRowButton.setDisable(true);
         dataTableTitleText.setText("Data Rows for " + activity.getName());
         dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
         updateDataRows();   //updates the table
@@ -164,7 +195,6 @@ public class RawDataViewerController extends Controller {
      */
     public void updateDataRows() {
         ObservableList<DataRow> dataList = FXCollections.observableArrayList(activity.getRawData());
-        //System.out.println(activity.getRawData());
 
         dateColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalDate>("date"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalTime>("time"));
@@ -184,12 +214,22 @@ public class RawDataViewerController extends Controller {
         dataRowTable.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 applyEditsButton.setDisable(false);
+                addRowButton.setDisable(false);
                 dateDatePicker.setValue(newSelection.getDate());
                 timeTextField.setText(newSelection.getTime().toString());
                 heartRateTextField.setText(Integer.toString(newSelection.getHeartRate()));
                 latitudeTextField.setText((Double.toString(newSelection.getLatitude())));
                 longitudeTextField.setText((Double.toString(newSelection.getLongitude())));
                 elevationTextField.setText((Double.toString(newSelection.getElevation())));
+
+                String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                prevDate = date;
+                prevTime = timeTextField.getText();
+                prevHeartRate = heartRateTextField.getText();
+                prevLatitude = latitudeTextField.getText();
+                prevLongitude = longitudeTextField.getText();
+                prevElevation = elevationTextField.getText();
+
             }
         });
     }
@@ -199,18 +239,132 @@ public class RawDataViewerController extends Controller {
      * All edits made by the user are applied to the raw data row
      */
     @FXML
-    public void applyEdits() throws SQLException {
+    public void applyEdits() {
+        fieldErrorChecking(0);
+    }
+
+    @FXML
+    void addNewRow() {
+        fieldErrorChecking(1);
+    }
+
+
+    /**
+     * checks each of the fields of data row to see if they are within the accepted range, before adding them as a data row
+     */
+    public void fieldErrorChecking(int buttonType) {
+
+        // Try to parse the date string to check that it is in a valid format.
+        String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate dateSet = null;
+        boolean isValidDateFormat = false;
         try {
-            String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            dataRowTable.getSelectionModel().getSelectedItem().setDate(date);
-            dataRowTable.getSelectionModel().getSelectedItem().setTime(timeTextField.getText());
-            dataRowTable.getSelectionModel().getSelectedItem().setHeartRate(Integer.parseInt(heartRateTextField.getText()));
-            dataRowTable.getSelectionModel().getSelectedItem().setLatitude(Double.parseDouble(latitudeTextField.getText()));
-            dataRowTable.getSelectionModel().getSelectedItem().setLongitude(Double.parseDouble(longitudeTextField.getText()));
-            dataRowTable.getSelectionModel().getSelectedItem().setElevation(Double.parseDouble(elevationTextField.getText()));
-            displayPopUp();
-        } catch (java.sql.SQLException e) {
-            GuiUtilities.displayErrorMessage("One of your edits was outside of the accepted range.", e.getMessage());
+            dateSet = LocalDate.parse(date);
+            isValidDateFormat = true;
+        } catch (Exception e) {
+            isValidDateFormat = false;
+        }
+
+        //Try to parse the time string to check that it is in a valid format.
+        String time = timeTextField.getText();
+        LocalTime timeSet = null;
+        boolean isValidTimeFormat = false;
+        try {
+            timeSet = LocalTime.parse(time);
+            isValidTimeFormat = true;
+        } catch (Exception e) {
+            isValidTimeFormat = false;
+        }
+
+        //Check if the heart rate is in the accepted range
+        int heartRate = Integer.parseInt(heartRateTextField.getText());
+        boolean isValidHeartRate = false;
+        if (DataRow.minHeartRate <= heartRate && heartRate <= DataRow.maxHeartRate) {
+            isValidHeartRate = true;
+        } else {
+            isValidHeartRate = false;
+        }
+
+        //Check if the latitude is in the accepted range
+        double latitude = Double.parseDouble(latitudeTextField.getText());
+        boolean isValidLatitude = false;
+        if (DataRow.minLatitude <= latitude && latitude <= DataRow.maxLatitude) {
+            isValidLatitude = true;
+        } else {
+            isValidLatitude = false;
+        }
+
+        //Check if the longitude is in the accepted range
+        double longitude = Double.parseDouble(longitudeTextField.getText());
+        boolean isValidLongitude = false;
+        if (DataRow.minLongitude <= longitude && longitude <= DataRow.maxLongitude) {
+            isValidLongitude = true;
+        } else {
+            isValidLongitude = false;
+        }
+
+        //Check if the elevation is in the accepted range
+        double elevation = Double.parseDouble(elevationTextField.getText());
+        boolean isValidElevation = false;
+        if (DataRow.minElevation <= elevation && elevation <= DataRow.maxElevation) {
+            isValidElevation = true;
+        } else {
+            isValidElevation = false;
+        }
+
+        //Check if the row already exists
+        boolean isValidAddition = false;
+        if ((date.equals(prevDate) && (timeTextField.getText().equals(prevTime)) && (heartRateTextField.getText().equals(prevHeartRate)) && (latitudeTextField.getText().equals(prevLatitude))
+                && (longitudeTextField.getText().equals(prevLongitude)) && (elevationTextField.getText().equals(prevElevation)))) {
+            isValidAddition = false;
+        } else {
+            isValidAddition = true;
+        }
+
+
+
+        if (!isValidDateFormat) {
+            errorMessage.setText("Date should be in the form dd/mm/yyyy");
+        } else if (!isValidTimeFormat) {
+            errorMessage.setText("Time should be in the form hh:mm:ss");
+        } else if (!isValidHeartRate) {
+            errorMessage.setText("Heart rate must be between " + DataRow.minHeartRate + " and " + DataRow.maxHeartRate);
+        } else if (!isValidLatitude) {
+            errorMessage.setText("Latitude must be between " + DataRow.minLatitude + " and " + DataRow.maxLatitude);
+        } else if (!isValidLongitude) {
+            errorMessage.setText("Longitude must be between " + DataRow.minLongitude + " and " + DataRow.maxLongitude);
+        } else if (!isValidElevation) {
+            errorMessage.setText("Longitude must be between " + DataRow.minElevation + " and " + DataRow.maxElevation);
+        } else if (!isValidAddition) {
+            if (buttonType == 1) {
+                errorMessage.setText("You cannot add a row that already exists");
+            }
+        } else {
+            errorMessage.setText("");
+            if (buttonType == 1) {
+                try {
+                    int rowNum = maxRowNum + 1;
+                    DataRow newRow = new DataRow(rowNum, date, timeTextField.getText(), Integer.parseInt(heartRateTextField.getText()),
+                            Double.parseDouble(latitudeTextField.getText()), Double.parseDouble(longitudeTextField.getText()), Double.parseDouble(elevationTextField.getText()));
+                    activity.addDataRow(newRow);
+                    maxRowNum++;
+                    displayPopUp();
+                } catch (java.sql.SQLException e) {
+                    GuiUtilities.displayErrorMessage("An SQL exception was raised", e.getMessage());
+                }
+            } else {
+                try {
+                    dataRowTable.getSelectionModel().getSelectedItem().setDate(date);
+                    dataRowTable.getSelectionModel().getSelectedItem().setTime(timeTextField.getText());
+                    dataRowTable.getSelectionModel().getSelectedItem().setHeartRate(Integer.parseInt(heartRateTextField.getText()));
+                    dataRowTable.getSelectionModel().getSelectedItem().setLatitude(Double.parseDouble(latitudeTextField.getText()));
+                    dataRowTable.getSelectionModel().getSelectedItem().setLongitude(Double.parseDouble(longitudeTextField.getText()));
+                    dataRowTable.getSelectionModel().getSelectedItem().setElevation(Double.parseDouble(elevationTextField.getText()));
+                    displayPopUp();
+                } catch (java.sql.SQLException e) {
+                    GuiUtilities.displayErrorMessage("An SQL exception was raised.", e.getMessage());
+                }
+            }
         }
     }
 
@@ -220,6 +374,7 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     void closePopUp() {
+        activityTabController.updateTable();    //@ToDo this line should update the activities table when the popup is closed
         applicationStateManager.closePopUP(popupPane);
     }
 

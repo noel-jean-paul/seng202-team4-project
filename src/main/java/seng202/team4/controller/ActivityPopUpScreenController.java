@@ -54,6 +54,7 @@ public class ActivityPopUpScreenController extends Controller {
     @FXML
     public void initialize() {
         int size = activity.getRawData().size();
+        System.out.println("The size is " + size);
         if (size == 0) {
             heartRateGraph.setVisible(true);
             distanceGraph.setVisible(false);
@@ -86,8 +87,8 @@ public class ActivityPopUpScreenController extends Controller {
         heartRateGraph.setVisible(true);
 
 
-        //The next three lines will have to have the correct activity selected
         List<DataRow> dataRow = activity.getRawData();
+        System.out.println("The size is now " + dataRow.size());
         heartRateGraph.setTitle("Heart rate during " + activity.getName()); //sets the title of the
         LocalTime startTime = activity.getStartTime(); //gets the start time of activity
 
@@ -103,7 +104,7 @@ public class ActivityPopUpScreenController extends Controller {
                 String strSec = Long.toString(timeSeconds);
                 timeSecDouble = Double.parseDouble(strSec);
                 timeMinutes = timeSecDouble / 60.0;
-                timeMinutes = Double.parseDouble(new DecimalFormat("##.#").format(timeMinutes));
+                timeMinutes = Double.parseDouble(new DecimalFormat("##.###").format(timeMinutes));
                 String strLong = Double.toString(timeMinutes);
 
                 set1.getData().add(new XYChart.Data(strLong, row.getHeartRate()));
@@ -145,7 +146,7 @@ public class ActivityPopUpScreenController extends Controller {
             String strSec = Long.toString(timeSeconds);
             timeSecDouble = Double.parseDouble(strSec);
             timeMinutes = timeSecDouble / 60.0;
-            timeMinutes = Double.parseDouble(new DecimalFormat("##.#").format(timeMinutes));
+            timeMinutes = Double.parseDouble(new DecimalFormat("##.###").format(timeMinutes));
             String strLong = Double.toString(timeMinutes);
 
             set2.getData().add(new XYChart.Data(strLong, distance));
