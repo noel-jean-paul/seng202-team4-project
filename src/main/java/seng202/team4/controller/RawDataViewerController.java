@@ -203,7 +203,7 @@ public class RawDataViewerController extends Controller {
      * All edits made by the user are applied to the raw data row
      */
     @FXML
-    public void applyEdits() throws SQLException {
+    public void applyEdits() {
         fieldErrorChecking(0);
     }
 
@@ -309,7 +309,7 @@ public class RawDataViewerController extends Controller {
                     dataRowTable.getSelectionModel().getSelectedItem().setElevation(Double.parseDouble(elevationTextField.getText()));
                     displayPopUp();
                 } catch (java.sql.SQLException e) {
-                    GuiUtilities.displayErrorMessage("One of your edits was outside of the accepted range.", e.getMessage());
+                    GuiUtilities.displayErrorMessage("An SQL exception was raised.", e.getMessage());
                 }
             }
         }
