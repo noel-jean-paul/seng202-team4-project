@@ -374,6 +374,7 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     void closePopUp() {
+        activity.updateActivity();
         activityTabController.updateTable();    //@ToDo this line should update the activities table when the popup is closed
         applicationStateManager.closePopUP(popupPane);
     }

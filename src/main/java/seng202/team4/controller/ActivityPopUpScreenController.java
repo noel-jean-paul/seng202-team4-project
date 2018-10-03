@@ -54,13 +54,11 @@ public class ActivityPopUpScreenController extends Controller {
     @FXML
     public void initialize() {
         int size = activity.getRawData().size();
-        System.out.println("The size is " + size);
         if (size == 0) {
             heartRateGraph.setVisible(true);
             distanceGraph.setVisible(false);
             heartRateButton.setSelected(true);
             heartRateGraph.setTitle("There is no data that can be displayed");
-            //distanceGraph.setTitle("There is no data that can be displayed");
             heartRateButton.setDisable(true);
             distanceButton.setDisable(true);
 
@@ -88,7 +86,6 @@ public class ActivityPopUpScreenController extends Controller {
 
 
         List<DataRow> dataRow = activity.getRawData();
-        System.out.println("The size is now " + dataRow.size());
         heartRateGraph.setTitle("Heart rate during " + activity.getName()); //sets the title of the
         LocalTime startTime = activity.getStartTime(); //gets the start time of activity
 
