@@ -347,9 +347,7 @@ public class RawDataViewerController extends Controller {
                     DataRow newRow = new DataRow(rowNum, date, timeTextField.getText(), Integer.parseInt(heartRateTextField.getText()),
                             Double.parseDouble(latitudeTextField.getText()), Double.parseDouble(longitudeTextField.getText()), Double.parseDouble(elevationTextField.getText()));
                     activity.addDataRow(newRow);
-                    System.out.println(maxRowNum);
                     maxRowNum++;
-                    System.out.println(activity.getRawData().size());
                     displayPopUp();
                 } catch (java.sql.SQLException e) {
                     GuiUtilities.displayErrorMessage("An SQL exception was raised", e.getMessage());

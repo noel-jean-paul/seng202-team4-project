@@ -99,7 +99,6 @@ public class ActivityPopUpScreenController extends Controller {
         XYChart.Series set1 = new XYChart.Series<>();
 
         for (DataRow row : dataRow) {
-            System.out.println("The row number is " + row.getNumber() + " and the heart rate is " + row.getHeartRate());
             timeSeconds = Duration.between(startTime, row.getTime()).getSeconds();
             if (timeSeconds != previousTime) {
                 String strSec = Long.toString(timeSeconds);
