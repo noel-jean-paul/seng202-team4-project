@@ -53,6 +53,10 @@ public class GoalsTabController extends Controller {
     @FXML
     private Text expiryDateText;
 
+    /** Text for displaying a message if no goal is selected. */
+    @FXML
+    private Text noGoalSelectedText;
+
     /** The currently selected goal. */
     private Goal selectedGoal = null;
 
@@ -99,6 +103,7 @@ public class GoalsTabController extends Controller {
         remainingTimeText.setText("");
         currentAmountText.setText("");
         totalAmountText.setText("");
+        noGoalSelectedText.setText("No Goal Selected");
 
     }
 }

@@ -108,11 +108,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
                            <children>
-                              <VBox fx:id="currentAmountText" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Amount" />
-                                 </children>
-                              </VBox>
+                              <Text fx:id="currentAmountText" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount" />
                            </children></VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
