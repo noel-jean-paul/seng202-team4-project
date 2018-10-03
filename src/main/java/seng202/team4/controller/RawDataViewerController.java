@@ -101,17 +101,31 @@ public class RawDataViewerController extends Controller {
     /** Activity variable, holds the current activity's data */
     private Activity activity;
 
+    /** The activity tab controller of the activities tab */
+    private ActivityTabController activityTabController;
+
     /** The maximum row number currently in the data row list */
     private int maxRowNum = 0;
+
+    /**The strings which store the state of the selected data row */
+    private String prevDate;
+    private String prevTime;
+    private String prevHeartRate;
+    private String prevLatitude;
+    private String prevLongitude;
+    private String prevElevation;
+
+
 
     /**
      *
      * @param applicationStateManager the application state manager of the application
      * @param activity the current selected activity, of which we wish to view the raw data
      */
-    public RawDataViewerController(ApplicationStateManager applicationStateManager, Activity activity) {
+    public RawDataViewerController(ApplicationStateManager applicationStateManager, Activity activity, ActivityTabController activityTabController) {
         super(applicationStateManager);
         this.activity = activity;
+        this.activityTabController = activityTabController;
     }
 
     /**
@@ -207,6 +221,15 @@ public class RawDataViewerController extends Controller {
                 latitudeTextField.setText((Double.toString(newSelection.getLatitude())));
                 longitudeTextField.setText((Double.toString(newSelection.getLongitude())));
                 elevationTextField.setText((Double.toString(newSelection.getElevation())));
+
+                String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                prevDate = date;
+                prevTime = timeTextField.getText();
+                prevHeartRate = heartRateTextField.getText();
+                prevLatitude = latitudeTextField.getText();
+                prevLongitude = longitudeTextField.getText();
+                prevElevation = elevationTextField.getText();
+
             }
         });
     }
@@ -289,6 +312,16 @@ public class RawDataViewerController extends Controller {
             isValidElevation = false;
         }
 
+        //Check if the row already exists
+        boolean isValidAddition = false;
+        if ((date.equals(prevDate) && (timeTextField.getText().equals(prevTime)) && (heartRateTextField.getText().equals(prevHeartRate)) && (latitudeTextField.getText().equals(prevLatitude))
+                && (longitudeTextField.getText().equals(prevLongitude)) && (elevationTextField.getText().equals(prevElevation)))) {
+            isValidAddition = false;
+        } else {
+            isValidAddition = true;
+        }
+
+
 
         if (!isValidDateFormat) {
             errorMessage.setText("Date should be in the form dd/mm/yyyy");
@@ -302,6 +335,10 @@ public class RawDataViewerController extends Controller {
             errorMessage.setText("Longitude must be between " + DataRow.minLongitude + " and " + DataRow.maxLongitude);
         } else if (!isValidElevation) {
             errorMessage.setText("Longitude must be between " + DataRow.minElevation + " and " + DataRow.maxElevation);
+        } else if (!isValidAddition) {
+            if (buttonType == 1) {
+                errorMessage.setText("You cannot add a row that already exists");
+            }
         } else {
             errorMessage.setText("");
             if (buttonType == 1) {
@@ -339,6 +376,7 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     void closePopUp() {
+        activityTabController.updateTable();    //@ToDo this line should update the activities table when the popup is closed
         applicationStateManager.closePopUP(popupPane);
     }
 
