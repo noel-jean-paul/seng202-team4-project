@@ -118,8 +118,9 @@ public class ActivityPopUpScreenController extends Controller {
 
     /**
      * Loads the distance travelled graph, giving the distance travelled between each data point
-     * @ToDo Rather than showing the distance between each data point, will be better to make it between each minute, more difficult
+     *
      */
+    // TODO: 4/10/18 Rather than showing the distance between each data point, will be better to make it between each minute, more difficult
     @FXML
     void displayDistanceGraph() {
         distanceGraph.getData().clear();

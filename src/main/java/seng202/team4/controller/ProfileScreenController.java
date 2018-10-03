@@ -309,5 +309,10 @@ public class ProfileScreenController extends Controller {
         applicationStateManager.displayPopUp(deletionPopup);
     }
 
+    @FXML
+    public void prevImage() {
+
+    }
+
 
 }

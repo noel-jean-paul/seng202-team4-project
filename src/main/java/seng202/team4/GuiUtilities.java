@@ -23,7 +23,6 @@ public abstract class GuiUtilities {
      * @param fxmlFilename The name of the fxml file that describes the pane.
      * @param controller The controller class for the pane.
      * @return A newly created pane.
-     * @throws Exception If the function fails to load the program.
      */
     public static Pane loadPane(String fxmlFilename, Controller controller)  {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("view/" + fxmlFilename));
