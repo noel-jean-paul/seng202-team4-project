@@ -97,12 +97,15 @@ public class DataRowTest {
 
     @Test
     public void compareTo_sameDate_SameTime() throws SQLException {
+        // Set the dates the same
         row1.setDate("2018-05-05");
         row2.setDate("2018-05-05");
 
+        // Set the times to be the same
         row1.setTime("12:21:12");
         row2.setTime("12:21:12");
 
+        // Check compareTo gives 0
         assert row1.compareTo(row2) == 0;
     }
 

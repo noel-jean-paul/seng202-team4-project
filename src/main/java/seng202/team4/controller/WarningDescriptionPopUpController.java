@@ -43,7 +43,7 @@ public class WarningDescriptionPopUpController extends Controller{
     /**
      * Creates a new controller with the given ApplicationStateManager
      *
-     * @param applicationStateManager
+     * @param applicationStateManager the statemangager of the application
      */
     public WarningDescriptionPopUpController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
