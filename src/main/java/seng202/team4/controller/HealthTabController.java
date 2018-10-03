@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
@@ -15,6 +16,7 @@ import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.utilities.HealthWarning;
 
 import java.time.LocalDate;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Controller for the health tab.
@@ -59,6 +61,9 @@ public class HealthTabController extends Controller {
 
     @FXML
     private Label bmiLabel;
+
+    @FXML
+    private GridPane noInternetPane;
 
     @FXML
     void loadInformation() {
@@ -164,6 +169,7 @@ public class HealthTabController extends Controller {
 
     private WebEngine engine;
     private String currentUrl;
+    private boolean internetConnected;
 
 
     /**
@@ -181,12 +187,14 @@ public class HealthTabController extends Controller {
     public void initialize() {
         healthWarningTable.setPlaceholder(new Text("No warnings have been detected."));
         healthWarningTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-
-        currentUrl = "https://www.google.co.nz/";
         webBrowser.setZoom(0.8);
+        currentUrl = "https://www.google.co.nz/";
         engine = webBrowser.getEngine();
-        //engine.setUserStyleSheetLocation(App.class.getResource("view/webViewStyle.css").toExternalForm());
-        engine.load(currentUrl);
+
+        boolean internetConnected = verifyInternetConnection();
+        if (internetConnected) {
+            engine.load(currentUrl);
+        }
     }
 
     private String getBMIStatusString() {
@@ -202,6 +210,19 @@ public class HealthTabController extends Controller {
             status = "Obese";
         }
         return  status;
+    }
+
+    private boolean verifyInternetConnection() {
+        try{
+            Runtime run=Runtime.getRuntime();
+            Process proc = run.exec("ping www.google.com");
+            boolean connected = proc.waitFor(2, TimeUnit.SECONDS);
+            return connected;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
@@ -222,6 +243,7 @@ public class HealthTabController extends Controller {
 
         currentUrl = "https://www.google.com/";
         engine.load(currentUrl);
+        //noInternetPane.toFront();
     }
 
     /**
