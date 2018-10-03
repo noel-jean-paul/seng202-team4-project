@@ -90,6 +90,10 @@ public class RawDataViewerController extends Controller {
     @FXML
     private Button applyEditsButton;
 
+    /** The text which displays the error message if you enter incorrect data */
+    @FXML
+    private Text errorMessage;
+
     /** Activity variable, holds the current activity's data */
     private Activity activity;
 
@@ -200,17 +204,114 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     public void applyEdits() throws SQLException {
+        fieldErrorChecking(0);
+    }
+
+    @FXML
+    void addNewRow() {
+        fieldErrorChecking(1);
+    }
+
+
+    /**
+     * checks each of the fields of data row to see if they are within the accepted range, before adding them as a data row
+     */
+    public void fieldErrorChecking(int buttonType) {
+
+        // Try to parse the date string to check that it is in a valid format.
+        String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate dateSet = null;
+        boolean isValidDateFormat = false;
         try {
-            String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            dataRowTable.getSelectionModel().getSelectedItem().setDate(date);
-            dataRowTable.getSelectionModel().getSelectedItem().setTime(timeTextField.getText());
-            dataRowTable.getSelectionModel().getSelectedItem().setHeartRate(Integer.parseInt(heartRateTextField.getText()));
-            dataRowTable.getSelectionModel().getSelectedItem().setLatitude(Double.parseDouble(latitudeTextField.getText()));
-            dataRowTable.getSelectionModel().getSelectedItem().setLongitude(Double.parseDouble(longitudeTextField.getText()));
-            dataRowTable.getSelectionModel().getSelectedItem().setElevation(Double.parseDouble(elevationTextField.getText()));
-            displayPopUp();
-        } catch (java.sql.SQLException e) {
-            GuiUtilities.displayErrorMessage("One of your edits was outside of the accepted range.", e.getMessage());
+            dateSet = LocalDate.parse(date);
+            isValidDateFormat = true;
+        } catch (Exception e) {
+            isValidDateFormat = false;
+        }
+
+        //Try to parse the time string to check that it is in a valid format.
+        String time = timeTextField.getText();
+        LocalTime timeSet = null;
+        boolean isValidTimeFormat = false;
+        try {
+            timeSet = LocalTime.parse(time);
+            isValidTimeFormat = true;
+        } catch (Exception e) {
+            isValidTimeFormat = false;
+        }
+
+        //Check if the heart rate is in the accepted range
+        int heartRate = Integer.parseInt(heartRateTextField.getText());
+        boolean isValidHeartRate = false;
+        if (DataRow.minHeartRate <= heartRate && heartRate <= DataRow.maxHeartRate) {
+            isValidHeartRate = true;
+        } else {
+            isValidHeartRate = false;
+        }
+
+        //Check if the latitude is in the accepted range
+        double latitude = Double.parseDouble(latitudeTextField.getText());
+        boolean isValidLatitude = false;
+        if (DataRow.minLatitude <= latitude && latitude <= DataRow.maxLatitude) {
+            isValidLatitude = true;
+        } else {
+            isValidLatitude = false;
+        }
+
+        //Check if the longitude is in the accepted range
+        double longitude = Double.parseDouble(longitudeTextField.getText());
+        boolean isValidLongitude = false;
+        if (DataRow.minLongitude <= longitude && longitude <= DataRow.maxLongitude) {
+            isValidLongitude = true;
+        } else {
+            isValidLongitude = false;
+        }
+
+        //Check if the elevation is in the accepted range
+        double elevation = Double.parseDouble(elevationTextField.getText());
+        boolean isValidElevation = false;
+        if (DataRow.minElevation <= elevation && elevation <= DataRow.maxElevation) {
+            isValidElevation = true;
+        } else {
+            isValidElevation = false;
+        }
+
+
+        if (!isValidDateFormat) {
+            errorMessage.setText("Date should be in the form dd/mm/yyyy");
+        } else if (!isValidTimeFormat) {
+            errorMessage.setText("Time should be in the form hh:mm:ss");
+        } else if (!isValidHeartRate) {
+            errorMessage.setText("Heart rate must be between " + DataRow.minHeartRate + " and " + DataRow.maxHeartRate);
+        } else if (!isValidLatitude) {
+            errorMessage.setText("Latitude must be between " + DataRow.minLatitude + " and " + DataRow.maxLatitude);
+        } else if (!isValidLongitude) {
+            errorMessage.setText("Longitude must be between " + DataRow.minLongitude + " and " + DataRow.maxLongitude);
+        } else if (!isValidElevation) {
+            errorMessage.setText("Longitude must be between " + DataRow.minElevation + " and " + DataRow.maxElevation);
+        } else {
+            if (buttonType == 1) {
+                try {
+                    DataRow newRow = new DataRow(activity.getRawData().size() + 1, date, timeTextField.getText(), Integer.parseInt(heartRateTextField.getText()),
+                            Double.parseDouble(latitudeTextField.getText()), Double.parseDouble(longitudeTextField.getText()), Double.parseDouble(elevationTextField.getText()));
+                    activity.addDataRow(newRow);
+                    displayPopUp();
+                } catch (java.sql.SQLException e) {
+                    GuiUtilities.displayErrorMessage("An SQL exception was raised", e.getMessage());
+                }
+            } else {
+                try {
+                    dataRowTable.getSelectionModel().getSelectedItem().setDate(date);
+                    dataRowTable.getSelectionModel().getSelectedItem().setTime(timeTextField.getText());
+                    dataRowTable.getSelectionModel().getSelectedItem().setHeartRate(Integer.parseInt(heartRateTextField.getText()));
+                    dataRowTable.getSelectionModel().getSelectedItem().setLatitude(Double.parseDouble(latitudeTextField.getText()));
+                    dataRowTable.getSelectionModel().getSelectedItem().setLongitude(Double.parseDouble(longitudeTextField.getText()));
+                    dataRowTable.getSelectionModel().getSelectedItem().setElevation(Double.parseDouble(elevationTextField.getText()));
+                    displayPopUp();
+                } catch (java.sql.SQLException e) {
+                    GuiUtilities.displayErrorMessage("One of your edits was outside of the accepted range.", e.getMessage());
+                }
+            }
         }
     }
 
