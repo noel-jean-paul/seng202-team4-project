@@ -40,7 +40,7 @@ public class Goal implements Comparable<Goal> {
         this.goalDistance = goalDistance;
         this.goalDuration = Duration.parse(goalDuration);
         this.caloriesBurned = caloriesBurned;
-        this.current = true;
+        this.current = true;    // by default the goal is current
         this.description = Goal.generateDescription(this);
     }
 
@@ -233,7 +233,8 @@ public class Goal implements Comparable<Goal> {
         return current;
     }
 
-    public void setCurrent(boolean current) {
+    public void setCurrent(boolean current) throws SQLException {
+        DataUpdater.updateGoals(Collections.singletonList(this), GoalFields.current.toString(), Boolean.toString(current));
         this.current = current;
     }
 

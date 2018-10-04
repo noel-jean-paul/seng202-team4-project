@@ -141,6 +141,21 @@ public class GoalTest {
     }
 
     @Test
+    public void setCurrent() throws SQLException {
+        // insert the a goal into the database inside a profile
+        DataStorer.insertProfile(profile1);
+        DataStorer.insertGoal(goal1, profile1);
+        // Current for goal1 is currently true so change it to false
+        Boolean current = false;
+        goal1.setCurrent(current);
+        // Load profile1 from the database
+        loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
+
+        // Check that current was updated correctly in the database - will get index out of bounds exception if it was not
+        assertEquals(current, loadedProfile.getPastGoals().get(0).isCurrent());
+    }
+
+    @Test
     public void incrementProgress() {
         Goal goal = new Goal(2, 99, GoalType.Run,"2018-09-28", "2017-01-12",
                 "PT50M");
