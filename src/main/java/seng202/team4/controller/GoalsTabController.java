@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Goal;
+import seng202.team4.model.data.GoalListPair;
 import seng202.team4.view.CurrentGoalRowItem;
 
 import java.sql.SQLException;
@@ -85,11 +86,29 @@ public class GoalsTabController extends Controller {
         reset();
     }
 
+    /** Display notications of the goals which were expired and completed
+     *
+     * @param goalLists a GoalListPair object contains the completed and expired goals to display
+     */
+    private void displayGoalNotifications(GoalListPair goalLists) {
+        // Display notification of the goals which were completed
+        for (Goal completedGoal: goalLists.getCompletedGoals()) {
+            System.out.println(String.format("Goal '%s' has been completed!", completedGoal.getDescription()));
+        }
+
+        // Display notifaction of the goals that have expired
+        for (Goal expiredGoal: goalLists.getExpiredGoals()) {
+            System.out.println(String.format("Goal '%s' has expired.", expiredGoal.getDescription()));
+        }
+    }
+
     /* Updates the current profile's goals then fills the current GoalRow vbox using them */
     private void updateCurrentGoalRowTable() {
-        // Update the currentGoals of the currently loaded profile
         try {
-            applicationStateManager.getCurrentProfile().updateCurrentGoals();
+            // Update the currentGoals of the currently loaded profile
+            GoalListPair goalListPair = applicationStateManager.getCurrentProfile().updateCurrentGoals();
+            // Display notications of which goals were completed and which expired
+            displayGoalNotifications(goalListPair);
         } catch (SQLException e) {
             GuiUtilities.displayErrorMessage("An error occurred regarding the database",
                     "Goal updates could not be completed successfully");

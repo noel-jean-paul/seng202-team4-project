@@ -103,9 +103,6 @@ public class RawDataViewerController extends Controller {
     /** Activity variable, holds the current activity's data */
     private Activity activity;
 
-    /** List of activities which have been edited while the popup was open */
-    private List<Activity> modifiedActivities;
-
     /** The activity tab controller of the activities tab */
     private ActivityTabController activityTabController;
 
@@ -130,7 +127,6 @@ public class RawDataViewerController extends Controller {
     public RawDataViewerController(ApplicationStateManager applicationStateManager, Activity activity, ActivityTabController activityTabController) {
         super(applicationStateManager);
         this.activity = activity;
-        this.modifiedActivities = new ArrayList<>();
         this.activityTabController = activityTabController;
     }
 
@@ -149,6 +145,14 @@ public class RawDataViewerController extends Controller {
 
 
     public void displayPopUp() {
+        // Remove the activity from the observed list to get the activity table observer to update
+        try {
+            applicationStateManager.getCurrentProfile().removeActivity(activity);
+        } catch (SQLException e) {
+            GuiUtilities.displayErrorMessage("A problem occurred with the database.", e.getMessage());
+            System.out.println("A database error occurred when adding/removing the activity from the database.");
+        }
+
         applyEditsButton.setDisable(true);
         addRowButton.setDisable(true);
         dataTableTitleText.setText("Data Rows for " + activity.getName());
@@ -259,16 +263,6 @@ public class RawDataViewerController extends Controller {
      * checks each of the fields of data row to see if they are within the accepted range, before adding them as a data row
      */
     public void fieldErrorChecking(int buttonType) {
-        // TODO: 4/10/18 This is part of the hack
-        // Remove the activity from the observed list to trick the observer
-        try {
-            applicationStateManager.getCurrentProfile().removeActivity(activity);
-        } catch (SQLException e) {
-            GuiUtilities.displayErrorMessage("A problem occurred with the database.", e.getMessage());
-            System.out.println("A database error occurred when adding/removing the activity from the database.");
-        }
-
-
         // TODO: 4/10/18 Matt_M these should be refactored into functions in DataRow - Noel
         // Try to parse the date string to check that it is in a valid format.
         String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -365,10 +359,6 @@ public class RawDataViewerController extends Controller {
                     activity.addDataRow(newRow);
                     maxRowNum++;
                     displayPopUp();
-
-                    // Add the activity to the list of modified activities as it has had a row added to it
-                    modifiedActivities.add(activity);
-
                 } catch (java.sql.SQLException e) {
                     GuiUtilities.displayErrorMessage("An SQL exception was raised", e.getMessage());
                 }
@@ -381,10 +371,6 @@ public class RawDataViewerController extends Controller {
                     dataRowTable.getSelectionModel().getSelectedItem().setLongitude(Double.parseDouble(longitudeTextField.getText()));
                     dataRowTable.getSelectionModel().getSelectedItem().setElevation(Double.parseDouble(elevationTextField.getText()));
                     displayPopUp();
-
-                    // Add the activity to the list of modified activities as it has had a row modified in it
-                    modifiedActivities.add(activity);
-
                 } catch (java.sql.SQLException e) {
                     GuiUtilities.displayErrorMessage("An SQL exception was raised.", e.getMessage());
                 }
@@ -398,43 +384,23 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     void closePopUp() {
-        // Update the activities that were updated in this editing 'session'
-        for (Activity activity : modifiedActivities) {
-            activity.updateActivity();
-        }
-        // Update the table holding the activities to display the new values
-        activityTabController.updateTable();
+
+        //activityTabController.updateTable();
         // Update the activity attributes as the raw data may have changed
         try {
+            // Update the activity in case it's raw data has been changed
             activity.updateActivity();
-        } catch (SQLException e) {
-            GuiUtilities.displayErrorMessage("A problem occurred with the database.", e.getMessage());
-            System.out.println("A database error occurred when updating the activity.");
-        }
-        // Trigger the observer observing the activity list
-        //removeAndAddActivity();
-
-        // Update the table
-        activityTabController.updateTable();    //@ToDo this line should update the activities table when the popup is closed
-        applicationStateManager.closePopUP(popupPane);
-    }
-
-
-    /** Removes the class variable activity from the activity list of the currently loaded profile
-     *  then adds it again.
-     *  This triggers the observer observing the list and causes the activity table to update correctly.
-     */
-    private void removeAndAddActivity() {
-        // TODO: 4/10/18 part of the hack too
-        // Try to add and remove the activity - will be removed / readded to the database
-        try {
+            // Add the modified activity to the profile's activities (it was removed earlier to trigger the observer)
             applicationStateManager.getCurrentProfile().addActivity(activity);
         } catch (SQLException e) {
             GuiUtilities.displayErrorMessage("A problem occurred with the database.", e.getMessage());
-            System.out.println("A database error occurred when adding/removing the activity from the database.");
+            System.out.println("A database error occurred when updating the activity.");
+            e.printStackTrace();
         }
 
+        // Update the table holding the activities to display the new values
+        activityTabController.updateTable();
+        applicationStateManager.closePopUP(popupPane);
     }
-
 
 }
