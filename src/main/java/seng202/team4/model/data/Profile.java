@@ -274,7 +274,7 @@ public class Profile {
     public void addActivity(Activity activity) throws SQLException {
         activityList.add(activity);
         java.util.Collections.sort(activityList);   // Keep the lsit ordered
-        // Set this as the activity owner
+        // Set this as the goal owner
         activity.setOwner(this);
 
         DataStorer.insertActivity(activity, this);
@@ -299,9 +299,10 @@ public class Profile {
         currentGoals.add(goal);
         goal.setCurrent(true);  // In case the goal was moved back from past goals
         java.util.Collections.sort(currentGoals);
-        // Set this as the activity owner
+        // Set this as the goal owner
         goal.setOwner(this);
 
+        // Insert the goal into the database
         DataStorer.insertGoal(goal, this);
     }
 
@@ -322,7 +323,7 @@ public class Profile {
         pastGoals.add(goal);
         goal.setCurrent(false); // The goal is no longer current if it is in the past goals
         java.util.Collections.sort(currentGoals);
-        // Set this as the activity owner
+        // Set this as the goal owner
         goal.setOwner(this);
 
         if (insert) {
@@ -441,21 +442,33 @@ public class Profile {
         }
     }
 
-    /* Move any goals in currentGoals which have expired into pastGoal
-     * Should be called before updateGoalsForProgress */
-    public void updateGoalsForExpiry() throws SQLException {
-        // Iterate over a copy of the list as we are modifying the currentGoals as we iterate over them
+    /** Move any goals in currentGoals which have expired into pastGoal and return a list of these goals
+     *  Should be called after updateGoalsForProgress to allow for importing of activities to meet a goal
+     *  on the day they expire.
+     *
+     * @return a list of the goals which have expired since the method was last called
+     * @throws SQLException if an error occurred regarding the database - should not ever occur
+     */
+    public List<Goal> updateGoalsForExpiry() throws SQLException {
+        // Declare list to return
+        List<Goal> expiredGoals;
+        expiredGoals = new ArrayList<>();
+
+        // Iterate over a copy of the current goal list as we are modifying the currentGoals while we iterate over them
         List<Goal> currentGoalsCopy = new ArrayList<>(currentGoals);
         for (Goal goal: currentGoalsCopy) {
             if (goal.getExpiryDate().isBefore(LocalDate.now())) {
-                removeCurrentGoal(goal, false);
+                removeCurrentGoal(goal, false); // do not update the database as the goal is already stored in it
                 addPastGoal(goal, false);
+                expiredGoals.add(goal);
             }
         }
+        return  expiredGoals;
     }
 
     /** Update goal progress for current goals with the activities in the collection.
-     *  Should be called after updateGoalsForExpiry.
+     *  Should be called before updateGoalsForExpiry to allow for importing of activities to meet a goal
+     *  on the day they expire.
      *  Assumes that each goal is one of distance, duration or calories goal
      *
      * @param activites the list of activities to update the goals
@@ -486,6 +499,29 @@ public class Profile {
                 }
             }
         }
+    }
+
+    /** Remove any goals which have been completed from the current goals list and add them to the past goals list.
+     *  Should be called after updateGoalsForProgress and before updateGoalsForExpiry to allow for importing of
+     *  activities to meet a goal on the day they expire.
+     *
+     * @return a list of the goals which were removed from current goals
+     * @throws SQLException if an error occurred regarding the database - should not ever occur
+     */
+    public List<Goal> updateGoalsForCompletion() throws SQLException {
+        List<Goal> completedGoals;
+        completedGoals = new ArrayList<>();
+
+        // Iterate over a copy of the current goal list as we are modifying the currentGoals while we iterate over them
+        List<Goal> currentGoalsCopy = new ArrayList<>(currentGoals);
+        for (Goal goal: currentGoalsCopy) {
+            if (goal.isComplete()) {
+                removeCurrentGoal(goal, false); // do not update the database as the goal is already stored in it
+                addPastGoal(goal, false);
+                completedGoals.add(goal);
+            }
+        }
+        return completedGoals;
     }
 
 }

@@ -53,27 +53,6 @@ public class GoalTest {
     }
 
     @Test
-    public void compareTo_differentNumber_checkComesBefore() throws SQLException {
-        goal1.setNumber(3);
-        goal2.setNumber(4);
-        assert goal1.compareTo(goal2) > 0;
-    }
-
-    @Test
-    public void compareTo__differentNumber_checkComesAfter() throws SQLException  {
-        goal1.setNumber(3);
-        goal2.setNumber(4);
-        assert goal2.compareTo(goal1) < 0;
-    }
-
-    @Test
-    public void compareTo_sameNumber() throws SQLException  {
-        goal1.setNumber(1);
-        goal2.setNumber(1);
-        assert goal1.compareTo(goal2) == 0;
-    }
-
-    @Test
     public void setNumber() throws SQLException {
         int num = 5;
         DataStorer.insertProfile(profile1);
@@ -171,35 +150,54 @@ public class GoalTest {
     }
 
     @Test
-    public void generateDescription_distanceGoal() {
+    public void generateDescription_running_distanceGoal() {
+        // Create a new running distance goal
         Goal goal = new Goal(2, 99, GoalType.Run,"2018-09-28", "2017-01-12",
                 14.0);
+        // Create the real and expected descriptions
         description = goal.getDescription();
-
         expectedDescription = "Run 14000 meters";
 
+        // Check that the real and expected descriptions match
         assertEquals(expectedDescription, description);
     }
 
     @Test
-    public void generateDescription_durationGoal() {
+    public void generateDescription_walking_durationGoal() {
+        // Create a new walking duration goal
         Goal goal = new Goal(2, 99, GoalType.Walk,"2018-09-28", "2017-01-12",
                 "PT2H40M");
+        // Create the real and expected descriptions
         description = goal.getDescription();
-
         expectedDescription = "Walk for 2 hours and 40 minutes";
 
+        // Check that the real and expected descriptions match
         assertEquals(expectedDescription, description);
     }
 
     @Test
-    public void generateDescription_caloriesGoal() {
+    public void generateDescription_running_caloriesGoal() {
+        // Create a running, calories goal
         Goal goal = new Goal(2, 99, GoalType.Run, "2018-09-28", "2017-01-12",
                 400);
+        // Create the real and expected descriptions
         description = goal.getDescription();
-
         expectedDescription = "Burn 400 calories while running";
 
+        // Check that the real and expected descriptions match
+        assertEquals(expectedDescription, description);
+    }
+
+    @Test
+    public void generateDescription_walking_caloriesGoal() {
+        // Create a new walking calories goal
+        Goal goal = new Goal(2, 99, GoalType.Walk, "2018-09-28", "2017-01-12",
+                400);
+        // Create the real and expected descriptions
+        description = goal.getDescription();
+        expectedDescription = "Burn 400 calories while walking";
+
+        // Check that the real and expected descriptions match
         assertEquals(expectedDescription, description);
     }
 }

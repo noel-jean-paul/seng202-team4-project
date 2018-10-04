@@ -31,6 +31,7 @@ public class ProfileTest {
     private static Goal goal2;
     private static Goal goal3;
     private static Goal goal4;
+    private static Goal goal5;
     private static List<Goal> expectedGoals;
     List<Goal> original;
 
@@ -67,7 +68,9 @@ public class ProfileTest {
                  "PT50M");
         goal3 = new Goal(3, 0, GoalType.Run,"2017-01-01", "2017-01-12",
                 200);
-        goal4 = new Goal(3, 0, GoalType.Run,"2020-01-01", "2017-01-12",
+        goal4 = new Goal(4, 0, GoalType.Run,"2020-01-01", "2017-01-12",
+                200);
+        goal5 = new Goal(5, 100, GoalType.Run,"2020-01-01", "2017-01-12",
                 200);
 
         expectedGoals = new ArrayList<>();
@@ -146,14 +149,15 @@ public class ProfileTest {
         // Clear goal list
         profile1.getCurrentGoals().clear();
 
-        // Add goals to profile
-        profile1.addCurrentGoal(goal3);
+        // Add goals to profile out of order to check that the sort works
         profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal5);
         profile1.addCurrentGoal(goal2);
 
-        // Fill expectedGoals
-        expectedGoals.addAll(Arrays.asList(goal3, goal2, goal1));
+        // Fill expectedGoals - expect descending order by progress, order added if same progress
+        expectedGoals.addAll(Arrays.asList(goal5, goal1, goal2));
 
+        // Check that the goals are added and are in the correct order
         assertEquals(expectedGoals, profile1.getCurrentGoals());
     }
 
@@ -295,29 +299,41 @@ public class ProfileTest {
 
     @Test
     public void updateGoalsForExpiry_checkRemovedFromCurrent() throws SQLException {
-        // Setup
+        // Add 1 goal that should expire and one that should not to the current goals
         profile1.addCurrentGoal(goal1);
         profile1.addCurrentGoal(goal2);
         expectedGoals.add(goal2);
 
         profile1.updateGoalsForExpiry();
 
-        // Check the current goals are correct
+        // Check the expired goal was removed from the current goals and the non-expired remained
         assertEquals(expectedGoals, profile1.getCurrentGoals());
     }
 
     @Test
     public void updateGoalsForExpiry_checkAddedToPast() throws SQLException {
-        // Setup
+        // Add 1 goal that should expire and one that should not to the current goals
         profile1.addCurrentGoal(goal1);
         profile1.addCurrentGoal(goal2);
-        expectedGoals.clear();
-        expectedGoals.add(goal1);
+        expectedGoals.add(goal1);   // Expect the expired goal in the past goals
 
         profile1.updateGoalsForExpiry();
 
-        // Check the past goals are correct
+        // Check the expired goal was added to the past goals
         assertEquals(expectedGoals, profile1.getPastGoals());
+    }
+
+    @Test
+    public void updateGoalsForExpiry_checkReturnedList() throws SQLException {
+        // Add 1 goal that should expire and one that should not to the current goals
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
+        expectedGoals.add(goal1);   // Expect the expired goal to be returned
+
+        List<Goal> returnedGoals = profile1.updateGoalsForExpiry();
+
+        // Check the expired goal returned
+        assertEquals(expectedGoals, returnedGoals);
     }
 
     @Test

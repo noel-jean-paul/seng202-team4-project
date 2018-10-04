@@ -104,8 +104,8 @@ public class Goal implements Comparable<Goal> {
      */
     @Override
     public int compareTo(Goal o) {
-        return Integer.compare(this.getNumber(), o.getNumber()) * -1;
-    }   // descending order
+        return Double.compare(this.getProgress(), o.getProgress()) * -1;    // descending order
+    }
 
     @Override
     public String toString() {
@@ -239,7 +239,9 @@ public class Goal implements Comparable<Goal> {
      * @return a description of the goal as a String.
      */
     private static String generateDescription(Goal goal) {
-        String description = "";
+        String description;
+        String suffix;
+        description = "";
 
         if (goal.isDistanceGoal()) {
             description = String.format("%s %.0f meters", goal.getType().toString(),
@@ -247,10 +249,16 @@ public class Goal implements Comparable<Goal> {
         } else if (goal.isDurationGoal()) {
             description = String.format("%s for %d hours and %d minutes",
                     goal.getType().toString(), goal.getGoalDuration().toHours(),
-                    goal.getGoalDuration().toMinutes() - goal.getGoalDuration().toHours() * 60);    // toMinutes() includes the hours as well
+                    goal.getGoalDuration().toMinutes() - goal.getGoalDuration().toHours() * 60);    // toMinutes() includes the hours as well so they must be subtracted out
         } else if (goal.isCaloriesGoal()) {
-            description = String.format("Burn %s calories while %sning",
-                    goal.getCaloriesBurned(), goal.getType().toString().toLowerCase());
+            // Set an appropriate ending to the description based on the type of the goal
+            if (goal.getType() == GoalType.Run) {
+                suffix = "ning";
+            } else {
+                suffix = "ing"; // Walking does not have an n in it
+            }
+            description = String.format("Burn %s calories while %s%s",
+                    goal.getCaloriesBurned(), goal.getType().toString().toLowerCase(), suffix);
         }
         return description;
     }
