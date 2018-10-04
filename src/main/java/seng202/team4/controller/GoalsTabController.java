@@ -120,7 +120,29 @@ public class GoalsTabController extends Controller {
             selectedGoalRow.deselect();
         }
         selectedGoalRow = goalRow;
+        displayGoalInformation();
         selectedGoalRow.select();
+    }
+
+    /* Fill the goal header with information about the goal which currently selected goal row wraps */
+    private void displayGoalInformation() {
+        // Get the goal which the selectedGoalRow wraps
+        Goal selectedGoal = selectedGoalRow.getGoal();
+
+        // Fill the goal progress indicatior
+        goalProgressIndicator.setProgress(selectedGoal.getProgress());
+        goalProgressIndicator.setDisable(false);
+
+        // Allow editing
+        editButton.setDisable(false);
+
+        // Fill the text fields with the goal information
+        descriptionText.setText(selectedGoal.getDescription());
+        startDateText.setText(selectedGoal.getCreationDate().toString());
+        expiryDateText.setText(selectedGoal.getExpiryDate().toString());
+        //remainingTimeText.setText(selectedGoal.get);
+        //currentAmountText.setText(selectedGoal.get);
+        //totalAmountText.setText(selectedGoal.get);
     }
 
     /** Remove a goalRow from the display and the GoalRow list it is contained in
