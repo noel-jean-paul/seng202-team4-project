@@ -18,7 +18,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -101,6 +103,9 @@ public class RawDataViewerController extends Controller {
     /** Activity variable, holds the current activity's data */
     private Activity activity;
 
+    /** List of activities which have been edited while the popup was open */
+    private List<Activity> modifiedActivities;
+
     /** The activity tab controller of the activities tab */
     private ActivityTabController activityTabController;
 
@@ -116,8 +121,8 @@ public class RawDataViewerController extends Controller {
     private String prevElevation;
 
 
-
-    /**
+    /** Constructor for the raw data viewer. A new raw data viewer is created everytime view raw data is selected for
+     *   an activity.
      *
      * @param applicationStateManager the application state manager of the application
      * @param activity the current selected activity, of which we wish to view the raw data
@@ -125,6 +130,7 @@ public class RawDataViewerController extends Controller {
     public RawDataViewerController(ApplicationStateManager applicationStateManager, Activity activity, ActivityTabController activityTabController) {
         super(applicationStateManager);
         this.activity = activity;
+        this.modifiedActivities = new ArrayList<>();
         this.activityTabController = activityTabController;
     }
 
@@ -254,6 +260,7 @@ public class RawDataViewerController extends Controller {
      */
     public void fieldErrorChecking(int buttonType) {
 
+        // TODO: 4/10/18 Matt_M these should be refactored into functions in DataRow - Noel
         // Try to parse the date string to check that it is in a valid format.
         String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         LocalDate dateSet = null;
@@ -341,7 +348,7 @@ public class RawDataViewerController extends Controller {
             }
         } else {
             errorMessage.setText("");
-            if (buttonType == 1) {
+            if (buttonType == 1) {  // Add row case
                 try {
                     int rowNum = maxRowNum + 1;
                     DataRow newRow = new DataRow(rowNum, date, timeTextField.getText(), Integer.parseInt(heartRateTextField.getText()),
@@ -349,10 +356,14 @@ public class RawDataViewerController extends Controller {
                     activity.addDataRow(newRow);
                     maxRowNum++;
                     displayPopUp();
+
+                    // Add the activity to the list of modified activities as it has had a row added to it
+                    modifiedActivities.add(activity);
+
                 } catch (java.sql.SQLException e) {
                     GuiUtilities.displayErrorMessage("An SQL exception was raised", e.getMessage());
                 }
-            } else {
+            } else {    // Edit row case
                 try {
                     dataRowTable.getSelectionModel().getSelectedItem().setDate(date);
                     dataRowTable.getSelectionModel().getSelectedItem().setTime(timeTextField.getText());
@@ -361,6 +372,10 @@ public class RawDataViewerController extends Controller {
                     dataRowTable.getSelectionModel().getSelectedItem().setLongitude(Double.parseDouble(longitudeTextField.getText()));
                     dataRowTable.getSelectionModel().getSelectedItem().setElevation(Double.parseDouble(elevationTextField.getText()));
                     displayPopUp();
+
+                    // Add the activity to the list of modified activities as it has had a row modified in it
+                    modifiedActivities.add(activity);
+
                 } catch (java.sql.SQLException e) {
                     GuiUtilities.displayErrorMessage("An SQL exception was raised.", e.getMessage());
                 }
@@ -374,9 +389,12 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     void closePopUp() {
-        activityTabController.updateTable();    //@ToDo this line should update the activities table when the popup is closed
+        // Update the activities that were updated in this editing 'session'
+        for (Activity activity : modifiedActivities) {
+            activity.updateActivity();
+        }
+        // Update the table holding the activities to display the new values
+        activityTabController.updateTable();
         applicationStateManager.closePopUP(popupPane);
     }
-
-
 }
