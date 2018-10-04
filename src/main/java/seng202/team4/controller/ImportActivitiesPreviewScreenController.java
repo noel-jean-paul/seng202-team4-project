@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 /** Controller for the import activities preview screen. */
 public class ImportActivitiesPreviewScreenController extends Controller {
@@ -78,13 +79,17 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     @FXML
     public void importActivities() throws SQLException {
         boolean warningFound = false;
+        List<Activity> importedActivities = new ArrayList<>();  // Stores imported activities to pass to goal update  progress method
         applicationStateManager.switchToScreen("MainScreen");
         for (ActivityConfirmationRow activityConfirmationRow: activityConfirmationRows) {
             Activity activity = activityConfirmationRow.getActivity();
             if (activityConfirmationRow.isSelected()) {
+                // Add the activity to the profile's activities and to the list of activities which have been imported
                 applicationStateManager.getCurrentProfile().addActivity(activity);
-                // Check the activity for health warnings
+                importedActivities.add(activity);
 
+                // Check the activity for health warnings
+                // TODO: 4/10/18 Matt_T There doesn't seem to be any health warning checking happening here (It might happen elsewhere but the comment above was here)
                 // Store all data rows in the database as they have not been stored yet but are in the rawData list
                 for (DataRow dataRow : activity.getRawData()) {
                     // Set the owner manually as addDataRow has not been called
@@ -102,7 +107,6 @@ public class ImportActivitiesPreviewScreenController extends Controller {
                     warningFound = true;
                 }
             }
-
         }
         activityTabController.updateTable();
         if (warningFound) {
@@ -111,6 +115,8 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             applicationStateManager.displayPopUp(popUp);
         }
 
+        // Update the current goals with all activities imported
+        applicationStateManager.getCurrentProfile().updateGoalsForProgress(importedActivities);
     }
 
     /**
