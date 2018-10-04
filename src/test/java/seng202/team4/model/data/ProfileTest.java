@@ -339,106 +339,106 @@ public class ProfileTest {
     }
 
     @Test
-    public void updateCurrentGoals_updateGoalsForProgress_validDate_distanceGoal_checkProgressUpdated() throws SQLException {
+    public void updateGoalsForProgress_validDate_distanceGoal_checkProgressUpdated() throws SQLException {
         // Setup
         profile1.addCurrentGoal(goal1);
         profile1.addActivity(activity1);
 
-        profile1.updateCurrentGoals();
+        profile1.updateGoalsForProgress(profile1.getActivityList());
 
         assertEquals(25.65, goal1.getProgress(), 0.0001);
     }
 
     @Test
-    public void updateCurrentGoals_updateGoalsForProgress_validDate_durationGoal_checkProgressUpdated() throws SQLException {
+    public void updateGoalsForProgress_validDate_durationGoal_checkProgressUpdated() throws SQLException {
         // Setup
         profile1.addCurrentGoal(goal2); //Duration goal
         profile1.addActivity(activity1);
 
-        profile1.updateCurrentGoals();
+        profile1.updateGoalsForProgress(profile1.getActivityList());
 
         assertEquals(80.0, goal2.getProgress(), 0.0001);
     }
 
     @Test
-    public void updateCurrentGoals_updateGoalsForProgress_validDate_caloriesGoal_checkProgressUpdated() throws SQLException {
+    public void updateGoalsForProgress_validDate_caloriesGoal_checkProgressUpdated() throws SQLException {
         // Setup
         profile1.addCurrentGoal(goal3); // Calories goal
         profile1.addActivity(activity1);
 
-        profile1.updateCurrentGoals();
+        profile1.updateGoalsForProgress(profile1.getActivityList());
 
         assertEquals(100, goal3.getProgress(), 0.0001);
     }
 
     @Test
-    public void updateCurrentGoals_updateGoalsForProgress_validDate_caloriesGoal_checkCompletionDateSet() throws SQLException {
+    public void updateGoalsForProgress_validDate_caloriesGoal_checkCompletionDateSet() throws SQLException {
         // Setup
         profile1.addCurrentGoal(goal3); // Calories goal
         profile1.addActivity(activity1);
 
-        profile1.updateCurrentGoals();
+        profile1.updateGoalsForProgress(profile1.getActivityList());
 
         assertEquals(activity1.getDate(), goal3.getCompletionDate());
     }
 
     @Test
-    public void updateCurrentGoals_updateGoalsForProgress_invalidDate_checkProgressUnchanged() throws SQLException {
+    public void updateGoalsForProgress_invalidDate_checkProgressUnchanged() throws SQLException {
         // Setup
         profile1.addCurrentGoal(goal4); // Creation date in 2020
         profile1.addActivity(activity3);  // Date in 2018
 
-        profile1.updateCurrentGoals();
+        profile1.updateGoalsForProgress(profile1.getActivityList());
 
         assertEquals(0, goal4.getProgress(), 0.0001);
     }
 
     @Test
-    public void updateCurrentGoals_updateGoalsForProgress_invalidType_checkProgressUnchanged() throws SQLException {
+    public void updateGoalsForProgress_invalidType_checkProgressUnchanged() throws SQLException {
         // Setup
         profile1.addCurrentGoal(goal1); // Type run
         profile1.addActivity(activity2);  // Type walk
 
-        profile1.updateCurrentGoals();
+        profile1.updateGoalsForProgress(profile1.getActivityList());
 
         assertEquals(0, goal1.getProgress(), 0.0001);
     }
 
     /* multiple activities contributing to the same goal */
     @Test
-    public void updateCurrentGoals_updateGoalsForProgress_multipleActivities_validDates_checkProgressUpdated() throws SQLException {
+    public void updateGoalsForProgress_multipleActivities_validDates_checkProgressUpdated() throws SQLException {
         // Setup
         profile1.addCurrentGoal(goal1); // Distance goal
         profile1.addActivity(activity1);
         profile1.addActivity(activity3);
 
-        profile1.updateCurrentGoals();
+        profile1.updateGoalsForProgress(profile1.getActivityList());
 
         // Check that both activities increased the goal progress
         assertEquals(31.65, goal1.getProgress(), 0.0001);
     }
 
     @Test
-    public void updateCurrentGoals_updateGoalsForProgress_multipleActivities_validDates_checkGoal1_ProgressUpdated() throws SQLException {
+    public void updateGoalsForProgress_multipleActivities_validDates_checkGoal1_ProgressUpdated() throws SQLException {
         // Setup
         profile1.addCurrentGoal(goal1); // Distance goal
         profile1.addCurrentGoal(goal2); // Duration goal
         profile1.addActivity(activity1);
 
-        profile1.updateCurrentGoals();
+        profile1.updateGoalsForProgress(profile1.getActivityList());
 
         // Check that the first goal's progress updated correctly
         assertEquals(25.65, goal1.getProgress(), 0.0001);
     }
 
     @Test
-    public void updateCurrentGoals_updateGoalsForProgress_multipleActivities_validDates_checkGoa2_1ProgressUpdated() throws SQLException {
+    public void updateGoalsForProgress_multipleActivities_validDates_checkGoa2_1ProgressUpdated() throws SQLException {
         // Setup
         profile1.addCurrentGoal(goal1); // Distance goal
         profile1.addCurrentGoal(goal2); // Duration goal
         profile1.addActivity(activity1);
 
-        profile1.updateCurrentGoals();
+        profile1.updateGoalsForProgress(profile1.getActivityList());
 
         // Check that the second goal's progress updated correctly
         assertEquals(80.0, goal2.getProgress(), 0.0001);

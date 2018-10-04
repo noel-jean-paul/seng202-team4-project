@@ -470,9 +470,9 @@ public class Profile {
      *  on the day they expire.
      *  Assumes that each goal is one of distance, duration or calories goal
      */
-    private void updateGoalsForProgress() throws SQLException {
+    public void updateGoalsForProgress(List<Activity> activities) throws SQLException {
         for (Goal goal: currentGoals) {
-            for (Activity activity: activityList) {
+            for (Activity activity: activities) {
                 // Check the activity is in the correct date range and of the correct type - compare enums by the string
                 if (activity.getDate().isAfter(goal.getCreationDate())
                         && (activity.getType().toString().equals(goal.getType().toString()))) {
@@ -525,10 +525,10 @@ public class Profile {
         return completedGoals;
     }
 
-    /** Update the current goal list of the profile for progress, completion and expiry
+    /** Update the current goal list of the profile for completion and expiry
      *
      * @return a GoalListPair object containing the goals which expired and those which were completed
-     * @throws SQLException if an error occurred regarding the database
+     * @throws SQLException if an error occurred regarding the database - should not occur
      */
     public GoalListPair updateCurrentGoals() throws SQLException {
         GoalListPair listPair;
@@ -536,11 +536,9 @@ public class Profile {
         List<Goal> completedGoals;
 
         // Update the current goals for progress, completion and expiry
-        updateGoalsForProgress();
         completedGoals = updateGoalsForCompletion();
         expiredGoals = updateGoalsForExpiry();
 
         return new GoalListPair(expiredGoals, completedGoals);
     }
-
 }
