@@ -297,10 +297,10 @@ public class Profile {
      */
     public void addCurrentGoal(Goal goal) throws SQLException {
         currentGoals.add(goal);
-        goal.setCurrent(true);  // In case the goal was moved back from past goals
         java.util.Collections.sort(currentGoals);
         // Set this as the goal owner
         goal.setOwner(this);
+        goal.setCurrent(true);  // In case the goal was moved back from past goals and has current set to false
 
         // Insert the goal into the database
         DataStorer.insertGoal(goal, this);
@@ -321,10 +321,10 @@ public class Profile {
      */
     private void addPastGoal(Goal goal, boolean insert) throws SQLException {
         pastGoals.add(goal);
-        goal.setCurrent(false); // The goal is no longer current if it is in the past goals
         java.util.Collections.sort(currentGoals);
         // Set this as the goal owner
         goal.setOwner(this);
+        goal.setCurrent(false); // The goal is no longer current if it is in the past goals
 
         if (insert) {
             DataStorer.insertGoal(goal, this);

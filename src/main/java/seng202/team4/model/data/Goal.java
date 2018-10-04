@@ -233,8 +233,21 @@ public class Goal implements Comparable<Goal> {
         return current;
     }
 
+    /** Set the value of current to the value passed in and update it in the database
+     *
+     * @param current the new value for current as a boolean
+     * @throws SQLException if an error occurred regarding the database
+     */
     public void setCurrent(boolean current) throws SQLException {
         DataUpdater.updateGoals(Collections.singletonList(this), GoalFields.current.toString(), Boolean.toString(current));
+        this.current = current;
+    }
+
+    /** Sets the value of current to the value passed in
+     *
+     * @param current new value for current as a boolean
+     */
+    public void updateCurrentValue(boolean current) {
         this.current = current;
     }
 

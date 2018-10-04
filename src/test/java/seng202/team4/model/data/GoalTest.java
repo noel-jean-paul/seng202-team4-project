@@ -43,6 +43,7 @@ public class GoalTest {
     @Before
     public void setUpReccurring() throws SQLException {
         profile1.getCurrentGoals().clear();
+//        goal1.setCurrent(true); // current is set false is one test so reset it here
         DataAccesser.clearDatabase();
     }
 
@@ -151,8 +152,13 @@ public class GoalTest {
         // Load profile1 from the database
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
+        //goal1.setCurrent(true);
+
         // Check that current was updated correctly in the database - will get index out of bounds exception if it was not
         assertEquals(current, loadedProfile.getPastGoals().get(0).isCurrent());
+
+        // Reset current to true so other tests can use goal1
+        goal1.setCurrent(true);
     }
 
     @Test
