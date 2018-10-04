@@ -90,7 +90,7 @@ public class GoalsTabController extends Controller {
 
 
 
-        fillGoalRowLists();
+        //fillGoalRowLists();
         //System.out.println(applicationStateManager.getCurrentProfile());
 //        Goal goal = new Goal(2, 67, GoalType.Run,"2018-09-28", "2017-01-12",
 //                "PT50M");
@@ -171,5 +171,6 @@ public class GoalsTabController extends Controller {
         currentAmountText.setText("");
         totalAmountText.setText("");
         noGoalSelectedText.setText("No Goal Selected");
+
     }
 }
