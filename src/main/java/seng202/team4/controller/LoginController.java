@@ -65,6 +65,7 @@ public class LoginController extends Controller {
                 controller.setProfilePicture(new Image(profileImageUrl.toString()));
             }
 
+            // Set function to be called when the list item is clicked on
             profileListItem.setOnMouseClicked(event -> {changeSelectedProfile(profileListItem);});
             profileListVbox.getChildren().add(profileListItem);
 

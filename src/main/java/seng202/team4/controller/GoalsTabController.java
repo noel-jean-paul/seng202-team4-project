@@ -69,12 +69,6 @@ public class GoalsTabController extends Controller {
     /** The currently selected goal. */
     private CurrentGoalRowItem selectedGoalRow = null;
 
-    /* List of the GoalTableRows in the current goal table */
-    private List<CurrentGoalRowController> currentGoalRows;
-
-    /* List of the GoalTableRows in the past goal table */
-    private List<CurrentGoalRowController> pastGoalRows;
-
     /**
      * Constructor for the Goals Tab Controller.
      *
@@ -88,8 +82,15 @@ public class GoalsTabController extends Controller {
     /** Initializes the goals tab. */
     @FXML
     public void initialize() {
+        // reset the top goal bar to have no goal information displayed
         reset();
-        //fillGoalRowLists();
+
+        // Set function to be called when the list item is clicked on
+        //profileListItem.setOnMouseClicked(event -> {changeSelectedProfile(profileListItem);});
+
+
+
+        fillGoalRowLists();
         //System.out.println(applicationStateManager.getCurrentProfile());
 //        Goal goal = new Goal(2, 67, GoalType.Run,"2018-09-28", "2017-01-12",
 //                "PT50M");
@@ -170,6 +171,5 @@ public class GoalsTabController extends Controller {
         currentAmountText.setText("");
         totalAmountText.setText("");
         noGoalSelectedText.setText("No Goal Selected");
-
     }
 }
