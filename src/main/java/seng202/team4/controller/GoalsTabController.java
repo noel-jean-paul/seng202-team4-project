@@ -88,8 +88,11 @@ public class GoalsTabController extends Controller {
     /** Initializes the goals tab. */
     @FXML
     public void initialize() {
-        reset();
-        //fillGoalRowLists();
+        //reset();
+//        fillGoalRowLists();
+
+
+
         //System.out.println(applicationStateManager.getCurrentProfile());
 //        Goal goal = new Goal(2, 67, GoalType.Run,"2018-09-28", "2017-01-12",
 //                "PT50M");
