@@ -84,31 +84,20 @@ public class GoalsTabController extends Controller {
     public void initialize() {
         // reset the top goal bar to have no goal information displayed
         reset();
-
-        // Set function to be called when the list item is clicked on
-        //profileListItem.setOnMouseClicked(event -> {changeSelectedProfile(profileListItem);});
-
-
-
-        //fillGoalRowLists();
-        //System.out.println(applicationStateManager.getCurrentProfile());
-//        Goal goal = new Goal(2, 67, GoalType.Run,"2018-09-28", "2017-01-12",
-//                "PT50M");
-//        CurrentGoalRowController goalTableRowController = new CurrentGoalRowController(applicationStateManager, goal);
-//        Pane goalPane = GuiUtilities.loadPane("CurrentGoalRow.fxml", goalTableRowController); //This is what gets displayed
-//        goalsListVbox.getChildren().add(goalPane);
-
-        // Make the scrollPane match the width of the GoalTableRow
-//        goalPane.prefWidthProperty().bind(scrollPane.widthProperty());
     }
 
     /* Fills the current and past GoalRow lists using the currently loaded profile's goals */
     private void fillGoalRowLists() {
         // Add each current Goal to the vbox children
         for (Goal goal: applicationStateManager.getCurrentProfile().getCurrentGoals()) {
+            // Create a new pair of GoalRow controller and item
             CurrentGoalRowController controller = new CurrentGoalRowController(applicationStateManager);
             CurrentGoalRowItem currentGoalRowItem = new CurrentGoalRowItem(controller, goal);
-            //Pane goalPane = GuiUtilities.loadPane("CurrentGoalRow.fxml", controller); //This is what gets displayed
+
+            // When an item is selected, set the selected row to be that item
+            currentGoalRowItem.setOnMouseClicked(event -> {changeSelectedGoalRow(currentGoalRowItem);});
+
+            // Add the goalRowItem to the vbox which holds the current goals
             goalsListVbox.getChildren().add(currentGoalRowItem);
 
             // Make the scrollPane match the width of the GoalTableRow
@@ -126,7 +115,7 @@ public class GoalsTabController extends Controller {
      *
      * @param goalRow the goalRow to select
      */
-    public void changeSelectedGoalRow(CurrentGoalRowItem goalRow) {
+    private void changeSelectedGoalRow(CurrentGoalRowItem goalRow) {
         if (selectedGoalRow != null) {
             selectedGoalRow.deselect();
         }
@@ -171,6 +160,5 @@ public class GoalsTabController extends Controller {
         currentAmountText.setText("");
         totalAmountText.setText("");
         noGoalSelectedText.setText("No Goal Selected");
-
     }
 }
