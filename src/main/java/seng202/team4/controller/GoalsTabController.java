@@ -96,6 +96,9 @@ public class GoalsTabController extends Controller {
             System.out.println("Database error occurred while updating goals");
         }
 
+        // Clear the current table (vbox) of goals
+        goalsListVbox.getChildren().clear();
+
         // Add each current Goal to the vbox children
         for (Goal goal: applicationStateManager.getCurrentProfile().getCurrentGoals()) {
             // Create a new pair of GoalRow controller and item
