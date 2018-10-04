@@ -146,7 +146,7 @@ public class GoalTest {
         DataStorer.insertProfile(profile1);
         DataStorer.insertGoal(goal1, profile1);
         // Current for goal1 is currently true so change it to false
-        Boolean current = false;
+        boolean current = false;
         goal1.setCurrent(current);
         // Load profile1 from the database
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());

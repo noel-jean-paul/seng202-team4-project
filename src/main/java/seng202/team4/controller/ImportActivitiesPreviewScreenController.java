@@ -116,6 +116,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         }
 
         // Update the current goals with all activities imported
+        //System.out.println(importedActivities);
         applicationStateManager.getCurrentProfile().updateGoalsForProgress(importedActivities);
     }
 
