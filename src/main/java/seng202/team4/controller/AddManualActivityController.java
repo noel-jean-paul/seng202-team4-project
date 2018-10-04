@@ -146,8 +146,7 @@ public class AddManualActivityController extends Controller {
                 applicationStateManager.closePopUP(rootPane);
                 activityTabController.updateTable();
                 // Update the goals with the new activity imported
-                // TODO: 4/10/18 breaks the app currently
-                //applicationStateManager.getCurrentProfile().updateGoalsForProgress(Collections.singletonList(activity));
+                applicationStateManager.getCurrentProfile().updateGoalsForProgress(Collections.singletonList(activity));
             } catch (java.sql.SQLException e) {
                 GuiUtilities.displayErrorMessage("Failed to add activity.", "The activity could not be inserted into the database.");
                 e.printStackTrace();
