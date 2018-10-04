@@ -1,6 +1,7 @@
 package seng202.team4.model.data;
 
 import java.util.List;
+import java.util.Objects;
 
 public class GoalListPair {
     private List<Goal> expiredGoals;    // List of expired goals

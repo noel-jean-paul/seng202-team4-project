@@ -32,6 +32,7 @@ public class ProfileTest {
     private static Goal goal3;
     private static Goal goal4;
     private static Goal goal5;
+    private static Goal goal6;
     private static List<Goal> expectedGoals;
     List<Goal> original;
 
@@ -49,7 +50,7 @@ public class ProfileTest {
 
         // Initialise activities
         activity1 = new Activity("Run in the park", "2017-12-12", ActivityType.Run,
-                "12:15:01", "PT40M36S", 5.13, 187);
+                "12:15:01", "PT40M36S", 5.13, 250);
         // test dependent on progress, distance and calories burned of this activity
 
         activity2 = new Activity("Walk around the block", "2019-12-12",
@@ -70,9 +71,10 @@ public class ProfileTest {
                 200);
         goal4 = new Goal(4, 0, GoalType.Run,"2020-01-01", "2017-01-12",
                 200);
-        goal5 = new Goal(5, 100, GoalType.Run,"2020-01-01", "2017-01-12",
+        goal5 = new Goal(5, 100, GoalType.Run,"2020-01-01", "2050-01-01",
                 200);
-
+        goal6 = new Goal(6, 100, GoalType.Walk,"2020-01-01", "2050-01-01",
+                200);
         expectedGoals = new ArrayList<>();
     }
 
@@ -366,7 +368,18 @@ public class ProfileTest {
 
         profile1.updateCurrentGoals();
 
-        assertEquals(93.5, goal3.getProgress(), 0.0001);
+        assertEquals(100, goal3.getProgress(), 0.0001);
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForProgress_validDate_caloriesGoal_checkCompletionDateSet() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal3); // Calories goal
+        profile1.addActivity(activity1);
+
+        profile1.updateCurrentGoals();
+
+        assertEquals(activity1.getDate(), goal3.getCompletionDate());
     }
 
     @Test
@@ -429,5 +442,47 @@ public class ProfileTest {
 
         // Check that the second goal's progress updated correctly
         assertEquals(80.0, goal2.getProgress(), 0.0001);
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForCompletion_completedGoals_checkCurrentGoals() throws SQLException {
+        // Add 2 completed goals to the current goals
+        profile1.addCurrentGoal(goal5);
+        profile1.addCurrentGoal(goal6);
+
+        profile1.updateCurrentGoals();
+
+        // Check the goal is removed from the current goals - expected goals is empty
+        assertEquals(expectedGoals, profile1.getCurrentGoals());
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForCompletion_completedGoals_checkPastGoals() throws SQLException {
+        // Add 2 completed goals to the current goals
+        profile1.addCurrentGoal(goal5);
+        profile1.addCurrentGoal(goal6);
+        // Expect both goals in the past goals
+        expectedGoals.add(goal5);
+        expectedGoals.add(goal6);
+
+        profile1.updateCurrentGoals();
+
+        // Check the goals are added to the past goals
+        assertEquals(expectedGoals, profile1.getPastGoals());
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForCompletion_completedGoals_checkCompleted() throws SQLException {
+        // Add 2 completed goals to the current goals
+        profile1.addCurrentGoal(goal5);
+        profile1.addCurrentGoal(goal6);
+        // Expect both goals to be returned as completed
+        expectedGoals.add(goal5);
+        expectedGoals.add(goal6);
+
+        List<Goal> completed = profile1.updateCurrentGoals().getCompletedGoals();
+
+        // Check the goals are returned as completed goals
+        assertEquals(expectedGoals, completed);
     }
 }

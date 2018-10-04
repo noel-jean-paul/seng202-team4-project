@@ -209,8 +209,12 @@ public class Goal implements Comparable<Goal> {
         this.goalDuration = goalDuration;
     }
 
+    /** Check if the goal is complete (progress = 100)
+     *
+     * @return true if the goal is complete, false otherwise
+     */
     public boolean isComplete() {
-        return completionDate == null;
+        return progress == 100;
     }
 
     public int getTimeRemaining() {
@@ -266,8 +270,7 @@ public class Goal implements Comparable<Goal> {
     /** Increase the goal's progress by an amount up to a max of 100
      *
      * @param amount the amount to increment the goal by as a Double (percentage not decimal)
-     *
-     * */
+     */
     public void incrementProgress(double amount) {
         progress += amount;
         if (progress > 100) {

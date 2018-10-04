@@ -383,30 +383,30 @@ public class Profile {
         }
     }
 
-//    /** Remove the goal from the currentGoals and the database
-//     *
-//     * @param goal the goal to be removed
-//     */
-//    public void removePastGoal(Goal goal) throws SQLException {
-//        removePastGoal(goal, true);
-//    }
-//
-//    /** Remove the goal from the currentGoals and from the database if the delete flag is true
-//     *
-//     * @param goal the goal to be removed
-//     */
-//    private void removePastGoal(Goal goal, boolean delete) throws SQLException {
-//        pastGoals.remove(goal);
-//        if (delete) {
-//            DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
-//        }
-//    }
+    /** Remove the goal from the currentGoals and the database
+     *
+     * @param goal the goal to be removed
+     */
+    public void removePastGoal(Goal goal) throws SQLException {
+        removePastGoal(goal, true);
+    }
+
+    /** Remove the goal from the currentGoals and from the database if the delete flag is true
+     *
+     * @param goal the goal to be removed
+     */
+    private void removePastGoal(Goal goal, boolean delete) throws SQLException {
+        pastGoals.remove(goal);
+        if (delete) {
+            DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
+        }
+    }
 
     /**
      * Adds a warning to the user's list of warnings in order and store the warning in the database.
      * @param warning the warning to be added.
      */
-    private void addWarning(HealthWarning warning) {
+    void addWarning(HealthWarning warning) {
         warningList.add(warning);
         Collections.sort(warningList);
     }
@@ -470,7 +470,7 @@ public class Profile {
      *  on the day they expire.
      *  Assumes that each goal is one of distance, duration or calories goal
      */
-    private void updateGoalsForProgress() {
+    private void updateGoalsForProgress() throws SQLException {
         for (Goal goal: currentGoals) {
             for (Activity activity: activityList) {
                 // Check the activity is in the correct date range and of the correct type - compare enums by the string
@@ -493,6 +493,10 @@ public class Profile {
                         // Increment progress
                         goal.incrementProgress((activityCalories / goalCalories) * 100);
                     }
+                }
+                // If the goal was completed, set its completion date as the date of the activity which completed it
+                if (goal.isComplete()) {
+                    goal.setCompletionDate(activity.getDate().toString());
                 }
             }
         }
@@ -524,7 +528,7 @@ public class Profile {
     /** Update the current goal list of the profile for progress, completion and expiry
      *
      * @return a GoalListPair object containing the goals which expired and those which were completed
-     * @throws SQLException if an error occurred regarding the database - should not occur in this method
+     * @throws SQLException if an error occurred regarding the database
      */
     public GoalListPair updateCurrentGoals() throws SQLException {
         GoalListPair listPair;
