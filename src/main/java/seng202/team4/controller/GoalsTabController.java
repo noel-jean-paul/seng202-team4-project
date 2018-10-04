@@ -4,14 +4,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import seng202.team4.model.data.Goal;
 import seng202.team4.GuiUtilities;
+import seng202.team4.model.data.Goal;
 import seng202.team4.view.CurrentGoalRowItem;
 
-import java.util.List;
+import java.sql.SQLException;
 
 
 /**
@@ -86,8 +85,17 @@ public class GoalsTabController extends Controller {
         reset();
     }
 
-    /* Fills the current and past GoalRow lists using the currently loaded profile's goals */
-    private void fillGoalRowLists() {
+    /* Updates the current profile's goals then fills the current GoalRow vbox using them */
+    private void updateCurrentGoalRowTable() {
+        // Update the currentGoals of the currently loaded profile
+        try {
+            applicationStateManager.getCurrentProfile().updateCurrentGoals();
+        } catch (SQLException e) {
+            GuiUtilities.displayErrorMessage("An error occurred regarding the database",
+                    "Goal updates could not be completed successfully");
+            System.out.println("Database error occurred while updating goals");
+        }
+
         // Add each current Goal to the vbox children
         for (Goal goal: applicationStateManager.getCurrentProfile().getCurrentGoals()) {
             // Create a new pair of GoalRow controller and item
@@ -107,7 +115,7 @@ public class GoalsTabController extends Controller {
 
     /* Query the goal lists of the currentProfile and update the goal tables to display their contents */
     public void updateTables() {
-        fillGoalRowLists();
+        updateCurrentGoalRowTable();
     }
 
     /**
