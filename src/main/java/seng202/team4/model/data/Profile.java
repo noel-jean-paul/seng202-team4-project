@@ -1,6 +1,8 @@
 package seng202.team4.model.data;
 
 import seng202.team4.GuiUtilities;
+import seng202.team4.model.data.Keys.ActivityKey;
+import seng202.team4.model.data.Keys.ProfileKey;
 import seng202.team4.model.data.enums.ProfileFields;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
@@ -541,5 +543,35 @@ public class Profile {
         expiredGoals = updateGoalsForExpiry();
 
         return new GoalListPair(expiredGoals, completedGoals);
+    }
+
+    /** Check whether the profile activities contain an activity with the passed in name and date
+     *
+      * @param name the name of the activiity being checked as a String
+     *  @param date the date of the activity being checked as a LocalDate
+     *  @return true if an activity with the name and date exists, false otherwise
+     */
+    public boolean activityExists(String name, LocalDate date) {
+        // Check is the name and date passed in correspond to an activity in the profile's list of activities
+        ActivityKey activityKey = new ActivityKey(name, date);
+        return getAllActivityKeys().contains(activityKey);
+    }
+
+    /** Get a set of activityKeys , one for every activity in the profile's activityList
+     *
+     * @return a set containing an activityKey for every activity in the profile's activityList
+     */
+    private Set<ActivityKey> getAllActivityKeys() {
+        // Create the set to be returned
+        Set<ActivityKey> activityKeys;
+        activityKeys = new HashSet<>();
+
+        // Parse all profile activities to an ActivityKey and add them to activityKeys
+        for (Activity activity: getActivityList()) {
+            ActivityKey activityKey = new ActivityKey(activity.getName(), activity.getDate());
+            activityKeys.add(activityKey);
+        }
+
+        return activityKeys;
     }
 }

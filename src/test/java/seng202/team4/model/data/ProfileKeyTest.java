@@ -1,6 +1,7 @@
 package seng202.team4.model.data;
 
 import org.junit.Test;
+import seng202.team4.model.data.Keys.ProfileKey;
 
 public class ProfileKeyTest {
     private static ProfileKey key1;

@@ -9,9 +9,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import seng202.team4.App;
 import seng202.team4.controller.CurrentGoalRowController;
-import seng202.team4.controller.ProfileListItemController;
 import seng202.team4.model.data.Goal;
-import seng202.team4.model.data.ProfileKey;
 
 public class CurrentGoalRowItem extends AnchorPane {
     /** Background of a selected profile. */

@@ -145,14 +145,6 @@ public class RawDataViewerController extends Controller {
 
 
     public void displayPopUp() {
-        // Remove the activity from the observed list to get the activity table observer to update
-//        try {
-//            //applicationStateManager.getCurrentProfile().removeActivity(activity);
-//        } catch (SQLException e) {
-//            GuiUtilities.displayErrorMessage("A problem occurred with the database.", e.getMessage());
-//            System.out.println("A database error occurred when adding/removing the activity from the database.");
-//        }
-
         applyEditsButton.setDisable(true);
         addRowButton.setDisable(true);
         dataTableTitleText.setText("Data Rows for " + activity.getName());
@@ -384,23 +376,17 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     void closePopUp() {
-
-        //activityTabController.updateTable();
-        // Update the activity attributes as the raw data may have changed
         try {
             // Update the activity in case it's raw data has been changed
             activity.updateActivity();
-            // Add the modified activity to the profile's activities (it was removed earlier to trigger the observer)
-            //applicationStateManager.getCurrentProfile().addActivity(activity);
         } catch (SQLException e) {
             GuiUtilities.displayErrorMessage("A problem occurred with the database.", e.getMessage());
             System.out.println("A database error occurred when updating the activity.");
             e.printStackTrace();
         }
-
         // Update the table holding the activities to display the new values
         activityTabController.updateTable();
+        // Close the popup
         applicationStateManager.closePopUP(popupPane);
     }
-
 }

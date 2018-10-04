@@ -1,12 +1,12 @@
 package seng202.team4.model.database;
 
 import seng202.team4.model.data.*;
+import seng202.team4.model.data.Keys.ProfileKey;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 

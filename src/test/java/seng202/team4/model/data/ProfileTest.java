@@ -485,4 +485,21 @@ public class ProfileTest {
         // Check the goals are returned as completed goals
         assertEquals(expectedGoals, completed);
     }
+
+    @Test
+    public void activityExists_activityDoesExist() throws SQLException {
+        // Add an activity to the profile
+        profile1.addActivity(activity1);
+
+        // Check that the method returns true (the activity exists)
+        boolean result = profile1.activityExists(activity1.getName(), activity1.getDate());
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void activityExists_activityDoesNotExist() throws SQLException {
+        // Check that the method returns false (the activity does not exist) when the profile activity list does not contain the activity
+        boolean result = profile1.activityExists(activity1.getName(), activity1.getDate());
+        assertEquals(false, result);
+    }
 }

@@ -128,7 +128,10 @@ public class AddManualActivityController extends Controller {
             isValidDistance = false;
         }
 
-        if (date == null) {
+        // Error check fields
+        if (applicationStateManager.getCurrentProfile().activityExists(activityName, date)) {   // Check if the activity already exists in the user's activity list
+            errorText.setText("An activity with the name and date entered already exists.");
+        } else if (date == null) {
             errorText.setText("You need to select a date.");
         } else if (!isValidTimeFormat) {
             errorText.setText(String.format("'%s' is not a valid time.", timeString));
@@ -137,6 +140,7 @@ public class AddManualActivityController extends Controller {
         } else if (!isValidDurationFormat) {
             errorText.setText(String.format("'%s' is not a valid duration.", durationString));
         } else {
+            // Activity is valid. Try to insert it to the user's activities
             double speed = DataProcessor.calculateAverageSpeed(distance, duration);
             double calories = DataProcessor.calculateCalories(speed, duration.getSeconds(), type, applicationStateManager.getCurrentProfile());
             Activity activity = new Activity(activityName, date.toString(), type, time.toString(), duration.toString(), distance, calories);
@@ -152,8 +156,8 @@ public class AddManualActivityController extends Controller {
                 e.printStackTrace();
             }
         }
-
     }
-
-
 }
+
+
+
