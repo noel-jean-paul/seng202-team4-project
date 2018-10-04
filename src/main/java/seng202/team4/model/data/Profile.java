@@ -406,14 +406,13 @@ public class Profile {
      * Adds a warning to the user's list of warnings in order and store the warning in the database.
      * @param warning the warning to be added.
      */
-    public void addWarning(HealthWarning warning) {
+    private void addWarning(HealthWarning warning) {
         warningList.add(warning);
         Collections.sort(warningList);
     }
 
     /** Adds all healthWarnings of the specified collection to the warningList and sorts the warningList
      *  Intended for use by DataLoader only
-     *  WARNING: DOES NOT STORE IN THE DATABASE OR SET OWNER
      *
      * @param warnings the collection to be added
      */
@@ -449,7 +448,7 @@ public class Profile {
      * @return a list of the goals which have expired since the method was last called
      * @throws SQLException if an error occurred regarding the database - should not ever occur
      */
-    public List<Goal> updateGoalsForExpiry() throws SQLException {
+    private List<Goal> updateGoalsForExpiry() throws SQLException {
         // Declare list to return
         List<Goal> expiredGoals;
         expiredGoals = new ArrayList<>();
@@ -470,12 +469,10 @@ public class Profile {
      *  Should be called before updateGoalsForExpiry to allow for importing of activities to meet a goal
      *  on the day they expire.
      *  Assumes that each goal is one of distance, duration or calories goal
-     *
-     * @param activites the list of activities to update the goals
      */
-    public void updateGoalsForProgress(Collection<Activity> activites) {
+    private void updateGoalsForProgress() {
         for (Goal goal: currentGoals) {
-            for (Activity activity: activites) {
+            for (Activity activity: activityList) {
                 // Check the activity is in the correct date range and of the correct type - compare enums by the string
                 if (activity.getDate().isAfter(goal.getCreationDate())
                         && (activity.getType().toString().equals(goal.getType().toString()))) {
@@ -508,7 +505,7 @@ public class Profile {
      * @return a list of the goals which were removed from current goals
      * @throws SQLException if an error occurred regarding the database - should not ever occur
      */
-    public List<Goal> updateGoalsForCompletion() throws SQLException {
+    private List<Goal> updateGoalsForCompletion() throws SQLException {
         List<Goal> completedGoals;
         completedGoals = new ArrayList<>();
 
@@ -522,6 +519,24 @@ public class Profile {
             }
         }
         return completedGoals;
+    }
+
+    /** Update the current goal list of the profile for progress, completion and expiry
+     *
+     * @return a GoalListPair object containing the goals which expired and those which were completed
+     * @throws SQLException if an error occurred regarding the database - should not occur in this method
+     */
+    public GoalListPair updateCurrentGoals() throws SQLException {
+        GoalListPair listPair;
+        List<Goal> expiredGoals;
+        List<Goal> completedGoals;
+
+        // Update the current goals for progress, completion and expiry
+        updateGoalsForProgress();
+        completedGoals = updateGoalsForCompletion();
+        expiredGoals = updateGoalsForExpiry();
+
+        return new GoalListPair(expiredGoals, completedGoals);
     }
 
 }
