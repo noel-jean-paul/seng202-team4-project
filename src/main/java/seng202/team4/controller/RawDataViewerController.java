@@ -192,6 +192,7 @@ public class RawDataViewerController extends Controller {
     public void fillEditBoxes() {
         dataRowTable.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
             if (newSelection != null) {
+                errorMessage.setText("");
                 applyEditsButton.setDisable(false);
                 addRowButton.setDisable(false);
                 dateDatePicker.setValue(newSelection.getDate());
@@ -245,7 +246,7 @@ public class RawDataViewerController extends Controller {
         }
 
         //Try to parse the time string to check that it is in a valid format.
-        String time = timeTextField.getText();
+        String time = timeTextField.getText().trim();
         LocalTime timeSet = null;
         boolean isValidTimeFormat = false;
         try {
@@ -256,7 +257,7 @@ public class RawDataViewerController extends Controller {
         }
 
         //Check if the heart rate is in the accepted range
-        int heartRate = Integer.parseInt(heartRateTextField.getText());
+        int heartRate = Integer.parseInt(heartRateTextField.getText().trim());
         boolean isValidHeartRate = false;
         if (DataRow.minHeartRate <= heartRate && heartRate <= DataRow.maxHeartRate) {
             isValidHeartRate = true;
@@ -265,7 +266,7 @@ public class RawDataViewerController extends Controller {
         }
 
         //Check if the latitude is in the accepted range
-        double latitude = Double.parseDouble(latitudeTextField.getText());
+        double latitude = Double.parseDouble(latitudeTextField.getText().trim());
         boolean isValidLatitude = false;
         if (DataRow.minLatitude <= latitude && latitude <= DataRow.maxLatitude) {
             isValidLatitude = true;
@@ -274,7 +275,7 @@ public class RawDataViewerController extends Controller {
         }
 
         //Check if the longitude is in the accepted range
-        double longitude = Double.parseDouble(longitudeTextField.getText());
+        double longitude = Double.parseDouble(longitudeTextField.getText().trim());
         boolean isValidLongitude = false;
         if (DataRow.minLongitude <= longitude && longitude <= DataRow.maxLongitude) {
             isValidLongitude = true;
@@ -283,7 +284,7 @@ public class RawDataViewerController extends Controller {
         }
 
         //Check if the elevation is in the accepted range
-        double elevation = Double.parseDouble(elevationTextField.getText());
+        double elevation = Double.parseDouble(elevationTextField.getText().trim());
         boolean isValidElevation = false;
         if (DataRow.minElevation <= elevation && elevation <= DataRow.maxElevation) {
             isValidElevation = true;
