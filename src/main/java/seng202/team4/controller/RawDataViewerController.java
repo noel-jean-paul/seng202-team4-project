@@ -316,8 +316,8 @@ public class RawDataViewerController extends Controller {
 
         //Check if the row already exists
         boolean isValidAddition = false;
-        if ((date.equals(prevDate) && (timeTextField.getText().equals(prevTime)) && (heartRateTextField.getText().equals(prevHeartRate)) && (latitudeTextField.getText().equals(prevLatitude))
-                && (longitudeTextField.getText().equals(prevLongitude)) && (elevationTextField.getText().equals(prevElevation)))) {
+        if ((date.equals(prevDate) && (timeTextField.getText().trim().equals(prevTime)) && (heartRateTextField.getText().trim().equals(prevHeartRate)) && (latitudeTextField.getText().trim().equals(prevLatitude))
+                && (longitudeTextField.getText().trim().equals(prevLongitude)) && (elevationTextField.getText().trim().equals(prevElevation)))) {
             isValidAddition = false;
         } else {
             isValidAddition = true;
