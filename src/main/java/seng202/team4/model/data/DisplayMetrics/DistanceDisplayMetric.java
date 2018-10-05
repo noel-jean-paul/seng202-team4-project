@@ -1,4 +1,4 @@
-package seng202.team4.model.data.Metrics;
+package seng202.team4.model.data.DisplayMetrics;
 
 /**
  * Class that stores a distance metric value and has a nice formatted toString method.

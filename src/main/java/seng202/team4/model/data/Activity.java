@@ -1,6 +1,6 @@
 package seng202.team4.model.data;
 
-import seng202.team4.model.data.Metrics.DistanceDisplayMetric;
+import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
 import seng202.team4.model.data.enums.ActivityFields;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.WarningType;

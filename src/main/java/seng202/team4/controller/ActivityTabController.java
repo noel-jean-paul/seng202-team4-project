@@ -18,7 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
-import seng202.team4.model.data.Metrics.DistanceDisplayMetric;
+import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
 import seng202.team4.model.data.enums.ActivityType;
 
 import java.time.LocalDate;
@@ -350,7 +350,7 @@ public class ActivityTabController extends Controller {
     @FXML
     void getDailyMetrics() {
         metricsTitleText.setVisible(true);
-        metricsTitleText.setText("Today's Metrics");
+        metricsTitleText.setText("Today's DisplayMetrics");
         int request = 1;
         LocalDate startDate = LocalDate.now();
         setLabels(request, startDate);
@@ -362,7 +362,7 @@ public class ActivityTabController extends Controller {
     @FXML
     void getWeeklyMetrics() {
         metricsTitleText.setVisible(true);
-        metricsTitleText.setText("Weekly Metrics");
+        metricsTitleText.setText("Weekly DisplayMetrics");
         int request = 2;
         LocalDate startDate = LocalDate.now();
         setLabels(request, startDate);
@@ -374,7 +374,7 @@ public class ActivityTabController extends Controller {
     @FXML
     void getMonthlyMetrics() {
         metricsTitleText.setVisible(true);
-        metricsTitleText.setText("Monthly Metrics");
+        metricsTitleText.setText("Monthly DisplayMetrics");
         int request = 3;
         LocalDate startDate = LocalDate.now();
         setLabels(request, startDate);
