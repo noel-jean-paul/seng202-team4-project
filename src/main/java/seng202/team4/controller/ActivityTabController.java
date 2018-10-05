@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.Metrics.DistanceDisplayMetric;
 import seng202.team4.model.data.enums.ActivityType;
 
 import java.time.LocalDate;
@@ -229,7 +230,7 @@ public class ActivityTabController extends Controller {
         //Sets where the columns should get their values from.
         nameColumn.setCellValueFactory(new PropertyValueFactory<Activity,String>("name"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Activity, LocalDate>("date"));
-        distanceColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("distanceDisplayString"));
+        distanceColumn.setCellValueFactory(new PropertyValueFactory<Activity, DistanceDisplayMetric>("distanceDisplayMetric"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<Activity, LocalTime>("startTime"));
         averageSpeedColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("averageSpeedDisplayString"));
         caloriesColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("caloriesDisplayString"));
