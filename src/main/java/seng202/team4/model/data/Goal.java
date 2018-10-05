@@ -41,7 +41,7 @@ public class Goal implements Comparable<Goal> {
         this.goalDuration = Duration.parse(goalDuration);
         this.caloriesBurned = caloriesBurned;
         this.current = true;    // by default the goal is current
-        this.description = Goal.generateDescription(this);
+        this.description = generateDescription(this);
     }
 
     /** Constructor for a distance goal */
@@ -256,7 +256,7 @@ public class Goal implements Comparable<Goal> {
      * @param goal the goal to generate the description for
      * @return a description of the goal as a String.
      */
-    private static String generateDescription(Goal goal) {
+    private String generateDescription(Goal goal) {
         String description;
         String suffix;
         description = "";
@@ -265,8 +265,10 @@ public class Goal implements Comparable<Goal> {
             description = String.format("%s %.0f meters", goal.getType().toString(),
                     goal.getGoalDistance() * 1000);    // Convert kms to meters
         } else if (goal.isDurationGoal()) {
-            description = String.format("%s for %d hours and %d minutes",
-                    goal.getType().toString(), goal.getGoalDuration().toHours(),
+            // Get unit of the number of hours
+            String hourUnit = getHourUnit(goal.getGoalDuration());
+            description = String.format("%s for %d %s and %d minutes",
+                    goal.getType().toString(), goal.getGoalDuration().toHours(), hourUnit,
                     goal.getGoalDuration().toMinutes() - goal.getGoalDuration().toHours() * 60);    // toMinutes() includes the hours as well so they must be subtracted out
         } else if (goal.isCaloriesGoal()) {
             // Set an appropriate ending to the description based on the type of the goal
@@ -322,5 +324,51 @@ public class Goal implements Comparable<Goal> {
      */
     public boolean isCaloriesGoal() {
         return caloriesBurned != 0;
+    }
+
+    /** Return a string stating the current units this goal has accredited towards the its total
+     *  with the appropriate unit.
+     *
+     * @return a String stating the current amount with a unit
+     */
+    public String getCurrentAmountDescription() {
+        String currentString = "";
+
+        if (isCaloriesGoal()) {
+            currentString += String.format("%.0f calories", caloriesBurned * progress / 100);
+        } else if (isDistanceGoal()) {
+            currentString += String.format("%.1f km", goalDistance * progress / 100);
+        } else if (isDurationGoal()) {
+            // Get the number of minutes completed so far
+            Double currentMinutes = Double.valueOf(Long.toString(getGoalDuration().toMinutes())) * progress / 100;
+            // Convert currentMinutes back to a Duration
+            Duration duration = Duration.ofMinutes(Long.valueOf(String.format("%.0f", currentMinutes)));
+
+            // Get unit of the number of hours completed
+            String hourUnit = getHourUnit(duration);
+            currentString += String.format("%d %s and %d minutes", duration.toHours(), hourUnit,
+                    duration.toMinutes() - duration.toHours() * 60);    // toMinutes() includes the hours as well so they must be subtracted out);
+        }
+
+        return currentString;
+    }
+
+
+    /** Get a string containing the unit of the number of hours of the duration passed in
+     *
+     * @param duration The duration to compute the hour unit of
+     * @return  a string containing 'hour' or 'hours' depending if the duration passed in has 1 hour in it
+     *  or not respectively.
+     */
+    private String getHourUnit(Duration duration) {
+        Long hours = duration.toHours();
+        String hourUnit;
+        if (hours == 1) {
+            hourUnit = "hour";   // Singular
+        } else {
+            hourUnit = "hours";  // Plural
+        }
+
+        return hourUnit;
     }
 }

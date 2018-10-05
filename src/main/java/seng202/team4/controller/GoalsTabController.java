@@ -156,11 +156,14 @@ public class GoalsTabController extends Controller {
 
     /* Fill the goal header with information about the goal which currently selected goal row wraps */
     private void displayGoalInformation() {
+        // Hide the no goal selected text
+        noGoalSelectedText.setText("");
+
         // Get the goal which the selectedGoalRow wraps
         Goal selectedGoal = selectedGoalRow.getGoal();
 
         // Fill the goal progress indicatior
-        goalProgressIndicator.setProgress(selectedGoal.getProgress());
+        goalProgressIndicator.setProgress(selectedGoal.getProgress() / 100);    // Takes a value between 0 and 1
         goalProgressIndicator.setDisable(false);
 
         // Allow editing
