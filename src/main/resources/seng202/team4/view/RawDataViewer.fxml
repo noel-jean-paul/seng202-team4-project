@@ -92,6 +92,7 @@
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="5">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
@@ -102,6 +103,7 @@
                   <Button fx:id="applyEditsButton" mnemonicParsing="false" onAction="#applyEdits" text="Edit Current Row" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                   <Button fx:id="addRowButton" mnemonicParsing="false" onAction="#addNewRow" text="Add as New Row" GridPane.halignment="CENTER" />
                   <Text fx:id="errorMessage" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.rowIndex="1" />
+                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteRows" text="Delete Selected" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                </children>
             </GridPane>
          </children>

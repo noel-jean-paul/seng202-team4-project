@@ -96,6 +96,10 @@ public class RawDataViewerController extends Controller {
     @FXML
     private Button addRowButton;
 
+    /** The button which when clicked deletes the selected row */
+    @FXML
+    private Button deleteButton;
+
     /** The text which displays the error message if you enter incorrect data */
     @FXML
     private Text errorMessage;
@@ -151,44 +155,6 @@ public class RawDataViewerController extends Controller {
         dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
         updateDataRows();   //updates the table
         fillEditBoxes();
-
-        ContextMenu dataTableRowMenu = new ContextMenu();
-
-        MenuItem deleteDataRowItem = new MenuItem("Delete Row");
-        deleteDataRowItem.setOnAction(event -> {
-            try {
-                activity.removeDataRow((DataRow) dataRowTable.getSelectionModel().getSelectedItem());
-                updateDataRows();
-            } catch (java.sql.SQLException e){
-                GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
-                e.printStackTrace();
-                System.out.println("Could not remove data row from the database.");
-            }
-        });
-
-
-        dataTableRowMenu.getItems().add(deleteDataRowItem);
-
-        dataRowTable.setRowFactory( tv -> {
-            TableRow row = new TableRow();
-            row.setOnMouseClicked(event -> {
-                if (event.getButton() == MouseButton.PRIMARY || dataRowTable.getItems().size() <= row.getIndex()) {
-                    dataTableRowMenu.hide();
-                }
-            });
-
-            row.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
-                @Override
-                public void handle(ContextMenuEvent event) {
-                    if (dataRowTable.getItems().get(row.getIndex()) != null) {
-                        dataTableRowMenu.show(dataRowTable, event.getScreenX(), event.getScreenY());
-                    }
-                }
-            });
-            return row ;
-        });
-
-        dataTableRowMenu.setAutoHide(true);
     }
 
 
@@ -242,6 +208,7 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     public void applyEdits() {
+        System.out.println("The edit button was clicked");
         fieldErrorChecking(0);
     }
 
@@ -367,6 +334,19 @@ public class RawDataViewerController extends Controller {
                     GuiUtilities.displayErrorMessage("An SQL exception was raised.", e.getMessage());
                 }
             }
+        }
+    }
+
+
+    @FXML
+    public void deleteRows() {
+        try {
+            activity.removeDataRow((DataRow) dataRowTable.getSelectionModel().getSelectedItem());
+            updateDataRows();
+        } catch (java.sql.SQLException e){
+            GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
+            e.printStackTrace();
+            System.out.println("Could not remove data row from the database.");
         }
     }
 
