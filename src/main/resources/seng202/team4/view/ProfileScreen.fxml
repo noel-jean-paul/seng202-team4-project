@@ -59,12 +59,21 @@
                                                 </ImageView>
                                                 <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                                                    <children>
-                                                      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#prevImage" text="Previous">
+                                                      <Button fx:id="prevImageButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#prevImage" text="Previous">
                                                          <opaqueInsets>
                                                             <Insets />
                                                          </opaqueInsets>
                                                          <HBox.margin>
                                                             <Insets right="10.0" />
+                                                         </HBox.margin>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="59.0" GridPane.columnIndex="2">
+                                                   <children>
+                                                      <Button fx:id="nextImagebutton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#nextImage" text="   Next   ">
+                                                         <HBox.margin>
+                                                            <Insets left="10.0" />
                                                          </HBox.margin>
                                                       </Button>
                                                    </children>

@@ -15,67 +15,70 @@ import seng202.team4.model.data.Profile;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** Controller class for the view profile controller. */
 public class ProfileScreenController extends Controller {
 
-    /* Text that displays the users first name. */
+    /** Text that displays the users first name. */
     @FXML
     private Text firstNameText;
 
-    /* Text that displays the users height. */
+    /** Text that displays the users height. */
     @FXML
     private Text heightText;
 
-    /* Text that displays the users last name. */
+    /** Text that displays the users last name. */
     @FXML
     private Text lastNameText;
 
-    /* Text that displays the users weight name. */
+    /** Text that displays the users weight name. */
     @FXML
     private Text weightText;
 
-    /* Text that displays the year of the users date of birth. */
+    /** Text that displays the year of the users date of birth. */
     @FXML
     private Text yearText;
 
-    /* Text that displays the month of the users date of birth. */
+    /** Text that displays the month of the users date of birth. */
     @FXML
     private Text monthText;
 
-    /* Text that displays the day of the users date of birth. */
+    /** Text that displays the day of the users date of birth. */
     @FXML
     private Text dayText;
 
-    /* Text that displays any errors that occur if a user edits a value incorrectly. */
+    /** Text that displays any errors that occur if a user edits a value incorrectly. */
     @FXML
     private Text errorText;
 
-    /* VBox for first name information. */
+    /** VBox for first name information. */
     @FXML
     private VBox firstNameVbox;
 
-    /* VBox for last name information. */
+    /** VBox for last name information. */
     @FXML
     private VBox lastNameVbox;
 
-    /* VBox for height information. */
+    /** VBox for height information. */
     @FXML
     private VBox heightVbox;
 
-    /* VBox for weight information. */
+    /** VBox for weight information. */
     @FXML
     private VBox weightVbox;
 
-    /* VBox for day of date of birth information. */
+    /** VBox for day of date of birth information. */
     @FXML
     private VBox dayVbox;
 
-    /* VBox for month of date of birth information. */
+    /** VBox for month of date of birth information. */
     @FXML
     private VBox monthVbox;
 
-    /* VBox for year of date of birth information. */
+    /** VBox for year of date of birth information. */
     @FXML
     private VBox yearVbox;
 
@@ -86,6 +89,14 @@ public class ProfileScreenController extends Controller {
     /** ImageView for the users profile picture. */
     @FXML
     private ImageView profilePictureImageView;
+
+    /** Button for changing to the next profile image. */
+    @FXML
+    private Button nextImagebutton;
+
+    /** Button for changing to the previous profile image. */
+    @FXML
+    private Button prevImageButton;
 
     /** TextField for the users first name. */
     private TextField firstNameTextField;
@@ -111,10 +122,20 @@ public class ProfileScreenController extends Controller {
     /** Boolean that stores whether the user is currently editing. */
     private boolean isEditing = false;
 
+    /** List of all profile pictures the user can choose from */
+    private ArrayList<Image> profilePictures;
+
+    /** Index of the current profile image selected. */
+    private int currentImageIndex = 0;
+
     /** Creates a new ProfileScreenController with the given ApplicationStateManager.
      **/
     public ProfileScreenController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
+        profilePictures = new ArrayList<Image>();
+        for (int i=0; i < 17; i++) {
+            profilePictures.add(new Image(App.class.getResource(String.format("images/profilePictures/ProfilePic%s.png", i)).toString()));
+        }
     }
 
     /** Initializes the profile screen. */
@@ -141,8 +162,22 @@ public class ProfileScreenController extends Controller {
         // Load the users profile picture
         URL profileImageUrl = App.class.getResource(applicationStateManager.getCurrentProfile().getPictureURL());
         if (profileImageUrl != null) {
-            profilePictureImageView.setImage(GuiUtilities.maskProfileImage(new Image(profileImageUrl.toString())));
+            Image userProfileImage = GuiUtilities.maskProfileImage(new Image(profileImageUrl.toString()));
+            profilePictureImageView.setImage(userProfileImage);
+            Pattern p = Pattern.compile("ProfilePic([0-9]+)");
+            Matcher m = p.matcher(profileImageUrl.toString());
+            if (m.find()) {
+                currentImageIndex = Integer.parseInt(m.group(1));
+            }
+
+            if (currentImageIndex >= profilePictures.size()) {
+                currentImageIndex = 0;
+            }
         }
+
+        // Disables the previous and next image buttons.
+        prevImageButton.setVisible(false);
+        nextImagebutton.setVisible(false);
     }
 
     /**
@@ -215,6 +250,7 @@ public class ProfileScreenController extends Controller {
                     profile.setWeight(weight);
                     profile.setHeight(height);
                     profile.setDateOfBirth(dateString);
+                    profile.setPictureURL(String.format("images/profilePictures/ProfilePic%s.png", currentImageIndex));
 
                     updateInformation();
                     changeValuesToText();
@@ -223,10 +259,12 @@ public class ProfileScreenController extends Controller {
                     errorText.setText("");
                 } catch (java.sql.SQLException e) {
                     GuiUtilities.displayErrorMessage("Error encountered editing profile.", e.getMessage());
+                    e.printStackTrace();
                 }
             }
 
         } else {
+            ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).updateProfileButton();
             applicationStateManager.switchToScreen("MainScreen");
         }
     }
@@ -239,6 +277,8 @@ public class ProfileScreenController extends Controller {
      */
     @FXML void editProfile() {
         if (!isEditing){
+            //Changing all text to text fields so that the user can edit.
+
             firstNameTextField.setText(applicationStateManager.getCurrentProfile().getFirstName());
             lastNameTextField.setText(applicationStateManager.getCurrentProfile().getLastName());
             heightTextField.setText(Double.toString(applicationStateManager.getCurrentProfile().getHeight()));
@@ -255,6 +295,9 @@ public class ProfileScreenController extends Controller {
             monthVbox.getChildren().setAll(monthTextField);
             yearVbox.getChildren().setAll(yearTextField);
 
+            prevImageButton.setVisible(true);
+            nextImagebutton.setVisible(true);
+
             editCancelButton.setText("Cancel");
             isEditing = true;
         } else  {
@@ -262,6 +305,9 @@ public class ProfileScreenController extends Controller {
             isEditing = false;
             updateInformation();
             changeValuesToText();
+
+            prevImageButton.setVisible(false);
+            nextImagebutton.setVisible(false);
             errorText.setText("");
         }
 
@@ -309,9 +355,28 @@ public class ProfileScreenController extends Controller {
         applicationStateManager.displayPopUp(deletionPopup);
     }
 
+    /**
+     * Changes to the next profile picture to view.
+     */
     @FXML
     public void prevImage() {
+        currentImageIndex -= 1;
+        if (currentImageIndex < 0) {
+            currentImageIndex = profilePictures.size()-1;
+        }
+        profilePictureImageView.setImage(GuiUtilities.maskProfileImage(profilePictures.get(currentImageIndex)));
+    }
 
+    /**
+     * Changes to the previous profile picture to view.
+     */
+    @FXML
+    public void nextImage() {
+        currentImageIndex += 1;
+        if (currentImageIndex >= profilePictures.size()) {
+            currentImageIndex = 0;
+        }
+        profilePictureImageView.setImage(GuiUtilities.maskProfileImage(profilePictures.get(currentImageIndex)));
     }
 
 
