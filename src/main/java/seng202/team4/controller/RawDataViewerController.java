@@ -148,7 +148,7 @@ public class RawDataViewerController extends Controller {
     }
 
 
-    public void displayPopUp() {
+    private void displayPopUp() {
         applyEditsButton.setDisable(true);
         addRowButton.setDisable(true);
         dataTableTitleText.setText("Data Rows for " + activity.getName());
@@ -156,15 +156,6 @@ public class RawDataViewerController extends Controller {
         updateDataRows();   //updates the table
         fillEditBoxes();
 
-        // Updates the table immediately, without having to reopen the popup
-        dataRowTable.setRowFactory( tv -> {
-            TableRow row = new TableRow();
-            row.setOnMouseClicked(event -> {
-                updateDataRows();
-            });
-
-            return row ;
-        });
 
     }
 
@@ -173,6 +164,7 @@ public class RawDataViewerController extends Controller {
      * Updates the current state of the data row list
      */
     public void updateDataRows() {
+        dataRowTable.getItems().clear();
         ObservableList<DataRow> dataList = FXCollections.observableArrayList(activity.getRawData());
 
         dateColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalDate>("date"));
@@ -328,7 +320,7 @@ public class RawDataViewerController extends Controller {
                             Double.parseDouble(latitudeTextField.getText()), Double.parseDouble(longitudeTextField.getText()), Double.parseDouble(elevationTextField.getText()));
                     activity.addDataRow(newRow);
                     maxRowNum++;
-                    displayPopUp();
+                    updateDataRows();
                 } catch (java.sql.SQLException e) {
                     GuiUtilities.displayErrorMessage("An SQL exception was raised", e.getMessage());
                 }
@@ -340,7 +332,7 @@ public class RawDataViewerController extends Controller {
                     dataRowTable.getSelectionModel().getSelectedItem().setLatitude(Double.parseDouble(latitudeTextField.getText()));
                     dataRowTable.getSelectionModel().getSelectedItem().setLongitude(Double.parseDouble(longitudeTextField.getText()));
                     dataRowTable.getSelectionModel().getSelectedItem().setElevation(Double.parseDouble(elevationTextField.getText()));
-                    displayPopUp();
+                    updateDataRows();
                 } catch (java.sql.SQLException e) {
                     GuiUtilities.displayErrorMessage("An SQL exception was raised.", e.getMessage());
                 }
