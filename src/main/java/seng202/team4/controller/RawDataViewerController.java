@@ -155,6 +155,17 @@ public class RawDataViewerController extends Controller {
         dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
         updateDataRows();   //updates the table
         fillEditBoxes();
+
+        // Updates the table immediately, without having to reopen the popup
+        dataRowTable.setRowFactory( tv -> {
+            TableRow row = new TableRow();
+            row.setOnMouseClicked(event -> {
+                updateDataRows();
+            });
+
+            return row ;
+        });
+
     }
 
 
@@ -208,7 +219,6 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     public void applyEdits() {
-        System.out.println("The edit button was clicked");
         fieldErrorChecking(0);
     }
 
