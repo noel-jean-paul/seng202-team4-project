@@ -3,17 +3,15 @@ package seng202.team4.model.utilities;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import seng202.team4.model.data.Activity;
-import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.DataRow;
+import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 
-
-import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Month;
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DataProcessorTest {
 

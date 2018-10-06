@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.AddManualActivityController">
    <children>
@@ -115,6 +105,7 @@
                                     <TextField fx:id="nameField" />
                                  </children>
                               </VBox>
+                              <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <TextField fx:id="timeField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <TextField fx:id="distanceField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <TextField fx:id="durationField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -128,7 +119,6 @@
                                     <Text fx:id="errorText" fill="#e80505" strokeType="OUTSIDE" strokeWidth="0.0" />
                                  </children>
                               </VBox>
-                              <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>

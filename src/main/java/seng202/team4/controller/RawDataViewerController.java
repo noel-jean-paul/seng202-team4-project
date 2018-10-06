@@ -9,7 +9,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
@@ -19,7 +18,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -91,17 +92,49 @@ public class RawDataViewerController extends Controller {
     @FXML
     private Button applyEditsButton;
 
+    /** The button which when clicked adds a new data row to the raw data */
+    @FXML
+    private Button addRowButton;
+
+    /** The button which when clicked deletes the selected row */
+    @FXML
+    private Button deleteButton;
+
+    /** The text which displays the error message if you enter incorrect data */
+    @FXML
+    private Text errorMessage;
+
     /** Activity variable, holds the current activity's data */
     private Activity activity;
 
-    /**
+    /** The activity tab controller of the activities tab */
+    private ActivityTabController activityTabController;
+
+    /** The maximum row number currently in the data row list */
+    private int maxRowNum = 0;
+
+    /**The strings which store the state of the selected data row */
+    private String prevDate;
+    private String prevTime;
+    private String prevHeartRate;
+    private String prevLatitude;
+    private String prevLongitude;
+    private String prevElevation;
+
+    /** The string which stores the date of the activity */
+    private String date;
+
+
+    /** Constructor for the raw data viewer. A new raw data viewer is created everytime view raw data is selected for
+     *   an activity.
      *
      * @param applicationStateManager the application state manager of the application
      * @param activity the current selected activity, of which we wish to view the raw data
      */
-    public RawDataViewerController(ApplicationStateManager applicationStateManager, Activity activity) {
+    public RawDataViewerController(ApplicationStateManager applicationStateManager, Activity activity, ActivityTabController activityTabController) {
         super(applicationStateManager);
         this.activity = activity;
+        this.activityTabController = activityTabController;
     }
 
     /**
@@ -109,54 +142,25 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     public void initialize() {
+        for (DataRow row : activity.getRawData()) {
+            if (row.getNumber() > maxRowNum) {
+                maxRowNum = row.getNumber();
+            }
+        }
         displayPopUp();
     }
 
 
-    public void displayPopUp() {
+    private void displayPopUp() {
         applyEditsButton.setDisable(true);
+        addRowButton.setDisable(true);
+        deleteButton.setDisable(true);
         dataTableTitleText.setText("Data Rows for " + activity.getName());
         dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
         updateDataRows();   //updates the table
         fillEditBoxes();
 
-        ContextMenu dataTableRowMenu = new ContextMenu();
 
-        MenuItem deleteDataRowItem = new MenuItem("Delete Row");
-        deleteDataRowItem.setOnAction(event -> {
-            try {
-                activity.removeDataRow((DataRow) dataRowTable.getSelectionModel().getSelectedItem());
-                updateDataRows();
-            } catch (java.sql.SQLException e){
-                GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
-                e.printStackTrace();
-                System.out.println("Could not remove data row from the data base.");
-            }
-        });
-
-
-        dataTableRowMenu.getItems().add(deleteDataRowItem);
-
-        dataRowTable.setRowFactory( tv -> {
-            TableRow row = new TableRow();
-            row.setOnMouseClicked(event -> {
-                if (event.getButton() == MouseButton.PRIMARY || dataRowTable.getItems().size() <= row.getIndex()) {
-                    dataTableRowMenu.hide();
-                }
-            });
-
-            row.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
-                @Override
-                public void handle(ContextMenuEvent event) {
-                    if (dataRowTable.getItems().get(row.getIndex()) != null) {
-                        dataTableRowMenu.show(dataRowTable, event.getScreenX(), event.getScreenY());
-                    }
-                }
-            });
-            return row ;
-        });
-
-        dataTableRowMenu.setAutoHide(true);
     }
 
 
@@ -164,8 +168,8 @@ public class RawDataViewerController extends Controller {
      * Updates the current state of the data row list
      */
     public void updateDataRows() {
+        dataRowTable.getItems().clear();
         ObservableList<DataRow> dataList = FXCollections.observableArrayList(activity.getRawData());
-        Collections.reverse(dataList); //reverses the list to ensure the data is displayed in the correct order in the table
 
         dateColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalDate>("date"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalTime>("time"));
@@ -184,13 +188,25 @@ public class RawDataViewerController extends Controller {
     public void fillEditBoxes() {
         dataRowTable.getSelectionModel().selectedItemProperty().addListener((observable, oldSelection, newSelection) -> {
             if (newSelection != null) {
+                errorMessage.setText("");
                 applyEditsButton.setDisable(false);
+                addRowButton.setDisable(false);
+                deleteButton.setDisable(false);
                 dateDatePicker.setValue(newSelection.getDate());
                 timeTextField.setText(newSelection.getTime().toString());
                 heartRateTextField.setText(Integer.toString(newSelection.getHeartRate()));
                 latitudeTextField.setText((Double.toString(newSelection.getLatitude())));
                 longitudeTextField.setText((Double.toString(newSelection.getLongitude())));
                 elevationTextField.setText((Double.toString(newSelection.getElevation())));
+
+                String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                prevDate = date;
+                prevTime = timeTextField.getText();
+                prevHeartRate = heartRateTextField.getText();
+                prevLatitude = latitudeTextField.getText();
+                prevLongitude = longitudeTextField.getText();
+                prevElevation = elevationTextField.getText();
+
             }
         });
     }
@@ -200,18 +216,171 @@ public class RawDataViewerController extends Controller {
      * All edits made by the user are applied to the raw data row
      */
     @FXML
-    public void applyEdits() throws SQLException {
+    public void applyEdits() {
+        fieldErrorChecking(0);
+    }
+
+    @FXML
+    void addNewRow() {
+        fieldErrorChecking(1);
+    }
+
+
+    /**
+     * checks each of the fields of data row to see if they are within the accepted range, before adding them as a data row
+     */
+    public void fieldErrorChecking(int buttonType) {
+        // TODO: 4/10/18 Matt_M these should be refactored into functions in DataRow - Noel
+        // Try to parse the date string to check that it is in a valid format.
+        boolean isValidDateFormat = false;
+        LocalDate dateSet = null;
         try {
-            String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            dataRowTable.getSelectionModel().getSelectedItem().setDate(date);
-            dataRowTable.getSelectionModel().getSelectedItem().setTime(timeTextField.getText());
-            dataRowTable.getSelectionModel().getSelectedItem().setHeartRate(Integer.parseInt(heartRateTextField.getText()));
-            dataRowTable.getSelectionModel().getSelectedItem().setLatitude(Double.parseDouble(latitudeTextField.getText()));
-            dataRowTable.getSelectionModel().getSelectedItem().setLongitude(Double.parseDouble(longitudeTextField.getText()));
-            dataRowTable.getSelectionModel().getSelectedItem().setElevation(Double.parseDouble(elevationTextField.getText()));
-            displayPopUp();
-        } catch (java.sql.SQLException e) {
-            GuiUtilities.displayErrorMessage("One of your edits was outside of the accepted range.", e.getMessage());
+            date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            dateSet = LocalDate.parse(date);
+            isValidDateFormat = true;
+        } catch (Exception e) {
+            isValidDateFormat = false;
+        }
+
+
+
+        //Try to parse the time string to check that it is in a valid format.
+        String time = timeTextField.getText().trim();
+        LocalTime timeSet = null;
+        boolean isValidTimeFormat = false;
+        try {
+            timeSet = LocalTime.parse(time);
+            isValidTimeFormat = true;
+        } catch (Exception e) {
+            isValidTimeFormat = false;
+        }
+
+        //Check if the heart rate is in the accepted range
+        boolean isValidHeartRate = false;
+        if (heartRateTextField.getText().isEmpty()) {
+            isValidHeartRate = false;
+        } else {
+            int heartRate = Integer.parseInt(heartRateTextField.getText().trim());
+            if (DataRow.minHeartRate <= heartRate && heartRate <= DataRow.maxHeartRate) {
+                isValidHeartRate = true;
+            } else {
+                isValidHeartRate = false;
+            }
+        }
+
+        //Check if the latitude is in the accepted range
+        boolean isValidLatitude = false;
+        if (latitudeTextField.getText().isEmpty()) {
+            isValidLatitude = false;
+        } else {
+            double latitude = Double.parseDouble(latitudeTextField.getText().trim());
+            if (DataRow.minLatitude <= latitude && latitude <= DataRow.maxLatitude) {
+                isValidLatitude = true;
+            } else {
+                isValidLatitude = false;
+            }
+        }
+
+        //Check if the longitude is in the accepted range
+        boolean isValidLongitude = false;
+        if (longitudeTextField.getText().isEmpty()) {
+            isValidLongitude = false;
+        } else {
+            double longitude = Double.parseDouble(longitudeTextField.getText().trim());
+            if (DataRow.minLongitude <= longitude && longitude <= DataRow.maxLongitude) {
+                isValidLongitude = true;
+            } else {
+                isValidLongitude = false;
+            }
+        }
+
+        //Check if the elevation is in the accepted range
+        boolean isValidElevation = false;
+        if (elevationTextField.getText().isEmpty()) {
+            isValidElevation = false;
+        } else {
+            double elevation = Double.parseDouble(elevationTextField.getText().trim());
+            if (DataRow.minElevation <= elevation && elevation <= DataRow.maxElevation) {
+                isValidElevation = true;
+            } else {
+                isValidElevation = false;
+            }
+        }
+
+
+
+
+        if (!isValidDateFormat) {
+            errorMessage.setText("Date should be in the form dd/mm/yyyy");
+        } else if (!isValidTimeFormat) {
+            errorMessage.setText("Time should be in the form hh:mm:ss");
+        } else if (!isValidHeartRate) {
+            errorMessage.setText("Heart rate must be between " + DataRow.minHeartRate + " and " + DataRow.maxHeartRate);
+        } else if (!isValidLatitude) {
+            errorMessage.setText("Latitude must be between " + DataRow.minLatitude + " and " + DataRow.maxLatitude);
+        } else if (!isValidLongitude) {
+            errorMessage.setText("Longitude must be between " + DataRow.minLongitude + " and " + DataRow.maxLongitude);
+        } else if (!isValidElevation) {
+            errorMessage.setText("Longitude must be between " + DataRow.minElevation + " and " + DataRow.maxElevation);
+        } else if (!isValidAddition()) {
+            if (buttonType == 1) {
+                errorMessage.setText("You cannot add a row that already exists");
+            }
+        } else {
+            errorMessage.setText("");
+            if (buttonType == 1) {  // Add row case
+                try {
+                    int rowNum = maxRowNum + 1;
+                    DataRow newRow = new DataRow(rowNum, date, timeTextField.getText(), Integer.parseInt(heartRateTextField.getText()),
+                            Double.parseDouble(latitudeTextField.getText()), Double.parseDouble(longitudeTextField.getText()), Double.parseDouble(elevationTextField.getText()));
+                    activity.addDataRow(newRow);
+                    maxRowNum++;
+                    updateDataRows();
+                } catch (java.sql.SQLException e) {
+                    GuiUtilities.displayErrorMessage("An SQL exception was raised", e.getMessage());
+                }
+            } else {    // Edit row case
+                try {
+                    dataRowTable.getSelectionModel().getSelectedItem().setDate(date);
+                    dataRowTable.getSelectionModel().getSelectedItem().setTime(timeTextField.getText());
+                    dataRowTable.getSelectionModel().getSelectedItem().setHeartRate(Integer.parseInt(heartRateTextField.getText()));
+                    dataRowTable.getSelectionModel().getSelectedItem().setLatitude(Double.parseDouble(latitudeTextField.getText()));
+                    dataRowTable.getSelectionModel().getSelectedItem().setLongitude(Double.parseDouble(longitudeTextField.getText()));
+                    dataRowTable.getSelectionModel().getSelectedItem().setElevation(Double.parseDouble(elevationTextField.getText()));
+                    updateDataRows();
+                } catch (java.sql.SQLException e) {
+                    GuiUtilities.displayErrorMessage("An SQL exception was raised.", e.getMessage());
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Checks to see if the row to be added is a valid row
+     * @returns a boolean on whether or not the row can be added
+     */
+    public boolean isValidAddition() {
+        boolean isValidAddition = false;
+        if ((date.equals(prevDate) && (timeTextField.getText().trim().equals(prevTime)) && (heartRateTextField.getText().trim().equals(prevHeartRate))
+                && (latitudeTextField.getText().trim().equals(prevLatitude))
+                && (longitudeTextField.getText().trim().equals(prevLongitude)) && (elevationTextField.getText().trim().equals(prevElevation)))) {
+            isValidAddition = false;
+        } else {
+            isValidAddition = true;
+        }
+        return isValidAddition;
+    }
+
+    @FXML
+    public void deleteRows() {
+        try {
+            activity.removeDataRow((DataRow) dataRowTable.getSelectionModel().getSelectedItem());
+            updateDataRows();
+        } catch (java.sql.SQLException e){
+            GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
+            e.printStackTrace();
+            System.out.println("Could not remove data row from the database.");
         }
     }
 
@@ -221,8 +390,17 @@ public class RawDataViewerController extends Controller {
      */
     @FXML
     void closePopUp() {
+        try {
+            // Update the activity in case it's raw data has been changed
+            activity.updateActivity();
+        } catch (SQLException e) {
+            GuiUtilities.displayErrorMessage("A problem occurred with the database.", e.getMessage());
+            System.out.println("A database error occurred when updating the activity.");
+            e.printStackTrace();
+        }
+        // Update the table holding the activities to display the new values
+        activityTabController.updateTable();
+        // Close the popup
         applicationStateManager.closePopUP(popupPane);
     }
-
-
 }

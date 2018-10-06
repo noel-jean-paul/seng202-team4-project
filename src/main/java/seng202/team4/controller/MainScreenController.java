@@ -88,7 +88,7 @@ public class MainScreenController extends Controller {
         Pane goals = new Pane();
         goalsTabController = new GoalsTabController(applicationStateManager);
         //TODO: Implement a proper goals tab.
-        //goals = GuiUtilities.loadPane("GoalsTab.fxml", goalsTabController);
+        goals = GuiUtilities.loadPane("GoalsTab.fxml", goalsTabController);
         goalsPane.getChildren().setAll(goals);
 
         // Creates the health tab.
@@ -131,6 +131,15 @@ public class MainScreenController extends Controller {
     }
 
     /**
+     * Called when the goal tab is clicked.
+     * Updates the goal tables in the goal tab.
+     */
+    @FXML
+    void goalTabSelected() {
+        goalsTabController.updateTables();
+    }
+
+    /**
      * Called when the home tab is clicked.
      * Loads data into the graphs of the home tab.
      */
@@ -158,15 +167,23 @@ public class MainScreenController extends Controller {
         tabPane.getSelectionModel().selectFirst();
         if (applicationStateManager.getCurrentProfile() != null) {
             homeTabController.loadData();
-            profileDropDown.setText(applicationStateManager.getCurrentProfile().getFirstName());
+            updateProfileButton();
 
-            // Load the users profile picture
-            URL profileImageUrl = App.class.getResource(applicationStateManager.getCurrentProfile().getPictureURL());
-            if (profileImageUrl != null) {
-                profilePictureImageView.setImage(GuiUtilities.maskProfileImage(new Image(profileImageUrl.toString())));
-            }
         }
         activityTabController.reset();
+    }
+
+    /**
+     * Updates the profile picture and name of the profile button.
+     */
+    public void updateProfileButton() {
+        profileDropDown.setText(applicationStateManager.getCurrentProfile().getFirstName());
+
+        // Load the users profile picture
+        URL profileImageUrl = App.class.getResource(applicationStateManager.getCurrentProfile().getPictureURL());
+        if (profileImageUrl != null) {
+            profilePictureImageView.setImage(GuiUtilities.maskProfileImage(new Image(profileImageUrl.toString())));
+        }
     }
 
 }

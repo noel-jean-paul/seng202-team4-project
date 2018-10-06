@@ -59,7 +59,6 @@ public class ActivityPopUpScreenController extends Controller {
             distanceGraph.setVisible(false);
             heartRateButton.setSelected(true);
             heartRateGraph.setTitle("There is no data that can be displayed");
-            //distanceGraph.setTitle("There is no data that can be displayed");
             heartRateButton.setDisable(true);
             distanceButton.setDisable(true);
 
@@ -86,7 +85,6 @@ public class ActivityPopUpScreenController extends Controller {
         heartRateGraph.setVisible(true);
 
 
-        //The next three lines will have to have the correct activity selected
         List<DataRow> dataRow = activity.getRawData();
         heartRateGraph.setTitle("Heart rate during " + activity.getName()); //sets the title of the
         LocalTime startTime = activity.getStartTime(); //gets the start time of activity
@@ -103,7 +101,7 @@ public class ActivityPopUpScreenController extends Controller {
                 String strSec = Long.toString(timeSeconds);
                 timeSecDouble = Double.parseDouble(strSec);
                 timeMinutes = timeSecDouble / 60.0;
-                timeMinutes = Double.parseDouble(new DecimalFormat("##.#").format(timeMinutes));
+                timeMinutes = Double.parseDouble(new DecimalFormat("##.###").format(timeMinutes));
                 String strLong = Double.toString(timeMinutes);
 
                 set1.getData().add(new XYChart.Data(strLong, row.getHeartRate()));
@@ -117,8 +115,9 @@ public class ActivityPopUpScreenController extends Controller {
 
     /**
      * Loads the distance travelled graph, giving the distance travelled between each data point
-     * @ToDo Rather than showing the distance between each data point, will be better to make it between each minute, more difficult
+     *
      */
+    // TODO: 4/10/18 Rather than showing the distance between each data point, will be better to make it between each minute, more difficult
     @FXML
     void displayDistanceGraph() {
         distanceGraph.getData().clear();
@@ -145,7 +144,7 @@ public class ActivityPopUpScreenController extends Controller {
             String strSec = Long.toString(timeSeconds);
             timeSecDouble = Double.parseDouble(strSec);
             timeMinutes = timeSecDouble / 60.0;
-            timeMinutes = Double.parseDouble(new DecimalFormat("##.#").format(timeMinutes));
+            timeMinutes = Double.parseDouble(new DecimalFormat("##.###").format(timeMinutes));
             String strLong = Double.toString(timeMinutes);
 
             set2.getData().add(new XYChart.Data(strLong, distance));

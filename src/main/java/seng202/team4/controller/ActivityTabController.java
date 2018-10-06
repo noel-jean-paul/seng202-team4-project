@@ -18,6 +18,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.DisplayMetrics.CalorieDisplayMetric;
+import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
+import seng202.team4.model.data.DisplayMetrics.SpeedDisplayMetric;
 import seng202.team4.model.data.enums.ActivityType;
 
 import java.time.LocalDate;
@@ -126,6 +129,7 @@ public class ActivityTabController extends Controller {
     /** Stores whether the calendar view is current being displayed. */
     private boolean isCalendarView = false;
 
+
     /** CalendarViewController of the calendar. */
     private CalendarViewController calendarViewController;
 
@@ -183,7 +187,7 @@ public class ActivityTabController extends Controller {
         displayRawData.setOnAction(event -> {
             Activity selectedActivity = (Activity) activityTable.getSelectionModel().getSelectedItem();
             if (selectedActivity != null) {
-                Pane rawDataViewerPopup = GuiUtilities.loadPane("RawDataViewer.fxml", new RawDataViewerController(applicationStateManager, selectedActivity));
+                Pane rawDataViewerPopup = GuiUtilities.loadPane("RawDataViewer.fxml", new RawDataViewerController(applicationStateManager, selectedActivity, this));
                 applicationStateManager.displayPopUp(rawDataViewerPopup);
             }
         });
@@ -220,15 +224,18 @@ public class ActivityTabController extends Controller {
 
     /** Updates the contents of the activity Table. */
     public void updateTable() {
+        // Clear the items from the table
+        activityTable.getItems().clear();
+
         ObservableList<Activity> activitiesList = FXCollections.observableArrayList(applicationStateManager.getCurrentProfile().getActivityList());
 
         //Sets where the columns should get their values from.
         nameColumn.setCellValueFactory(new PropertyValueFactory<Activity,String>("name"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Activity, LocalDate>("date"));
-        distanceColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("distanceDisplayString"));
+        distanceColumn.setCellValueFactory(new PropertyValueFactory<Activity, DistanceDisplayMetric>("distanceDisplayMetric"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<Activity, LocalTime>("startTime"));
-        averageSpeedColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("averageSpeedDisplayString"));
-        caloriesColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("caloriesDisplayString"));
+        averageSpeedColumn.setCellValueFactory(new PropertyValueFactory<Activity, SpeedDisplayMetric>("averageSpeedDisplayMetric"));
+        caloriesColumn.setCellValueFactory(new PropertyValueFactory<Activity, CalorieDisplayMetric>("caloriesDisplayMetric"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<Activity, ActivityType>("type"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<Activity, ActivityType>("durationString"));
 
@@ -333,6 +340,12 @@ public class ActivityTabController extends Controller {
 
                 } catch (Exception e) {
                     GuiUtilities.displayErrorMessage("Failed to load map.", "Try checking your internet connection.");
+
+                    // Tries to reload map.
+                    // Todo: Reload map 6/10/2018
+//                    mapsController = new MapsController(applicationStateManager);
+//                    mapPane = GuiUtilities.loadPane("Maps.fxml", mapsController);
+
                     e.printStackTrace();
                 }
             }
@@ -345,7 +358,7 @@ public class ActivityTabController extends Controller {
     @FXML
     void getDailyMetrics() {
         metricsTitleText.setVisible(true);
-        metricsTitleText.setText("Today's Metrics");
+        metricsTitleText.setText("Today's DisplayMetrics");
         int request = 1;
         LocalDate startDate = LocalDate.now();
         setLabels(request, startDate);
@@ -357,7 +370,7 @@ public class ActivityTabController extends Controller {
     @FXML
     void getWeeklyMetrics() {
         metricsTitleText.setVisible(true);
-        metricsTitleText.setText("Weekly Metrics");
+        metricsTitleText.setText("Weekly DisplayMetrics");
         int request = 2;
         LocalDate startDate = LocalDate.now();
         setLabels(request, startDate);
@@ -369,7 +382,7 @@ public class ActivityTabController extends Controller {
     @FXML
     void getMonthlyMetrics() {
         metricsTitleText.setVisible(true);
-        metricsTitleText.setText("Monthly Metrics");
+        metricsTitleText.setText("Monthly DisplayMetrics");
         int request = 3;
         LocalDate startDate = LocalDate.now();
         setLabels(request, startDate);

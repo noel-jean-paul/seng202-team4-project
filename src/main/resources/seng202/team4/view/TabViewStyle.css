@@ -1,0 +1,55 @@
+.root {
+    -fx-background-image: url("orange_cascade.jpg");
+    -fx-font-family: sans-serif;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.scroll-pane {
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-padding: 8;
+    -fx-fill: white;
+    -fx-background-color: white;
+}
+
+.menu-button {
+    -fx-text-fill: black;
+    -fx-font-family: sans-serif;
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(lightgrey, grey);
+    -fx-effect: DropShadow(three-pass-box , rgba(0,0,0,0) , 3, 0.0 , 1 , 1 );
+}
+
+.menu-button:hover {
+    -fx-background-color: linear-gradient(grey, lightgrey);
+}
+
+.tab {
+    -fx-text-fill: black;
+    -fx-font-family: sans-serif;
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(lightgrey, grey);
+    -fx-effect: DropShadow(three-pass-box , rgba(0,0,0,0) , 3, 0.0 , 1 , 1 );
+}
+
+.tab:hover {
+    -fx-background-color: linear-gradient(grey, lightgrey);
+}
+
+.tab:selected {
+    -fx-background-color: linear-gradient(grey, darkgrey);
+}
+
+.button {
+    -fx-text-fill: black;
+    -fx-font-family: sans-serif;
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(lightgrey, grey);
+    -fx-effect: DropShadow(three-pass-box , rgba(0,0,0,0) , 3, 0.0 , 1 , 1 );
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(grey, lightgrey);
+}

@@ -3,6 +3,7 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -14,6 +15,8 @@ import seng202.team4.model.utilities.DataProcessor;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.Collections;
 
 /** Controller class for the AddManualActivityPopup. */
 public class AddManualActivityController extends Controller {
@@ -125,7 +128,10 @@ public class AddManualActivityController extends Controller {
             isValidDistance = false;
         }
 
-        if (date == null) {
+        // Error check fields
+        if (applicationStateManager.getCurrentProfile().activityExists(activityName, date)) {   // Check if the activity already exists in the user's activity list
+            errorText.setText("An activity with the name and date entered already exists.");
+        } else if (date == null) {
             errorText.setText("You need to select a date.");
         } else if (!isValidTimeFormat) {
             errorText.setText(String.format("'%s' is not a valid time.", timeString));
@@ -134,6 +140,7 @@ public class AddManualActivityController extends Controller {
         } else if (!isValidDurationFormat) {
             errorText.setText(String.format("'%s' is not a valid duration.", durationString));
         } else {
+            // Activity is valid. Try to insert it to the user's activities
             double speed = DataProcessor.calculateAverageSpeed(distance, duration);
             double calories = DataProcessor.calculateCalories(speed, duration.getSeconds(), type, applicationStateManager.getCurrentProfile());
             Activity activity = new Activity(activityName, date.toString(), type, time.toString(), duration.toString(), distance, calories);
@@ -142,13 +149,15 @@ public class AddManualActivityController extends Controller {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
                 applicationStateManager.closePopUP(rootPane);
                 activityTabController.updateTable();
+                // Update the goals with the new activity imported
+                applicationStateManager.getCurrentProfile().updateGoalsForProgress(Collections.singletonList(activity));
             } catch (java.sql.SQLException e) {
                 GuiUtilities.displayErrorMessage("Failed to add activity.", "The activity could not be inserted into the database.");
                 e.printStackTrace();
             }
         }
-
     }
-
-
 }
+
+
+

@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import seng202.team4.App;
 import seng202.team4.GuiUtilities;
-import seng202.team4.model.data.ProfileKey;
+import seng202.team4.model.data.Keys.ProfileKey;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.view.ProfileListItem;
 
@@ -65,6 +65,7 @@ public class LoginController extends Controller {
                 controller.setProfilePicture(new Image(profileImageUrl.toString()));
             }
 
+            // Set function to be called when the list item is clicked on
             profileListItem.setOnMouseClicked(event -> {changeSelectedProfile(profileListItem);});
             profileListVbox.getChildren().add(profileListItem);
 

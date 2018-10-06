@@ -1,4 +1,4 @@
-package seng202.team4.model.data;
+package seng202.team4.model.data.Keys;
 
 import java.util.Objects;
 
@@ -38,9 +38,9 @@ public class ProfileKey implements Comparable<ProfileKey> {
         int firstNameCompare;
         int lastNameCompare;
         if ((firstNameCompare = this.getFirstName().compareTo(o.getFirstName())) != 0) {
-            return firstNameCompare;
+            return firstNameCompare * -1;
         } else if ((lastNameCompare = this.getLastName().compareTo(o.getLastName())) != 0) {
-            return lastNameCompare;
+            return lastNameCompare * -1;
         } else {
             return 0;
         }
