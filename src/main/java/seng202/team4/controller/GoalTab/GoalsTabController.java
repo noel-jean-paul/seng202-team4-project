@@ -244,6 +244,11 @@ public class GoalsTabController extends Controller {
 
     }
 
+    @FXML
+    void deleteGoal() {
+
+    }
+
     /**
      * Resets the Goals tab by clearing all information on the selected activity.
      */

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.GoalsTabController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.GoalTab.GoalsTabController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" />
    </columnConstraints>
@@ -72,7 +72,7 @@
                   <ColumnConstraints hgrow="ALWAYS" />
                   <ColumnConstraints hgrow="NEVER" minWidth="140.0" />
                   <ColumnConstraints hgrow="NEVER" maxWidth="280.0" minWidth="263.0" prefWidth="263.0" />
-                  <ColumnConstraints hgrow="ALWAYS" maxWidth="80.0" minWidth="60.0" prefWidth="80.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="60.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="120.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -202,7 +202,7 @@
                      <children>
                         <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                            <children>
-                              <Button mnemonicParsing="false" text="Delete">
+                              <Button mnemonicParsing="false" onAction="#deleteGoal" text="Delete">
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" />
                                  </VBox.margin>
