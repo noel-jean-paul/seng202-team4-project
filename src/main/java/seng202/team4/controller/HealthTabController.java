@@ -63,7 +63,7 @@ public class HealthTabController extends Controller {
     private Label bmiLabel;
 
     @FXML
-    private GridPane noInternetPane;
+    private GridPane imagePane;
 
     @FXML
     void loadInformation() {
@@ -190,6 +190,7 @@ public class HealthTabController extends Controller {
         webBrowser.setZoom(0.8);
         currentUrl = "https://www.google.co.nz/";
         engine = webBrowser.getEngine();
+        imagePane.setStyle("-fx-background-color: white");
 
         boolean internetConnected = verifyInternetConnection();
         if (internetConnected) {
