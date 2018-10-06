@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import seng202.team4.actions.NoelSetup_6Goals;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.CreateProfileController;
 import seng202.team4.controller.LoginController;
@@ -15,6 +16,7 @@ import seng202.team4.model.database.DataAccesser;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.sql.SQLException;
 
 /**
  * The App class is the main class of the program. It initializes many of the different screens that application will
@@ -97,7 +99,5 @@ public class App extends Application {
     }
 
     /** Main method of the program. */
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) throws SQLException { launch(args); }
 }
