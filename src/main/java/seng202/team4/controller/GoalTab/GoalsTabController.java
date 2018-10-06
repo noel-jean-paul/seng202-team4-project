@@ -168,12 +168,12 @@ public class GoalsTabController extends Controller {
     }
 
     /** Check for any updates to the current goals due to activities being imported and display a notification about any
-     *  goals which were completed or expired
+     *   goals which were completed or expired
      */
     private void updateGoals() {
         try {
-            // Update the currentGoals of the currently loaded profile
-            GoalListPair goalListPair = applicationStateManager.getCurrentProfile().updateCurrentGoals();
+            // Update the currentGoals of the currently loaded profile - Do not remove completed/expired goals from the current goals
+            GoalListPair goalListPair = applicationStateManager.getCurrentProfile().updateCurrentGoals(false);
             // Display notications of which goals were completed and which expired
             displayGoalNotifications(goalListPair);
         } catch (SQLException e) {

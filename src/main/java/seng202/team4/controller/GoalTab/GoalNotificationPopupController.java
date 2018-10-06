@@ -46,6 +46,7 @@ public class GoalNotificationPopupController extends Controller {
 
     @FXML
     void returnToActivityTab() {
+        // TODO: 7/10/18 N Bisson
         // change screen
         // close the popup without the goals being expired
         //applicationStateManager.change
