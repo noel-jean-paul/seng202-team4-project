@@ -10,10 +10,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import seng202.team4.App;
+import seng202.team4.GuiUtilities;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.Controller;
 import seng202.team4.model.data.Goal;
 
+import java.sql.SQLException;
 import java.util.Collection;
 
 public class GoalNotificationPopupController extends Controller {
@@ -30,17 +32,30 @@ public class GoalNotificationPopupController extends Controller {
     @FXML
     private ScrollPane scrollPane;
 
+    /** The goal tab controller of the application */
+    private GoalsTabController goalsTabController;
+
     /** Constructs a new instance of a GoalNotificationPopupController */
-    GoalNotificationPopupController(ApplicationStateManager applicationStateManager) {
+    GoalNotificationPopupController(ApplicationStateManager applicationStateManager, GoalsTabController goalsTabController) {
         super(applicationStateManager);
+        this.goalsTabController = goalsTabController;
     }
 
-    /**
-     * Closes the pop up.
+    /** Closes the pop up.
      * Called when the user clicks the close button.
      */
     @FXML
     void close() {
+        // Remove the expired and completed goals from the current goal list
+        try {
+            applicationStateManager.getCurrentProfile().updateCurrentGoals(true);
+        } catch (SQLException e) {
+            GuiUtilities.displayErrorMessage("An Error occurred regarding the database", "See the error log" +
+                    "for details");
+            e.printStackTrace();
+        }
+        // Close the popup and refresh the table
+        goalsTabController.refreshGoalTable();
         applicationStateManager.closePopUP(mainPane);
     }
 

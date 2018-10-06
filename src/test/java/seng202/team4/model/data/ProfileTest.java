@@ -350,7 +350,7 @@ public class ProfileTest {
         // Expect both goals to remain
         expectedGoals.add(goal1);
         expectedGoals.add(goal2);
-        
+
         // Check the goals are not removed from the current goals
         assertEquals(expectedGoals, profile1.getCurrentGoals());
     }

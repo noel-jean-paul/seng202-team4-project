@@ -154,7 +154,8 @@ public class GoalsTabController extends Controller {
      */
     private void displayGoalNotifications(GoalListPair goalLists) {
         // Create a new GoalNotification Popup
-        GoalNotificationPopupController goalNotificationPopupController = new GoalNotificationPopupController(applicationStateManager);
+        GoalNotificationPopupController goalNotificationPopupController =
+                new GoalNotificationPopupController(applicationStateManager, this);
         Pane goalNotificationPopup = GuiUtilities.loadPane("GoalsNotificationPopup.fxml", goalNotificationPopupController);
 
         // Display notification of the goals which were completed
@@ -365,12 +366,19 @@ public class GoalsTabController extends Controller {
         }
     }
 
-    /** Display whichever table was last displayed in the goal tab.
+    /**
+     * Update the goals for completion and expiry and display whichever table was last displayed in the goal tab.
      *  Called when clicking on the goal tab.
      */
     public void displayGoalTable() {
         // Check for any updates to the goals due to activities being imported and display notifications about any changes
         updateGoals();
+        refreshGoalTable();
+    }
+
+    /** Refresh the goal table currently being displayed. Does not update the goals for completion
+     *   and expiry. */
+    public void refreshGoalTable() {
         // Display the table which was being displayed when the tab was unselected
         if (currentGoalTableDisplayed) {
             updateCurrentGoalRowTable();
