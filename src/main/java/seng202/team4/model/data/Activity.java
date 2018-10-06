@@ -36,6 +36,15 @@ public class Activity implements Comparable<Activity> {
     /** The maximum name size for an Activity. */
     public static final int MAXIMUM_NAME_SIZE = 50;
 
+    /** The minimum valid date for an activity. */
+    public static final LocalDate MINIMUM_DATE = LocalDate.of(1900, 1, 1);
+
+    /** The minimum duration of an activity. */
+    public static final Duration MINIMUM_DURATION = Duration.ofMinutes(1);
+
+    /** The maximum duration of an activity. */
+    public static final Duration MAXIMUM_DURATION = Duration.ofHours(96);
+
     /**The combination of name and date must be unique for a profile */
     private String name;
     private LocalDate date;

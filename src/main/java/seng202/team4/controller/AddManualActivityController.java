@@ -3,7 +3,6 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -16,7 +15,6 @@ import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.Collections;
 
 /** Controller class for the AddManualActivityPopup. */
@@ -94,7 +92,17 @@ public class AddManualActivityController extends Controller {
         String durationString = durationField.getText();
 
         ActivityType type = typeChoiceBox.getSelectionModel().getSelectedItem();
-        LocalDate date = datePicker.getValue();
+
+        // Try to parse the date string to check that it is in a valid format.
+        LocalDate date = null;
+        boolean isValidDateFormat = false;
+        try {
+            datePicker.setValue(datePicker.getConverter().fromString(datePicker.getEditor().getText()));
+            date = datePicker.getValue();
+            isValidDateFormat = true;
+        } catch (Exception e) {
+            isValidDateFormat = false;
+        }
 
         // Try to parse the time string to check that it is in a valid format.
         LocalTime time = null;
@@ -129,23 +137,36 @@ public class AddManualActivityController extends Controller {
             isValidDistance = false;
         }
 
+
         // Error check fields
         if (applicationStateManager.getCurrentProfile().activityExists(activityName, date)) {   // Check if the activity already exists in the user's activity list
             errorText.setText("An activity with the name and date entered already exists.");
         } else if (activityName.length() < Activity.MINIMUM_NAME_SIZE_ || activityName.length() > Activity.MAXIMUM_NAME_SIZE) {
             errorText.setText(String.format("Activity name should be between %s and %s characters long.", Activity.MINIMUM_NAME_SIZE_, Activity.MAXIMUM_NAME_SIZE));
-        } else if (date == null) {
-            errorText.setText("You need to select a date.");
+        } else if (datePicker.getEditor().getText().length() == 0){
+            errorText.setText("You need to enter a date.");
+        } else if (!isValidDateFormat || date == null) {
+            errorText.setText("Date should be in the format dd/mm/yyyy");
+        } else if (((date.compareTo(Activity.MINIMUM_DATE)) < 0)||(date.compareTo(LocalDate.now()) > 0)) {
+            errorText.setText(String.format("Date should be between %s and %s", Activity.MINIMUM_DATE, LocalDate.now()));
+        } else if (timeString.length() == 0) {
+            errorText.setText("You need to enter a time.");
         } else if (!isValidTimeFormat) {
             errorText.setText(String.format("'%s' is not a valid time.", timeString));
+        } else if (distanceString.length() == 0){
+            errorText.setText("You need to enter a distance.");
         } else if (!isValidDistance) {
             errorText.setText(String.format("'%s' is not a valid distance, should be a number.", distanceString));
         } else if (distance < Activity.MINIMUM_DISTANCE || distance > Activity.MAXIMUM_DISTANCE) {
             errorText.setText(String.format("Distance should be between %s m and %s m.", NumberFormat.getInstance().format(Activity.MINIMUM_DISTANCE), NumberFormat.getInstance().format(Activity.MAXIMUM_DISTANCE)));
+        } else if (durationString.length() == 0) {
+            errorText.setText("You need to enter a duration.");
         } else if (!isValidDurationFormat) {
             errorText.setText(String.format("'%s' is not a valid duration.", durationString));
+        } else if (duration.compareTo(Activity.MINIMUM_DURATION) < 0 || duration.compareTo(Activity.MAXIMUM_DURATION) > 0) {
+            errorText.setText(String.format("Date should be between %02d:%02d and %02d:%02d", Activity.MINIMUM_DURATION.toHours(), Activity.MINIMUM_DURATION.toMinutes()%60, Activity.MAXIMUM_DURATION.toHours(), Activity.MAXIMUM_DURATION.toMinutes()%60));
         } else {
-            // Activity is valid. Try to insert it to the user's activities
+            // Activity is valid. Try to insert it to the user's activities.
             double speed = DataProcessor.calculateAverageSpeed(distance, duration);
             double calories = DataProcessor.calculateCalories(speed, duration.getSeconds(), type, applicationStateManager.getCurrentProfile());
             Activity activity = new Activity(activityName, date.toString(), type, time.toString(), duration.toString(), distance, calories);
