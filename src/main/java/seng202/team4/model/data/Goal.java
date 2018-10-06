@@ -5,11 +5,12 @@ import seng202.team4.model.data.enums.GoalType;
 import seng202.team4.model.database.DataUpdater;
 
 import java.sql.SQLException;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.Period;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Objects;
+
+import static java.time.Duration.between;
 
 
 public class Goal implements Comparable<Goal> {
@@ -266,9 +267,9 @@ public class Goal implements Comparable<Goal> {
                     goal.getGoalDistance() * 1000);    // Convert kms to meters
         } else if (goal.isDurationGoal()) {
             // Get unit of the number of hours
-            String hourUnit = getHourUnit(goal.getGoalDuration());
+            String dayUnit = getHourUnit(goal.getGoalDuration());
             description = String.format("%s for %d %s and %d minutes",
-                    goal.getType().toString(), goal.getGoalDuration().toHours(), hourUnit,
+                    goal.getType().toString(), goal.getGoalDuration().toHours(), dayUnit,
                     goal.getGoalDuration().toMinutes() - goal.getGoalDuration().toHours() * 60);    // toMinutes() includes the hours as well so they must be subtracted out
         } else if (goal.isCaloriesGoal()) {
             // Set an appropriate ending to the description based on the type of the goal
@@ -326,27 +327,43 @@ public class Goal implements Comparable<Goal> {
         return caloriesBurned != 0;
     }
 
-    /** Return a string stating the current units this goal has accredited towards the its total
-     *  with the appropriate unit.
+    /** Return a string stating the amount of units this goal has with the appropriate unit. The amount
+     *  may be the total amount or the current amount accredited towards the total.
      *
-     * @return a String stating the current amount with a unit
+     * @param type the type of the amount - either "current" or "total"
+     * @return a String stating the amount with a unit
      */
-    public String getCurrentAmountDescription() {
+    public String getAmountDescription(String type) {
         String currentString = "";
+        Double calories = 0.0;
+        Double distance = 0.0;
+        Double minutes = 0.0;
+        Duration duration = Duration.ZERO;
+
+        // Generate the amount values based on the type
+        if (type.equals("current")) {
+            calories = caloriesBurned * progress / 100;
+            distance = goalDistance * progress / 100;
+            // Get the number of minutes completed so far
+            minutes = Double.valueOf(Long.toString(getGoalDuration().toMinutes())) * progress / 100;
+        } else if (type.equals("total")) {
+            calories = (double) caloriesBurned;
+            distance = goalDistance;
+            // Get the number of minutes completed so far
+            minutes = Double.valueOf(Long.toString(getGoalDuration().toMinutes()));
+        }
+
 
         if (isCaloriesGoal()) {
-            currentString += String.format("%.0f calories", caloriesBurned * progress / 100);
+            currentString += String.format("%.0f calories", calories);
         } else if (isDistanceGoal()) {
-            currentString += String.format("%.1f km", goalDistance * progress / 100);
+            currentString += String.format("%.1f km", distance);
         } else if (isDurationGoal()) {
-            // Get the number of minutes completed so far
-            Double currentMinutes = Double.valueOf(Long.toString(getGoalDuration().toMinutes())) * progress / 100;
             // Convert currentMinutes back to a Duration
-            Duration duration = Duration.ofMinutes(Long.valueOf(String.format("%.0f", currentMinutes)));
-
+            duration = Duration.ofMinutes(Long.valueOf(String.format("%.0f", minutes)));
             // Get unit of the number of hours completed
-            String hourUnit = getHourUnit(duration);
-            currentString += String.format("%d %s and %d minutes", duration.toHours(), hourUnit,
+            String dayUnit = getHourUnit(duration);
+            currentString += String.format("%d %s and %d minutes", duration.toHours(), dayUnit,
                     duration.toMinutes() - duration.toHours() * 60);    // toMinutes() includes the hours as well so they must be subtracted out);
         }
 
@@ -362,13 +379,47 @@ public class Goal implements Comparable<Goal> {
      */
     private String getHourUnit(Duration duration) {
         Long hours = duration.toHours();
-        String hourUnit;
+        String dayUnit;
         if (hours == 1) {
-            hourUnit = "hour";   // Singular
+            dayUnit = "hour";   // Singular
         } else {
-            hourUnit = "hours";  // Plural
+            dayUnit = "hours";  // Plural
         }
 
-        return hourUnit;
+        return dayUnit;
+    }
+
+    /** Get a formatted description of the time remaining for this goal
+     *
+     * @return a formatted description of the time remaining for this goal
+     */
+    public String getRemainingTimeDescription() {
+        Duration remaining = getRemainingTime();
+        return String.format("%d %s", remaining.toDays(), getDayUnit(remaining));
+    }
+
+    /** Get the time remaining before the goal expires
+     *
+     * @return the time remaining before the goal expires as a Duration
+     */
+    private Duration getRemainingTime() {
+        return Duration.ofDays(ChronoUnit.DAYS.between(LocalDate.now(), getExpiryDate()));
+    }
+
+    /** Get a string containing the unit of the number of days of the duration passed in
+     *
+     * @param duration The duration to compute the day unit of
+     * @return  a string containing 'day' or 'days' depending if the duration passed in has 1 day in it
+     *  or not respectively.
+     */
+    private String getDayUnit(Duration duration) {
+        Long days = duration.toDays();
+        String dayUnit;
+        if (days == 1) {
+            dayUnit = "day";   // Singular
+        } else {
+            dayUnit = "days";  // Plural
+        }
+        return dayUnit;
     }
 }

@@ -12,6 +12,7 @@ import seng202.team4.model.data.GoalListPair;
 import seng202.team4.view.CurrentGoalRowItem;
 
 import java.sql.SQLException;
+import java.time.Clock;
 
 
 /**
@@ -173,9 +174,9 @@ public class GoalsTabController extends Controller {
         descriptionText.setText(selectedGoal.getDescription());
         startDateText.setText(selectedGoal.getCreationDate().toString());
         expiryDateText.setText(selectedGoal.getExpiryDate().toString());
-        //remainingTimeText.setText(selectedGoal.get);
-        //currentAmountText.setText(selectedGoal.get);
-        //totalAmountText.setText(selectedGoal.get);
+        remainingTimeText.setText(selectedGoal.getRemainingTimeDescription());
+        currentAmountText.setText(selectedGoal.getAmountDescription("current"));
+        totalAmountText.setText(selectedGoal.getAmountDescription("total"));
     }
 
     /** Remove a goalRow from the display and the GoalRow list it is contained in

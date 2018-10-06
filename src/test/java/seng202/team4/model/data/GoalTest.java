@@ -11,8 +11,7 @@ import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
 
 import java.sql.SQLException;
-import java.time.Duration;
-import java.time.LocalDate;
+import java.time.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -199,7 +198,7 @@ public class GoalTest {
 
     @Test
     public void generateDescription_walking_durationGoal_singularHours() {
-        // Create a new walking duration goal with 1 hour (singular) in its duration
+        // Create a new walking duration goal with 1 hour in its duration
         Goal goal = new Goal(2, 99, GoalType.Walk,"2018-09-28", "2017-01-12",
                 "PT1H40M");
         // Create the real and expected descriptions
@@ -237,12 +236,12 @@ public class GoalTest {
     }
 
     @Test
-    public void getCurrentAmountDescription_caloriesGoal() {
+    public void getAmountDescription_current_caloriesGoal() {
         // Create a new calories goal
         Goal goal = new Goal(2, 49.57, GoalType.Walk, "2018-09-28", "2017-01-12",
                 400);
         // Create the real and expected currentAmount descriptions
-        description = goal.getCurrentAmountDescription();
+        description = goal.getAmountDescription("current");
         expectedDescription = "198 calories";
 
         // Check the 2 Strings are the same
@@ -250,12 +249,12 @@ public class GoalTest {
     }
 
     @Test
-    public void getCurrentAmountDescription_distanceGoal() {
+    public void getAmountDescription_current_distanceGoal() {
         // Create a new distance goal
         Goal goal = new Goal(2, 49.572, GoalType.Walk, "2018-09-28", "2017-01-12",
                 400.0);
         // Create the real and expected currentAmount descriptions
-        description = goal.getCurrentAmountDescription();
+        description = goal.getAmountDescription("current");
         expectedDescription = "198.3 km";
 
         // Check the 2 Strings are the same
@@ -263,13 +262,51 @@ public class GoalTest {
     }
 
     @Test
-    public void getCurrentAmountDescription_durationGoal() {
+    public void getAmountDescription_current_durationGoal() {
         // Create a new duration goal
         Goal goal = new Goal(2, 49, GoalType.Walk, "2018-09-28", "2017-01-12",
                 "PT2H47M");
         // Create the real and expected currentAmount descriptions
-        description = goal.getCurrentAmountDescription();
+        description = goal.getAmountDescription("current");
         expectedDescription = "1 hour and 22 minutes";
+
+        // Check the 2 Strings are the same
+        assertEquals(expectedDescription, description);
+    }
+    @Test
+    public void getAmountDescription_total_caloriesGoal() {
+        // Create a new calories goal
+        Goal goal = new Goal(2, 49.57, GoalType.Walk, "2018-09-28", "2017-01-12",
+                400);
+        // Create the real and expected total Amount descriptions
+        description = goal.getAmountDescription("total");
+        expectedDescription = "400 calories";
+
+        // Check the 2 Strings are the same
+        assertEquals(expectedDescription, description);
+    }
+
+    @Test
+    public void getAmountDescription_total_distanceGoal() {
+        // Create a new distance goal
+        Goal goal = new Goal(2, 49.572, GoalType.Walk, "2018-09-28", "2017-01-12",
+                400.0);
+        // Create the real and expected total amount descriptions
+        description = goal.getAmountDescription("total");
+        expectedDescription = "400.0 km";
+
+        // Check the 2 Strings are the same
+        assertEquals(expectedDescription, description);
+    }
+
+    @Test
+    public void getAmountDescription_total_durationGoal() {
+        // Create a new duration goal
+        Goal goal = new Goal(2, 49, GoalType.Walk, "2018-09-28", "2017-01-12",
+                "PT2H47M");
+        // Create the real and expected total amount descriptions
+        description = goal.getAmountDescription("total");
+        expectedDescription = "2 hours and 47 minutes";
 
         // Check the 2 Strings are the same
         assertEquals(expectedDescription, description);
