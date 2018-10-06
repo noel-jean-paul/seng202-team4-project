@@ -14,12 +14,7 @@ import seng202.team4.model.data.GoalListPair;
 import seng202.team4.view.CurrentGoalRowItem;
 import seng202.team4.view.GoalRowItem;
 import seng202.team4.view.PastGoalRowItem;
-import sun.plugin2.message.GetAppletMessage;
-
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 
 /**
@@ -288,7 +283,7 @@ public class GoalsTabController extends Controller {
                 displayPastGoalRowTable();
             }
         } catch (SQLException e) {
-            GuiUtilities.displayErrorMessage("An error occurred regarding the database when deleting", "");
+            GuiUtilities.displayErrorMessage("An error occurred regarding the database while deleting.", "");
             e.printStackTrace();
         }
     }
