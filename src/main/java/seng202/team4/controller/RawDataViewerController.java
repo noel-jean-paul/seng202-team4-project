@@ -139,21 +139,16 @@ public class RawDataViewerController extends Controller {
     }
 
     /**
-     * The function which initialises the popup
+     * Initialises the popup
+     * It also finds the maximum row number, so that new rows can be inserted into the database correctly
      */
     @FXML
     public void initialize() {
-        for (DataRow row : activity.getRawData()) {
+        for (DataRow row : activity.getRawData()) { //finds the maximum row number among data rows. Allows new rows to be added to the database by giving them the right row number
             if (row.getNumber() > maxRowNum) {
                 maxRowNum = row.getNumber();
             }
         }
-        displayPopUp();
-        dataRowTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    }
-
-
-    private void displayPopUp() {
         applyEditsButton.setDisable(true);
         addRowButton.setDisable(true);
         deleteButton.setDisable(true);
@@ -161,8 +156,7 @@ public class RawDataViewerController extends Controller {
         dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
         updateDataRows();   //updates the table
         fillEditBoxes();
-
-
+        dataRowTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
 
@@ -170,7 +164,7 @@ public class RawDataViewerController extends Controller {
      * Updates the current state of the data row list
      */
     public void updateDataRows() {
-        dataRowTable.getItems().clear();
+        dataRowTable.getItems().clear();    //allows the table to updated immediately rather than having to open the popup again for changes to be displayed
         ObservableList<DataRow> dataList = FXCollections.observableArrayList(activity.getRawData());
 
         dateColumn.setCellValueFactory(new PropertyValueFactory<DataRow, LocalDate>("date"));
@@ -222,6 +216,7 @@ public class RawDataViewerController extends Controller {
         fieldErrorChecking(0);
     }
 
+    /** All fields filled by the user for a new data row are added to the activity after error checking */
     @FXML
     void addNewRow() {
         fieldErrorChecking(1);
@@ -232,7 +227,6 @@ public class RawDataViewerController extends Controller {
      * checks each of the fields of data row to see if they are within the accepted range, before adding them as a data row
      */
     public void fieldErrorChecking(int buttonType) {
-        // TODO: 4/10/18 Matt_M these should be refactored into functions in DataRow - Noel
         // Try to parse the date string to check that it is in a valid format.
         boolean isValidDateFormat = false;
         LocalDate dateSet = null;
@@ -243,7 +237,6 @@ public class RawDataViewerController extends Controller {
         } catch (Exception e) {
             isValidDateFormat = false;
         }
-
 
 
         //Try to parse the time string to check that it is in a valid format.
@@ -309,7 +302,7 @@ public class RawDataViewerController extends Controller {
             }
         }
 
-
+        //check through all errors and see if the data row contains any of them
         if (!isValidDateFormat) {
             errorMessage.setText("Date should be in the form dd/mm/yyyy");
         } else if (!isValidTimeFormat) {
@@ -358,7 +351,7 @@ public class RawDataViewerController extends Controller {
 
     /**
      * Checks to see if the row to be added is a valid row
-     * @returns a boolean on whether or not the row can be added
+     * @returns a boolean of whether or not the row can be added
      */
     public boolean isValidAddition() {
         boolean isValidAddition = false;
@@ -372,43 +365,34 @@ public class RawDataViewerController extends Controller {
         return isValidAddition;
     }
 
+    /**
+     * Deletes the selected rows from the activity, and removes them from the database as well
+     * Called when the delete button is clicked.
+     * Both multiple rows and a single row can be deleted
+     */
     @FXML
     public void deleteRows() {
-//        if (dataRowTable.getItems().size() <= 2) {
-//            errorMessage.setText("You cannot have less than two data rows in an activity");
-//        } else {
             List<DataRow> selectedRows = new ArrayList<>(dataRowTable.getSelectionModel().getSelectedItems());
             if (dataRowTable.getItems().size() - selectedRows.size() < 2) {
                 errorMessage.setText("You cannot have less than two data rows in an activity");
             } else {
-                if (selectedRows.size() > 1) {
-                    try {
-                        for (DataRow row : selectedRows) {
-                            activity.removeDataRow(row);
-                        }
-                        updateDataRows();
-                    } catch (java.sql.SQLException e) {
-                        GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
-                        e.printStackTrace();
-                        System.out.println("Could not remove data row from the database.");
+                try {
+                    for (DataRow row : selectedRows) {
+                        activity.removeDataRow(row);
                     }
-                } else {
-                    try {
-                        activity.removeDataRow(dataRowTable.getSelectionModel().getSelectedItem());
-                        updateDataRows();
-                    } catch (java.sql.SQLException e) {
-                        GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
-                        e.printStackTrace();
-                        System.out.println("Could not remove data row from the database.");
-                    }
+                    updateDataRows();
+                } catch (java.sql.SQLException e) {
+                    GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
+                    e.printStackTrace();
+                    System.out.println("Could not remove data row from the database.");
                 }
             }
-        //}
     }
 
 
     /**
      * The function which closes the popup
+     * It updates the activity and then the activity table when closing.
      */
     @FXML
     void closePopUp() {
