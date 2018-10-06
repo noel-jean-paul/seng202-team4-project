@@ -101,7 +101,7 @@ public class ActivityPopUpScreenController extends Controller {
                 String strSec = Long.toString(timeSeconds);
                 timeSecDouble = Double.parseDouble(strSec);
                 timeMinutes = timeSecDouble / 60.0;
-                timeMinutes = Double.parseDouble(new DecimalFormat("##.###").format(timeMinutes));
+                timeMinutes = Double.parseDouble(new DecimalFormat("##.##").format(timeMinutes));
                 String strLong = Double.toString(timeMinutes);
 
                 set1.getData().add(new XYChart.Data(strLong, row.getHeartRate()));
@@ -144,7 +144,7 @@ public class ActivityPopUpScreenController extends Controller {
             String strSec = Long.toString(timeSeconds);
             timeSecDouble = Double.parseDouble(strSec);
             timeMinutes = timeSecDouble / 60.0;
-            timeMinutes = Double.parseDouble(new DecimalFormat("##.###").format(timeMinutes));
+            timeMinutes = Double.parseDouble(new DecimalFormat("##.##").format(timeMinutes));
             String strLong = Double.toString(timeMinutes);
 
             set2.getData().add(new XYChart.Data(strLong, distance));

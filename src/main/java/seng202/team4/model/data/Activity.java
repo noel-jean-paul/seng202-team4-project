@@ -84,6 +84,7 @@ public class Activity implements Comparable<Activity> {
             setDistance(DataProcessor.totalDistance(this.rawData));
             setDuration(DataProcessor.calculateDuration(this.rawData).toString());
             setAverageSpeed(DataProcessor.calculateAverageSpeed(distance, this.duration));
+            setCaloriesBurned(DataProcessor.calculateCalories(this.averageSpeed, this.duration.getSeconds(), this.type, this.getOwner()));
             setType(findActivityType(name));
             updateHeartRateAttributes();
         }
