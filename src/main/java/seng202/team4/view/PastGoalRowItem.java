@@ -17,6 +17,11 @@ public class PastGoalRowItem extends GoalRowItem {
     @Override
     void initialiseRow(GoalRowController controller) {
         super.initialiseRow(controller);
-        controller.setExpiryDate(getGoal().getCompletionDate().toString());
+        // Set the completion date in the expiryDate field as this is now used to display completion date
+        if (getGoal().isComplete()) {
+            controller.setExpiryDate(getGoal().getCompletionDate().toString());
+        } else {    // Goal is expired
+            controller.setExpiryDate(String.format("Expired %s", getGoal().getExpiryDate().toString()));
+        }
     }
 }

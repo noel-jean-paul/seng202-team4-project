@@ -17,6 +17,7 @@ import seng202.team4.view.PastGoalRowItem;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -295,10 +296,26 @@ public class GoalsTabController extends Controller {
             displayPastGoalRowTable();
             toggleGoalListButton.setText("Current Goals");
             currentGoalTableDisplayed = false;
+            // Change the expiry date column to be titled completion date
+            expiryCompletionDate.setText("Completion Date");
+
         } else {
             updateCurrentGoalRowTable();    // Display the current goal table
             toggleGoalListButton.setText("Past Goals");
             currentGoalTableDisplayed = true;
+            // Change the expiry date column to be titled expiry date
+            expiryCompletionDate.setText("Expiry Date");
+        }
+    }
+
+    /** Display whichever table was last displayed in the goal tab.
+     *  Called when clicking on the goal tab.
+     */
+    public void displayGoalTable() {
+        if (currentGoalTableDisplayed) {
+            updateCurrentGoalRowTable();
+        } else {
+            displayPastGoalRowTable();
         }
     }
 

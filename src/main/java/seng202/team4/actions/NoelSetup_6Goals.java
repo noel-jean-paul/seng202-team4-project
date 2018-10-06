@@ -17,7 +17,7 @@ public class NoelSetup_6Goals {
                 1.83);
         DataStorer.insertProfile(profile);
 
-        Goal goal1 = new Goal(1, 100, GoalType.Run,"2018-09-28", "2018-05-12",
+        Goal goal1 = new Goal(1, 100, GoalType.Run,"2018-09-28", "2018-12-12",
                 "PT50M");
 
         Goal goal2 = new Goal(2, 80, GoalType.Run,"2018-09-28", "2018-12-12",
@@ -41,6 +41,5 @@ public class NoelSetup_6Goals {
         profile.addCurrentGoal(goal4);
         profile.addCurrentGoal(goal5);
         profile.addCurrentGoal(goal6);
-
     }
 }
