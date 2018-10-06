@@ -35,28 +35,28 @@ public class NoelSetup_6Goals {
         Goal goal6 = new Goal(6, 17, GoalType.Run, "2017-05-21", "3000-01-02",
                 0.999);
 
-        Goal goal7 = new Goal(7, 44, GoalType.Run, "2017-05-21", "3000-01-02",
+        Goal goal7 = new Goal(7, 44, GoalType.Run, "2017-05-21", "2000-01-02",
                 "PT4H23M");
 
         Goal goal8 = new Goal(8, 67, GoalType.Walk, "2017-05-21", "3000-01-02",
                 10);
 
-//        profile.addCurrentGoal(goal1);
+        profile.addCurrentGoal(goal1);
 //        profile.addCurrentGoal(goal2);
 //        profile.addCurrentGoal(goal3);
 //        profile.addCurrentGoal(goal4);
 //        profile.addCurrentGoal(goal5);
 //        profile.addCurrentGoal(goal6);
-//        profile.addCurrentGoal(goal7);
-//        profile.addCurrentGoal(goal8);
+        profile.addCurrentGoal(goal7);
+        profile.addCurrentGoal(goal8);
 
-        profile.addPastGoal(goal1);
-        profile.addPastGoal(goal2);
-        profile.addPastGoal(goal3);
-        profile.addPastGoal(goal4);
-        profile.addPastGoal(goal5);
-        profile.addPastGoal(goal6);
-        profile.addPastGoal(goal7);
-        profile.addPastGoal(goal8);
+//        profile.addPastGoal(goal1);
+//        profile.addPastGoal(goal2);
+//        profile.addPastGoal(goal3);
+//        profile.addPastGoal(goal4);
+//        profile.addPastGoal(goal5);
+//        profile.addPastGoal(goal6);
+//        profile.addPastGoal(goal7);
+//        profile.addPastGoal(goal8);
     }
 }
