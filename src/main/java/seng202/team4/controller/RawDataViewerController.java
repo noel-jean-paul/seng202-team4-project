@@ -374,13 +374,17 @@ public class RawDataViewerController extends Controller {
 
     @FXML
     public void deleteRows() {
-        try {
-            activity.removeDataRow((DataRow) dataRowTable.getSelectionModel().getSelectedItem());
-            updateDataRows();
-        } catch (java.sql.SQLException e){
-            GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
-            e.printStackTrace();
-            System.out.println("Could not remove data row from the database.");
+        if (dataRowTable.getItems().size() <= 2) {
+            errorMessage.setText("You cannot have less than two data rows in an activity");
+        } else {
+            try {
+                activity.removeDataRow((DataRow) dataRowTable.getSelectionModel().getSelectedItem());
+                updateDataRows();
+            } catch (java.sql.SQLException e) {
+                GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
+                e.printStackTrace();
+                System.out.println("Could not remove data row from the database.");
+            }
         }
     }
 
