@@ -1,5 +1,6 @@
 .root {
     -fx-background-image: url("orange_cascade.jpg");
+    -fx-background-size: cover;
     -fx-font-family: sans-serif;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
@@ -17,7 +18,6 @@
 .menu-button {
     -fx-text-fill: black;
     -fx-font-family: sans-serif;
-    -fx-font-weight: bold;
     -fx-background-color: linear-gradient(lightgrey, grey);
     -fx-effect: DropShadow(three-pass-box , rgba(0,0,0,0) , 3, 0.0 , 1 , 1 );
 }
@@ -29,7 +29,6 @@
 .tab {
     -fx-text-fill: black;
     -fx-font-family: sans-serif;
-    -fx-font-weight: bold;
     -fx-background-color: linear-gradient(lightgrey, grey);
     -fx-effect: DropShadow(three-pass-box , rgba(0,0,0,0) , 3, 0.0 , 1 , 1 );
 }
@@ -45,11 +44,16 @@
 .button {
     -fx-text-fill: black;
     -fx-font-family: sans-serif;
-    -fx-font-weight: bold;
     -fx-background-color: linear-gradient(lightgrey, grey);
     -fx-effect: DropShadow(three-pass-box , rgba(0,0,0,0) , 3, 0.0 , 1 , 1 );
 }
 
 .button:hover {
     -fx-background-color: linear-gradient(grey, lightgrey);
+}
+
+.vbox {
+    -fx-fill: white;
+    -fx-background-color: white;
+    -fx-base: white;
 }
