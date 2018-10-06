@@ -36,7 +36,13 @@ public class FileParser {
             line = bufferedReader.readLine();
             while (line != null) {  //while end of file has not been reached
                 if (line.contains("#")) {   //if the line contains a hash then we know it is a line with the activity name on it
-                    activityName = line.split(csvSplitBy)[1];   //grab the activity name and store it
+                    try {
+                        activityName = line.split(csvSplitBy)[1];   //grab the activity name and store it
+                    } catch (IndexOutOfBoundsException e) {
+                        line = bufferedReader.readLine();
+                        continue;
+                    }
+
 
                     line = bufferedReader.readLine();
                     int rowNumber = 1;

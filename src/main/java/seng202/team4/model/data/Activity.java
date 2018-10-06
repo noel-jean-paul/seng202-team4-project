@@ -20,9 +20,30 @@ import java.util.*;
 public class Activity implements Comparable<Activity> {
 
     /** Keywords that indicate an Activity is a walk.*/
-    private static String[] walkKeyWords = {"walk", "hike", "stroll", "hiking"};
+    private static final String[] walkKeyWords = {"walk", "hike", "stroll", "hiking"};
     /** Keywords that indicate an Activity is a run.*/
-    private static String[] runKeyWords = {"run", "ran", "jog"};
+    private static final String[] runKeyWords = {"run", "ran", "jog", "jogged"};
+
+    /** The minimum distance for an Activity. */
+    public static final double MINIMUM_DISTANCE = 10;
+
+    /** The maximum distance for an Activity. */
+    public static final double MAXIMUM_DISTANCE = 1000000;
+
+    /** The minimum name size for an Activity. */
+    public static final int MINIMUM_NAME_SIZE_ = 2;
+
+    /** The maximum name size for an Activity. */
+    public static final int MAXIMUM_NAME_SIZE = 50;
+
+    /** The minimum valid date for an activity. */
+    public static final LocalDate MINIMUM_DATE = LocalDate.of(1900, 1, 1);
+
+    /** The minimum duration of an activity. */
+    public static final Duration MINIMUM_DURATION = Duration.ofMinutes(1);
+
+    /** The maximum duration of an activity. */
+    public static final Duration MAXIMUM_DURATION = Duration.ofHours(96);
 
     /**The combination of name and date must be unique for a profile */
     private String name;
@@ -60,6 +81,8 @@ public class Activity implements Comparable<Activity> {
     public Activity(String name, ArrayList<DataRow> rawActivityList) {
         this.name = name;
         this.rawData = rawActivityList;
+        java.util.Collections.sort(this.rawData);   // ensure the data is in order
+
         this.date = this.rawData.get(0).getDate();
         this.startTime = (this.rawData.get(0)).getTime();
         this.distance = DataProcessor.totalDistance(this.rawData);
@@ -67,8 +90,6 @@ public class Activity implements Comparable<Activity> {
         this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.type = findActivityType(name);
         updateHeartRateAttributes();
-
-        java.util.Collections.sort(this.rawData);   // ensure the data is in order
     }
 
     /** Update the activity attributes
