@@ -167,15 +167,23 @@ public class MainScreenController extends Controller {
         tabPane.getSelectionModel().selectFirst();
         if (applicationStateManager.getCurrentProfile() != null) {
             homeTabController.loadData();
-            profileDropDown.setText(applicationStateManager.getCurrentProfile().getFirstName());
+            updateProfileButton();
 
-            // Load the users profile picture
-            URL profileImageUrl = App.class.getResource(applicationStateManager.getCurrentProfile().getPictureURL());
-            if (profileImageUrl != null) {
-                profilePictureImageView.setImage(GuiUtilities.maskProfileImage(new Image(profileImageUrl.toString())));
-            }
         }
         activityTabController.reset();
+    }
+
+    /**
+     * Updates the profile picture and name of the profile button.
+     */
+    public void updateProfileButton() {
+        profileDropDown.setText(applicationStateManager.getCurrentProfile().getFirstName());
+
+        // Load the users profile picture
+        URL profileImageUrl = App.class.getResource(applicationStateManager.getCurrentProfile().getPictureURL());
+        if (profileImageUrl != null) {
+            profilePictureImageView.setImage(GuiUtilities.maskProfileImage(new Image(profileImageUrl.toString())));
+        }
     }
 
 }

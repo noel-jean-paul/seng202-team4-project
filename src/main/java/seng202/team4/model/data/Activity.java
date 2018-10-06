@@ -1,5 +1,8 @@
 package seng202.team4.model.data;
 
+import seng202.team4.model.data.DisplayMetrics.CalorieDisplayMetric;
+import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
+import seng202.team4.model.data.DisplayMetrics.SpeedDisplayMetric;
 import seng202.team4.model.data.enums.ActivityFields;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.WarningType;
@@ -197,12 +200,12 @@ public class Activity implements Comparable<Activity> {
     }
 
     /** Gets a string of the distance rounded to 0 decimal places. */
-    public String getDistanceDisplayString() {
-        return String.format("%.0f m", distance);
+    public DistanceDisplayMetric getDistanceDisplayMetric() {
+        return new DistanceDisplayMetric(distance);
     }
 
-    public String getCaloriesDisplayString() {
-        return String.format("%.1f", caloriesBurned);
+    public CalorieDisplayMetric getCaloriesDisplayMetric() {
+        return new CalorieDisplayMetric(caloriesBurned);
     }
 
     /** Set and update in database */
@@ -221,8 +224,8 @@ public class Activity implements Comparable<Activity> {
         this.averageSpeed = averageSpeed;
     }
 
-    public String getAverageSpeedDisplayString() {
-        return String.format("%.1f km/h", averageSpeed);
+    public SpeedDisplayMetric getAverageSpeedDisplayMetric() {
+        return new SpeedDisplayMetric(averageSpeed);
     }
 
     public double getCaloriesBurned() {

@@ -17,13 +17,13 @@ public class NoelSetup_6Goals {
                 1.83);
         DataStorer.insertProfile(profile);
 
-        Goal goal1 = new Goal(1, 100, GoalType.Run,"2018-09-28", "2017-05-12",
+        Goal goal1 = new Goal(1, 100, GoalType.Run,"2018-09-28", "2018-05-12",
                 "PT50M");
 
-        Goal goal2 = new Goal(2, 80, GoalType.Run,"2018-09-28", "2017-01-12",
+        Goal goal2 = new Goal(2, 80, GoalType.Run,"2018-09-28", "2018-12-12",
                 500);
 
-        Goal goal3 = new Goal(3, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
+        Goal goal3 = new Goal(3, 55, GoalType.Walk, "2018-03-20", "2018-01-01",
                 200);
 
         Goal goal4 = new Goal(4, 30, GoalType.Run, "2017-05-21", "2020-01-02",
