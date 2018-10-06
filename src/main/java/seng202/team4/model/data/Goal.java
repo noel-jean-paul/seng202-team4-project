@@ -1,5 +1,6 @@
 package seng202.team4.model.data;
 
+import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
 import seng202.team4.model.data.enums.GoalFields;
 import seng202.team4.model.data.enums.GoalType;
 import seng202.team4.model.database.DataUpdater;
@@ -23,7 +24,7 @@ public class Goal implements Comparable<Goal> {
     private LocalDate expiryDate;
     private LocalDate completionDate;
     private String description;
-    private double goalDistance;
+    private double goalDistance;    // total distance of the goal in kms
     private Duration goalDuration;
     private int caloriesBurned;
     private Profile owner;
@@ -353,11 +354,13 @@ public class Goal implements Comparable<Goal> {
             minutes = Double.valueOf(Long.toString(getGoalDuration().toMinutes()));
         }
 
-
+        // Generate an appropriate description based on the type of the goal
         if (isCaloriesGoal()) {
             currentString += String.format("%.0f calories", calories);
         } else if (isDistanceGoal()) {
-            currentString += String.format("%.1f km", distance);
+            // Use the distanceDisplayMetric class to format the string
+            DistanceDisplayMetric distanceDisplayMetric = new DistanceDisplayMetric(distance * 1000);   // Pass a meter value for distance
+            currentString += distanceDisplayMetric.toString();
         } else if (isDurationGoal()) {
             // Convert currentMinutes back to a Duration
             duration = Duration.ofMinutes(Long.valueOf(String.format("%.0f", minutes)));
