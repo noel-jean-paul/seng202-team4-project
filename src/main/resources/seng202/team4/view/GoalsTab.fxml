@@ -71,8 +71,8 @@
                   <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="117.0" />
                   <ColumnConstraints hgrow="ALWAYS" />
                   <ColumnConstraints hgrow="NEVER" minWidth="140.0" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="285.0" />
-                  <ColumnConstraints hgrow="ALWAYS" minWidth="60.0" />
+                  <ColumnConstraints hgrow="NEVER" maxWidth="280.0" minWidth="263.0" prefWidth="263.0" />
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="80.0" minWidth="60.0" prefWidth="80.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="120.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -196,13 +196,18 @@
                         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="125.0" minHeight="10.0" prefHeight="114.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="125.0" minHeight="10.0" prefHeight="103.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="71.0" minHeight="10.0" prefHeight="71.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                            <children>
-                              <Button fx:id="editButton" mnemonicParsing="false" onAction="#edit" text="Edit">
+                              <Button mnemonicParsing="false" text="Delete">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button fx:id="editButton" mnemonicParsing="false" onAction="#edit" text="  Edit  ">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -222,7 +227,7 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                            <children>
-                              <Button fx:id="editButton1" mnemonicParsing="false" onAction="#edit" text="Current Goals" />
+                              <Button fx:id="editButton1" mnemonicParsing="false" onAction="#edit" text="Past Goals" />
                            </children>
                         </VBox>
                      </children>
@@ -242,10 +247,10 @@
          <children>
             <GridPane gridLinesVisible="true" layoutX="23.0" layoutY="-31.0" prefHeight="20.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Text fx:id="creationDate" strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Date" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Text fx:id="expiryDate" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry Date" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Text fx:id="description" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Text fx:id="progressValue" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Date" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Text fx:id="expiryCompletionDate" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry Date" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Progress" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

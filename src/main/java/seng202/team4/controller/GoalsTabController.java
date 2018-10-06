@@ -87,6 +87,10 @@ public class GoalsTabController extends Controller {
     @FXML
     private Text requiredAmountHeading;
 
+    /** The header for the expiry/completion field of the table. */
+    @FXML
+    private Text expiryCompletionDate;
+
     /** The currently selected goal. */
     private CurrentGoalRowItem selectedGoalRow = null;
 
