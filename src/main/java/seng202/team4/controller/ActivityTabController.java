@@ -23,6 +23,7 @@ import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
 import seng202.team4.model.data.DisplayMetrics.SpeedDisplayMetric;
 import seng202.team4.model.data.enums.ActivityType;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -172,14 +173,13 @@ public class ActivityTabController extends Controller {
 
         MenuItem deleteActivityItem = new MenuItem("Delete");
         deleteActivityItem.setOnAction(event -> {
-            try {
-                applicationStateManager.getCurrentProfile().removeActivity((Activity) activityTable.getSelectionModel().getSelectedItem());
-                updateTable();
-            } catch (java.sql.SQLException e){
-                GuiUtilities.displayErrorMessage("Failed to remove Activity.", "");
-                e.printStackTrace();
-                System.out.println("Could not remove activity from the data base.");
-            }
+            //System.out.println(activityTable.getSelectionModel().getSelectedItem());
+            Activity activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
+
+            Pane activityDeletionPopup = GuiUtilities.loadPane("ActivityDeletionConfirmation.fxml",
+                    new ActivityDeletionConfirmationController(applicationStateManager, this, activity));
+            applicationStateManager.displayPopUp(activityDeletionPopup);
+            //updateTable();
         });
 
 
