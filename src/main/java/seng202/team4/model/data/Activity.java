@@ -81,6 +81,8 @@ public class Activity implements Comparable<Activity> {
     public Activity(String name, ArrayList<DataRow> rawActivityList) {
         this.name = name;
         this.rawData = rawActivityList;
+        java.util.Collections.sort(this.rawData);   // ensure the data is in order
+
         this.date = this.rawData.get(0).getDate();
         this.startTime = (this.rawData.get(0)).getTime();
         this.distance = DataProcessor.totalDistance(this.rawData);
@@ -88,8 +90,6 @@ public class Activity implements Comparable<Activity> {
         this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.type = findActivityType(name);
         updateHeartRateAttributes();
-
-        java.util.Collections.sort(this.rawData);   // ensure the data is in order
     }
 
     /** Update the activity attributes
