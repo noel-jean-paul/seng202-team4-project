@@ -13,7 +13,7 @@ public class PastGoalRowItem extends GoalRowItem {
      * @param goal the goal that is being displayed.
      */
     public PastGoalRowItem(CurrentGoalRowController controller, Goal goal) {
-        super(controller, goal, "Past");
+        super(controller, goal);
     }
 
 }

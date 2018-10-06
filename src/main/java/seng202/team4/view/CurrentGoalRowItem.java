@@ -12,6 +12,6 @@ public class CurrentGoalRowItem extends GoalRowItem {
      * @param goal the goal that is being displayed.
      */
     public CurrentGoalRowItem(CurrentGoalRowController controller, Goal goal) {
-        super(controller, goal, "Current");
+        super(controller, goal);
     }
 }

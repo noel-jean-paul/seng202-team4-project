@@ -29,6 +29,10 @@ public class GoalsTabController extends Controller {
     @FXML
     private Button editButton;
 
+    /** Button for deleting the selected goal. */
+    @FXML
+    private Button deleteButton;
+
     /** Text for displaying the start date of the goal. */
     @FXML
     private Text startDateText;
@@ -207,8 +211,9 @@ public class GoalsTabController extends Controller {
         goalProgressIndicator.setProgress(selectedGoal.getProgress() / 100);    // Takes a value between 0 and 1
         goalProgressIndicator.setDisable(false);
 
-        // Allow editing
+        // Allow editing and deleting
         editButton.setDisable(false);
+        deleteButton.setDisable(false);
 
         // Fill the text fields with the goal information
         descriptionText.setText(selectedGoal.getDescription());
@@ -254,15 +259,20 @@ public class GoalsTabController extends Controller {
      */
     public void reset() {
         selectedGoalRow = null;
+        // Reset the progress indicator
         goalProgressIndicator.setProgress(0);
         goalProgressIndicator.setDisable(true);
+        // Prevent the edit and delete buttons from being clicked
         editButton.setDisable(true);
+        deleteButton.setDisable(true);
+        //Blank the text fields
         descriptionText.setText("");
         startDateText.setText("");
         expiryDateText.setText("");
         remainingTimeText.setText("");
         currentAmountText.setText("");
         totalAmountText.setText("");
+        // Inform the user that there is no goal selected
         noGoalSelectedText.setText("No Goal Selected");
 
         hideHeadings();

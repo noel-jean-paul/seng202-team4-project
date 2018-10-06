@@ -31,10 +31,9 @@ public class GoalRowItem extends AnchorPane {
      * Constructor for the GoalRowItem
      * @param controller The controller of GoalRowItem
      * @param goal the goal that is being displayed.
-     * @param type the type of the goal row desired - either "Current" or "Past"
      */
-    public GoalRowItem(CurrentGoalRowController controller, Goal goal, String type) {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(String.format("view/%sGoalRow.fxml", type)));
+    public GoalRowItem(CurrentGoalRowController controller, Goal goal) {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("view/GoalRow.fxml"));
         loader.setControllerFactory(c -> {return controller;});
         loader.setRoot(this);
         try {
