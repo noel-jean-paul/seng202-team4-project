@@ -95,7 +95,7 @@ public class App extends Application {
 
         primaryStage.setWidth(1280);
         primaryStage.setHeight(720);
-        primaryStage.centerOnScreen();
+        primaryStage.centerOnScreen(); 
     }
 
     /** Main method of the program. */
