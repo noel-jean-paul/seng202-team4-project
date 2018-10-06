@@ -31,7 +31,7 @@ public class GoalNotificationPopupController extends Controller {
     private ScrollPane scrollPane;
 
     /** Constructs a new instance of a GoalNotificationPopupController */
-    public GoalNotificationPopupController(ApplicationStateManager applicationStateManager) {
+    GoalNotificationPopupController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
 
@@ -42,6 +42,13 @@ public class GoalNotificationPopupController extends Controller {
     @FXML
     void close() {
         applicationStateManager.closePopUP(mainPane);
+    }
+
+    @FXML
+    void returnToActivityTab() {
+        // change screen
+        // close the popup without the goals being expired
+        //applicationStateManager.change
     }
 
     /** Add multiple notifications to the popup.
