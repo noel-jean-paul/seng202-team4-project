@@ -481,7 +481,7 @@ public class Profile {
                         && (activity.getType().toString().equals(goal.getType().toString()))) {
                     if (goal.isDistanceGoal()) {
                         // Increment progress - activity distance is in meters while goal is in kms
-                        goal.incrementProgress((activity.getDistance() * 1000 / goal.getGoalDistance()) * 100);
+                        goal.incrementProgress((activity.getDistance() / (goal.getGoalDistance() * 1000)) * 100);
                     }
                     else if (goal.isDurationGoal()) {
                         // Convert from long go double to allow for non-integer division

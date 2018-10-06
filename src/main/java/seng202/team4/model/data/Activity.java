@@ -30,7 +30,7 @@ public class Activity implements Comparable<Activity> {
     private ActivityType type;
     private LocalTime startTime;
     private Duration duration;
-    private double distance;
+    private double distance;    // Total distance travelled in the activity in meters
     private double caloriesBurned;
     private double averageSpeed;
     private List<DataRow> rawData;
