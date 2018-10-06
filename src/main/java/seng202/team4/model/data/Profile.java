@@ -323,7 +323,7 @@ public class Profile {
      */
     private void addPastGoal(Goal goal, boolean insert) throws SQLException {
         pastGoals.add(goal);
-        java.util.Collections.sort(pastGoals);
+        pastGoals.sort(Goal.getPastGoalComparator());   // Sort the past goals using their comparator
         // Set this as the goal owner
         goal.setOwner(this);
         goal.setCurrent(false); // The goal is no longer current if it is in the past goals
@@ -352,7 +352,7 @@ public class Profile {
      */
     public void addAllPastGoals(Collection<Goal> goals) {
         pastGoals.addAll(goals);
-        java.util.Collections.sort(pastGoals);
+        pastGoals.sort(Goal.getPastGoalComparator());   // Sort the past goals using their comparator
     }
 
 
@@ -380,6 +380,7 @@ public class Profile {
      */
     private void removeCurrentGoal(Goal goal, boolean delete) throws SQLException {
         currentGoals.remove(goal);
+        // remove from the database if the delete flag is set
         if (delete) {
             DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
         }
@@ -399,6 +400,7 @@ public class Profile {
      */
     private void removePastGoal(Goal goal, boolean delete) throws SQLException {
         pastGoals.remove(goal);
+        // remove from the database if the delete flag is set
         if (delete) {
             DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
         }

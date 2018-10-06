@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
 
 import static java.time.Duration.between;
@@ -431,5 +432,20 @@ public class Goal implements Comparable<Goal> {
             dayUnit = "days";  // Plural
         }
         return dayUnit;
+    }
+
+    /** Get a comparator intended for comparing past goals by creation date (descending order)
+     *
+     * @return a Goal comparator which orders goals in descending order by creation date
+     */
+    public static Comparator<Goal> getPastGoalComparator() {
+        return (o1, o2) -> {
+            int dateCompare;
+            if ((dateCompare = o1.getCreationDate().compareTo(o2.getCreationDate())) != 0) {
+                return dateCompare * -1;  // Reverse order to descending
+            } else {    // Goals have the same creation date
+                return 0;
+            }
+        };
     }
 }
