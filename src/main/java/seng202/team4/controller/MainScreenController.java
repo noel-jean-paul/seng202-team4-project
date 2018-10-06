@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import seng202.team4.App;
 import seng202.team4.GuiUtilities;
+import seng202.team4.controller.GoalTab.GoalsTabController;
 
 import java.net.URL;
 
@@ -137,6 +138,7 @@ public class MainScreenController extends Controller {
     @FXML
     void goalTabSelected() {
         goalsTabController.updateTables();
+        System.out.println(goalsTabController.getSelectedGoalRow());
     }
 
     /**
@@ -170,7 +172,9 @@ public class MainScreenController extends Controller {
             updateProfileButton();
 
         }
+        // Reset the activity and goals tabs
         activityTabController.reset();
+        goalsTabController.reset();
     }
 
     /**

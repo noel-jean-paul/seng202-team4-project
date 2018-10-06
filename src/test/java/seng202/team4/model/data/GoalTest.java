@@ -171,13 +171,26 @@ public class GoalTest {
     }
 
     @Test
-    public void generateDescription_running_distanceGoal() {
-        // Create a new running distance goal
+    public void generateDescription_running_distanceGoal_kmDistance() {
+        // Create a new running distance goal with a distance more than 1km
         Goal goal = new Goal(2, 99, GoalType.Run,"2018-09-28", "2017-01-12",
                 14.0);
         // Create the real and expected descriptions
         description = goal.getDescription();
-        expectedDescription = "Run 14000 meters";
+        expectedDescription = "Run 14.0 km";
+
+        // Check that the real and expected descriptions match
+        assertEquals(expectedDescription, description);
+    }
+
+    @Test
+    public void generateDescription_running_distanceGoal_meterDistance() {
+        // Create a new running distance goal
+        Goal goal = new Goal(2, 99, GoalType.Run,"2018-09-28", "2017-01-12",
+                0.2);
+        // Create the real and expected descriptions
+        description = goal.getDescription();
+        expectedDescription = "Run 200 m";
 
         // Check that the real and expected descriptions match
         assertEquals(expectedDescription, description);
@@ -249,8 +262,21 @@ public class GoalTest {
     }
 
     @Test
-    public void getAmountDescription_current_distanceGoal() {
-        // Create a new distance goal
+    public void getAmountDescription_current_distanceGoal_meterDistance() {
+        // Create a new distance goal with a current distance < 1000 m
+        Goal goal = new Goal(2, 49.5, GoalType.Walk, "2018-09-28", "2017-01-12",
+                0.5);
+        // Create the real and expected currentAmount descriptions
+        description = goal.getAmountDescription("current");
+        expectedDescription = "248 m";
+
+        // Check the 2 Strings are the same
+        assertEquals(expectedDescription, description);
+    }
+
+    @Test
+    public void getAmountDescription_current_distanceGoal_kmDistance() {
+        // Create a new distance goal with a distance >= 1 km
         Goal goal = new Goal(2, 49.572, GoalType.Walk, "2018-09-28", "2017-01-12",
                 400.0);
         // Create the real and expected currentAmount descriptions
@@ -287,13 +313,26 @@ public class GoalTest {
     }
 
     @Test
-    public void getAmountDescription_total_distanceGoal() {
-        // Create a new distance goal
+    public void getAmountDescription_total_distanceGoal_kmDistance() {
+        // Create a new distance goal with a distance >= 1km
         Goal goal = new Goal(2, 49.572, GoalType.Walk, "2018-09-28", "2017-01-12",
                 400.0);
         // Create the real and expected total amount descriptions
         description = goal.getAmountDescription("total");
         expectedDescription = "400.0 km";
+
+        // Check the 2 Strings are the same
+        assertEquals(expectedDescription, description);
+    }
+
+    @Test
+    public void getAmountDescription_total_distanceGoal_meterDistance() {
+        // Create a new distance goal with a distance less than 1km
+        Goal goal = new Goal(2, 49.572, GoalType.Walk, "2018-09-28", "2017-01-12",
+                0.77777);
+        // Create the real and expected total amount descriptions
+        description = goal.getAmountDescription("total");
+        expectedDescription = "778 m";
 
         // Check the 2 Strings are the same
         assertEquals(expectedDescription, description);

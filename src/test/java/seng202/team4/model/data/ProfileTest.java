@@ -50,14 +50,14 @@ public class ProfileTest {
 
         // Initialise activities
         activity1 = new Activity("Run in the park", "2017-12-12", ActivityType.Run,
-                "12:15:01", "PT40M36S", 5.13, 250);
+                "12:15:01", "PT40M36S", 5130, 250);
         // test dependent on progress, distance and calories burned of this activity
 
         activity2 = new Activity("Walk around the block", "2019-12-12",
-                ActivityType.Walk, "01:28:30", "PT11M19S", 1.2, 30);
+                ActivityType.Walk, "01:28:30", "PT11M19S", 1200, 30);
 
         activity3 = new Activity("Jog through Uni", "2018-12-12",
-                ActivityType.Run, "01:28:30", "PT11M19S", 1.2, 30);
+                ActivityType.Run, "01:28:30", "PT11M19S", 1200, 30);
 
         expected = new ArrayList<>(Arrays.asList(activity2, activity3, activity1));
         activities = new ArrayList<>();

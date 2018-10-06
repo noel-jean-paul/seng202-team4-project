@@ -1,9 +1,10 @@
-package seng202.team4.controller;
+package seng202.team4.controller.GoalTab;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.model.data.Goal;
 
 /**
