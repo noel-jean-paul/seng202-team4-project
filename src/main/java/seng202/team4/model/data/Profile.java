@@ -266,7 +266,7 @@ public class Profile {
      * @return true if the date is valid, false otherwise.
      */
     public static boolean isValidDateOfBirth(LocalDate date) {
-        return (date.compareTo(MIN_DOB) > 0 && date.compareTo(LocalDate.now()) < 0);
+        return (date.compareTo(MIN_DOB) >= 0 && date.compareTo(LocalDate.now()) <= 0);
     }
 
     /** Add an activity to the activity list in correct date position and insert it into the database.
