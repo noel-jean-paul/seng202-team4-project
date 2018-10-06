@@ -14,6 +14,7 @@ import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 
+import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -148,6 +149,7 @@ public class RawDataViewerController extends Controller {
             }
         }
         displayPopUp();
+        dataRowTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
 
@@ -308,8 +310,6 @@ public class RawDataViewerController extends Controller {
         }
 
 
-
-
         if (!isValidDateFormat) {
             errorMessage.setText("Date should be in the form dd/mm/yyyy");
         } else if (!isValidTimeFormat) {
@@ -374,18 +374,36 @@ public class RawDataViewerController extends Controller {
 
     @FXML
     public void deleteRows() {
-        if (dataRowTable.getItems().size() <= 2) {
-            errorMessage.setText("You cannot have less than two data rows in an activity");
-        } else {
-            try {
-                activity.removeDataRow((DataRow) dataRowTable.getSelectionModel().getSelectedItem());
-                updateDataRows();
-            } catch (java.sql.SQLException e) {
-                GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
-                e.printStackTrace();
-                System.out.println("Could not remove data row from the database.");
+//        if (dataRowTable.getItems().size() <= 2) {
+//            errorMessage.setText("You cannot have less than two data rows in an activity");
+//        } else {
+            List<DataRow> selectedRows = new ArrayList<>(dataRowTable.getSelectionModel().getSelectedItems());
+            if (dataRowTable.getItems().size() - selectedRows.size() < 2) {
+                errorMessage.setText("You cannot have less than two data rows in an activity");
+            } else {
+                if (selectedRows.size() > 1) {
+                    try {
+                        for (DataRow row : selectedRows) {
+                            activity.removeDataRow(row);
+                        }
+                        updateDataRows();
+                    } catch (java.sql.SQLException e) {
+                        GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
+                        e.printStackTrace();
+                        System.out.println("Could not remove data row from the database.");
+                    }
+                } else {
+                    try {
+                        activity.removeDataRow(dataRowTable.getSelectionModel().getSelectedItem());
+                        updateDataRows();
+                    } catch (java.sql.SQLException e) {
+                        GuiUtilities.displayErrorMessage("Failed to remove data row.", "");
+                        e.printStackTrace();
+                        System.out.println("Could not remove data row from the database.");
+                    }
+                }
             }
-        }
+        //}
     }
 
 
