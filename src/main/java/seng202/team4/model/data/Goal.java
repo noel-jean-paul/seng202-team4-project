@@ -34,6 +34,14 @@ public class Goal implements Comparable<Goal> {
     /** The maximum duration for a duration goal. */
     public static final Duration MAX_GOAL_DURATION = Duration.ofHours(1000);
 
+    /** The minimum period of time a goal can last in days. */
+    public static final long MIN_GOAL_Period = 1;
+
+    /** The maximum period of time a goal can last in days. */
+    public static final long MAX_GOAL_Period = 365;
+
+
+
     private int number;
     private double progress;
     private GoalType type;

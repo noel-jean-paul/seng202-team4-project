@@ -16,6 +16,7 @@ import seng202.team4.view.PastGoalRowItem;
 
 import java.sql.SQLException;
 import java.time.Duration;
+import java.time.LocalDate;
 
 
 /**
@@ -243,9 +244,13 @@ public class GoalsTabController extends Controller {
      * @param goalRow the goalRow to select
      */
     private void changeSelectedGoalRow(GoalRowItem goalRow) {
+
         // If there is a goal row selected, deselect it
         if (selectedGoalRow != null) {
             selectedGoalRow.deselect();
+            if (selectedGoalRow != goalRow) {
+                turnEditingOff();
+            }
         }
         // Select the new row
         selectedGoalRow = goalRow;
@@ -394,15 +399,26 @@ public class GoalsTabController extends Controller {
             }
 
             if (updateSuccessful) {
-                try {
-                    selectedGoalRow.getGoal().setExpiryDate(expiryDatePicker.getValue().toString());
-                    turnEditingOff();
-                } catch (java.sql.SQLException e) {
-                    GuiUtilities.displayErrorMessage("Failed to update goal.", "");
-                    e.printStackTrace();
+                LocalDate minGoalExpiryDate = selectedGoalRow.getGoal().getCreationDate().plusDays(Goal.MIN_GOAL_Period);
+                if (minGoalExpiryDate.compareTo(LocalDate.now()) < 0) {
+                    minGoalExpiryDate = LocalDate.now();
+                }
+                System.out.println(expiryDatePicker.getValue());
+                if (expiryDatePicker.getValue().compareTo(minGoalExpiryDate) < 0 || expiryDatePicker.getValue().compareTo(selectedGoalRow.getGoal().getCreationDate().plusDays(Goal.MAX_GOAL_Period)) > 0) {
+                    errorText.setText(String.format("Expiry must be between %s and %s", minGoalExpiryDate, selectedGoalRow.getGoal().getCreationDate().plusDays(Goal.MAX_GOAL_Period)));
+                } else {
+                    try {
+                        selectedGoalRow.getGoal().setExpiryDate(expiryDatePicker.getValue().toString());
+                        turnEditingOff();
+                    } catch (java.sql.SQLException e) {
+                        GuiUtilities.displayErrorMessage("Failed to update goal.", "");
+                        e.printStackTrace();
+                    }
                 }
 
             }
+
+
         }
 
     }
