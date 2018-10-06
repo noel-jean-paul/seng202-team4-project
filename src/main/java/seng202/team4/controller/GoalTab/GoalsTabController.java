@@ -1,4 +1,4 @@
-package seng202.team4.controller;
+package seng202.team4.controller.GoalTab;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -7,12 +7,13 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
+import seng202.team4.controller.ApplicationStateManager;
+import seng202.team4.controller.Controller;
 import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.GoalListPair;
 import seng202.team4.view.CurrentGoalRowItem;
 
 import java.sql.SQLException;
-import java.time.Clock;
 
 
 /**
@@ -75,7 +76,7 @@ public class GoalsTabController extends Controller {
      *
      * @param applicationStateManager The ApplicationStateManager of the application.
      */
-    GoalsTabController(ApplicationStateManager applicationStateManager) {
+    public GoalsTabController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
 
@@ -133,7 +134,19 @@ public class GoalsTabController extends Controller {
 
             // Make the scrollPane match the width of the GoalTableRow
             currentGoalRowItem.prefWidthProperty().bind(scrollPane.widthProperty());
+
+            // Select the row which was selected when the goal tab was last selected and set it as the selectedGoalRow
+            // Compare on the goal as this is not reinstantiated each time the goal tab is selected while the GoalRow is
+            // Have to first check that the goalRow is not null to prevent nullPointerExceptions in the main comparison
+            if (selectedGoalRow != null && goal.equals(selectedGoalRow.getGoal())) {
+                currentGoalRowItem.select();
+                selectedGoalRow = currentGoalRowItem;
+            }
+
+
         }
+
+
     }
 
     /* Query the goal lists of the currentProfile and update the goal tables to display their contents */
@@ -147,9 +160,12 @@ public class GoalsTabController extends Controller {
      * @param goalRow the goalRow to select
      */
     private void changeSelectedGoalRow(CurrentGoalRowItem goalRow) {
+        // If there is a goal row selected, deselect it
         if (selectedGoalRow != null) {
             selectedGoalRow.deselect();
+            System.out.println("deselected");
         }
+        // Select the new row
         selectedGoalRow = goalRow;
         displayGoalInformation();
         selectedGoalRow.select();
@@ -184,7 +200,7 @@ public class GoalsTabController extends Controller {
      * @param goalRow the goalRow to be removed
      */
     private void removeGoalRow(CurrentGoalRowController goalRow) {
-        // vbox.getChildren().remove(goalRow);
+        //vbox.getChildren().remove(goalRow);
         // remove from a list based on whether the goal it wraps is current or past
         // TODO: 3/10/18 Noel Bisson - implement
     }
@@ -204,7 +220,7 @@ public class GoalsTabController extends Controller {
 
     }
 
-    private void reset() {
+    public void reset() {
         selectedGoalRow = null;
         goalProgressIndicator.setProgress(0);
         goalProgressIndicator.setDisable(true);
@@ -216,5 +232,13 @@ public class GoalsTabController extends Controller {
         currentAmountText.setText("");
         totalAmountText.setText("");
         noGoalSelectedText.setText("No Goal Selected");
+    }
+
+    /** Getter for the SelectedGoalRow
+     *
+     * @return the currently selected goal row
+     */
+    public CurrentGoalRowItem getSelectedGoalRow() {
+        return selectedGoalRow;
     }
 }

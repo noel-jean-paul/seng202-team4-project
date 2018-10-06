@@ -33,7 +33,7 @@ public class NoelSetup_6Goals {
                 40.0);
 
         Goal goal6 = new Goal(6, 17, GoalType.Run, "2017-05-21", "3000-01-02",
-                5.0);
+                0.999);
 
         profile.addCurrentGoal(goal1);
         profile.addCurrentGoal(goal2);

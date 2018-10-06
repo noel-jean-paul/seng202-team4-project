@@ -376,7 +376,6 @@ public class Goal implements Comparable<Goal> {
         return currentString;
     }
 
-
     /** Get a string containing the unit of the number of hours of the duration passed in
      *
      * @param duration The duration to compute the hour unit of
