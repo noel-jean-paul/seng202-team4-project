@@ -154,6 +154,7 @@ public class RawDataViewerController extends Controller {
     private void displayPopUp() {
         applyEditsButton.setDisable(true);
         addRowButton.setDisable(true);
+        deleteButton.setDisable(true);
         dataTableTitleText.setText("Data Rows for " + activity.getName());
         dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
         updateDataRows();   //updates the table
@@ -190,6 +191,7 @@ public class RawDataViewerController extends Controller {
                 errorMessage.setText("");
                 applyEditsButton.setDisable(false);
                 addRowButton.setDisable(false);
+                deleteButton.setDisable(false);
                 dateDatePicker.setValue(newSelection.getDate());
                 timeTextField.setText(newSelection.getTime().toString());
                 heartRateTextField.setText(Integer.toString(newSelection.getHeartRate()));
