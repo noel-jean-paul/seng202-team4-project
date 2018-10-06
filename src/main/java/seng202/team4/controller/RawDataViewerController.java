@@ -121,6 +121,9 @@ public class RawDataViewerController extends Controller {
     private String prevLongitude;
     private String prevElevation;
 
+    /** The string which stores the date of the activity */
+    private String date;
+
 
     /** Constructor for the raw data viewer. A new raw data viewer is created everytime view raw data is selected for
      *   an activity.
@@ -227,15 +230,17 @@ public class RawDataViewerController extends Controller {
     public void fieldErrorChecking(int buttonType) {
         // TODO: 4/10/18 Matt_M these should be refactored into functions in DataRow - Noel
         // Try to parse the date string to check that it is in a valid format.
-        String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        LocalDate dateSet = null;
         boolean isValidDateFormat = false;
+        LocalDate dateSet = null;
         try {
+            date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             dateSet = LocalDate.parse(date);
             isValidDateFormat = true;
         } catch (Exception e) {
             isValidDateFormat = false;
         }
+
+
 
         //Try to parse the time string to check that it is in a valid format.
         String time = timeTextField.getText().trim();
@@ -249,49 +254,57 @@ public class RawDataViewerController extends Controller {
         }
 
         //Check if the heart rate is in the accepted range
-        int heartRate = Integer.parseInt(heartRateTextField.getText().trim());
         boolean isValidHeartRate = false;
-        if (DataRow.minHeartRate <= heartRate && heartRate <= DataRow.maxHeartRate) {
-            isValidHeartRate = true;
-        } else {
+        if (heartRateTextField.getText().isEmpty()) {
             isValidHeartRate = false;
+        } else {
+            int heartRate = Integer.parseInt(heartRateTextField.getText().trim());
+            if (DataRow.minHeartRate <= heartRate && heartRate <= DataRow.maxHeartRate) {
+                isValidHeartRate = true;
+            } else {
+                isValidHeartRate = false;
+            }
         }
 
         //Check if the latitude is in the accepted range
-        double latitude = Double.parseDouble(latitudeTextField.getText().trim());
         boolean isValidLatitude = false;
-        if (DataRow.minLatitude <= latitude && latitude <= DataRow.maxLatitude) {
-            isValidLatitude = true;
-        } else {
+        if (latitudeTextField.getText().isEmpty()) {
             isValidLatitude = false;
+        } else {
+            double latitude = Double.parseDouble(latitudeTextField.getText().trim());
+            if (DataRow.minLatitude <= latitude && latitude <= DataRow.maxLatitude) {
+                isValidLatitude = true;
+            } else {
+                isValidLatitude = false;
+            }
         }
 
         //Check if the longitude is in the accepted range
-        double longitude = Double.parseDouble(longitudeTextField.getText().trim());
         boolean isValidLongitude = false;
-        if (DataRow.minLongitude <= longitude && longitude <= DataRow.maxLongitude) {
-            isValidLongitude = true;
-        } else {
+        if (longitudeTextField.getText().isEmpty()) {
             isValidLongitude = false;
+        } else {
+            double longitude = Double.parseDouble(longitudeTextField.getText().trim());
+            if (DataRow.minLongitude <= longitude && longitude <= DataRow.maxLongitude) {
+                isValidLongitude = true;
+            } else {
+                isValidLongitude = false;
+            }
         }
 
         //Check if the elevation is in the accepted range
-        double elevation = Double.parseDouble(elevationTextField.getText().trim());
         boolean isValidElevation = false;
-        if (DataRow.minElevation <= elevation && elevation <= DataRow.maxElevation) {
-            isValidElevation = true;
-        } else {
+        if (elevationTextField.getText().isEmpty()) {
             isValidElevation = false;
+        } else {
+            double elevation = Double.parseDouble(elevationTextField.getText().trim());
+            if (DataRow.minElevation <= elevation && elevation <= DataRow.maxElevation) {
+                isValidElevation = true;
+            } else {
+                isValidElevation = false;
+            }
         }
 
-        //Check if the row already exists
-        boolean isValidAddition = false;
-        if ((date.equals(prevDate) && (timeTextField.getText().trim().equals(prevTime)) && (heartRateTextField.getText().trim().equals(prevHeartRate)) && (latitudeTextField.getText().trim().equals(prevLatitude))
-                && (longitudeTextField.getText().trim().equals(prevLongitude)) && (elevationTextField.getText().trim().equals(prevElevation)))) {
-            isValidAddition = false;
-        } else {
-            isValidAddition = true;
-        }
 
 
 
@@ -307,7 +320,7 @@ public class RawDataViewerController extends Controller {
             errorMessage.setText("Longitude must be between " + DataRow.minLongitude + " and " + DataRow.maxLongitude);
         } else if (!isValidElevation) {
             errorMessage.setText("Longitude must be between " + DataRow.minElevation + " and " + DataRow.maxElevation);
-        } else if (!isValidAddition) {
+        } else if (!isValidAddition()) {
             if (buttonType == 1) {
                 errorMessage.setText("You cannot add a row that already exists");
             }
@@ -340,6 +353,22 @@ public class RawDataViewerController extends Controller {
         }
     }
 
+
+    /**
+     * Checks to see if the row to be added is a valid row
+     * @returns a boolean on whether or not the row can be added
+     */
+    public boolean isValidAddition() {
+        boolean isValidAddition = false;
+        if ((date.equals(prevDate) && (timeTextField.getText().trim().equals(prevTime)) && (heartRateTextField.getText().trim().equals(prevHeartRate))
+                && (latitudeTextField.getText().trim().equals(prevLatitude))
+                && (longitudeTextField.getText().trim().equals(prevLongitude)) && (elevationTextField.getText().trim().equals(prevElevation)))) {
+            isValidAddition = false;
+        } else {
+            isValidAddition = true;
+        }
+        return isValidAddition;
+    }
 
     @FXML
     public void deleteRows() {
