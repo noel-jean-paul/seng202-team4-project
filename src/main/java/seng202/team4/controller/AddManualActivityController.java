@@ -12,6 +12,7 @@ import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.utilities.DataProcessor;
 
+import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -131,12 +132,16 @@ public class AddManualActivityController extends Controller {
         // Error check fields
         if (applicationStateManager.getCurrentProfile().activityExists(activityName, date)) {   // Check if the activity already exists in the user's activity list
             errorText.setText("An activity with the name and date entered already exists.");
+        } else if (activityName.length() < Activity.MINIMUM_NAME_SIZE_ || activityName.length() > Activity.MAXIMUM_NAME_SIZE) {
+            errorText.setText(String.format("Activity name should be between %s and %s characters long.", Activity.MINIMUM_NAME_SIZE_, Activity.MAXIMUM_NAME_SIZE));
         } else if (date == null) {
             errorText.setText("You need to select a date.");
         } else if (!isValidTimeFormat) {
             errorText.setText(String.format("'%s' is not a valid time.", timeString));
         } else if (!isValidDistance) {
-            errorText.setText(String.format("'%s' is not a valid distance.", distanceString));
+            errorText.setText(String.format("'%s' is not a valid distance, should be a number.", distanceString));
+        } else if (distance < Activity.MINIMUM_DISTANCE || distance > Activity.MAXIMUM_DISTANCE) {
+            errorText.setText(String.format("Distance should be between %s m and %s m.", NumberFormat.getInstance().format(Activity.MINIMUM_DISTANCE), NumberFormat.getInstance().format(Activity.MAXIMUM_DISTANCE)));
         } else if (!isValidDurationFormat) {
             errorText.setText(String.format("'%s' is not a valid duration.", durationString));
         } else {

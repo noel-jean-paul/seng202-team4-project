@@ -53,7 +53,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="calendarViewButton" mnemonicParsing="false" onAction="#toggleCalendarView" text="Calender View">
+                        <Button fx:id="calendarViewButton" mnemonicParsing="false" onAction="#toggleCalendarView" text="Calendar View">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
@@ -70,9 +70,9 @@
                <columnConstraints>
                   <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="117.0" />
                   <ColumnConstraints hgrow="ALWAYS" />
-                  <ColumnConstraints hgrow="NEVER" minWidth="140.0" />
-                  <ColumnConstraints hgrow="NEVER" maxWidth="280.0" minWidth="263.0" prefWidth="263.0" />
-                  <ColumnConstraints hgrow="ALWAYS" minWidth="60.0" />
+                  <ColumnConstraints hgrow="NEVER" maxWidth="134.0" minWidth="133.0" prefWidth="133.0" />
+                  <ColumnConstraints hgrow="NEVER" maxWidth="280.0" minWidth="263.0" prefWidth="275.0" />
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="81.0" minWidth="60.0" prefWidth="75.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="120.0" prefHeight="30.0" vgrow="SOMETIMES" />
