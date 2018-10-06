@@ -137,8 +137,7 @@ public class MainScreenController extends Controller {
      */
     @FXML
     void goalTabSelected() {
-        goalsTabController.updateTables();
-        System.out.println(goalsTabController.getSelectedGoalRow());
+        goalsTabController.updateCurrentGoalRowTable();
     }
 
     /**

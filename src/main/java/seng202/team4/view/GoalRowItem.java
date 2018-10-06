@@ -8,8 +8,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import seng202.team4.App;
-import seng202.team4.controller.GoalTab.CurrentGoalRowController;
-import seng202.team4.controller.GoalTab.GoalsTabController;
+import seng202.team4.controller.GoalTab.GoalRowController;
 import seng202.team4.model.data.Goal;
 
 public class GoalRowItem extends AnchorPane {
@@ -32,7 +31,7 @@ public class GoalRowItem extends AnchorPane {
      * @param controller The controller of GoalRowItem
      * @param goal the goal that is being displayed.
      */
-    public GoalRowItem(CurrentGoalRowController controller, Goal goal) {
+    public GoalRowItem(GoalRowController controller, Goal goal) {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("view/GoalRow.fxml"));
         loader.setControllerFactory(c -> {return controller;});
         loader.setRoot(this);
@@ -75,7 +74,7 @@ public class GoalRowItem extends AnchorPane {
     }
 
     /** Initializes the GoalTableRow using the parameters of the goal it wraps */
-    void initialiseRow(CurrentGoalRowController controller) {
+    void initialiseRow(GoalRowController controller) {
         controller.setDescription(getGoal().getDescription());
         controller.setCreationDate(getGoal().getCreationDate().toString());
         controller.setProgress(getGoal().getProgress());
