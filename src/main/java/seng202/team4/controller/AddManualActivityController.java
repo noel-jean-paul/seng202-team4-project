@@ -164,7 +164,7 @@ public class AddManualActivityController extends Controller {
         } else if (!isValidDurationFormat) {
             errorText.setText(String.format("'%s' is not a valid duration.", durationString));
         } else if (duration.compareTo(Activity.MINIMUM_DURATION) < 0 || duration.compareTo(Activity.MAXIMUM_DURATION) > 0) {
-            errorText.setText(String.format("Date should be between %02d:%02d and %02d:%02d", Activity.MINIMUM_DURATION.toHours(), Activity.MINIMUM_DURATION.toMinutes()%60, Activity.MAXIMUM_DURATION.toHours(), Activity.MAXIMUM_DURATION.toMinutes()%60));
+            errorText.setText(String.format("Duration should be between %02d:%02d and %02d:%02d", Activity.MINIMUM_DURATION.toHours(), Activity.MINIMUM_DURATION.toMinutes()%60, Activity.MAXIMUM_DURATION.toHours(), Activity.MAXIMUM_DURATION.toMinutes()%60));
         } else {
             // Activity is valid. Try to insert it to the user's activities.
             double speed = DataProcessor.calculateAverageSpeed(distance, duration);
