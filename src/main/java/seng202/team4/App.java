@@ -99,7 +99,5 @@ public class App extends Application {
     }
 
     /** Main method of the program. */
-    public static void main(String[] args) throws SQLException {
-        NoelSetup_6Goals.main(new String[1]);
-        launch(args); }
+    public static void main(String[] args) throws SQLException { launch(args); }
 }
