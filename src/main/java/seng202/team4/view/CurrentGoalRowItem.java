@@ -14,4 +14,11 @@ public class CurrentGoalRowItem extends GoalRowItem {
     public CurrentGoalRowItem(CurrentGoalRowController controller, Goal goal) {
         super(controller, goal);
     }
+
+    /** Initializes the GoalTableRow using the parameters of the goal it wraps */
+    @Override
+    void initialiseRow(CurrentGoalRowController controller) {
+        super.initialiseRow(controller);
+        controller.setExpiryDate(getGoal().getExpiryDate().toString());
+    }
 }

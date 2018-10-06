@@ -351,7 +351,7 @@ public class RawDataViewerController extends Controller {
 
     /**
      * Checks to see if the row to be added is a valid row
-     * @returns a boolean of whether or not the row can be added
+     * @return a boolean of whether or not the row can be added
      */
     public boolean isValidAddition() {
         boolean isValidAddition = false;

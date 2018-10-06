@@ -23,7 +23,7 @@ public class GoalRowItem extends AnchorPane {
      */
     private final Background unselectedBackground = new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY));
 
-    /* The goal which the row presents infomation about */
+    /** The goal which the row presents infomation about */
     private Goal goal;
 
 
@@ -74,11 +74,10 @@ public class GoalRowItem extends AnchorPane {
         this.setBackground(unselectedBackground);
     }
 
-    /* Initializes the GoalTableRow using goal parameter */
+    /** Initializes the GoalTableRow using the parameters of the goal it wraps */
     void initialiseRow(CurrentGoalRowController controller) {
         controller.setDescription(getGoal().getDescription());
         controller.setCreationDate(getGoal().getCreationDate().toString());
-        controller.setExpiryDate(getGoal().getExpiryDate().toString());
         controller.setProgress(getGoal().getProgress());
     }
 }

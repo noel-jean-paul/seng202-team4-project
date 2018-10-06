@@ -12,27 +12,27 @@ import seng202.team4.model.data.Goal;
  */
 public class CurrentGoalRowController extends GoalRowController {
 
-    /* Text that displays the description of the goal */
+    /**Text that displays the description of the goal */
     @FXML
     private Text description;
 
-    /* Text that displays the creationDate of the goal */
+    /**Text that displays the creationDate of the goal */
     @FXML
     private Text creationDate;
 
-    /* Text that displays the expiryDate of the goal */
+    /**Text that displays the expiryDate of the goal */
     @FXML
     private Text expiryDate;
 
-    /* Progress bar that displays the progress of the goal */
+    /**Progress bar that displays the progress of the goal */
     @FXML
     private ProgressBar progressBar;
 
-    /* Text that displays the progress of the goal */
+    /**Text that displays the progress of the goal */
     @FXML
     private Text progressValue;
 
-    /* Top level pane of the GoalTableRow */
+    /**Top level pane of the GoalTableRow */
     @FXML
     private AnchorPane rowPane;
 

@@ -129,7 +129,7 @@ public class FileParser {
 //        } catch (IOException e) {
 //
 //        }
-//
+//// TODO: 6/10/18 remove this main
 //
 //        for(Activity oneActivity : validActivities) {     //print out each activity's name. Purely for testing purposes
 //            System.out.println(oneActivity.getName());

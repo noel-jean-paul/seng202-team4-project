@@ -208,7 +208,7 @@ public class DataStorerTest {
     }
 
     @Test
-    /* Check that the other profiles do not have their information removed by deleteProfile */
+    /**Check that the other profiles do not have their information removed by deleteProfile */
     public void deleteProfile_checkOtherProfileUnchanged() throws SQLException {
         // Insert an activity for the profile
         Activity activity = new Activity("Walk in the woods", "2019-08-30", ActivityType.Run,

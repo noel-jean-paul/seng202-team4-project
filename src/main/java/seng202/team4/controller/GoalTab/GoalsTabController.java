@@ -132,7 +132,7 @@ public class GoalsTabController extends Controller {
         }
     }
 
-    /* Updates the current profile's goals then fills the current GoalRow vbox using them */
+    /**Updates the current profile's goals then fills the current GoalRow vbox using them */
     private void updateCurrentGoalRowTable() {
         try {
             // Update the currentGoals of the currently loaded profile
@@ -175,7 +175,7 @@ public class GoalsTabController extends Controller {
         }
     }
 
-    /* Query the goal lists of the currentProfile and update the goal tables to display their contents */
+    /**Query the goal lists of the currentProfile and update the goal tables to display their contents */
     public void updateTables() {
         updateCurrentGoalRowTable();
     }
@@ -196,7 +196,7 @@ public class GoalsTabController extends Controller {
         selectedGoalRow.select();
     }
 
-    /* Fill the goal header with information about the goal which currently selected goal row wraps */
+    /**Fill the goal header with information about the goal which currently selected goal row wraps */
     private void displayGoalInformation() {
         // Hide the no goal selected text
         noGoalSelectedText.setText("");

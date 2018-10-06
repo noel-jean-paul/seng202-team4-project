@@ -126,7 +126,6 @@ public class HomeTabController extends Controller {
             noDataText.setVisible(false);
             int counter = 0;
             for (int i = 0; i < activityList.size() && counter < 5; i += 1) {
-                System.out.println(activityList.get(0).getName());
                 if (activityList.get(i).getType() == type) {
                     dataSet.getData().add(new XYChart.Data(activityList.get(i).getName(), activityList.get(i).getDistance()));
                     counter++;

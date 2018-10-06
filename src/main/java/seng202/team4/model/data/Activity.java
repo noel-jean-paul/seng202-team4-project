@@ -24,7 +24,7 @@ public class Activity implements Comparable<Activity> {
     /** Keywords that indicate an Activity is a run.*/
     private static String[] runKeyWords = {"run", "ran", "jog"};
 
-    /* The combination of name and date must be unique for a profile */
+    /**The combination of name and date must be unique for a profile */
     private String name;
     private LocalDate date;
     private ActivityType type;
@@ -90,7 +90,7 @@ public class Activity implements Comparable<Activity> {
         }
     }
 
-    /* Recalculate and update the min, max and average heart rates of the activity. */
+    /**Recalculate and update the min, max and average heart rates of the activity. */
     private void updateHeartRateAttributes() {
         avgHeartRate = calculateAvgHeartRate();
         minHeartRate = calculateMinHeartRate();
