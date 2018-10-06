@@ -8,8 +8,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import seng202.team4.App;
-import seng202.team4.controller.GoalTab.CurrentGoalRowController;
-import seng202.team4.controller.GoalTab.GoalsTabController;
+import seng202.team4.controller.GoalTab.GoalRowController;
 import seng202.team4.model.data.Goal;
 
 public class GoalRowItem extends AnchorPane {
@@ -23,7 +22,7 @@ public class GoalRowItem extends AnchorPane {
      */
     private final Background unselectedBackground = new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY));
 
-    /* The goal which the row presents infomation about */
+    /** The goal which the row presents infomation about */
     private Goal goal;
 
 
@@ -31,10 +30,9 @@ public class GoalRowItem extends AnchorPane {
      * Constructor for the GoalRowItem
      * @param controller The controller of GoalRowItem
      * @param goal the goal that is being displayed.
-     * @param type the type of the goal row desired - either "Current" or "Past"
      */
-    public GoalRowItem(CurrentGoalRowController controller, Goal goal, String type) {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource(String.format("view/%sGoalRow.fxml", type)));
+    public GoalRowItem(GoalRowController controller, Goal goal) {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("view/GoalRow.fxml"));
         loader.setControllerFactory(c -> {return controller;});
         loader.setRoot(this);
         try {
@@ -75,11 +73,10 @@ public class GoalRowItem extends AnchorPane {
         this.setBackground(unselectedBackground);
     }
 
-    /* Initializes the GoalTableRow using goal parameter */
-    void initialiseRow(CurrentGoalRowController controller) {
+    /** Initializes the GoalTableRow using the parameters of the goal it wraps */
+    void initialiseRow(GoalRowController controller) {
         controller.setDescription(getGoal().getDescription());
         controller.setCreationDate(getGoal().getCreationDate().toString());
-        controller.setExpiryDate(getGoal().getExpiryDate().toString());
         controller.setProgress(getGoal().getProgress());
     }
 }

@@ -323,7 +323,7 @@ public class Profile {
      */
     private void addPastGoal(Goal goal, boolean insert) throws SQLException {
         pastGoals.add(goal);
-        java.util.Collections.sort(currentGoals);
+        java.util.Collections.sort(pastGoals);
         // Set this as the goal owner
         goal.setOwner(this);
         goal.setCurrent(false); // The goal is no longer current if it is in the past goals

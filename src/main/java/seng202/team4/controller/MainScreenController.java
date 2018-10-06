@@ -133,12 +133,11 @@ public class MainScreenController extends Controller {
 
     /**
      * Called when the goal tab is clicked.
-     * Updates the goal tables in the goal tab.
+     * Displays the goal table in the goal tab.
      */
     @FXML
     void goalTabSelected() {
-        goalsTabController.updateTables();
-        System.out.println(goalsTabController.getSelectedGoalRow());
+        goalsTabController.displayGoalTable();
     }
 
     /**

@@ -404,7 +404,7 @@ public class ProfileTest {
         assertEquals(0, goal1.getProgress(), 0.0001);
     }
 
-    /* multiple activities contributing to the same goal */
+    /**multiple activities contributing to the same goal */
     @Test
     public void updateGoalsForProgress_multipleActivities_validDates_checkProgressUpdated() throws SQLException {
         // Setup

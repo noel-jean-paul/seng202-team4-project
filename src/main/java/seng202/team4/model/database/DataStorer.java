@@ -11,7 +11,7 @@ import java.util.List;
 
 
 abstract public class DataStorer extends DataAccesser {
-    /* Class to handle inserting and deleting of objects from the database */
+    /**Class to handle inserting and deleting of objects from the database */
 
     private static String dataRowInsertSQL = "insert into dataRow (rowNumber, rowDate, time, heartRate, latitude, " +
             "longitude, elevation, name, activityDate, firstName, lastName) " +

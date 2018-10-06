@@ -116,7 +116,6 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         }
 
         // Update the current goals with all activities imported
-        System.out.println(importedActivities);
         applicationStateManager.getCurrentProfile().updateGoalsForProgress(importedActivities);
     }
 
@@ -136,8 +135,6 @@ public class ImportActivitiesPreviewScreenController extends Controller {
         } catch (IOException exception) {
             throw exception;
         }
-
-        System.out.println(warningActivities.size());
 
         HashSet<String> activityStringKeySet = new HashSet<String>();
         for (Activity activity: applicationStateManager.getCurrentProfile().getActivityList()) {

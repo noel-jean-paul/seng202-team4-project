@@ -12,7 +12,8 @@ import seng202.team4.controller.Controller;
 import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.GoalListPair;
 import seng202.team4.view.CurrentGoalRowItem;
-
+import seng202.team4.view.GoalRowItem;
+import seng202.team4.view.PastGoalRowItem;
 import java.sql.SQLException;
 
 
@@ -21,6 +22,10 @@ import java.sql.SQLException;
  */
 public class GoalsTabController extends Controller {
 
+    /** Button for switching between past and current goal lists */
+    @FXML
+    private Button toggleGoalListButton;
+
     /** Button for toggling calendar view. */
     @FXML
     private Button calendarViewButton;
@@ -28,6 +33,10 @@ public class GoalsTabController extends Controller {
     /** Button for editing the selected goal. */
     @FXML
     private Button editButton;
+
+    /** Button for deleting the selected goal. */
+    @FXML
+    private Button deleteButton;
 
     /** Text for displaying the start date of the goal. */
     @FXML
@@ -93,7 +102,10 @@ public class GoalsTabController extends Controller {
     private Text expiryCompletionDate;
 
     /** The currently selected goal. */
-    private CurrentGoalRowItem selectedGoalRow = null;
+    private GoalRowItem selectedGoalRow = null;
+
+    /** Boolean representing if the current goals or the past goals are currently populating the goal tab table */
+    private boolean currentGoalTableDisplayed = true;
 
     /**
      * Constructor for the Goals Tab Controller.
@@ -128,8 +140,8 @@ public class GoalsTabController extends Controller {
         }
     }
 
-    /* Updates the current profile's goals then fills the current GoalRow vbox using them */
-    private void updateCurrentGoalRowTable() {
+    /** Updates the current profile's goals then fills the current GoalRow vbox using them */
+    public void updateCurrentGoalRowTable() {
         try {
             // Update the currentGoals of the currently loaded profile
             GoalListPair goalListPair = applicationStateManager.getCurrentProfile().updateCurrentGoals();
@@ -147,7 +159,7 @@ public class GoalsTabController extends Controller {
         // Add each current Goal to the vbox children
         for (Goal goal: applicationStateManager.getCurrentProfile().getCurrentGoals()) {
             // Create a new pair of GoalRow controller and item
-            CurrentGoalRowController controller = new CurrentGoalRowController(applicationStateManager);
+            GoalRowController controller = new GoalRowController(applicationStateManager);
             CurrentGoalRowItem currentGoalRowItem = new CurrentGoalRowItem(controller, goal);
 
             // When an item is selected, set the selected row to be that item
@@ -166,14 +178,37 @@ public class GoalsTabController extends Controller {
                 currentGoalRowItem.select();
                 selectedGoalRow = currentGoalRowItem;
             }
-
-
         }
     }
 
-    /* Query the goal lists of the currentProfile and update the goal tables to display their contents */
-    public void updateTables() {
-        updateCurrentGoalRowTable();
+    /** Clears the goal table and populates it with the pat goals of the currently loaded profile */
+    public void displayPastGoalRowTable() {
+        // Clear the table (vbox) of goals
+        goalsListVbox.getChildren().clear();
+
+        // Add each current Goal to the vbox children
+        for (Goal goal: applicationStateManager.getCurrentProfile().getPastGoals()) {
+            // Create a new pair of GoalRow controller and item
+            GoalRowController controller = new GoalRowController(applicationStateManager);
+            PastGoalRowItem pastGoalRowItem = new PastGoalRowItem(controller, goal);
+
+            // When an item is selected, set the selected row to be that item
+            pastGoalRowItem.setOnMouseClicked(event -> {changeSelectedGoalRow(pastGoalRowItem);});
+
+            // Add the goalRowItem to the vbox which holds the past goals
+            goalsListVbox.getChildren().add(pastGoalRowItem);
+
+            // Make the scrollPane match the width of the GoalTableRow
+            pastGoalRowItem.prefWidthProperty().bind(scrollPane.widthProperty());
+
+            // Select the row which was selected when the goal tab was last selected and set it as the selectedGoalRow
+            // Compare on the goal as this is not reinstantiated each time the goal tab is selected while the GoalRow is
+            // Have to first check that the goalRow is not null to prevent nullPointerExceptions in the main comparison
+            if (selectedGoalRow != null && goal.equals(selectedGoalRow.getGoal())) {
+                pastGoalRowItem.select();
+                selectedGoalRow = pastGoalRowItem;
+            }
+        }
     }
 
     /**
@@ -181,7 +216,7 @@ public class GoalsTabController extends Controller {
      *
      * @param goalRow the goalRow to select
      */
-    private void changeSelectedGoalRow(CurrentGoalRowItem goalRow) {
+    private void changeSelectedGoalRow(GoalRowItem goalRow) {
         // If there is a goal row selected, deselect it
         if (selectedGoalRow != null) {
             selectedGoalRow.deselect();
@@ -192,7 +227,7 @@ public class GoalsTabController extends Controller {
         selectedGoalRow.select();
     }
 
-    /* Fill the goal header with information about the goal which currently selected goal row wraps */
+    /**Fill the goal header with information about the goal which currently selected goal row wraps */
     private void displayGoalInformation() {
         // Hide the no goal selected text
         noGoalSelectedText.setText("");
@@ -207,8 +242,9 @@ public class GoalsTabController extends Controller {
         goalProgressIndicator.setProgress(selectedGoal.getProgress() / 100);    // Takes a value between 0 and 1
         goalProgressIndicator.setDisable(false);
 
-        // Allow editing
+        // Allow editing and deleting
         editButton.setDisable(false);
+        deleteButton.setDisable(false);
 
         // Fill the text fields with the goal information
         descriptionText.setText(selectedGoal.getDescription());
@@ -217,16 +253,6 @@ public class GoalsTabController extends Controller {
         remainingTimeText.setText(selectedGoal.getRemainingTimeDescription());
         currentAmountText.setText(selectedGoal.getAmountDescription("current"));
         totalAmountText.setText(selectedGoal.getAmountDescription("total"));
-    }
-
-    /** Remove a goalRow from the display and the GoalRow list it is contained in
-     *
-     * @param goalRow the goalRow to be removed
-     */
-    private void removeGoalRow(CurrentGoalRowController goalRow) {
-        // vbox.getChildren().remove(goalRow);
-        // remove from a list based on whether the goal it wraps is current or past
-        // TODO: 3/10/18 Noel Bisson - implement
     }
 
     @FXML
@@ -244,9 +270,52 @@ public class GoalsTabController extends Controller {
 
     }
 
+    /** Delete the currently selected goal from the profile's goals and redisplay the goal table it is contained in */
     @FXML
     void deleteGoal() {
+        Goal selected = selectedGoalRow.getGoal();
+        try {
+            if (selected.isCurrent()) {
+                applicationStateManager.getCurrentProfile().removeCurrentGoal(selected);
+                updateCurrentGoalRowTable();
+            } else {
+                applicationStateManager.getCurrentProfile().removePastGoal(selected);
+                displayPastGoalRowTable();
+            }
+        } catch (SQLException e) {
+            GuiUtilities.displayErrorMessage("An error occurred regarding the database while deleting.", "");
+            e.printStackTrace();
+        }
+    }
 
+    @FXML
+    void toggleGoalList() {
+        // Switch whether past or current goals are displayed and flip the text on the toggle list button
+        if (currentGoalTableDisplayed) {
+            displayPastGoalRowTable();
+            toggleGoalListButton.setText("Current Goals");
+            currentGoalTableDisplayed = false;
+            // Change the expiry date column to be titled completion date
+            expiryCompletionDate.setText("Completion Date");
+
+        } else {
+            updateCurrentGoalRowTable();    // Display the current goal table
+            toggleGoalListButton.setText("Past Goals");
+            currentGoalTableDisplayed = true;
+            // Change the expiry date column to be titled expiry date
+            expiryCompletionDate.setText("Expiry Date");
+        }
+    }
+
+    /** Display whichever table was last displayed in the goal tab.
+     *  Called when clicking on the goal tab.
+     */
+    public void displayGoalTable() {
+        if (currentGoalTableDisplayed) {
+            updateCurrentGoalRowTable();
+        } else {
+            displayPastGoalRowTable();
+        }
     }
 
     /**
@@ -254,15 +323,20 @@ public class GoalsTabController extends Controller {
      */
     public void reset() {
         selectedGoalRow = null;
+        // Reset the progress indicator
         goalProgressIndicator.setProgress(0);
         goalProgressIndicator.setDisable(true);
+        // Prevent the edit and delete buttons from being clicked
         editButton.setDisable(true);
+        deleteButton.setDisable(true);
+        //Blank the text fields
         descriptionText.setText("");
         startDateText.setText("");
         expiryDateText.setText("");
         remainingTimeText.setText("");
         currentAmountText.setText("");
         totalAmountText.setText("");
+        // Inform the user that there is no goal selected
         noGoalSelectedText.setText("No Goal Selected");
 
         hideHeadings();
@@ -294,7 +368,7 @@ public class GoalsTabController extends Controller {
      *
      * @return the currently selected goal row
      */
-    public CurrentGoalRowItem getSelectedGoalRow() {
+    public GoalRowItem getSelectedGoalRow() {
         return selectedGoalRow;
     }
 }

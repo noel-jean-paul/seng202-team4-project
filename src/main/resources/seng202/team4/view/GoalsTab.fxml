@@ -202,7 +202,7 @@
                      <children>
                         <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#deleteGoal" text="Delete">
+                              <Button fx:id="deleteButton" mnemonicParsing="false" onMouseClicked="#deleteGoal" text="Delete">
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" />
                                  </VBox.margin>
@@ -227,7 +227,10 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                            <children>
-                              <Button fx:id="editButton1" mnemonicParsing="false" onAction="#edit" text="Past Goals" />
+                              <Button fx:id="toggleGoalListButton" mnemonicParsing="false" onMouseClicked="#toggleGoalList" prefHeight="25.0" prefWidth="125.0" text="Past Goals">
+                                 <VBox.margin>
+                                    <Insets left="10.0" />
+                                 </VBox.margin></Button>
                            </children>
                         </VBox>
                      </children>

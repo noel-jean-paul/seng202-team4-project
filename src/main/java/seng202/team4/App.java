@@ -57,7 +57,7 @@ public class App extends Application {
             DataAccesser.initialiseMainConnection();
         } catch (java.sql.SQLException e) {
             System.out.println("Error: Could not establish connection with the data base.");
-            System.out.print(e.getMessage());
+            e.printStackTrace();
             System.exit(1);
         }
 
@@ -100,6 +100,6 @@ public class App extends Application {
 
     /** Main method of the program. */
     public static void main(String[] args) throws SQLException {
-        NoelSetup_6Goals.main(new String[1]);
+        //NoelSetup_6Goals.main(new String[1]);
         launch(args); }
 }

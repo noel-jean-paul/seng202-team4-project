@@ -134,7 +134,7 @@ public class Goal implements Comparable<Goal> {
         this.progress = progress;
     }
 
-    /* Set without updating the database */
+    /**Set without updating the database */
     public void updateProgressValue(double progress) {
         this.progress = progress;
     }

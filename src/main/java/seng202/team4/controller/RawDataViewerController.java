@@ -2,30 +2,24 @@ package seng202.team4.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
-
-import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
 /**
- * Controller for the raw data viewer popup
+ * Controller for the raw data viewer popup, which displays the data rows for the selected activity
  */
 public class RawDataViewerController extends Controller {
 
@@ -126,11 +120,12 @@ public class RawDataViewerController extends Controller {
     private String date;
 
 
-    /** Constructor for the raw data viewer. A new raw data viewer is created everytime view raw data is selected for
-     *   an activity.
-     *
+    /**
+     * Constructor for the raw data viewer. A new raw data viewer is created everytime view raw data is selected for
+     * an activity.
      * @param applicationStateManager the application state manager of the application
-     * @param activity the current selected activity, of which we wish to view the raw data
+     * @param activity the selected activity to show the data rows of
+     * @param activityTabController the controller of the activity tab
      */
     public RawDataViewerController(ApplicationStateManager applicationStateManager, Activity activity, ActivityTabController activityTabController) {
         super(applicationStateManager);
@@ -196,6 +191,7 @@ public class RawDataViewerController extends Controller {
                 elevationTextField.setText((Double.toString(newSelection.getElevation())));
 
                 String date = dateDatePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                //sets the values of all fields initially, to be compared later
                 prevDate = date;
                 prevTime = timeTextField.getText();
                 prevHeartRate = heartRateTextField.getText();
@@ -321,7 +317,7 @@ public class RawDataViewerController extends Controller {
             }
         } else {
             errorMessage.setText("");
-            if (buttonType == 1) {  // Add row case
+            if (buttonType == 1) {  // User wants to add a row
                 try {
                     int rowNum = maxRowNum + 1;
                     DataRow newRow = new DataRow(rowNum, date, timeTextField.getText(), Integer.parseInt(heartRateTextField.getText()),
@@ -332,7 +328,7 @@ public class RawDataViewerController extends Controller {
                 } catch (java.sql.SQLException e) {
                     GuiUtilities.displayErrorMessage("An SQL exception was raised", e.getMessage());
                 }
-            } else {    // Edit row case
+            } else {    // User wants to edit the current row
                 try {
                     dataRowTable.getSelectionModel().getSelectedItem().setDate(date);
                     dataRowTable.getSelectionModel().getSelectedItem().setTime(timeTextField.getText());
@@ -351,7 +347,7 @@ public class RawDataViewerController extends Controller {
 
     /**
      * Checks to see if the row to be added is a valid row
-     * @returns a boolean of whether or not the row can be added
+     * @return a boolean of whether or not the row can be added
      */
     public boolean isValidAddition() {
         boolean isValidAddition = false;
@@ -373,7 +369,7 @@ public class RawDataViewerController extends Controller {
     @FXML
     public void deleteRows() {
             List<DataRow> selectedRows = new ArrayList<>(dataRowTable.getSelectionModel().getSelectedItems());
-            if (dataRowTable.getItems().size() - selectedRows.size() < 2) {
+            if (dataRowTable.getItems().size() - selectedRows.size() < 2) { //check that there are at least two rows in the data row list
                 errorMessage.setText("You cannot have less than two data rows in an activity");
             } else {
                 try {

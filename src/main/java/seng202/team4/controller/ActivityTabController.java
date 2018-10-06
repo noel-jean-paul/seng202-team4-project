@@ -23,6 +23,7 @@ import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
 import seng202.team4.model.data.DisplayMetrics.SpeedDisplayMetric;
 import seng202.team4.model.data.enums.ActivityType;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -147,7 +148,10 @@ public class ActivityTabController extends Controller {
         mapPane = GuiUtilities.loadPane("Maps.fxml", mapsController);
     }
 
-    /** Initializes the activity tab. */
+    /**
+     * Initializes the activity tab, creating the table as well as the context menu containing the options
+     * to delete the an activity or view the raw data of that activity
+     */
     @FXML
     public void initialize() {
         activityTable.setPlaceholder(new Text("No activities have been added yet."));
@@ -170,29 +174,28 @@ public class ActivityTabController extends Controller {
 
         ContextMenu tableRowMenu = new ContextMenu();
 
+        //adds the option to delete the selected activity to the context menu
         MenuItem deleteActivityItem = new MenuItem("Delete");
         deleteActivityItem.setOnAction(event -> {
-            try {
-                applicationStateManager.getCurrentProfile().removeActivity((Activity) activityTable.getSelectionModel().getSelectedItem());
-                updateTable();
-            } catch (java.sql.SQLException e){
-                GuiUtilities.displayErrorMessage("Failed to remove Activity.", "");
-                e.printStackTrace();
-                System.out.println("Could not remove activity from the data base.");
-            }
+            Activity activity = (Activity) activityTable.getSelectionModel().getSelectedItem(); //gets the activity to be deleted
+
+            Pane activityDeletionPopup = GuiUtilities.loadPane("ActivityDeletionConfirmation.fxml",
+                    new ActivityDeletionConfirmationController(applicationStateManager, this, activity));   //calls the pane which allows the user to confirm deletion selection
+            applicationStateManager.displayPopUp(activityDeletionPopup);
         });
 
-
+        //adds the option to view the raw data of the selected activity to the context menu
         MenuItem displayRawData = new MenuItem("View Raw Data Rows");
         displayRawData.setOnAction(event -> {
             Activity selectedActivity = (Activity) activityTable.getSelectionModel().getSelectedItem();
             if (selectedActivity != null) {
+                //opens the pane displaying the raw data
                 Pane rawDataViewerPopup = GuiUtilities.loadPane("RawDataViewer.fxml", new RawDataViewerController(applicationStateManager, selectedActivity, this));
                 applicationStateManager.displayPopUp(rawDataViewerPopup);
             }
         });
 
-
+        //adds the options defined above to the context menu
         tableRowMenu.getItems().add(deleteActivityItem);
         tableRowMenu.getItems().add(displayRawData);
 

@@ -21,36 +21,42 @@ import java.util.List;
  */
 public class ActivityPopUpScreenController extends Controller {
 
+    /** The anchor pane of the graph popup screen */
     @FXML
     private AnchorPane popupPrompt;
 
+    /**The radio button, which when selected displays the heart rate graph */
     @FXML
     private RadioButton heartRateButton;
 
+    /**The radio button, which when selected displays the distance graph */
     @FXML
     private RadioButton distanceButton;
 
+    /**The graph displaying the distance data */
     @FXML
     private LineChart<?, ?> heartRateGraph;
 
+    /** The graph displaying the heart rate data */
     @FXML
     private LineChart<?, ?> distanceGraph;
 
-    @FXML
-    private NumberAxis heartRateYAxis;
-
+    /**The activity being displayed in the graphs */
     private Activity activity;
 
     /**
-     * Constructor for the ActivityPopUpScreenController.
      *
-     * @param applicationStateManager The ApplicationStateManager of the application.
+     * @param applicationStateManager the application state manager of the program
+     * @param activity the activity that will be displayed in the graphs
      */
     public ActivityPopUpScreenController(ApplicationStateManager applicationStateManager, Activity activity) {
         super(applicationStateManager);
         this.activity = activity;
     }
 
+    /**
+     * Initialises the popup, setting selected buttons in order to display correct graphs
+     */
     @FXML
     public void initialize() {
         int size = activity.getRawData().size();
@@ -73,8 +79,6 @@ public class ActivityPopUpScreenController extends Controller {
     /**
      * Loads the heart rate graph with the correct data for the selected activity, by giving the heart rate at each minute
      * during the activity
-     * //@ToDo could be improved by taking care of the case when the activity lasts less than a minute, currently just gives a single point
-     * //@ToDo could also make it so heart rate y axis doesn't start from zero but from the minimum heart rate in the list
      */
     @FXML
     public void displayHeartRateGraph() {
@@ -86,25 +90,25 @@ public class ActivityPopUpScreenController extends Controller {
 
 
         List<DataRow> dataRow = activity.getRawData();
-        heartRateGraph.setTitle("Heart rate during " + activity.getName()); //sets the title of the
+        heartRateGraph.setTitle("Heart rate during " + activity.getName()); //sets the title of the graph
         LocalTime startTime = activity.getStartTime(); //gets the start time of activity
 
         long timeSeconds = 0;
         double timeSecDouble;
         double timeMinutes; //keeps track of the current minute
         long previousTime = -1; //sets previous time to -1, to avoid clashes with starting time which is always going to be 0
-        XYChart.Series set1 = new XYChart.Series<>();
+        XYChart.Series set1 = new XYChart.Series<>(); //creates the graph
 
         for (DataRow row : dataRow) {
-            timeSeconds = Duration.between(startTime, row.getTime()).getSeconds();
+            timeSeconds = Duration.between(startTime, row.getTime()).getSeconds(); //converts time to seconds
             if (timeSeconds != previousTime) {
                 String strSec = Long.toString(timeSeconds);
                 timeSecDouble = Double.parseDouble(strSec);
-                timeMinutes = timeSecDouble / 60.0;
+                timeMinutes = timeSecDouble / 60.0; //converts time to minutes
                 timeMinutes = Double.parseDouble(new DecimalFormat("##.##").format(timeMinutes));
                 String strLong = Double.toString(timeMinutes);
 
-                set1.getData().add(new XYChart.Data(strLong, row.getHeartRate()));
+                set1.getData().add(new XYChart.Data(strLong, row.getHeartRate()));  //adds all data to the graph
             }
             previousTime = timeSeconds;
         }
@@ -117,7 +121,6 @@ public class ActivityPopUpScreenController extends Controller {
      * Loads the distance travelled graph, giving the distance travelled between each data point
      *
      */
-    // TODO: 4/10/18 Rather than showing the distance between each data point, will be better to make it between each minute, more difficult
     @FXML
     void displayDistanceGraph() {
         distanceGraph.getData().clear();
@@ -127,10 +130,10 @@ public class ActivityPopUpScreenController extends Controller {
         distanceGraph.setVisible(true);
 
 
-        distanceGraph.setTitle("Distance Travelled During " + activity.getName());
+        distanceGraph.setTitle("Distance Travelled During " + activity.getName());  //sets the title
         List<DataRow> dataRow = activity.getRawData();
 
-        XYChart.Series set2 = new XYChart.Series<>();
+        XYChart.Series set2 = new XYChart.Series<>(); //creates the graph
 
         LocalTime startTime = dataRow.get(0).getTime();
         long timeSeconds;
@@ -139,11 +142,11 @@ public class ActivityPopUpScreenController extends Controller {
 
         for (int i = 0; i < dataRow.size(); i += 1) {
             List<DataRow> twoPoints = dataRow.subList(0, i + 1);
-            double distance = seng202.team4.model.utilities.DataProcessor.totalDistance(twoPoints);
-            timeSeconds = Duration.between(startTime, dataRow.get(i).getTime()).getSeconds();
+            double distance = seng202.team4.model.utilities.DataProcessor.totalDistance(twoPoints); //calculates the distance between the first point and the current point in the data list
+            timeSeconds = Duration.between(startTime, dataRow.get(i).getTime()).getSeconds();   //gets seconds
             String strSec = Long.toString(timeSeconds);
             timeSecDouble = Double.parseDouble(strSec);
-            timeMinutes = timeSecDouble / 60.0;
+            timeMinutes = timeSecDouble / 60.0; //converts to minutes
             timeMinutes = Double.parseDouble(new DecimalFormat("##.##").format(timeMinutes));
             String strLong = Double.toString(timeMinutes);
 
@@ -155,13 +158,15 @@ public class ActivityPopUpScreenController extends Controller {
         distanceGraph.getData().addAll(set2);
     }
 
-
+    /**
+     * calls the method to close the popup
+     */
     @FXML
     public void cancel() {
         closePopup();
     }
 
-    /** Closes the prompt pop up. */
+    /** Closes the pop up. */
     private void closePopup () {
         applicationStateManager.closePopUP(popupPrompt);
     }
