@@ -14,6 +14,7 @@ import seng202.team4.model.data.GoalListPair;
 import seng202.team4.view.CurrentGoalRowItem;
 import seng202.team4.view.GoalRowItem;
 import seng202.team4.view.PastGoalRowItem;
+import sun.plugin2.message.GetAppletMessage;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -259,16 +260,6 @@ public class GoalsTabController extends Controller {
         totalAmountText.setText(selectedGoal.getAmountDescription("total"));
     }
 
-    /** Remove a goalRow from the display and the GoalRow list it is contained in
-     *
-     * @param goalRow the goalRow to be removed
-     */
-    private void removeGoalRow(GoalRowController goalRow) {
-        // vbox.getChildren().remove(goalRow);
-        // remove from a list based on whether the goal it wraps is current or past
-        // TODO: 3/10/18 Noel Bisson - implement
-    }
-
     @FXML
     void addGoal() {
 
@@ -284,9 +275,22 @@ public class GoalsTabController extends Controller {
 
     }
 
+    /** Delete the currently selected goal from the profile's goals and redisplay the goal table it is contained in */
     @FXML
     void deleteGoal() {
-
+        Goal selected = selectedGoalRow.getGoal();
+        try {
+            if (selected.isCurrent()) {
+                applicationStateManager.getCurrentProfile().removeCurrentGoal(selected);
+                updateCurrentGoalRowTable();
+            } else {
+                applicationStateManager.getCurrentProfile().removePastGoal(selected);
+                displayPastGoalRowTable();
+            }
+        } catch (SQLException e) {
+            GuiUtilities.displayErrorMessage("An error occurred regarding the database when deleting", "");
+            e.printStackTrace();
+        }
     }
 
     @FXML
