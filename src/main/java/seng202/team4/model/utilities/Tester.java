@@ -1,22 +1,22 @@
 package seng202.team4.model.utilities;
 
-import java.net.InetSocketAddress;
-import java.net.Socket;
-
 public class Tester {
 
     public static void main(String args[])
     {
-        try{
-            String host="www.google.com";
-            int port=80;
-            int timeOutInMilliSec= 200;// 5 Seconds
-            Socket socket = new Socket();
-            socket.connect(new InetSocketAddress(host, port), timeOutInMilliSec);
-            System.out.println("Internet is Available");
-        }
-        catch(Exception ex){
-            System.out.println("No Connectivity");
+        try {
+            String OS = System.getProperty("os.name");
+            Process pingProcess;
+            if (OS.contains("Windows")) {
+                pingProcess = java.lang.Runtime.getRuntime().exec("ping -n 2 -w 200 www.google.com");
+            } else {
+                pingProcess = java.lang.Runtime.getRuntime().exec("ping -c 2 -w 400 www.google.com");
+            }
+            int returnVal = pingProcess.waitFor();
+            boolean reachable = (returnVal == 0);
+            System.out.println("Works yo: " + reachable);
+        } catch (Exception e) {
+            System.out.println("Doesn't work yo");
         }
     }
 }
