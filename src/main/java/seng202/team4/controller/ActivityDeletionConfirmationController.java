@@ -1,17 +1,15 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
-import seng202.team4.model.database.DataStorer;
 
-import java.sql.SQLException;
 
 /** Controller class for the activity deletion confirmation box */
 public class ActivityDeletionConfirmationController extends Controller {
 
+    /** The anchor pane of the of the popup */
     @FXML
     private AnchorPane rootPane;
 
@@ -21,7 +19,12 @@ public class ActivityDeletionConfirmationController extends Controller {
     /** The activity tab controller of the activities tab */
     private ActivityTabController activityTabController;
 
-    /** Creates a new activity deletion controller with the given ApplicationStateManager. */
+    /**
+     *
+     * @param applicationStateManager of the program
+     * @param actityTabController the activity tab controller, containing the table to be updated after deletion
+     * @param activity the activity being deleted
+     */
     public ActivityDeletionConfirmationController(ApplicationStateManager applicationStateManager,
                                                   ActivityTabController actityTabController, Activity activity) {
         super(applicationStateManager);
