@@ -264,8 +264,11 @@ public class Goal implements Comparable<Goal> {
         description = "";
 
         if (goal.isDistanceGoal()) {
-            description = String.format("%s %.0f meters", goal.getType().toString(),
-                    goal.getGoalDistance() * 1000);    // Convert kms to meters
+            // Describe the type of the goal, Walk or Run
+            description = String.format("%s ", goal.getType());
+            // Use the distanceDisplayMetric class to format the distance value part of the string
+            DistanceDisplayMetric distanceDisplayMetric = new DistanceDisplayMetric(goal.getGoalDistance() * 1000);   // Pass a meter value for distance
+            description += distanceDisplayMetric.toString();
         } else if (goal.isDurationGoal()) {
             // Get unit of the number of hours
             String dayUnit = getHourUnit(goal.getGoalDuration());

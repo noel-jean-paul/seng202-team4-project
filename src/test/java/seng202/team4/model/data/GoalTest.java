@@ -171,13 +171,26 @@ public class GoalTest {
     }
 
     @Test
-    public void generateDescription_running_distanceGoal() {
-        // Create a new running distance goal
+    public void generateDescription_running_distanceGoal_kmDistance() {
+        // Create a new running distance goal with a distance more than 1km
         Goal goal = new Goal(2, 99, GoalType.Run,"2018-09-28", "2017-01-12",
                 14.0);
         // Create the real and expected descriptions
         description = goal.getDescription();
-        expectedDescription = "Run 14000 meters";
+        expectedDescription = "Run 14.0 km";
+
+        // Check that the real and expected descriptions match
+        assertEquals(expectedDescription, description);
+    }
+
+    @Test
+    public void generateDescription_running_distanceGoal_meterDistance() {
+        // Create a new running distance goal
+        Goal goal = new Goal(2, 99, GoalType.Run,"2018-09-28", "2017-01-12",
+                0.2);
+        // Create the real and expected descriptions
+        description = goal.getDescription();
+        expectedDescription = "Run 200 m";
 
         // Check that the real and expected descriptions match
         assertEquals(expectedDescription, description);
