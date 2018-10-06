@@ -64,9 +64,33 @@ public class GoalsTabController extends Controller {
     @FXML
     private Text noGoalSelectedText;
 
-    /* The scroll pane containing the goals */
+    /** The scroll pane containing the goals */
     @FXML
     private ScrollPane scrollPane;
+
+    /** The start date heading for the goal information. */
+    @FXML
+    private Text startDateHeading;
+
+    /** The expiry date heading for the goal information. */
+    @FXML
+    private Text expiryDateHeading;
+
+    /** The remaining time heading for the goal information. */
+    @FXML
+    private Text remainingTimeHeading;
+
+    /** The current amount heading for the goal information. */
+    @FXML
+    private Text currentAmountHeading;
+
+    /** The required amount heading for the goal information. */
+    @FXML
+    private Text requiredAmountHeading;
+
+    /** The header for the expiry/completion field of the table. */
+    @FXML
+    private Text expiryCompletionDate;
 
     /** The currently selected goal. */
     private CurrentGoalRowItem selectedGoalRow = null;
@@ -145,8 +169,6 @@ public class GoalsTabController extends Controller {
 
 
         }
-
-
     }
 
     /* Query the goal lists of the currentProfile and update the goal tables to display their contents */
@@ -163,7 +185,6 @@ public class GoalsTabController extends Controller {
         // If there is a goal row selected, deselect it
         if (selectedGoalRow != null) {
             selectedGoalRow.deselect();
-            System.out.println("deselected");
         }
         // Select the new row
         selectedGoalRow = goalRow;
@@ -175,6 +196,9 @@ public class GoalsTabController extends Controller {
     private void displayGoalInformation() {
         // Hide the no goal selected text
         noGoalSelectedText.setText("");
+
+        // Show goal information headings.
+        showHeadings();
 
         // Get the goal which the selectedGoalRow wraps
         Goal selectedGoal = selectedGoalRow.getGoal();
@@ -200,7 +224,7 @@ public class GoalsTabController extends Controller {
      * @param goalRow the goalRow to be removed
      */
     private void removeGoalRow(CurrentGoalRowController goalRow) {
-        //vbox.getChildren().remove(goalRow);
+        // vbox.getChildren().remove(goalRow);
         // remove from a list based on whether the goal it wraps is current or past
         // TODO: 3/10/18 Noel Bisson - implement
     }
@@ -220,6 +244,9 @@ public class GoalsTabController extends Controller {
 
     }
 
+    /**
+     * Resets the Goals tab by clearing all information on the selected activity.
+     */
     public void reset() {
         selectedGoalRow = null;
         goalProgressIndicator.setProgress(0);
@@ -232,6 +259,30 @@ public class GoalsTabController extends Controller {
         currentAmountText.setText("");
         totalAmountText.setText("");
         noGoalSelectedText.setText("No Goal Selected");
+
+        hideHeadings();
+    }
+
+    /**
+     * Hides all the headings for the goal information table.
+     */
+    private void hideHeadings() {
+        startDateHeading.setVisible(false);
+        expiryDateHeading.setVisible(false);
+        remainingTimeHeading.setVisible(false);
+        currentAmountHeading.setVisible(false);
+        requiredAmountHeading.setVisible(false);
+    }
+
+    /**
+     * Shows all the headings for the goal information table.
+     */
+    private void showHeadings() {
+        startDateHeading.setVisible(true);
+        expiryDateHeading.setVisible(true);
+        remainingTimeHeading.setVisible(true);
+        currentAmountHeading.setVisible(true);
+        requiredAmountHeading.setVisible(true);
     }
 
     /** Getter for the SelectedGoalRow
