@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
@@ -14,6 +15,7 @@ import seng202.team4.model.data.GoalListPair;
 import seng202.team4.view.CurrentGoalRowItem;
 import seng202.team4.view.GoalRowItem;
 import seng202.team4.view.PastGoalRowItem;
+
 import java.sql.SQLException;
 
 
@@ -101,11 +103,28 @@ public class GoalsTabController extends Controller {
     @FXML
     private Text expiryCompletionDate;
 
+    /** VBox that holds the total field Text/TextField. */
+    @FXML
+    private VBox totalVbox;
+
+    /** VBox that holds the expiry date field Text/TextField. */
+    @FXML
+    private VBox expiryDateVbox;
+
+    /** TextField for entering the amount that is need to complete a goal. */
+    private TextField totalAmountTextField;
+
+    /** TextField for entering the expiry date of a goal. */
+    private TextField expiryDateTextField;
+
     /** The currently selected goal. */
     private GoalRowItem selectedGoalRow = null;
 
     /** Boolean representing if the current goals or the past goals are currently populating the goal tab table */
     private boolean currentGoalTableDisplayed = true;
+
+    /** Boolean representing if the user is currently editing a goal. */
+    private boolean isEditing = false;
 
     /**
      * Constructor for the Goals Tab Controller.
@@ -120,8 +139,12 @@ public class GoalsTabController extends Controller {
     /** Initializes the goals tab. */
     @FXML
     public void initialize() {
-        // reset the top goal bar to have no goal information displayed
+        // Reset the top goal bar to have no goal information displayed
         reset();
+
+        // Create new text field for when the user chooses to edit a goal.
+        totalAmountTextField = new TextField();
+        expiryDateTextField = new TextField();
     }
 
     /** Display notications of the goals which were expired and completed
@@ -267,6 +290,21 @@ public class GoalsTabController extends Controller {
 
     @FXML
     void edit() {
+        if (!isEditing) {
+            // Sets the text of the text field to whats being displayed in the text.
+            totalAmountTextField.setText(totalAmountText.getText());
+            expiryDateTextField.setText(expiryDateText.getText());
+
+            // Changes the Text to TextFields.
+            totalVbox.getChildren().setAll(totalAmountTextField);
+            expiryDateVbox.getChildren().setAll(expiryDateTextField);
+            isEditing = true;
+        } else {
+            // Changes the TextFields back to Text.
+            totalVbox.getChildren().setAll(totalAmountText);
+            expiryDateVbox.getChildren().setAll(expiryDateText);
+            isEditing = false;
+        }
 
     }
 

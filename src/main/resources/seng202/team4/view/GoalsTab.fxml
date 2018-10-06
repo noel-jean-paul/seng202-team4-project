@@ -98,7 +98,7 @@
                                  </VBox.margin></Text>
                            </children>
                         </VBox>
-                        <VBox fx:id="expireryDateVbox" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <VBox fx:id="expiryDateVbox" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
                               <Text fx:id="expiryDateText" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry Date">
                                  <VBox.margin>
