@@ -310,7 +310,7 @@ public class RawDataViewerController extends Controller {
         } else if (!isValidLongitude) {
             errorMessage.setText("Longitude must be between " + DataRow.minLongitude + " and " + DataRow.maxLongitude);
         } else if (!isValidElevation) {
-            errorMessage.setText("Longitude must be between " + DataRow.minElevation + " and " + DataRow.maxElevation);
+            errorMessage.setText("Elevation must be between " + DataRow.minElevation + " and " + DataRow.maxElevation);
         } else if (!isValidAddition()) {
             if (buttonType == 1) {
                 errorMessage.setText("You cannot add a row that already exists");
