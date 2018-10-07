@@ -7,6 +7,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
@@ -22,6 +23,7 @@ import seng202.team4.view.PastGoalRowItem;
 
 import java.sql.SQLException;
 import java.time.Duration;
+import java.time.LocalDate;
 
 
 /**
@@ -260,9 +262,13 @@ public class GoalsTabController extends Controller {
      * @param goalRow the goalRow to select
      */
     private void changeSelectedGoalRow(GoalRowItem goalRow) {
+
         // If there is a goal row selected, deselect it
         if (selectedGoalRow != null) {
             selectedGoalRow.deselect();
+            if (selectedGoalRow != goalRow) {
+                turnEditingOff();
+            }
         }
         // Select the new row
         selectedGoalRow = goalRow;
@@ -302,9 +308,15 @@ public class GoalsTabController extends Controller {
         totalAmountText.setText(selectedGoal.getAmountDescription("total"));
     }
 
+    /**
+     * Called when the user clicks the add goal button.
+     *
+     * Displays the add goal popup.
+     */
     @FXML
     void addGoal() {
-
+        Pane addGoalPopUp = GuiUtilities.loadPane("AddGoalPopUp.fxml", new AddGoalPopUpController(applicationStateManager, this));
+        applicationStateManager.displayPopUp(addGoalPopUp);
     }
 
     @FXML
@@ -312,6 +324,9 @@ public class GoalsTabController extends Controller {
 
     }
 
+    /**
+     * Is called when the user clicks the edit/done button.
+     */
     @FXML
     void edit() {
         if (!isEditing) {
@@ -418,15 +433,26 @@ public class GoalsTabController extends Controller {
             }
 
             if (updateSuccessful) {
-                try {
-                    selectedGoalRow.getGoal().setExpiryDate(expiryDatePicker.getValue().toString());
-                    turnEditingOff();
-                } catch (java.sql.SQLException e) {
-                    GuiUtilities.displayErrorMessage("Failed to update goal.", "");
-                    e.printStackTrace();
+                LocalDate minGoalExpiryDate = selectedGoalRow.getGoal().getCreationDate().plusDays(Goal.MIN_GOAL_PERIOD);
+                if (minGoalExpiryDate.compareTo(LocalDate.now()) < 0) {
+                    minGoalExpiryDate = LocalDate.now();
+                }
+                System.out.println(expiryDatePicker.getValue());
+                if (expiryDatePicker.getValue().compareTo(minGoalExpiryDate) < 0 || expiryDatePicker.getValue().compareTo(selectedGoalRow.getGoal().getCreationDate().plusDays(Goal.MAX_GOAL_PERIOD)) > 0) {
+                    errorText.setText(String.format("Expiry must be between %s and %s", minGoalExpiryDate, selectedGoalRow.getGoal().getCreationDate().plusDays(Goal.MAX_GOAL_PERIOD)));
+                } else {
+                    try {
+                        selectedGoalRow.getGoal().setExpiryDate(expiryDatePicker.getValue().toString());
+                        turnEditingOff();
+                    } catch (java.sql.SQLException e) {
+                        GuiUtilities.displayErrorMessage("Failed to update goal.", "");
+                        e.printStackTrace();
+                    }
                 }
 
             }
+
+
         }
 
     }
