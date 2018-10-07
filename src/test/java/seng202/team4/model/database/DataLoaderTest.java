@@ -2,7 +2,7 @@ package seng202.team4.model.database;
 
 import org.junit.*;
 import seng202.team4.model.data.*;
-import seng202.team4.model.data.Keys.ProfileKey;
+import seng202.team4.model.data.keys.ProfileKey;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
 

@@ -1,6 +1,6 @@
 package seng202.team4.model.data;
 
-import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
+import seng202.team4.model.data.displaymetrics.DistanceDisplayMetric;
 import seng202.team4.model.data.enums.GoalFields;
 import seng202.team4.model.data.enums.GoalType;
 import seng202.team4.model.database.DataUpdater;

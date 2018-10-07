@@ -9,7 +9,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import seng202.team4.App;
 import seng202.team4.GuiUtilities;
-import seng202.team4.controller.GoalTab.GoalsTabController;
+import seng202.team4.controller.activitytab.ActivityTabController;
+import seng202.team4.controller.goaltab.GoalsTabController;
+import seng202.team4.controller.healthtab.HealthTabController;
+import seng202.team4.controller.hometab.HomeTabController;
+import seng202.team4.controller.profile.ProfileScreenController;
 
 import java.net.URL;
 
@@ -140,6 +144,7 @@ public class MainScreenController extends Controller {
     @FXML
     void goalTabSelected() {
         onGoalsTab = !onGoalsTab;   // Toggle the boolean keeping track of whether the goals tab is being displayed
+
         goalsTabController.displayGoalTable();
     }
 

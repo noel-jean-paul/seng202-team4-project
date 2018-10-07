@@ -8,7 +8,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import seng202.team4.App;
-import seng202.team4.controller.ActivityConfirmationRowController;
+import seng202.team4.controller.activityimport.ActivityConfirmationRowController;
 import seng202.team4.model.data.Activity;
 
 /** The confirmation row that is displayed when activities are imported */
