@@ -280,7 +280,7 @@ public class GoalsTabController extends Controller {
     }
 
     /**
-     * Changes the selected goalRow
+     * Changes the selected goalRow to the one pased in
      *
      * @param goalRow the goalRow to select
      */
@@ -293,19 +293,29 @@ public class GoalsTabController extends Controller {
                 turnEditingOff(true);
             }
         }
+
         // Select the new row
         selectedGoalRow = goalRow;
         displayGoalInformation();
         selectedGoalRow.select();
+
     }
+
+    /** Clear the selected goal row if there is one selected */
+    private void clearSelectedGoalRow() {
+        // If there is a goal row selected, deselect it and clear the selectedGoalRow field
+        if (selectedGoalRow != null) {
+            selectedGoalRow.deselect();
+            selectedGoalRow = null;
+        }
+    }
+
 
     /** Fill the goal header with information about the goal which currently selected goal row wraps */
     private void displayGoalInformation() {
-
-        // Get the currently selected goal.
-        Goal selectedGoal = getSelectedGoal();
-
-        if (selectedGoal != null) {
+        if (selectedGoalRow != null) {
+            // Get the currently selected goal.
+            Goal selectedGoal = getSelectedGoal();
             // Hide the no goal selected text
             noGoalSelectedText.setText("");
 
@@ -374,9 +384,12 @@ public class GoalsTabController extends Controller {
     void toggleCalendarView() {
         // Clears selected goal.
         clearGoalInformation();
-        if (selectedGoalRow != null) {
-            selectedGoalRow.deselect();
-        }
+
+        // Deselect the selected goal in the list if there is one selected
+        clearSelectedGoalRow();
+//        if (selectedGoalRow != null) {
+//            selectedGoalRow.deselect();
+//        }
 
         if (!isCalendarView) {
             // If a goal in the calendar is clicked then information on the goal should be displayed.
