@@ -1,5 +1,8 @@
 package seng202.team4.model.data;
 
+import seng202.team4.model.data.DisplayMetrics.CalorieDisplayMetric;
+import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
+import seng202.team4.model.data.DisplayMetrics.SpeedDisplayMetric;
 import seng202.team4.model.data.enums.ActivityFields;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.WarningType;
@@ -14,20 +17,41 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-public class Activity implements Comparable<Activity> {
+public class Activity implements Comparable<Activity>, CalendarItem {
 
     /** Keywords that indicate an Activity is a walk.*/
-    private static String[] walkKeyWords = {"walk", "hike", "stroll", "hiking"};
+    private static final String[] walkKeyWords = {"walk", "hike", "stroll", "hiking"};
     /** Keywords that indicate an Activity is a run.*/
-    private static String[] runKeyWords = {"run", "ran", "jog"};
+    private static final String[] runKeyWords = {"run", "ran", "jog", "jogged"};
 
-    /* The combination of name and date must be unique for a profile */
+    /** The minimum distance for an Activity. */
+    public static final double MINIMUM_DISTANCE = 10;
+
+    /** The maximum distance for an Activity. */
+    public static final double MAXIMUM_DISTANCE = 1000000;
+
+    /** The minimum name size for an Activity. */
+    public static final int MINIMUM_NAME_SIZE_ = 2;
+
+    /** The maximum name size for an Activity. */
+    public static final int MAXIMUM_NAME_SIZE = 50;
+
+    /** The minimum valid date for an activity. */
+    public static final LocalDate MINIMUM_DATE = LocalDate.of(1900, 1, 1);
+
+    /** The minimum duration of an activity. */
+    public static final Duration MINIMUM_DURATION = Duration.ofMinutes(1);
+
+    /** The maximum duration of an activity. */
+    public static final Duration MAXIMUM_DURATION = Duration.ofHours(96);
+
+    /**The combination of name and date must be unique for a profile */
     private String name;
     private LocalDate date;
     private ActivityType type;
     private LocalTime startTime;
     private Duration duration;
-    private double distance;
+    private double distance;    // Total distance travelled in the activity in meters
     private double caloriesBurned;
     private double averageSpeed;
     private List<DataRow> rawData;
@@ -71,15 +95,40 @@ public class Activity implements Comparable<Activity> {
         this.name = name;
         this.rawData = rawActivityList;
         java.util.Collections.sort(this.rawData);   // ensure the data is in order
-        this.date = (rawActivityList.get(0)).getDate();
-        this.startTime = (rawActivityList.get(0)).getTime();
-        this.distance = DataProcessor.totalDistance(rawActivityList);
-        this.duration = DataProcessor.calculateDuration(rawActivityList);
+
+        this.date = this.rawData.get(0).getDate();
+        this.startTime = (this.rawData.get(0)).getTime();
+        this.distance = DataProcessor.totalDistance(this.rawData);
+        this.duration = DataProcessor.calculateDuration(this.rawData);
         this.averageSpeed = DataProcessor.calculateAverageSpeed(distance, this.duration);
         this.type = findActivityType(name);
-        this.avgHeartRate = calculateAvgHeartRate();
-        this.minHeartRate = calculateMinHeartRate();
-        this.maxHeartRate = calculateMaxHeartRate();
+        updateHeartRateAttributes();
+    }
+
+    /** Update the activity attributes
+     *  Used by the raw data editor
+     *
+     * @throws SQLException if an error occurred regarding the database
+     */
+    public void updateActivity() throws SQLException {
+        // Only update the data if there are at least 2 datarows to prevent IndexOutOfBounds Exceptions
+        if (rawData.size() >= 2) {
+            setDate(this.rawData.get(0).getDate().toString());
+            setStartTime(this.rawData.get(0).getTime().toString());
+            setDistance(DataProcessor.totalDistance(this.rawData));
+            setDuration(DataProcessor.calculateDuration(this.rawData).toString());
+            setAverageSpeed(DataProcessor.calculateAverageSpeed(distance, this.duration));
+            setCaloriesBurned(DataProcessor.calculateCalories(this.averageSpeed, this.duration.getSeconds(), this.type, this.getOwner()));
+            setType(findActivityType(name));
+            updateHeartRateAttributes();
+        }
+    }
+
+    /**Recalculate and update the min, max and average heart rates of the activity. */
+    private void updateHeartRateAttributes() {
+        avgHeartRate = calculateAvgHeartRate();
+        minHeartRate = calculateMinHeartRate();
+        maxHeartRate = calculateMaxHeartRate();
     }
 
     /**
@@ -164,6 +213,11 @@ public class Activity implements Comparable<Activity> {
         return date;
     }
 
+    @Override
+    public String getDisplayString() {
+        return getType() + " Activity";
+    }
+
     /**
      * Sets the date of the Activity and updates it in the database.
      *
@@ -174,6 +228,8 @@ public class Activity implements Comparable<Activity> {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.activityDate.toString(), date, true);
         this.date = LocalDate.parse(date);
+        // Sort the activities which this activity belongs to as its order within the list may have changed
+        Collections.sort(owner.getActivityList());
     }
 
     /**
@@ -194,6 +250,8 @@ public class Activity implements Comparable<Activity> {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.startTime.toString(), startTime, false);
         this.startTime = LocalTime.parse(startTime);
+        // Sort the activities which this activity belongs to as its order within the list may have changed
+        Collections.sort(owner.getActivityList());
     }
 
     public Duration getDuration() {
@@ -222,12 +280,12 @@ public class Activity implements Comparable<Activity> {
     }
 
     /** Gets a string of the distance rounded to 0 decimal places. */
-    public String getDistanceDisplayString() {
-        return String.format("%.0f m", distance);
+    public DistanceDisplayMetric getDistanceDisplayMetric() {
+        return new DistanceDisplayMetric(distance);
     }
 
-    public String getCaloriesDisplayString() {
-        return String.format("%.1f", caloriesBurned);
+    public CalorieDisplayMetric getCaloriesDisplayMetric() {
+        return new CalorieDisplayMetric(caloriesBurned);
     }
 
     /** Set and update in database */
@@ -246,8 +304,8 @@ public class Activity implements Comparable<Activity> {
         this.averageSpeed = averageSpeed;
     }
 
-    public String getAverageSpeedDisplayString() {
-        return String.format("%.1f km/h", averageSpeed);
+    public SpeedDisplayMetric getAverageSpeedDisplayMetric() {
+        return new SpeedDisplayMetric(averageSpeed);
     }
 
     public double getCaloriesBurned() {
@@ -338,14 +396,23 @@ public class Activity implements Comparable<Activity> {
         java.util.Collections.sort(rawData);
     }
 
+    /** Remove the dataRows from the rawData list and the database
+     *
+     * @param rows the collection of DataRows to be removed
+     */
+    public void removeDataRows(Collection<DataRow> rows) throws SQLException {
+        rawData.removeAll(rows);
+        DataStorer.deleteDataRows(rows);
+    }
+
     /** Remove the dataRow from the rawData list and the database
      *
      * @param row the dataRow to be removed
      */
-    public void removeDataRow(DataRow row) throws SQLException {
-        rawData.remove(row);
-        DataStorer.deleteDataRows(Collections.singletonList(row));
+    public void removeDataRows(DataRow row) throws SQLException {
+        removeDataRows(Collections.singletonList(row));
     }
+
 
     /**
      * Finds the ActivityType of an Activity from its name.
@@ -402,7 +469,6 @@ public class Activity implements Comparable<Activity> {
         ArrayList<HealthWarning> warnings = new ArrayList<>();
         warnings.add(new HealthWarning(this, owner, WarningType.Tachy, avgHeartRate, minHeartRate, maxHeartRate));
         warnings.add(new HealthWarning(this, owner, WarningType.Brady, avgHeartRate, minHeartRate, maxHeartRate));
-        warnings.add(new HealthWarning(this, owner, WarningType.Cardiovascular, avgHeartRate, minHeartRate, maxHeartRate));
         for (HealthWarning warning : warnings) {
             if (warning.isHealthRisk()) {
                 owner.addWarning(warning);

@@ -1,14 +1,17 @@
 package seng202.team4.controller;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
-import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.CalendarItem;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -36,7 +39,13 @@ public class CalendarViewController extends Controller {
     private int currentYear = 0;
 
     /** The currently selected activity. */
-    private ActivityCalendarItemController selectedActivityCalendarItemController = null;
+    private CalendarItemController selectedCalendarItemController = null;
+
+    /** ArrayList of mouse events to be executed when a calendar item is clicked. */
+    private ArrayList<EventHandler<MouseEvent>> mouseActionsList = new ArrayList<>();
+
+    /** ArrayList of CalendarItems to be displayed in the Calendar. */
+    private ArrayList<CalendarItem> calendarItems = new ArrayList<>();
 
     public CalendarViewController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
@@ -109,22 +118,25 @@ public class CalendarViewController extends Controller {
                     calendarSquare.minWidthProperty().bind(calendarGrid.minWidthProperty().divide(7));
                     calendarSquare.minHeightProperty().bind(calendarGrid.minHeightProperty().divide(numberOfRows));
 
-                    //TODO: Increase the efficiency of this
-                    for (Activity activity: applicationStateManager.getCurrentProfile().getActivityList()) {
-                        if (activity.getDate().equals(LocalDate.of(year, month+1, day))) {
-                            ActivityCalendarItemController activityCalendarItemController = new ActivityCalendarItemController(applicationStateManager, activity);
-                            Pane activityItem = GuiUtilities.loadPane("ActivityCalendarItem.fxml", activityCalendarItemController);
+                    for (CalendarItem calendarItem: calendarItems) {
+                        if (calendarItem.getDate().equals(LocalDate.of(year, month+1, day))) {
+                            CalendarItemController calendarItemController = new CalendarItemController(applicationStateManager, calendarItem, calendarItem.getDisplayString());
+                            Pane activityItem = GuiUtilities.loadPane("CalendarItem.fxml", calendarItemController);
                             calendarSquareController.addItem(activityItem);
 
                             activityItem.prefWidthProperty().bind(calendarSquare.prefWidthProperty());
 
                             activityItem.setOnMouseClicked(event -> {
-                                if (selectedActivityCalendarItemController != null) {
-                                    selectedActivityCalendarItemController.deselect();
+                                if (selectedCalendarItemController != null) {
+                                    selectedCalendarItemController.deselect();
                                 }
-                                selectedActivityCalendarItemController = activityCalendarItemController;
-                                selectedActivityCalendarItemController.select();
+                                selectedCalendarItemController = calendarItemController;
+                                selectedCalendarItemController.select();
                             });
+
+                            for (EventHandler<MouseEvent> eventHandler: mouseActionsList) {
+                                activityItem.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+                            }
                         }
                     }
                 }
@@ -134,15 +146,35 @@ public class CalendarViewController extends Controller {
     }
 
     /**
-     * Gets the selected activity in the calendar.
+     * Gets the selected CalendarItem in the calendar.
      *
-     * @return The selected Activity if one is selected, null otherwise.
+     * @return The selected CalendarItem if one is selected, null otherwise.
      */
-    public Activity getSelectedActivity() {
-        Activity activity = null;
-        if (selectedActivityCalendarItemController != null) {
-            activity = selectedActivityCalendarItemController.getActivity();
+    public CalendarItem getSelectedItem() {
+        CalendarItem item = null;
+        if (selectedCalendarItemController != null) {
+            item = selectedCalendarItemController.getItem();
         }
-        return activity;
+        return item;
+    }
+
+    /** Adds a Mouse Action listener to the Calendar Item. */
+    public void addMouseClickActionToItems(EventHandler<MouseEvent> event) {
+        mouseActionsList.add(event);
+    }
+
+    /** Adds a CalendarItem to the calendar. */
+    public void addCalendarItem(CalendarItem calendarItem) {
+        this.calendarItems.add(calendarItem);
+    }
+
+    /** Refreshes the calendar. */
+    public void refresh() {
+        changeMonth(currentMonth, currentYear);
+    }
+
+    /** Clears the calendar. */
+    public void clearCalendar() {
+        calendarItems.clear();
     }
 }

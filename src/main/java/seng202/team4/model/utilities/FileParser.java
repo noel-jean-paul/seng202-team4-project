@@ -36,7 +36,13 @@ public class FileParser {
             line = bufferedReader.readLine();
             while (line != null) {  //while end of file has not been reached
                 if (line.contains("#")) {   //if the line contains a hash then we know it is a line with the activity name on it
-                    activityName = line.split(csvSplitBy)[1];   //grab the activity name and store it
+                    try {
+                        activityName = line.split(csvSplitBy)[1];   //grab the activity name and store it
+                    } catch (IndexOutOfBoundsException e) {
+                        line = bufferedReader.readLine();
+                        continue;
+                    }
+
 
                     line = bufferedReader.readLine();
                     int rowNumber = 1;
@@ -105,7 +111,7 @@ public class FileParser {
                         Activity activity = new Activity(activityName, rowCopy);
                         skippedActivities.add(activity);
                     }
-                    rows.clear();    //clear the arrayList of rows in preparation for the next lot of data for the next activity
+                    rows.clear();    //clearCalendar the arrayList of rows in preparation for the next lot of data for the next activity
                 } else {
                     line = bufferedReader.readLine();
                 }
@@ -116,26 +122,4 @@ public class FileParser {
         }
         return validActivities;
     }
-
-//    public static void main(String[] args) {
-//        String filename = "seng202_2018_example_data.csv";  //example file for testing purposes
-//        FileParser fileParser = new FileParser();
-//        ArrayList<Activity> validActivities = new ArrayList<>(); // Creates a list of all activities parsed in the file
-//        ArrayList<Activity> warningActivities = new ArrayList<>();
-//        ArrayList<Activity> skippedActivities = new ArrayList<>();
-//        ArrayList<DataRow> rows = new ArrayList<>();
-//        try {
-//            fileParser.parseFileToActivites(new File(filename), validActivities, warningActivities, skippedActivities);
-//        } catch (IOException e) {
-//
-//        }
-//
-//
-//        for(Activity oneActivity : validActivities) {     //print out each activity's name. Purely for testing purposes
-//            System.out.println(oneActivity.getName());
-//            System.out.println(oneActivity.getRawData().size());
-//            System.out.println(oneActivity.getStartTime());
-//        }
-//    }
-
 }

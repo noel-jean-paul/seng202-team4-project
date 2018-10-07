@@ -18,6 +18,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.DisplayMetrics.CalorieDisplayMetric;
+import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
+import seng202.team4.model.data.DisplayMetrics.SpeedDisplayMetric;
 import seng202.team4.model.data.enums.ActivityType;
 
 import java.time.LocalDate;
@@ -114,6 +117,9 @@ public class ActivityTabController extends Controller {
     @FXML
     private Button showGraphsButton;
 
+    /** Pane for the CalendarView. */
+    private Pane calendarView;
+
     /** Boolean that stores whether the table is currently reorderable. */
     private boolean isTableReorderable = true;
 
@@ -125,6 +131,7 @@ public class ActivityTabController extends Controller {
 
     /** Stores whether the calendar view is current being displayed. */
     private boolean isCalendarView = false;
+
 
     /** CalendarViewController of the calendar. */
     private CalendarViewController calendarViewController;
@@ -143,20 +150,24 @@ public class ActivityTabController extends Controller {
         mapPane = GuiUtilities.loadPane("Maps.fxml", mapsController);
     }
 
-    /** Initializes the activity tab. */
+    /**
+     * Initializes the activity tab, creating the table as well as the context menu containing the options
+     * to delete the an activity or view the raw data of that activity
+     */
     @FXML
     public void initialize() {
         activityTable.setPlaceholder(new Text("No activities have been added yet."));
         activityTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Binds the width of the columns to be evenly distributed.
-        nameColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
-        dateColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
-        distanceColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
-        timeColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
-        averageSpeedColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
-        caloriesColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
-        typeColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
+        nameColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        dateColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        distanceColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        timeColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        averageSpeedColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        caloriesColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        typeColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        durationColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
 
         // Sets visibility of summary statistics labels.
         distanceLabel.setVisible(false);
@@ -166,29 +177,28 @@ public class ActivityTabController extends Controller {
 
         ContextMenu tableRowMenu = new ContextMenu();
 
+        //adds the option to delete the selected activity to the context menu
         MenuItem deleteActivityItem = new MenuItem("Delete");
         deleteActivityItem.setOnAction(event -> {
-            try {
-                applicationStateManager.getCurrentProfile().removeActivity((Activity) activityTable.getSelectionModel().getSelectedItem());
-                updateTable();
-            } catch (java.sql.SQLException e){
-                GuiUtilities.displayErrorMessage("Failed to remove Activity.", "");
-                e.printStackTrace();
-                System.out.println("Could not remove activity from the data base.");
-            }
+            Activity activity = (Activity) activityTable.getSelectionModel().getSelectedItem(); //gets the activity to be deleted
+
+            Pane activityDeletionPopup = GuiUtilities.loadPane("ActivityDeletionConfirmation.fxml",
+                    new ActivityDeletionConfirmationController(applicationStateManager, this, activity));   //calls the pane which allows the user to confirm deletion selection
+            applicationStateManager.displayPopUp(activityDeletionPopup);
         });
 
-
+        //adds the option to view the raw data of the selected activity to the context menu
         MenuItem displayRawData = new MenuItem("View Raw Data Rows");
         displayRawData.setOnAction(event -> {
             Activity selectedActivity = (Activity) activityTable.getSelectionModel().getSelectedItem();
             if (selectedActivity != null) {
-                Pane rawDataViewerPopup = GuiUtilities.loadPane("RawDataViewer.fxml", new RawDataViewerController(applicationStateManager, selectedActivity));
+                //opens the pane displaying the raw data
+                Pane rawDataViewerPopup = GuiUtilities.loadPane("RawDataViewer.fxml", new RawDataViewerController(applicationStateManager, selectedActivity, this));
                 applicationStateManager.displayPopUp(rawDataViewerPopup);
             }
         });
 
-
+        //adds the options defined above to the context menu
         tableRowMenu.getItems().add(deleteActivityItem);
         tableRowMenu.getItems().add(displayRawData);
 
@@ -215,20 +225,27 @@ public class ActivityTabController extends Controller {
 
         tableRowMenu.setAutoHide(true);
 
+        // Initialise Calendar view.
+        calendarViewController = new CalendarViewController(applicationStateManager);
+        calendarView = GuiUtilities.loadPane("CalendarView.fxml", calendarViewController);
+
 
     }
 
     /** Updates the contents of the activity Table. */
     public void updateTable() {
+        // Clear the items from the table
+        activityTable.getItems().clear();
+
         ObservableList<Activity> activitiesList = FXCollections.observableArrayList(applicationStateManager.getCurrentProfile().getActivityList());
 
         //Sets where the columns should get their values from.
         nameColumn.setCellValueFactory(new PropertyValueFactory<Activity,String>("name"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<Activity, LocalDate>("date"));
-        distanceColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("distanceDisplayString"));
+        distanceColumn.setCellValueFactory(new PropertyValueFactory<Activity, DistanceDisplayMetric>("distanceDisplayMetric"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<Activity, LocalTime>("startTime"));
-        averageSpeedColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("averageSpeedDisplayString"));
-        caloriesColumn.setCellValueFactory(new PropertyValueFactory<Activity, Double>("caloriesDisplayString"));
+        averageSpeedColumn.setCellValueFactory(new PropertyValueFactory<Activity, SpeedDisplayMetric>("averageSpeedDisplayMetric"));
+        caloriesColumn.setCellValueFactory(new PropertyValueFactory<Activity, CalorieDisplayMetric>("caloriesDisplayMetric"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<Activity, ActivityType>("type"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<Activity, ActivityType>("durationString"));
 
@@ -268,20 +285,36 @@ public class ActivityTabController extends Controller {
     @FXML
     public void toggleCalendarView() {
         if (!isCalendarView) {
-            calendarViewController = new CalendarViewController(applicationStateManager);
-            Pane calendarView = GuiUtilities.loadPane("CalendarView.fxml", calendarViewController);
-            //toggleCalendarView.prefWidthProperty().bind(centerContentPane.widthProperty());
-            //toggleCalendarView.prefHeightProperty().bind(centerContentPane.heightProperty());
+            updateCalendar();
+
+            // Add event to enable buttons if an item in the calendar is clicked.
+            calendarViewController.addMouseClickActionToItems(event -> {
+                showMapsButton.setDisable(false);
+                showGraphsButton.setDisable(false);
+            });
+
+            calendarViewController.refresh();
+
             centerContentPane.getChildren().setAll(calendarView);
             calendarViewButton.setText("Table View");
             isCalendarView = true;
         } else {
             centerContentPane.getChildren().setAll(activityTable);
-            calendarViewButton.setText("Calendar view");
+            calendarViewButton.setText("Calendar View");
             isCalendarView = false;
         }
 
 
+    }
+
+    /** Updates the calendar view. */
+    public void updateCalendar() {
+        calendarViewController.clearCalendar();
+
+        // Add all the activities to the calendar.
+        for (Activity activity: applicationStateManager.getCurrentProfile().getActivityList()) {
+            calendarViewController.addCalendarItem(activity);
+        }
     }
 
     /**
@@ -333,6 +366,12 @@ public class ActivityTabController extends Controller {
 
                 } catch (Exception e) {
                     GuiUtilities.displayErrorMessage("Failed to load map.", "Try checking your internet connection.");
+
+                    // Tries to reload map.
+                    // Todo: Reload map 6/10/2018
+//                    mapsController = new MapsController(applicationStateManager);
+//                    mapPane = GuiUtilities.loadPane("Maps.fxml", mapsController);
+
                     e.printStackTrace();
                 }
             }
@@ -345,7 +384,7 @@ public class ActivityTabController extends Controller {
     @FXML
     void getDailyMetrics() {
         metricsTitleText.setVisible(true);
-        metricsTitleText.setText("Today's Metrics");
+        metricsTitleText.setText("Today's DisplayMetrics");
         int request = 1;
         LocalDate startDate = LocalDate.now();
         setLabels(request, startDate);
@@ -357,7 +396,7 @@ public class ActivityTabController extends Controller {
     @FXML
     void getWeeklyMetrics() {
         metricsTitleText.setVisible(true);
-        metricsTitleText.setText("Weekly Metrics");
+        metricsTitleText.setText("Weekly DisplayMetrics");
         int request = 2;
         LocalDate startDate = LocalDate.now();
         setLabels(request, startDate);
@@ -369,7 +408,7 @@ public class ActivityTabController extends Controller {
     @FXML
     void getMonthlyMetrics() {
         metricsTitleText.setVisible(true);
-        metricsTitleText.setText("Monthly Metrics");
+        metricsTitleText.setText("Monthly DisplayMetrics");
         int request = 3;
         LocalDate startDate = LocalDate.now();
         setLabels(request, startDate);
@@ -454,7 +493,7 @@ public class ActivityTabController extends Controller {
     private Activity getSelectedActivity() {
         Activity activity;
         if (isCalendarView) {
-            activity = calendarViewController.getSelectedActivity();
+            activity = (Activity) calendarViewController.getSelectedItem();
         } else {
             activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
         }

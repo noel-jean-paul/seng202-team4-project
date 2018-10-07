@@ -3,7 +3,6 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.RadioButton;
 import javafx.scene.text.Text;
 import seng202.team4.model.data.Activity;
@@ -13,7 +12,8 @@ import java.util.List;
 
 
 /**
- * Controller for the Home Tab.
+ * Controller for the Home Tab. Displays a bar chart of the distances of recent activities.
+ * Allows toggle between walking and running data
  */
 public class HomeTabController extends Controller {
 
@@ -21,15 +21,19 @@ public class HomeTabController extends Controller {
     @FXML
     private BarChart<?, ?> distanceBarGraph;
 
+    /** The text that is displayed when there are no activities to display in the bar chart*/
     @FXML
     private Text noDataText;
 
+    /** The radio button allowing view of all activities in the bar chart*/
     @FXML
     private RadioButton allDataButton;
 
+    /** The radio button allowing view of all walking activities in the bar chart*/
     @FXML
     private RadioButton walkDataButton;
 
+    /** The radio button allowing view of all running activities in the bar chart*/
     @FXML
     private RadioButton runDataButton;
 
@@ -52,7 +56,8 @@ public class HomeTabController extends Controller {
     }
 
     /**
-     * every time the home tab is clicked, it clears the old bar graph, and loads it again with any new updated data
+     * every time the home tab is clicked, it clears the old bar graph, and loads it again with any new updated data. This function doesn't
+     * deal with the behaviour of the graph when the walk or run buttons are clicked (see below for that function)
      */
     public void loadData() {
         runDataButton.setSelected(false);
@@ -126,7 +131,6 @@ public class HomeTabController extends Controller {
             noDataText.setVisible(false);
             int counter = 0;
             for (int i = 0; i < activityList.size() && counter < 5; i += 1) {
-                System.out.println(activityList.get(0).getName());
                 if (activityList.get(i).getType() == type) {
                     dataSet.getData().add(new XYChart.Data(activityList.get(i).getName(), activityList.get(i).getDistance()));
                     counter++;

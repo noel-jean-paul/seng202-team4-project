@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import seng202.team4.App;
 import seng202.team4.GuiUtilities;
+import seng202.team4.controller.GoalTab.GoalsTabController;
 
 import java.net.URL;
 
@@ -55,6 +56,8 @@ public class MainScreenController extends Controller {
     /** The HealthTabController of the health tab. */
     private HealthTabController healthTabController;
 
+    /** Boolean to determine whether the goals tab is being entered or left */
+    private boolean onGoalsTab = false;
 
 
     /**
@@ -87,8 +90,7 @@ public class MainScreenController extends Controller {
         // Creates the goals tab.
         Pane goals = new Pane();
         goalsTabController = new GoalsTabController(applicationStateManager);
-        //TODO: Implement a proper goals tab.
-        //goals = GuiUtilities.loadPane("GoalsTab.fxml", goalsTabController);
+        goals = GuiUtilities.loadPane("GoalsTab.fxml", goalsTabController);
         goalsPane.getChildren().setAll(goals);
 
         // Creates the health tab.
@@ -128,6 +130,17 @@ public class MainScreenController extends Controller {
     @FXML
     void activityTabSelected() {
         activityTabController.updateTable();
+        activityTabController.updateCalendar();
+    }
+
+    /**
+     * Called when the goal tab is clicked or when the goals tab is left.
+     * Displays the goal table in the goal tab.
+     */
+    @FXML
+    void goalTabSelected() {
+        onGoalsTab = !onGoalsTab;   // Toggle the boolean keeping track of whether the goals tab is being displayed
+        goalsTabController.displayGoalTable();
     }
 
     /**
@@ -158,15 +171,37 @@ public class MainScreenController extends Controller {
         tabPane.getSelectionModel().selectFirst();
         if (applicationStateManager.getCurrentProfile() != null) {
             homeTabController.loadData();
-            profileDropDown.setText(applicationStateManager.getCurrentProfile().getFirstName());
+            updateProfileButton();
 
-            // Load the users profile picture
-            URL profileImageUrl = App.class.getResource(applicationStateManager.getCurrentProfile().getPictureURL());
-            if (profileImageUrl != null) {
-                profilePictureImageView.setImage(GuiUtilities.maskProfileImage(new Image(profileImageUrl.toString())));
-            }
         }
+        // Reset the activity and goals tabs
         activityTabController.reset();
+        goalsTabController.reset();
     }
 
+    /**
+     * Updates the profile picture and name of the profile button.
+     */
+    public void updateProfileButton() {
+        profileDropDown.setText(applicationStateManager.getCurrentProfile().getFirstName());
+
+        // Load the users profile picture
+        URL profileImageUrl = App.class.getResource(applicationStateManager.getCurrentProfile().getPictureURL());
+        if (profileImageUrl != null) {
+            profilePictureImageView.setImage(GuiUtilities.maskProfileImage(new Image(profileImageUrl.toString())));
+        }
+    }
+
+    /** Switch to the activity tab */
+    public void switchToActivityTab() {
+        tabPane.getSelectionModel().select(1);
+    }
+
+    /** Get whether the goals tab is being displayed
+     *
+     * @return true if the goals tab is being displayed, false otherwise
+     */
+    public boolean isOnGoalsTab() {
+        return onGoalsTab;
+    }
 }

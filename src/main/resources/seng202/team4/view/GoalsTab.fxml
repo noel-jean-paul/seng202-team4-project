@@ -1,42 +1,287 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.paint.*?>
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="337.0" prefWidth="555.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="seng202.team4.controller.GoalsTabController">
-  <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-  </rowConstraints>
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.GoalTab.GoalsTabController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="193.0" minHeight="-Infinity" prefHeight="193.0" vgrow="NEVER" />
+      <RowConstraints vgrow="ALWAYS" />
+      <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="NEVER" />
+   </rowConstraints>
    <children>
-      <ProgressBar fx:id="goal1Bar" prefWidth="200.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <ProgressBar fx:id="goal2Bar" prefWidth="200.0" progress="0.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <ProgressBar fx:id="goal3Bar" prefWidth="200.0" progress="0.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <Text fx:id="goal1text" strokeType="OUTSIDE" strokeWidth="0.0" text="Goal &lt;name&gt;:" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-      <Text fx:id="goal2text" strokeType="OUTSIDE" strokeWidth="0.0" text="Goal &lt;name&gt;:" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-      <Text fx:id="goal3text" strokeType="OUTSIDE" strokeWidth="0.0" text="Goal &lt;name&gt;:" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-      <Button fx:id="removeGoal1Button" mnemonicParsing="false" text="Remove Goal" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-      <Button fx:id="removeGoal2Button" mnemonicParsing="false" text="Remove Goal" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-      <Button fx:id="removeGoal3Button" mnemonicParsing="false" text="Remove Goal" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-      <Button fx:id="setNewGoalButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="153.0" text="Set New Goals" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-      <Button fx:id="calenderButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="153.0" text="Calendar View" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-      <Text fx:id="goal4text" strokeType="OUTSIDE" strokeWidth="0.0" text="Goal &lt;name&gt;:" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-      <Text fx:id="goal5text" strokeType="OUTSIDE" strokeWidth="0.0" text="Goal &lt;name&gt;:" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-      <ProgressBar fx:id="goal4Bar" prefWidth="200.0" progress="0.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <ProgressBar fx:id="goal5Bar" prefWidth="200.0" progress="0.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-      <Button fx:id="removeGoal4Button" mnemonicParsing="false" text="Remove Goal" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-      <Button fx:id="removeGoal5Button" mnemonicParsing="false" text="Remove Goal" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+      <AnchorPane fx:id="centerContentPane" GridPane.rowIndex="1">
+         <children>
+            <GridPane fx:id="goalsListGridPane" prefHeight="100.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="NEVER" />
+                <RowConstraints vgrow="ALWAYS" />
+              </rowConstraints>
+               <children>
+                  <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="100.0" prefWidth="100.0" GridPane.rowIndex="1">
+                     <content>
+                        <VBox fx:id="goalsListVbox" />
+                     </content>
+                  </ScrollPane>
+                  <AnchorPane fx:id="rowPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0">
+                     <children>
+                        <GridPane gridLinesVisible="true" layoutX="23.0" layoutY="-31.0" prefHeight="20.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Date" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Text fx:id="expiryCompletionDate" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry Date" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Progress" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+         <children>
+            <GridPane prefHeight="90.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#addGoal" text="Add Goal">
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="calendarViewButton" mnemonicParsing="false" onAction="#toggleCalendarView" text="Calendar View">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <GridPane alignment="CENTER" prefHeight="120.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="117.0" />
+                  <ColumnConstraints hgrow="ALWAYS" />
+                  <ColumnConstraints hgrow="NEVER" maxWidth="134.0" minWidth="133.0" prefWidth="133.0" />
+                  <ColumnConstraints hgrow="NEVER" maxWidth="400.0" minWidth="270.0" prefWidth="300.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="50.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="120.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <GridPane GridPane.columnIndex="3">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="127.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2147483647" GridPane.rowSpan="2147483647">
+                           <children>
+                              <Text fx:id="noGoalSelectedText" strokeType="OUTSIDE" strokeWidth="0.0" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2147483647">
+                           <children>
+                              <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <Text fx:id="startDateText" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date">
+                                 <VBox.margin>
+                                    <Insets left="5.0" />
+                                 </VBox.margin></Text>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="expiryDateVbox" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <Text fx:id="expiryDateText" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry Date">
+                                 <VBox.margin>
+                                    <Insets left="5.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <Text fx:id="currentAmountText" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount">
+                                 <VBox.margin>
+                                    <Insets left="5.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children></VBox>
+                        <VBox fx:id="totalVbox" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <children>
+                              <Text fx:id="totalAmountText" strokeType="OUTSIDE" strokeWidth="0.0" text="Total">
+                                 <VBox.margin>
+                                    <Insets left="5.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <children>
+                              <Text fx:id="remainingTimeText" strokeType="OUTSIDE" strokeWidth="0.0" text="Remaining">
+                                 <VBox.margin>
+                                    <Insets left="5.0" />
+                                 </VBox.margin></Text>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+                           <children>
+                              <Text fx:id="startDateHeading" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date:">
+                                 <VBox.margin>
+                                    <Insets right="5.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+                           <children>
+                              <Text fx:id="expiryDateHeading" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry Date:">
+                                 <VBox.margin>
+                                    <Insets right="5.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="3">
+                           <children>
+                              <Text fx:id="remainingTimeHeading" strokeType="OUTSIDE" strokeWidth="0.0" text="Remaining time:">
+                                 <VBox.margin>
+                                    <Insets right="5.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="4">
+                           <children>
+                              <Text fx:id="currentAmountHeading" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Amount:">
+                                 <VBox.margin>
+                                    <Insets right="5.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="5">
+                           <children>
+                              <Text fx:id="requiredAmountHeading" strokeType="OUTSIDE" strokeWidth="0.0" text="Required Amount:">
+                                 <VBox.margin>
+                                    <Insets right="5.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="6">
+                           <children>
+                              <Text fx:id="errorText" fill="#e50707" strokeType="OUTSIDE" strokeWidth="0.0">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                     </children>
+                  </GridPane>
+                  <GridPane GridPane.columnIndex="4">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="125.0" minHeight="10.0" prefHeight="103.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="71.0" minHeight="10.0" prefHeight="71.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+                           <children>
+                              <Button fx:id="editButton" mnemonicParsing="false" onAction="#edit" text="  Edit  ">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" />
+                                 </VBox.margin></Button>
+                              <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteCancelClick" text="Delete">
+                                 <VBox.margin>
+                                    <Insets left="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </children>
+                  </GridPane>
+                  <ProgressIndicator fx:id="goalProgressIndicator" prefHeight="131.0" prefWidth="133.0" progress="0.0" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" top="20.0" />
+                     </GridPane.margin>
+                  </ProgressIndicator>
+                  <GridPane>
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+                           <children>
+                              <Button fx:id="toggleGoalListButton" mnemonicParsing="false" onMouseClicked="#toggleGoalList" prefHeight="25.0" prefWidth="125.0" text="Past Goals">
+                                 <VBox.margin>
+                                    <Insets left="10.0" />
+                                 </VBox.margin></Button>
+                           </children>
+                        </VBox>
+                     </children>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="156.0" minHeight="10.0" prefHeight="152.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
    </children>
 </GridPane>

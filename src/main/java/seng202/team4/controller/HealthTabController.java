@@ -1,29 +1,27 @@
 package seng202.team4.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import jdk.nashorn.internal.runtime.regexp.joni.Warnings;
-import seng202.team4.App;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.utilities.HealthWarning;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 /**
  * Controller for the health tab.
  */
 public class HealthTabController extends Controller {
-    private WebEngine engine;
-    private String currentUrl;
-
 
     @FXML
     private TableView healthWarningTable;
@@ -39,6 +37,12 @@ public class HealthTabController extends Controller {
 
     @FXML
     private WebView webBrowser;
+
+    @FXML
+    private Button backButton;
+
+    @FXML
+    private Button forwardButton;
 
     @FXML
     private Button viewInfoButton;
@@ -59,6 +63,9 @@ public class HealthTabController extends Controller {
     private Label bmiLabel;
 
     @FXML
+    private GridPane imagePane;
+
+    @FXML
     void loadInformation() {
         HealthWarning warning = (HealthWarning) healthWarningTable.getSelectionModel().getSelectedItem();
         if (warning != null) {
@@ -77,6 +84,7 @@ public class HealthTabController extends Controller {
     private void setUpPopUpLabels(WarningDescriptionPopUpController warningPopUp, HealthWarning warning) {
         String heartRateRange = setRateRange(warning);
         warningPopUp.setPopUpTitle(warning.getTypeString());
+        warningPopUp.setActivityNameLabel(warning.getActivity().getName());
         warningPopUp.setAverageLabel(warning.getAvgHeartRate());
         warningPopUp.setMinLabel(warning.getMinHeartRate());
         warningPopUp.setMaxLabel(warning.getMaxHeartRate());
@@ -144,6 +152,26 @@ public class HealthTabController extends Controller {
         engine.load(currentUrl);
     }
 
+
+    @FXML
+    void webViewForward() {
+        Platform.runLater(() -> {
+            engine.executeScript("history.forward()");
+        });
+    }
+
+    @FXML
+    void webViewBack() {
+        Platform.runLater(() -> {
+            engine.executeScript("history.back()");
+        });
+    }
+
+    private WebEngine engine;
+    private String currentUrl;
+    private boolean tabLoaded = false;
+
+
     /**
      * The constructor for the health tab.
      * @param applicationStateManager the application state manager of the application.
@@ -159,34 +187,85 @@ public class HealthTabController extends Controller {
     public void initialize() {
         healthWarningTable.setPlaceholder(new Text("No warnings have been detected."));
         healthWarningTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-
-        //descColumn.prefWidthProperty().bind(healthWarningTable.widthProperty().divide( 3));
-
-
-
+        webBrowser.setZoom(0.8);
         currentUrl = "https://www.google.co.nz/";
-        webBrowser.setZoom(0.9);
         engine = webBrowser.getEngine();
-        engine.setUserStyleSheetLocation(App.class.getResource("view/webViewStyle.css").toExternalForm());
-        engine.load(currentUrl);
+        imagePane.setStyle("-fx-background-color: white");
     }
 
     /**
-     * Populates the table and sets the web view back to Google.com when the health tab is selected.
+     * After checking the OS running the program, performs a terminal command to attempt to ping google.com.
+     * Returns a boolean indicating whether the ping was successful or not.
+     * @return true if the ping was successful, false if the ping failed or no internet connection is available.
+     */
+    private boolean verifyConnection() {
+        boolean reachable;
+        try {
+            String OS = System.getProperty("os.name");
+            Process pingProcess;
+            if (OS.contains("Windows")) {
+                pingProcess = java.lang.Runtime.getRuntime().exec("ping -n 2 -w 200 8.8.8.8"); // Windows ping command
+            } else {
+                pingProcess = java.lang.Runtime.getRuntime().exec("fping -c 2 -t 200 8.8.8.8"); // Unix ping command (MacOS & Linux)
+            }
+            int returnVal = pingProcess.waitFor();
+            reachable = (returnVal == 0);
+        } catch (IOException noInternet) {
+            reachable = false;
+        } catch (InterruptedException e) {
+            System.out.println("Ping process thread was interrupted during it's operation");
+            reachable = false;
+        }
+        return reachable;
+    }
+
+    /**
+     *
+     * @return
+     */
+    private String getBMIStatusString() {
+        double BMI = applicationStateManager.getCurrentProfile().getBmi();
+        String status;
+        if (BMI < 18.5) {
+            status = "Underweight";
+        } else if (18.5 <= BMI && BMI < 25) {
+            status = "Normal Weight";
+        } else if (25 <= BMI && BMI < 30) {
+            status = "Overweight";
+        } else {
+            status = "Obese";
+        }
+        return  status;
+    }
+
+    /**
+     * Populates the table, checks the connection to google.com, and depending on the result
+     * sets the web view to either www.google.com, or displays the no internet icon.
      */
     public void reloadTab() {
-        ObservableList<HealthWarning> warningList = FXCollections.observableArrayList(
-                applicationStateManager.getCurrentProfile().getWarningList());
-        dateColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,LocalDate>("warningDate"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,String>("typeString"));
-        descColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,String>("description"));
+        if (!tabLoaded) {
+            boolean hasInternetConnection;
+            ObservableList<HealthWarning> warningList = FXCollections.observableArrayList(
+                    applicationStateManager.getCurrentProfile().getWarningList());
+            dateColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning, LocalDate>("warningDate"));
+            typeColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning, String>("typeString"));
+            descColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning, String>("description"));
+            healthWarningTable.setItems(warningList);
+            ScrollBar scrollBarHorizontal = (ScrollBar) healthWarningTable.lookup(".scroll-bar:hotizontal");
+            scrollBarHorizontal.setVisible(false);
 
-        healthWarningTable.setItems(warningList);
-
-        ScrollBar scrollBarHorizontal = (ScrollBar) healthWarningTable.lookup(".scroll-bar:hotizontal");
-        scrollBarHorizontal.setVisible(false);
-        currentUrl = "https://www.google.com/";
-        engine.load(currentUrl);
+            System.out.println("About to check internet");
+            hasInternetConnection = verifyConnection();
+            System.out.println("Finished checking internet");
+            if (hasInternetConnection) {
+                currentUrl = "https://www.google.com/";
+                engine.load(currentUrl);
+                webBrowser.toFront();
+            } else {
+                imagePane.toFront();
+            }
+        }
+        tabLoaded = !tabLoaded;
     }
 
     /**
@@ -195,6 +274,10 @@ public class HealthTabController extends Controller {
     public void setLabels() {
         ageLabel.setText(String.format("%d", (applicationStateManager.getCurrentProfile().getAge())));
         weightLabel.setText(String.format("%.1f", applicationStateManager.getCurrentProfile().getWeight()) + "kg");
-        bmiLabel.setText(String.format("%.2f", applicationStateManager.getCurrentProfile().getBmi()));
+        bmiLabel.setText(String.format("%.2f    (%s)", applicationStateManager.getCurrentProfile().getBmi(), getBMIStatusString()));
+    }
+
+    public void setConnectionStatus(boolean hasConnection) {
+
     }
 }

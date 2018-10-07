@@ -1,7 +1,9 @@
 package seng202.team4.model.database;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 import seng202.team4.model.data.Goal;
@@ -9,12 +11,14 @@ import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
 
-import javax.xml.crypto.Data;
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class DataStorerTest {
     private static Profile profile1;
@@ -47,7 +51,7 @@ public class DataStorerTest {
                 "12:15:01", "PT40M", 5.13, 187);
 
         goal1 = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
-                2.00, 0);
+                2.00);
 
         row1 = new DataRow(1, "2018-07-18", "14:02:20", 182, -87.01902489,
                 178.4352, 203);
@@ -72,7 +76,7 @@ public class DataStorerTest {
         DataAccesser.clearDatabase();
         for (Profile profile : profiles) {
             profile.getActivityList().clear();
-            profile.getGoalList().clear();
+            profile.getCurrentGoals().clear();
         }
         activity1.getRawData().clear();
     }
@@ -98,7 +102,7 @@ public class DataStorerTest {
     @Test
     public void insertGoal() throws SQLException {
         DataStorer.insertProfile(profile1);
-        profile1.addGoal(goal1);
+        profile1.addCurrentGoal(goal1);
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(profile1, loadedProfile);
@@ -183,12 +187,12 @@ public class DataStorerTest {
 
         // Add 2 goals to the profile
         Goal goal2 = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
-                2.00, 0);
+               "PT0M");
         Goal goal3 = new Goal(2, 100, GoalType.Run, "2017-05-21", "2020-01-02",
-                5.00, 60);
+                5.00);
 
-        profile.addGoal(goal2);
-        profile.addGoal(goal3);
+        profile.addCurrentGoal(goal2);
+        profile.addCurrentGoal(goal3);
 
         // Delete the profile
         DataStorer.deleteProfile(profile);
@@ -200,11 +204,11 @@ public class DataStorerTest {
         Profile loaded = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
 
         // Check the goals have been removed from the database
-        assertEquals(0, loaded.getGoalList().size());
+        assertEquals(0, loaded.getCurrentGoals().size());
     }
 
     @Test
-    /* Check that the other profiles do not have their information removed by deleteProfile */
+    /**Check that the other profiles do not have their information removed by deleteProfile */
     public void deleteProfile_checkOtherProfileUnchanged() throws SQLException {
         // Insert an activity for the profile
         Activity activity = new Activity("Walk in the woods", "2019-08-30", ActivityType.Run,
@@ -291,13 +295,13 @@ public class DataStorerTest {
         DataStorer.insertProfile(profile);
 
         Goal goal = new Goal(1, 55, GoalType.Walk, "2018-03-20", "2020-01-01",
-                2.00, 0);
-        profile.addGoal(goal);
+                2.00);
+        profile.addCurrentGoal(goal);
 
         DataStorer.deleteGoals(Collections.singletonList(goal));
         Profile loadedProfile = DataLoader.loadProfile(profile.getFirstName(), profile.getLastName());
 
-        assertEquals(0, loadedProfile.getGoalList().size());
+        assertEquals(0, loadedProfile.getCurrentGoals().size());
     }
 
     @Test

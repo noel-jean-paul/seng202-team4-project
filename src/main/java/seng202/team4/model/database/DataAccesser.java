@@ -1,28 +1,21 @@
 package seng202.team4.model.database;
 
 import seng202.team4.model.data.DataRow;
-import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.Profile;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 
 abstract public class DataAccesser {
     static Connection connection;
     static ResultSet set;
     static PreparedStatement statement;
+    private static String dbFileName = "fitness_tracker.sqlite";
 
     /** Initialise the connection to a the production database.
      *  @throws SQLException if the connection could not be opened
      */
     public static void initialiseMainConnection() throws SQLException {
-        String url = "jdbc:sqlite:fitness_tracker.sqlite";
-        connection = DriverManager.getConnection(url);
-
-//        // Turn foreign keys on
-//        String update = "PRAGMA foreign_keys = ON;";
-//        PreparedStatement statement = connection.prepareStatement(update);
-//        statement.executeUpdate();
+        connection = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
     }
 
     /** Initialise the connection to a the test database.
@@ -31,11 +24,6 @@ abstract public class DataAccesser {
     public static void initialiseTestConnection() throws SQLException {
         String url = "jdbc:sqlite:testDatabase.sqlite";
         connection = DriverManager.getConnection(url);
-
-//        // Turn foreign keys on
-//        String update = "PRAGMA foreign_keys = ON;";
-//        PreparedStatement statement = connection.prepareStatement(update);
-//        statement.executeUpdate();
     }
 
     /** Drop all tables from both the production and test databases and
@@ -58,11 +46,11 @@ abstract public class DataAccesser {
     private static void rebuildDatabase() throws SQLException {
         Statement stmt = connection.createStatement();
 
-        // Drop the tables
-        String dropProfile = "drop table profile;";
-        String dropActivity = "drop table activity;";
-        String dropGoal = "drop table goal;";
-        String dropDataRow = "drop table dataRow;";
+        // Drop the tables if they exist
+        String dropProfile = "drop table if exists profile;";
+        String dropActivity = "drop table if exists activity;";
+        String dropGoal = "drop table if exists goal;";
+        String dropDataRow = "drop table if exists dataRow;";
 
         stmt.addBatch(dropProfile);
         stmt.addBatch(dropActivity);
@@ -70,7 +58,7 @@ abstract public class DataAccesser {
         stmt.addBatch(dropDataRow);
 
         // Create new tables
-        String createProfile = String.format("create table profile ("+
+        String createProfile = String.format("create table if not exists profile ("+
                 "firstName text not null, " +
                 "lastName text not null, " +
                 "dateOfBirth character(10) not null, " +
@@ -80,7 +68,7 @@ abstract public class DataAccesser {
                 "primary key (firstName, lastName)" +
                 ");", Profile.MIN_HEIGHT, Profile.MAX_HEIGHT, Profile.MIN_WEIGHT, Profile.MAX_WEIGHT);
 
-        String createActivity = "create table activity ( " +
+        String createActivity = "create table if not exists activity ( " +
                 "name text, " +
                 "activityDate character(10), " +
                 "type character(3) constraint check_type check (type in (\"Run\", \"Walk\", \"Other\")), " +
@@ -94,24 +82,25 @@ abstract public class DataAccesser {
                 "foreign key (firstName, lastName) references profile" +
                 ");";
 
-        String createGoal = String.format("create table goal (\n" +
+        String createGoal = "create table if not exists goal (\n" +
                 "goalNumber integer,\n" +
                 "progress integer constraint check_progress check (progress between 0 and 100),\n" +
                 "type character(3) constraint check_type check (type in (\"Run\", \"Walk\")),\n" +
-                "description text,\n" +
                 "creationDate character(10) not null,\n" +
                 "expiryDate character(10),\n" +
                 "completionDate character(10),\n" +
                 "goalDuration character(8),\n" +
-                "goalDistance real constraint check_goalDistance check (goalDistance >= %f),\n" +
+                "goalDistance real constraint check_goalDistance check (goalDistance >= 0),\n" +
+                "caloriesBurned integer not null, \n" +
+                "current text constratint check_current check (current in (\"true\", \"false\")), \n" +
                 "firstName text,\n" +
                 "lastName text,\n" +
                 "primary key (firstName, lastName, goalNumber),\n" +
                 "foreign key (firstName, lastName) references profile\n" +
                 "on delete cascade on update no action\n" +
-                ");", Goal.minGoalDistance);
+                ");";
 
-        String createDataRow = String.format("create table dataRow (\n" +
+        String createDataRow = String.format("create table if not exists dataRow (\n" +
                 "  rowNumber integer,\n" +
                 "  rowDate character(10),\n" +
                 "  time character(8) not null,\n" +
@@ -199,5 +188,13 @@ abstract public class DataAccesser {
         // Cleanup
         statement.close();
         connection.close();
+    }
+
+    /** Get the url to the main database
+     *
+     * @return the url to the main database as a string
+     */
+    public static String getDbFileName() {
+        return dbFileName;
     }
 }

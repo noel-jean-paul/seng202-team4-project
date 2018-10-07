@@ -1,10 +1,12 @@
 package seng202.team4.controller;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Profile;
+import sun.applet.Main;
 
 import java.util.HashMap;
 
@@ -50,6 +52,7 @@ public class ApplicationStateManager {
         this.stackPane.getChildren().add(new Pane());
 
         this.glassPane = new Pane();
+        glassPane.setBackground(new Background( new BackgroundFill( new Color(0, 0, 0, 0.7), CornerRadii.EMPTY, Insets.EMPTY )));
         glassPane.prefWidthProperty().bind(rootScene.widthProperty());
         glassPane.prefHeightProperty().bind(rootScene.heightProperty());
     }
@@ -151,6 +154,10 @@ public class ApplicationStateManager {
         this.currentUserProfile = profile;
     }
 
+    /** Get the profile which is currently loaded
+     *
+     * @return the currently loaded profile
+     */
     public Profile getCurrentProfile() {
         return currentUserProfile;
     }
@@ -163,5 +170,4 @@ public class ApplicationStateManager {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
-
 }

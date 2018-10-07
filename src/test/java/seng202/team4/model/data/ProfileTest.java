@@ -6,7 +6,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
-import seng202.team4.model.database.*;
+import seng202.team4.model.database.DataAccesser;
+import seng202.team4.model.database.DataLoader;
+import seng202.team4.model.database.DataStorer;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ProfileTest {
     private static Profile profile1;
@@ -22,12 +24,17 @@ public class ProfileTest {
     private static Activity activity1;
     private static Activity activity2;
     private static Activity activity3;
+    private static List<Activity> activities;
     private static List<Activity> expected;
 
     private static Goal goal1;
     private static Goal goal2;
     private static Goal goal3;
+    private static Goal goal4;
+    private static Goal goal5;
+    private static Goal goal6;
     private static List<Goal> expectedGoals;
+    List<Goal> original;
 
     @BeforeClass
     public static void setUp() throws SQLException {
@@ -43,32 +50,48 @@ public class ProfileTest {
 
         // Initialise activities
         activity1 = new Activity("Run in the park", "2017-12-12", ActivityType.Run,
-                "12:15:01", "PT40M", 5.13, 187);
+                "12:15:01", "PT40M36S", 5130, 250);
+        // test dependent on progress, distance and calories burned of this activity
 
         activity2 = new Activity("Walk around the block", "2019-12-12",
-                ActivityType.Walk, "01:28:30", "PT11M19S", 1.2, 30);
+                ActivityType.Walk, "01:28:30", "PT11M19S", 1200, 30);
 
         activity3 = new Activity("Jog through Uni", "2018-12-12",
-                ActivityType.Run, "01:28:30", "PT11M19S", 1.2, 30);
+                ActivityType.Run, "01:28:30", "PT11M19S", 1200, 30);
 
         expected = new ArrayList<>(Arrays.asList(activity2, activity3, activity1));
+        activities = new ArrayList<>();
 
         // Initialise Goals
-        goal1 = new Goal(1, 100, GoalType.Run,"2018-09-28", "2017-05-12",
-                20, 50);
-        goal2 = new Goal(2, 100, GoalType.Run,"2018-09-28", "2017-01-12",
-                20, 50);
-        goal3 = new Goal(3, 100, GoalType.Run,"2018-09-28", "2017-01-12",
-                20, 50);
-
-        expectedGoals = new ArrayList<>(Arrays.asList(goal3, goal2, goal1));
+        goal1 = new Goal(1, 0, GoalType.Run,"2017-01-01", "2018-05-12",
+                20.0);
+        goal2 = new Goal(2, 0, GoalType.Run,"2017-01-01", "2050-01-12",
+                 "PT50M");
+        goal3 = new Goal(3, 0, GoalType.Run,"2017-01-01", "2017-01-12",
+                200);
+        goal4 = new Goal(4, 0, GoalType.Run,"2020-01-01", "2017-01-12",
+                200);
+        goal5 = new Goal(5, 100, GoalType.Run,"2020-01-01", "2050-01-01",
+                200);
+        goal6 = new Goal(6, 100, GoalType.Walk,"2020-01-01", "2050-01-01",
+                200);
+        expectedGoals = new ArrayList<>();
     }
 
     @Before
     public void setUpReccuring() throws SQLException {
-        // clear lists and database
+        // clearCalendar lists and database
         profile1.getActivityList().clear();
-        profile1.getGoalList().clear();
+        profile1.getCurrentGoals().clear();
+        profile1.getPastGoals().clear();
+        expectedGoals.clear();
+        activities.clear();
+
+        // Reset goal progress
+        goal1.updateProgressValue(0);
+        goal2.updateProgressValue(0);
+        goal3.updateProgressValue(0);
+        goal4.updateProgressValue(0);
         DataAccesser.clearDatabase();
     }
 
@@ -126,45 +149,52 @@ public class ProfileTest {
     @Test
     public void addGoal_checkList() throws SQLException {
         // Clear goal list
-        profile1.getGoalList().clear();
+        profile1.getCurrentGoals().clear();
 
-        // Add goals to profile
-        profile1.addGoal(goal3);
-        profile1.addGoal(goal1);
-        profile1.addGoal(goal2);
+        // Add goals to profile out of order to check that the sort works
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal5);
+        profile1.addCurrentGoal(goal2);
 
-        assertEquals(expectedGoals, profile1.getGoalList());
+        // Fill expectedGoals - expect descending order by progress, order added if same progress
+        expectedGoals.addAll(Arrays.asList(goal5, goal1, goal2));
+
+        // Check that the goals are added and are in the correct order
+        assertEquals(expectedGoals, profile1.getCurrentGoals());
     }
 
     @Test
     public void addGoal_checkStoredInDatabase() throws SQLException {
         DataStorer.insertProfile(profile1);
-        profile1.addGoal(goal1);
+        profile1.addCurrentGoal(goal1);
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
-        assertEquals(goal1, loadedProfile.getGoalList().get(0));
+        assertEquals(goal1, loadedProfile.getCurrentGoals().get(0));
     }
 
     @Test
     public void addGoal_checkOwnerSet() throws SQLException {
-        profile1.addGoal(goal1);
+        profile1.addCurrentGoal(goal1);
         assertEquals(profile1, goal1.getOwner());
     }
 
     @Test
     public void addAllGoals() {
         // Clear goal list
-        profile1.getGoalList().clear();
+        profile1.getCurrentGoals().clear();
 
-        // Add a goal to the profile goalList
-        profile1.getGoalList().add(goal3);
+        // Add a goal to the profile currentGoals
+        profile1.getCurrentGoals().add(goal3);
 
         // Create a list of goals to be added - list is out of order
         List<Goal> goals = new ArrayList<>(Arrays.asList(goal2, goal1));
 
-        // Add activitities to the goalList
-        profile1.addAllGoals(goals);
+        // Add activitities to the currentGoals
+        profile1.addAllCurrentGoals(goals);
 
-        assertEquals(expectedGoals, profile1.getGoalList());
+        // Fill expectedGoals
+        expectedGoals.addAll(Arrays.asList(goal3, goal2, goal1));
+
+        assertEquals(expectedGoals, profile1.getCurrentGoals());
     }
 
     @Test
@@ -190,23 +220,23 @@ public class ProfileTest {
 
     @Test
     public void removeGoal_checkRemovedFromList() throws SQLException {
-        profile1.addGoal(goal1);
-        profile1.removeGoal(goal1);
+        profile1.addCurrentGoal(goal1);
+        profile1.removeCurrentGoal(goal1);
 
-        assertEquals(0, profile1.getGoalList().size());
+        assertEquals(0, profile1.getCurrentGoals().size());
     }
 
     @Test
     public void removeGoal_checkRemovedFromDatabase() throws SQLException {
         // Add the goal and profile
-        profile1.addGoal(goal1);
+        profile1.addCurrentGoal(goal1);
         DataStorer.insertProfile(profile1);
 
-        profile1.removeGoal(goal1);
+        profile1.removeCurrentGoal(goal1);
 
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
-        assertEquals(0, loadedProfile.getGoalList().size());
+        assertEquals(0, loadedProfile.getCurrentGoals().size());
     }
 
     @Test
@@ -267,5 +297,242 @@ public class ProfileTest {
         loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 
         assertEquals(pictureURL, loadedProfile.getPictureURL());
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForExpiry_checkRemovedFromCurrent() throws SQLException {
+        // Add 1 goal that should expire and one that should not to the current goals
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
+        expectedGoals.add(goal2);
+
+        profile1.updateCurrentGoals(true);;
+
+        // Check the expired goal was removed from the current goals and the non-expired remained
+        assertEquals(expectedGoals, profile1.getCurrentGoals());
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForExpiry_checkAddedToPast() throws SQLException {
+        // Add 1 goal that should expire and one that should not to the current goals
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
+        expectedGoals.add(goal1);   // Expect the expired goal in the past goals
+
+        profile1.updateCurrentGoals(true);;
+
+        // Check the expired goal was added to the past goals
+        assertEquals(expectedGoals, profile1.getPastGoals());
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForExpiry_checkReturnedList() throws SQLException {
+        // Add 1 goal that should expire and one that should not to the current goals
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
+        expectedGoals.add(goal1);   // Expect the expired goal to be returned
+
+        List<Goal> expiredGoals = profile1.updateCurrentGoals(true).getExpiredGoals();
+
+        // Check the expired goal returned
+        assertEquals(expectedGoals, expiredGoals);
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForExpiry_applyUpdatesFalse_checkGoalNotRemoved() throws SQLException {
+        // Add 2 goals to the current goals - one has expired
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
+
+        // Update the goals without applying the updates to the goal lists
+        profile1.updateCurrentGoals(false);
+
+        // Expect both goals to remain
+        expectedGoals.add(goal1);
+        expectedGoals.add(goal2);
+
+        // Check the goals are not removed from the current goals
+        assertEquals(expectedGoals, profile1.getCurrentGoals());
+    }
+
+    @Test
+    public void updateGoalsForProgress_validDate_distanceGoal_checkProgressUpdated() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal1);
+        profile1.addActivity(activity1);
+
+        profile1.updateGoalsForProgress(profile1.getActivityList());
+
+        assertEquals(25.65, goal1.getProgress(), 0.0001);
+    }
+
+    @Test
+    public void updateGoalsForProgress_validDate_durationGoal_checkProgressUpdated() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal2); //Duration goal
+        profile1.addActivity(activity1);
+
+        profile1.updateGoalsForProgress(profile1.getActivityList());
+
+        assertEquals(80.0, goal2.getProgress(), 0.0001);
+    }
+
+    @Test
+    public void updateGoalsForProgress_validDate_caloriesGoal_checkProgressUpdated() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal3); // Calories goal
+        profile1.addActivity(activity1);
+
+        profile1.updateGoalsForProgress(profile1.getActivityList());
+
+        assertEquals(100, goal3.getProgress(), 0.0001);
+    }
+
+    @Test
+    public void updateGoalsForProgress_validDate_caloriesGoal_checkCompletionDateSet() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal3); // Calories goal
+        profile1.addActivity(activity1);
+
+        profile1.updateGoalsForProgress(profile1.getActivityList());
+
+        assertEquals(activity1.getDate(), goal3.getCompletionDate());
+    }
+
+    @Test
+    public void updateGoalsForProgress_invalidDate_checkProgressUnchanged() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal4); // Creation date in 2020
+        profile1.addActivity(activity3);  // Date in 2018
+
+        profile1.updateGoalsForProgress(profile1.getActivityList());
+
+        assertEquals(0, goal4.getProgress(), 0.0001);
+    }
+
+    @Test
+    public void updateGoalsForProgress_invalidType_checkProgressUnchanged() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal1); // Type run
+        profile1.addActivity(activity2);  // Type walk
+
+        profile1.updateGoalsForProgress(profile1.getActivityList());
+
+        assertEquals(0, goal1.getProgress(), 0.0001);
+    }
+
+    /**multiple activities contributing to the same goal */
+    @Test
+    public void updateGoalsForProgress_multipleActivities_validDates_checkProgressUpdated() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal1); // Distance goal
+        profile1.addActivity(activity1);
+        profile1.addActivity(activity3);
+
+        profile1.updateGoalsForProgress(profile1.getActivityList());
+
+        // Check that both activities increased the goal progress
+        assertEquals(31.65, goal1.getProgress(), 0.0001);
+    }
+
+    @Test
+    public void updateGoalsForProgress_multipleActivities_validDates_checkGoal1_ProgressUpdated() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal1); // Distance goal
+        profile1.addCurrentGoal(goal2); // Duration goal
+        profile1.addActivity(activity1);
+
+        profile1.updateGoalsForProgress(profile1.getActivityList());
+
+        // Check that the first goal's progress updated correctly
+        assertEquals(25.65, goal1.getProgress(), 0.0001);
+    }
+
+    @Test
+    public void updateGoalsForProgress_multipleActivities_validDates_checkGoa2_1ProgressUpdated() throws SQLException {
+        // Setup
+        profile1.addCurrentGoal(goal1); // Distance goal
+        profile1.addCurrentGoal(goal2); // Duration goal
+        profile1.addActivity(activity1);
+
+        profile1.updateGoalsForProgress(profile1.getActivityList());
+
+        // Check that the second goal's progress updated correctly
+        assertEquals(80.0, goal2.getProgress(), 0.0001);
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForCompletion_completedGoals_checkCurrentGoals() throws SQLException {
+        // Add 2 completed goals to the current goals
+        profile1.addCurrentGoal(goal5);
+        profile1.addCurrentGoal(goal6);
+
+        profile1.updateCurrentGoals(true);;
+
+        // Check the goal is removed from the current goals - expected goals is empty
+        assertEquals(expectedGoals, profile1.getCurrentGoals());
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForCompletion_completedGoals_checkPastGoals() throws SQLException {
+        // Add 2 completed goals to the current goals
+        profile1.addCurrentGoal(goal5);
+        profile1.addCurrentGoal(goal6);
+        // Expect both goals in the past goals
+        expectedGoals.add(goal5);
+        expectedGoals.add(goal6);
+
+        profile1.updateCurrentGoals(true);;
+
+        // Check the goals are added to the past goals
+        assertEquals(expectedGoals, profile1.getPastGoals());
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForCompletion_completedGoals_checkCompleted() throws SQLException {
+        // Add 2 completed goals to the current goals
+        profile1.addCurrentGoal(goal5);
+        profile1.addCurrentGoal(goal6);
+        // Expect both goals to be returned as completed
+        expectedGoals.add(goal5);
+        expectedGoals.add(goal6);
+
+        List<Goal> completed = profile1.updateCurrentGoals(true).getCompletedGoals();
+
+        // Check the goals are returned as completed goals
+        assertEquals(expectedGoals, completed);
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForCompletion_applyUpdatesFalse_completedGoals_checkCompleted() throws SQLException {
+        // Add 2 completed goals to the current goals
+        profile1.addCurrentGoal(goal5);
+        profile1.addCurrentGoal(goal6);
+        // Expect both goals to remain
+        expectedGoals.add(goal5);
+        expectedGoals.add(goal6);
+
+        // Update the goals without applying the updates to the goal lists
+        profile1.updateCurrentGoals(false);
+
+        // Check the goals are not removed from the current goals
+        assertEquals(expectedGoals, profile1.getCurrentGoals());
+    }
+
+    @Test
+    public void activityExists_activityDoesExist() throws SQLException {
+        // Add an activity to the profile
+        profile1.addActivity(activity1);
+
+        // Check that the method returns true (the activity exists)
+        boolean result = profile1.activityExists(activity1.getName(), activity1.getDate());
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void activityExists_activityDoesNotExist() throws SQLException {
+        // Check that the method returns false (the activity does not exist) when the profile activity list does not contain the activity
+        boolean result = profile1.activityExists(activity1.getName(), activity1.getDate());
+        assertEquals(false, result);
     }
 }

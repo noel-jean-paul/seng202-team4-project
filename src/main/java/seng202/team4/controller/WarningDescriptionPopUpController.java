@@ -36,11 +36,14 @@ public class WarningDescriptionPopUpController extends Controller{
     @FXML
     private Label maxLabel;
 
+    @FXML
+    private Label activityNameLabel;
+
 
     /**
      * Creates a new controller with the given ApplicationStateManager
      *
-     * @param applicationStateManager
+     * @param applicationStateManager the statemangager of the application
      */
     public WarningDescriptionPopUpController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
@@ -118,6 +121,10 @@ public class WarningDescriptionPopUpController extends Controller{
             text = "Your resting heart rate was over your recommended resting rate";
         }
         descriptionText.setText(text);
+    }
+
+    public void setActivityNameLabel(String activityName) {
+        activityNameLabel.setText(activityName);
     }
 
     /**
