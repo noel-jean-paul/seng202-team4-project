@@ -258,6 +258,8 @@ public class ProfileScreenController extends Controller {
                     changeValuesToText();
                     editCancelButton.setText("Edit");
                     isEditing = false;
+                    prevImageButton.setVisible(false);
+                    nextImagebutton.setVisible(false);
                     errorText.setText("");
                 } catch (java.sql.SQLException e) {
                     GuiUtilities.displayErrorMessage("Error encountered editing profile.", e.getMessage());
