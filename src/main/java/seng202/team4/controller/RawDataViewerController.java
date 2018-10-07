@@ -5,11 +5,16 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import seng202.team4.App;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -99,6 +104,10 @@ public class RawDataViewerController extends Controller {
     @FXML
     private Text errorMessage;
 
+    /** The background for the pop window */
+    @FXML
+    private Rectangle popUpRectangle;
+
     /** Activity variable, holds the current activity's data */
     private Activity activity;
 
@@ -152,6 +161,8 @@ public class RawDataViewerController extends Controller {
         updateDataRows();   //updates the table
         fillEditBoxes();
         dataRowTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        Image backgroundImage = new Image(App.class.getResource("view/blue_cascade.jpg").toExternalForm());
+        popUpRectangle.setFill(new ImagePattern(backgroundImage));
     }
 
 
@@ -310,7 +321,7 @@ public class RawDataViewerController extends Controller {
         } else if (!isValidLongitude) {
             errorMessage.setText("Longitude must be between " + DataRow.minLongitude + " and " + DataRow.maxLongitude);
         } else if (!isValidElevation) {
-            errorMessage.setText("Longitude must be between " + DataRow.minElevation + " and " + DataRow.maxElevation);
+            errorMessage.setText("Elevation must be between " + DataRow.minElevation + " and " + DataRow.maxElevation);
         } else if (!isValidAddition()) {
             if (buttonType == 1) {
                 errorMessage.setText("You cannot add a row that already exists");

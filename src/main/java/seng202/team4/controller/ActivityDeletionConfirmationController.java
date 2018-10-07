@@ -1,7 +1,11 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
+import seng202.team4.App;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 
@@ -12,6 +16,10 @@ public class ActivityDeletionConfirmationController extends Controller {
     /** The anchor pane of the of the popup */
     @FXML
     private AnchorPane rootPane;
+
+    /** The background of the popup window */
+    @FXML
+    private Rectangle popUpRectangle;
 
     /** The activity tab controller of the activities tab */
     private Activity activity;
@@ -30,6 +38,13 @@ public class ActivityDeletionConfirmationController extends Controller {
         super(applicationStateManager);
         this.activity = activity;
         this.activityTabController = actityTabController;
+    }
+
+    /** Initialises the value of the rectangle once the popup window has been populated */
+    @FXML
+    public void initialize() {
+        Image backgroundImage = new Image(App.class.getResource("view/blue_cascade.jpg").toExternalForm());
+        popUpRectangle.setFill(new ImagePattern(backgroundImage));
     }
 
     /**

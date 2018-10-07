@@ -6,14 +6,12 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import seng202.team4.actions.NoelSetup_6Goals;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.CreateProfileController;
 import seng202.team4.controller.LoginController;
 import seng202.team4.controller.MainScreenController;
-import seng202.team4.model.data.Activity;
-import seng202.team4.model.data.DataRow;
 import seng202.team4.model.data.Profile;
-import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.database.DataAccesser;
 import seng202.team4.model.database.DataStorer;
 
@@ -63,22 +61,19 @@ public class App extends Application {
         }
 
         // Test if the database file is already connected to another instance of the app.
+        Profile profile = new Profile("", "", "2000-01-01", 100,
+                1.00);
         try {
             // Use a first name and last name that are shorter than can be created through the app
-            Profile profile = new Profile("", "", "2000-01-01", 100,
-                    1.00);
             DataStorer.insertProfile(profile);
             DataStorer.deleteProfile(profile);
-            // Store a datarow in the database to make the app "use" the database. If the database is empty another
-            // instance of the app can be opened in parallel due to the database not being in use.
-            //DataStorer.insertActivity(new Activity("Run in the park", "2018-08-29", ActivityType.Run,
-                    //"12:15:01", "PT40M", 5.13, 187), profile);
         } catch (SQLException e) {
             e.printStackTrace();
             // Terminate this instance of the app
             GuiUtilities.displayErrorMessage("Step-by-Step Fitness Tracker is aleady open", "",
                     true);
         }
+
 
         // Creates base scene.
         Scene baseScene = new Scene(new Group(), 900, 600);
@@ -119,6 +114,6 @@ public class App extends Application {
 
     /** Main method of the program. */
     public static void main(String[] args) throws SQLException {
-        //NoelSetup_6Goals.main(new String[1]);
+         NoelSetup_6Goals.main(new String[1]);
         launch(args); }
 }

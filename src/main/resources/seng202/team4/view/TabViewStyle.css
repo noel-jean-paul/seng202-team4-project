@@ -1,5 +1,6 @@
 .root {
-    -fx-background-image: url("orange_cascade.jpg");
+    -fx-background-image: url("blue_cascade.jpg");
+    -fx-background-size: cover;
     -fx-font-family: sans-serif;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
@@ -12,44 +13,72 @@
     -fx-padding: 8;
     -fx-fill: white;
     -fx-background-color: white;
+    -fx-background: white;
 }
 
 .menu-button {
     -fx-text-fill: black;
     -fx-font-family: sans-serif;
-    -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(lightgrey, grey);
+    -fx-background-color: #99e6ff;
     -fx-effect: DropShadow(three-pass-box , rgba(0,0,0,0) , 3, 0.0 , 1 , 1 );
 }
 
 .menu-button:hover {
-    -fx-background-color: linear-gradient(grey, lightgrey);
+    -fx-background-color: #66d9ff;
+}
+
+.tab-header-area {
+    -fx-border-width: 0px 0px 1px 0px;
+    -fx-border-color: #828282;
+}
+
+.tab-header-background {
+    -fx-fill: transparent;
+    -fx-effect: null;
+    -fx-opacity: 0;
 }
 
 .tab {
     -fx-text-fill: black;
     -fx-font-family: sans-serif;
-    -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(lightgrey, grey);
+    -fx-background-color: #99e6ff;
+    -fx-opacity: 1;
     -fx-effect: DropShadow(three-pass-box , rgba(0,0,0,0) , 3, 0.0 , 1 , 1 );
 }
 
+.tab .tab-label {
+    -fx-font-weight: bold;
+}
+
 .tab:hover {
-    -fx-background-color: linear-gradient(grey, lightgrey);
+    -fx-background-color: #66d9ff;
 }
 
 .tab:selected {
-    -fx-background-color: linear-gradient(grey, darkgrey);
+    -fx-background-color: #00bfff;
+}
+
+.tab:pressed {
+    -fx-background-colour: #a5e7ff;
 }
 
 .button {
     -fx-text-fill: black;
     -fx-font-family: sans-serif;
-    -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(lightgrey, grey);
+    -fx-background-color: #99e6ff;
     -fx-effect: DropShadow(three-pass-box , rgba(0,0,0,0) , 3, 0.0 , 1 , 1 );
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(grey, lightgrey);
+    -fx-background-color: #66d9ff;
+}
+
+.button:pressed {
+    -fx-background-colour: #a5e7ff;
+}
+
+.vbox {
+    -fx-fill: white;
+    -fx-background-color: white;
+    -fx-base: white;
 }

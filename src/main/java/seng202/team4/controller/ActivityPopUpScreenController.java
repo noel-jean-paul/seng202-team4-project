@@ -3,10 +3,13 @@ package seng202.team4.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.RadioButton;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
+import seng202.team4.App;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 
@@ -41,6 +44,10 @@ public class ActivityPopUpScreenController extends Controller {
     @FXML
     private LineChart<?, ?> distanceGraph;
 
+    /** The background of the popup window */
+    @FXML
+    private Rectangle popUpRectangle;
+
     /**The activity being displayed in the graphs */
     private Activity activity;
 
@@ -74,6 +81,8 @@ public class ActivityPopUpScreenController extends Controller {
             heartRateButton.setSelected(true);
             displayHeartRateGraph();
         }
+        Image backgroundImage = new Image(App.class.getResource("view/blue_cascade.jpg").toExternalForm());
+        popUpRectangle.setFill(new ImagePattern(backgroundImage));
     }
 
     /**

@@ -20,7 +20,7 @@
             <RowConstraints />
          </rowConstraints>
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d3cccc" height="398.0" stroke="BLACK" strokeType="INSIDE" width="599.0" GridPane.rowSpan="4" />
+            <Rectangle fx:id="popUpRectangle" arcHeight="5.0" arcWidth="5.0" fill="#d3cccc" height="398.0" stroke="BLACK" strokeType="INSIDE" width="599.0" GridPane.rowSpan="4" />
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Warning">

@@ -4,12 +4,13 @@ package seng202.team4.controller.GoalTab;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import org.omg.CORBA.MARSHAL;
 import seng202.team4.App;
 import seng202.team4.GuiUtilities;
 import seng202.team4.controller.ApplicationStateManager;
@@ -34,6 +35,10 @@ public class GoalNotificationPopupController extends Controller {
     @FXML
     private ScrollPane scrollPane;
 
+    /** The background of the popup window */
+    @FXML
+    private Rectangle popUpRectangle;
+
     /** The goal tab controller of the application */
     private GoalsTabController goalsTabController;
 
@@ -41,6 +46,13 @@ public class GoalNotificationPopupController extends Controller {
     GoalNotificationPopupController(ApplicationStateManager applicationStateManager, GoalsTabController goalsTabController) {
         super(applicationStateManager);
         this.goalsTabController = goalsTabController;
+    }
+
+    /** Includes any initialisations needed after all the window elements have been generated */
+    @FXML
+    public void initialize() {
+        Image backgroundImage = new Image(App.class.getResource("view/blue_cascade.jpg").toExternalForm());
+        popUpRectangle.setFill(new ImagePattern(backgroundImage));
     }
 
     /** Closes the pop up.

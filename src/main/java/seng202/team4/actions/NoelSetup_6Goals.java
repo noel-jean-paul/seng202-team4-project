@@ -19,6 +19,8 @@ public class NoelSetup_6Goals {
 
         Goal goal1 = new Goal(1, 100, GoalType.Run,"2018-09-28", "2018-12-12",
                 "PT50M");
+        goal1.setOwner(profile);
+        goal1.setCompletionDate("2018-10-07");
 
         Goal goal2 = new Goal(2, 80, GoalType.Run,"2018-09-28", "2018-12-12",
                 500);

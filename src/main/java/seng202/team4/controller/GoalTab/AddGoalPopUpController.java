@@ -5,8 +5,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import seng202.team4.App;
 import seng202.team4.GuiUtilities;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.Controller;
@@ -59,6 +63,9 @@ public class AddGoalPopUpController extends Controller {
     @FXML
     private Text totalAmountText;
 
+    @FXML
+    private Rectangle popUpRectangle;
+
     /** Goals tab controller of the app. */
     private GoalsTabController goalsTabController;
 
@@ -89,6 +96,8 @@ public class AddGoalPopUpController extends Controller {
                 changeGoalType(goalTypeChoiceBox.getItems().get((int) newValue));
             }
         });
+        Image backgroundImage = new Image(App.class.getResource("view/blue_cascade.jpg").toExternalForm());
+        popUpRectangle.setFill(new ImagePattern(backgroundImage));
     }
 
     /** Updates the fields based on what goal type is selected. */
