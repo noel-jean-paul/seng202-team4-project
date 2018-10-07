@@ -664,6 +664,6 @@ public class Goal implements Comparable<Goal>, CalendarItem {
 
     @Override
     public String getDisplayString() {
-        return "Goal";
+        return type.toString() + " Goal";
     }
 }
