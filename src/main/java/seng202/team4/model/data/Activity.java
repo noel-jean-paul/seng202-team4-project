@@ -36,6 +36,17 @@ public class Activity implements Comparable<Activity> {
     private int minHeartRate;
     private int maxHeartRate;
 
+    /**
+     * Creates a new Activity from information that is stored on the database.
+     *
+     * @param name The name of the Activity.
+     * @param date The start date of the Activity as a String in a format that can be parsed to a LocalDate.
+     * @param type The ActivityType of the Activity.
+     * @param startTime The start time of the Activity as a string in a format that can be parsed as LocalTime.
+     * @param duration The duration of the Activity as a string in a format that can be parsed as a Duration.
+     * @param distance The distance of the Activity in meters.
+     * @param caloriesBurned The total number of calories burned during the Activity.
+     */
     public Activity(String name, String date, ActivityType type, String startTime,
                     String duration, double distance, double caloriesBurned) {
         this.name = name;
@@ -51,8 +62,10 @@ public class Activity implements Comparable<Activity> {
     }
 
     /**
-     * Constructor for the Activity class
-     * @param name is the name of the activity as a string
+     * Creates an Activity with a name and the raw data of the Activity.
+     *
+     * @param name The name of the Activity.
+     * @param rawActivityList An ArrayList with all the RawDataRows of the Activity.
      */
     public Activity(String name, ArrayList<DataRow> rawActivityList) {
         this.name = name;
@@ -69,6 +82,12 @@ public class Activity implements Comparable<Activity> {
         this.maxHeartRate = calculateMaxHeartRate();
     }
 
+    /**
+     * Checks whether this Activity is equal to another Activity.
+     *
+     * @param o The other Activity to compare to.
+     * @return true if both activities are equal, false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,6 +104,11 @@ public class Activity implements Comparable<Activity> {
                 Objects.equals(getRawData(), activity.getRawData());
     }
 
+    /**
+     * Produces a hash code for the Activity.
+     *
+     * @return The hash code of the Activity as an int.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getName(), getDate(), getType(), getStartTime(), getDuration(), getDistance(), getCaloriesBurned(), getAverageSpeed(), getRawData());
@@ -110,33 +134,62 @@ public class Activity implements Comparable<Activity> {
          }
     }
 
+    /**
+     * Gets the name of the Activity.
+     *
+     * @return The name of the Activity.
+     */
     public String getName() {
         return name;
     }
 
-    /** Set and update in database */
+    /**
+     * Sets the name of Activity and updates this value in the database.
+     *
+     * @param name The new name of the Activity.
+     * @throws SQLException Exception that is thrown if the name can not be updated in the database.
+     */
     public void setName(String name) throws SQLException {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.name.toString(), name, true);
         this.name = name;
     }
 
+    /**
+     * Gets the date of the Activity.
+     *
+     * @return The date of the Activity as a LocalDate.
+     */
     public LocalDate getDate() {
         return date;
     }
 
-    /** Set and update in database */
+    /**
+     * Sets the date of the Activity and updates it in the database.
+     *
+     * @param date The new date of the Activity as a string that can be parsed to a LocalDate.
+     * @throws SQLException Exception that is thrown if the date can not be updated in the database.
+     */
     public void setDate(String date) throws SQLException {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.activityDate.toString(), date, true);
         this.date = LocalDate.parse(date);
     }
 
+    /**
+     * Gets the start time of the Activity.
+     *
+     * @return The start date of the Activity as a LocalTime.
+     */
     public LocalTime getStartTime() {
         return startTime;
     }
 
-    /** Set and update in database */
+    /**
+     * Sets the start time of the Activity and updates it in the database.
+     * @param startTime The new start time of the Activity as a String that can be parsed to a LocalTime.
+     * @throws SQLException Exception that is thrown if the time could not be updated in the database.
+     */
     public void setStartTime(String startTime) throws SQLException {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.startTime.toString(), startTime, false);
