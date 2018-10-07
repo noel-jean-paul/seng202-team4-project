@@ -164,6 +164,7 @@ public class AddGoalPopUpController extends Controller {
                 LocalDate expiryDate = creationDate.plusDays(goalDuraiton);
                 try {
                     applicationStateManager.getCurrentProfile().addCurrentGoal(new Goal(goalNumber, 0, activityTypeChoiceBox.getValue(), creationDate.toString(), expiryDate.toString(), distance));
+                    goalsTabController.refreshGoalTable();
                     applicationStateManager.closePopUP(rootPane);
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
@@ -194,6 +195,7 @@ public class AddGoalPopUpController extends Controller {
                 LocalDate expiryDate = creationDate.plusDays(goalDuraiton);
                 try {
                     applicationStateManager.getCurrentProfile().addCurrentGoal(new Goal(goalNumber, 0, activityTypeChoiceBox.getValue(), creationDate.toString(), expiryDate.toString(), duration.toString()));
+                    goalsTabController.refreshGoalTable();
                     applicationStateManager.closePopUP(rootPane);
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
@@ -220,6 +222,7 @@ public class AddGoalPopUpController extends Controller {
                 LocalDate expiryDate = creationDate.plusDays(goalDuraiton);
                 try {
                     applicationStateManager.getCurrentProfile().addCurrentGoal(new Goal(goalNumber, 0, activityTypeChoiceBox.getValue(), creationDate.toString(), expiryDate.toString(), calories));
+                    goalsTabController.refreshGoalTable();
                     applicationStateManager.closePopUP(rootPane);
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
