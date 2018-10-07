@@ -290,7 +290,7 @@ public class GoalsTabController extends Controller {
         if (selectedGoalRow != null) {
             selectedGoalRow.deselect();
             if (selectedGoalRow != goalRow) {
-                turnEditingOff();
+                turnEditingOff(true);
             }
         }
         // Select the new row
@@ -417,7 +417,7 @@ public class GoalsTabController extends Controller {
     /**
      * Updates the Calendar to what goals are stored in the users profile.
      */
-    public void updateCalendar() {
+    private void updateCalendar() {
         calendarViewController.clearCalendar();
         // Add all the current goals to the calendar.
         for (Goal goal: applicationStateManager.getCurrentProfile().getCurrentGoals()) {
@@ -550,7 +550,7 @@ public class GoalsTabController extends Controller {
                 } else {
                     try {
                         selectedGoalRow.getGoal().setExpiryDate(expiryDatePicker.getValue().toString());
-                        turnEditingOff();
+                        turnEditingOff(true);
                     } catch (java.sql.SQLException e) {
                         GuiUtilities.displayErrorMessage("Failed to update goal.", "");
                         e.printStackTrace();
@@ -568,14 +568,19 @@ public class GoalsTabController extends Controller {
         if (!isEditing) {
             deleteGoal();
         } else {
-            turnEditingOff();
+            turnEditingOff(true);
             errorText.setText("");
         }
     }
 
-    /** Turns the editing of the selected goal off. */
-    private void turnEditingOff() {
-        displayGoalInformation();
+    /** Turns the editing of the selected goal off.
+     * @param displayInformation boolean denoting whether to display information about the goal that was edited after
+     *                           editing has been turned off.
+     */
+    private void turnEditingOff(boolean displayInformation) {
+        if (displayInformation) {
+            displayGoalInformation();
+        }
 
         // Changes the TextFields back to Text.
         totalVbox.getChildren().setAll(totalAmountText);
@@ -652,6 +657,9 @@ public class GoalsTabController extends Controller {
      * Clears all information on the selected goal.
      */
     private void clearGoalInformation() {
+        // Clear editing progress - do not display goal information afterwards
+        turnEditingOff(false);
+        // No goalRow is selected
         selectedGoalRow = null;
         // Reset the progress indicator
         goalProgressIndicator.setProgress(0);
