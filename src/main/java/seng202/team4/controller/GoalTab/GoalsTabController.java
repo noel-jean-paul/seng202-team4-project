@@ -6,12 +6,14 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.Controller;
 import seng202.team4.controller.MainScreenController;
+import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.GoalListPair;
 import seng202.team4.view.CurrentGoalRowItem;
@@ -19,6 +21,7 @@ import seng202.team4.view.GoalRowItem;
 import seng202.team4.view.PastGoalRowItem;
 
 import java.sql.SQLException;
+import java.time.Duration;
 
 
 /**
@@ -77,6 +80,10 @@ public class GoalsTabController extends Controller {
     @FXML
     private Text noGoalSelectedText;
 
+    /** Text for displaying any error messages when a goal is edited. */
+    @FXML
+    private Text errorText;
+
     /** The scroll pane containing the goals */
     @FXML
     private ScrollPane scrollPane;
@@ -116,8 +123,8 @@ public class GoalsTabController extends Controller {
     /** TextField for entering the amount that is need to complete a goal. */
     private TextField totalAmountTextField;
 
-    /** TextField for entering the expiry date of a goal. */
-    private TextField expiryDateTextField;
+    /** DatePicker for entering the expiry date of a goal. */
+    private DatePicker expiryDatePicker;
 
     /** The currently selected goal. */
     private GoalRowItem selectedGoalRow = null;
@@ -146,7 +153,7 @@ public class GoalsTabController extends Controller {
 
         // Create new text field for when the user chooses to edit a goal.
         totalAmountTextField = new TextField();
-        expiryDateTextField = new TextField();
+        expiryDatePicker = new DatePicker();
     }
 
     /** Display notications of the goals which were completed or expired
@@ -309,29 +316,148 @@ public class GoalsTabController extends Controller {
     void edit() {
         if (!isEditing) {
             // Sets the text of the text field to whats being displayed in the text.
-            totalAmountTextField.setText(totalAmountText.getText());
-            expiryDateTextField.setText(expiryDateText.getText());
+            expiryDatePicker.setValue(selectedGoalRow.getGoal().getExpiryDate());
+            if (selectedGoalRow.getGoal().isCaloriesGoal()) {
+                totalAmountTextField.setText(String.format("%s", selectedGoalRow.getGoal().getCaloriesBurned()));
+            } else if (selectedGoalRow.getGoal().isDistanceGoal()) {
+                if (selectedGoalRow.getGoal().getGoalDistance() < 1.0) {
+                    totalAmountTextField.setText(String.format("%.1f", selectedGoalRow.getGoal().getGoalDistance()*1000));
+                } else {
+                    totalAmountTextField.setText(String.format("%.1f", selectedGoalRow.getGoal().getGoalDistance()));
+                }
+
+            } else if (selectedGoalRow.getGoal().isDurationGoal()) {
+                totalAmountTextField.setText(String.format("%02d:%02d", selectedGoalRow.getGoal().getGoalDuration().toHours(), selectedGoalRow.getGoal().getGoalDuration().toMinutes()%60));
+            }
 
             // Changes the Text to TextFields.
             totalVbox.getChildren().setAll(totalAmountTextField);
-            expiryDateVbox.getChildren().setAll(expiryDateTextField);
+            expiryDateVbox.getChildren().setAll(expiryDatePicker);
+
+            editButton.setText("Done");
+            deleteButton.setText("Cancel");
             isEditing = true;
 
             // Set the button text to 'Done'
             //editButton.setText("Done");
         } else {
-            // Changes the TextFields back to Text.
-            totalVbox.getChildren().setAll(totalAmountText);
-            expiryDateVbox.getChildren().setAll(expiryDateText);
-            isEditing = false;
-            // Set the button text back to 'Edit'
-            //editButton.setText("Edit");
+            boolean updateSuccessful = false;
+
+            if (selectedGoalRow.getGoal().isCaloriesGoal() ) {
+                int calories = 0;
+                boolean isValidCalories = false;
+                try {
+                    calories = Integer.parseInt(totalAmountTextField.getText());
+                    isValidCalories = true;
+                } catch (Exception e) {
+                    isValidCalories = false;
+                }
+
+                if (!isValidCalories) {
+                    errorText.setText(String.format("Calories should be an integer, got '%s'", totalAmountTextField.getText()));
+                } else if (calories < Goal.MIN_GOAL_CALORIES || calories > Goal.MAX_GOAL_CALORIES) {
+                    errorText.setText(String.format("Calories goal must be between %s and %s.", Goal.MIN_GOAL_CALORIES, Goal.MAX_GOAL_CALORIES));
+                } else {
+                    try {
+                        selectedGoalRow.getGoal().setCaloriesBurned(calories);
+                        updateSuccessful = true;
+                    } catch (java.sql.SQLException e) {
+                        GuiUtilities.displayErrorMessage("Failed to update goal.", "");
+                        e.printStackTrace();
+                    }
+                }
+            } else if (selectedGoalRow.getGoal().isDistanceGoal()) {
+                double distance = 0.0;
+                boolean isValidDistance = false;
+                try {
+                    distance = Double.parseDouble(totalAmountTextField.getText());
+                    isValidDistance = true;
+                } catch (Exception e) {
+                    isValidDistance = false;
+                }
+
+                if (!isValidDistance) {
+                    errorText.setText(String.format("Distance should be a number, got '%s'", totalAmountTextField.getText()));
+                } else if (distance < Goal.MIN_GOAL_DISTANCE || distance > Goal.MAX_GOAL_DISTANCE) {
+                    errorText.setText(String.format("Distance goal must be between %s km and %s km", Goal.MIN_GOAL_DISTANCE, Goal.MAX_GOAL_DISTANCE));
+                } else {
+                    try {
+                        selectedGoalRow.getGoal().setGoalDistance(distance);
+                        updateSuccessful = true;
+                    } catch (java.sql.SQLException e) {
+                        GuiUtilities.displayErrorMessage("Failed to update goal.", "");
+                        e.printStackTrace();
+                    }
+                }
+            } else if (selectedGoalRow.getGoal().isDurationGoal()) {
+                // Try to parse the duration string to check that it is in a valid format.
+                Duration duration = null;
+                boolean isValidDurationFormat = false;
+                try {
+                    int hours = Integer.parseInt(totalAmountTextField.getText().split(":")[0]);
+                    int minutes = Integer.parseInt(totalAmountTextField.getText().split(":")[1]);
+                    duration = Duration.ofHours(hours).plus(Duration.ofMinutes(minutes));
+                    isValidDurationFormat = true;
+                } catch (Exception e) {
+                    isValidDurationFormat = false;
+                }
+
+                if (!isValidDurationFormat) {
+                    errorText.setText(String.format("Duration should be hh:mm, got '%s'", totalAmountTextField.getText()));
+                } else if (duration.compareTo(Goal.MIN_GOAL_DURATION) < 0 || duration.compareTo(Goal.MAX_GOAL_DURATION) > 0) {
+                    errorText.setText(String.format("Duration should be between %02d:%02d and %02d:%02d", Goal.MIN_GOAL_DURATION.toHours(), Goal.MIN_GOAL_DURATION.toMinutes()%60, Goal.MAX_GOAL_DURATION.toHours(), Goal.MAX_GOAL_DURATION.toMinutes()%60));
+                } else {
+                    try {
+                        selectedGoalRow.getGoal().setGoalDuration(duration);
+                        updateSuccessful = true;
+                    } catch (java.sql.SQLException e) {
+                        GuiUtilities.displayErrorMessage("Failed to update goal.", "");
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            if (updateSuccessful) {
+                try {
+                    selectedGoalRow.getGoal().setExpiryDate(expiryDatePicker.getValue().toString());
+                    turnEditingOff();
+                } catch (java.sql.SQLException e) {
+                    GuiUtilities.displayErrorMessage("Failed to update goal.", "");
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+    }
+
+    /** Method that is called when the user clicks the delete/cancel button. */
+    @FXML
+    public void deleteCancelClick() {
+        if (!isEditing) {
+            deleteGoal();
+        } else {
+            turnEditingOff();
+            errorText.setText("");
         }
     }
 
+    /** Turns the editing of the selected goal off. */
+    private void turnEditingOff() {
+        displayGoalInformation();
+
+        // Changes the TextFields back to Text.
+        totalVbox.getChildren().setAll(totalAmountText);
+        expiryDateVbox.getChildren().setAll(expiryDateText);
+
+        errorText.setText("");
+        editButton.setText("Edit");
+        deleteButton.setText("Delete");
+        isEditing = false;
+    }
+
     /** Delete the currently selected goal from the profile's goals and redisplay the goal table it is contained in */
-    @FXML
-    void deleteGoal() {
+    private void deleteGoal() {
         Goal selected = selectedGoalRow.getGoal();
         try {
             if (selected.isCurrent()) {
@@ -348,7 +474,7 @@ public class GoalsTabController extends Controller {
     }
 
     @FXML
-    void toggleGoalList() {
+    public void toggleGoalList() {
         // Switch whether past or current goals are displayed and flip the text on the toggle list button
         if (currentGoalTableDisplayed) {
             displayPastGoalRowTable();
@@ -405,6 +531,8 @@ public class GoalsTabController extends Controller {
         remainingTimeText.setText("");
         currentAmountText.setText("");
         totalAmountText.setText("");
+        errorText.setText("");
+
         // Inform the user that there is no goal selected
         noGoalSelectedText.setText("No Goal Selected");
 

@@ -109,7 +109,7 @@ abstract public class DataAccesser {
                 "primary key (firstName, lastName, goalNumber),\n" +
                 "foreign key (firstName, lastName) references profile\n" +
                 "on delete cascade on update no action\n" +
-                ");", Goal.minGoalDistance);
+                ");", Goal.MIN_GOAL_DISTANCE);
 
         String createDataRow = String.format("create table if not exists dataRow (\n" +
                 "  rowNumber integer,\n" +

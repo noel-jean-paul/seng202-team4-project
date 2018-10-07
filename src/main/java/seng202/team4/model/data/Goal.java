@@ -1,5 +1,6 @@
 package seng202.team4.model.data;
 
+import seng202.team4.controller.ActivityImportTypePromptController;
 import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
 import seng202.team4.model.data.enums.GoalFields;
 import seng202.team4.model.data.enums.GoalType;
@@ -16,7 +17,23 @@ import static java.time.Duration.between;
 
 
 public class Goal implements Comparable<Goal> {
-    public static final double minGoalDistance = 0;
+    /** The minimum distance for a distance goal. */
+    public static final double MIN_GOAL_DISTANCE = 1.0;
+
+    /** The maximum distance for a distance goal. */
+    public static final double MAX_GOAL_DISTANCE = 10000.0;
+
+    /** The minimum calories for a calories goal. */
+    public static final int MIN_GOAL_CALORIES = 50;
+
+    /** The maximum calories for a calories goal. */
+    public static final int MAX_GOAL_CALORIES = 100000;
+
+    /** The minimum duration for a duration goal. */
+    public static final Duration MIN_GOAL_DURATION = Duration.ofMinutes(15);
+
+    /** The maximum duration for a duration goal. */
+    public static final Duration MAX_GOAL_DURATION = Duration.ofHours(1000);
 
     private int number;
     private double progress;
@@ -44,7 +61,6 @@ public class Goal implements Comparable<Goal> {
         this.goalDuration = Duration.parse(goalDuration);
         this.caloriesBurned = caloriesBurned;
         this.current = true;    // by default the goal is current
-        this.description = generateDescription(this);
     }
 
     /** Constructor for a distance goal */
@@ -187,7 +203,7 @@ public class Goal implements Comparable<Goal> {
     }
 
     public String getDescription() {
-        return description;
+        return generateDescription();
     }
 
     public void setDescription(String description) {
@@ -256,35 +272,34 @@ public class Goal implements Comparable<Goal> {
 
     /** Create a description for the goal based of its paramers
      *
-     * @param goal the goal to generate the description for
      * @return a description of the goal as a String.
      */
-    private String generateDescription(Goal goal) {
+    private String generateDescription() {
         String description;
         String suffix;
         description = "";
 
-        if (goal.isDistanceGoal()) {
+        if (isDistanceGoal()) {
             // Describe the type of the goal, Walk or Run
-            description = String.format("%s ", goal.getType());
+            description = String.format("%s ", getType());
             // Use the distanceDisplayMetric class to format the distance value part of the string
-            DistanceDisplayMetric distanceDisplayMetric = new DistanceDisplayMetric(goal.getGoalDistance() * 1000);   // Pass a meter value for distance
+            DistanceDisplayMetric distanceDisplayMetric = new DistanceDisplayMetric(getGoalDistance() * 1000);   // Pass a meter value for distance
             description += distanceDisplayMetric.toString();
-        } else if (goal.isDurationGoal()) {
+        } else if (isDurationGoal()) {
             // Get unit of the number of hours
-            String dayUnit = getHourUnit(goal.getGoalDuration());
+            String dayUnit = getHourUnit(getGoalDuration());
             description = String.format("%s for %d %s and %d minutes",
-                    goal.getType().toString(), goal.getGoalDuration().toHours(), dayUnit,
-                    goal.getGoalDuration().toMinutes() - goal.getGoalDuration().toHours() * 60);    // toMinutes() includes the hours as well so they must be subtracted out
-        } else if (goal.isCaloriesGoal()) {
+                    getType().toString(), getGoalDuration().toHours(), dayUnit,
+                    getGoalDuration().toMinutes() - getGoalDuration().toHours() * 60);    // toMinutes() includes the hours as well so they must be subtracted out
+        } else if (isCaloriesGoal()) {
             // Set an appropriate ending to the description based on the type of the goal
-            if (goal.getType() == GoalType.Run) {
+            if (getType() == GoalType.Run) {
                 suffix = "ning";
             } else {
                 suffix = "ing"; // Walking does not have an n in it
             }
             description = String.format("Burn %s calories while %s%s",
-                    goal.getCaloriesBurned(), goal.getType().toString().toLowerCase(), suffix);
+                    getCaloriesBurned(), getType().toString().toLowerCase(), suffix);
         }
         return description;
     }
