@@ -19,38 +19,49 @@
 .menu-button {
     -fx-text-fill: black;
     -fx-font-family: sans-serif;
-    -fx-background-color: linear-gradient(lightgrey, grey);
+    -fx-background-color: #99e6ff;
     -fx-effect: DropShadow(three-pass-box , rgba(0,0,0,0) , 3, 0.0 , 1 , 1 );
 }
 
 .menu-button:hover {
-    -fx-background-color: linear-gradient(grey, lightgrey);
+    -fx-background-color: #66d9ff;
+}
+
+.tab-header-background {
+    -fx-background-image: transparent;
+    -fx-fill: transparent;
+    -fx-effect: null;
+    -fx-opacity: 0;
 }
 
 .tab {
     -fx-text-fill: black;
     -fx-font-family: sans-serif;
-    -fx-background-color: linear-gradient(lightgrey, grey);
+    -fx-background-color: transparent;
     -fx-effect: DropShadow(three-pass-box , rgba(0,0,0,0) , 3, 0.0 , 1 , 1 );
 }
 
+.tab .tab-label {
+    -fx-font-weight: bold;
+}
+
 .tab:hover {
-    -fx-background-color: linear-gradient(grey, lightgrey);
+    -fx-background-color: #66d9ff;
 }
 
 .tab:selected {
-    -fx-background-color: linear-gradient(grey, darkgrey);
+    -fx-background-color: #00bfff;
 }
 
 .button {
     -fx-text-fill: black;
     -fx-font-family: sans-serif;
-    -fx-background-color: linear-gradient(lightgrey, grey);
+    -fx-background-color: #99e6ff;
     -fx-effect: DropShadow(three-pass-box , rgba(0,0,0,0) , 3, 0.0 , 1 , 1 );
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(grey, lightgrey);
+    -fx-background-color: #66d9ff;
 }
 
 .vbox {
