@@ -115,9 +115,8 @@ public class ActivityPopUpScreenController extends Controller {
                 timeSecDouble = Double.parseDouble(strSec);
                 timeMinutes = timeSecDouble / 60.0; //converts time to minutes
                 timeMinutes = Double.parseDouble(new DecimalFormat("##.##").format(timeMinutes));
-                String strLong = Double.toString(timeMinutes);
 
-                set1.getData().add(new XYChart.Data(strLong, row.getHeartRate()));  //adds all data to the graph
+                set1.getData().add(new XYChart.Data(timeMinutes, row.getHeartRate()));  //adds all data to the graph
             }
             previousTime = timeSeconds;
         }
@@ -157,9 +156,8 @@ public class ActivityPopUpScreenController extends Controller {
             timeSecDouble = Double.parseDouble(strSec);
             timeMinutes = timeSecDouble / 60.0; //converts to minutes
             timeMinutes = Double.parseDouble(new DecimalFormat("##.##").format(timeMinutes));
-            String strLong = Double.toString(timeMinutes);
 
-            set2.getData().add(new XYChart.Data(strLong, distance));
+            set2.getData().add(new XYChart.Data(timeMinutes, distance));
         }
 
         distanceGraph.getXAxis().setAnimated(false); //these two lines avoid errors where only the last value in the x axis was loaded

@@ -26,7 +26,7 @@
                <children>
                   <LineChart fx:id="heartRateGraph" createSymbols="false" layoutY="33.0" legendVisible="false" prefHeight="281.0" prefWidth="514.0" title="Heart Rate During Activity">
                     <xAxis>
-                      <CategoryAxis label="Time (min)" side="BOTTOM" />
+                      <NumberAxis label="Time (min)" side="BOTTOM" />
                     </xAxis>
                     <yAxis>
                       <NumberAxis fx:id="heartRateYAxis" label="Heart Rate (bpm)" side="LEFT" />
@@ -34,7 +34,7 @@
                   </LineChart>
                   <LineChart fx:id="distanceGraph" createSymbols="false" layoutY="34.0" legendVisible="false" prefHeight="281.0" prefWidth="514.0" title="Distance Travelled during Activity">
                     <xAxis>
-                      <CategoryAxis label="Time (min)" side="BOTTOM" />
+                      <NumberAxis label="Time (min)" side="BOTTOM" />
                     </xAxis>
                     <yAxis>
                       <NumberAxis label="Distance (m)" side="LEFT" />
