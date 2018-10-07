@@ -41,7 +41,6 @@ public class Goal implements Comparable<Goal> {
     private LocalDate creationDate;
     private LocalDate expiryDate;
     private LocalDate completionDate;
-    private String description;
     private double goalDistance;    // total distance of the goal in kms
     private Duration goalDuration;
     private int caloriesBurned;
@@ -202,12 +201,12 @@ public class Goal implements Comparable<Goal> {
         this.caloriesBurned = caloriesBurned;
     }
 
+    /** Get the description of the goal (regenerates using generateDescription)
+     *
+     * @return the description of the goal
+     */
     public String getDescription() {
         return generateDescription();
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public double getGoalDistance() {
