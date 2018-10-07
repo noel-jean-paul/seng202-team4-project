@@ -559,7 +559,8 @@ public class GoalsTabController extends Controller {
 
             }
         }
-
+        // Refresh the goal table to display the updates
+        refreshGoalTable();
     }
 
     /** Method that is called when the user clicks the delete/cancel button. */
