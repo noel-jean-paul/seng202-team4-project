@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
 
 import static java.time.Duration.between;
@@ -365,7 +366,7 @@ public class Goal implements Comparable<Goal> {
         Double calories = 0.0;
         Double distance = 0.0;
         Double minutes = 0.0;
-        Duration duration = Duration.ZERO;
+        Duration duration;
 
         // Generate the amount values based on the type
         if (type.equals("current")) {
@@ -419,11 +420,16 @@ public class Goal implements Comparable<Goal> {
 
     /** Get a formatted description of the time remaining for this goal
      *
-     * @return a formatted description of the time remaining for this goal
+     * @return the time remaining in days (as a string) if the goal is current or expired 'expiry date'
+     *  if the goal has expired
      */
     public String getRemainingTimeDescription() {
-        Duration remaining = getRemainingTime();
-        return String.format("%d %s", remaining.toDays(), getDayUnit(remaining));
+        if (isCurrent()) {
+            Duration remaining = getRemainingTime();
+            return String.format("%d %s", remaining.toDays(), getDayUnit(remaining));
+        } else {
+            return String.format("Expired %s", getExpiryDate().toString());
+        }
     }
 
     /** Get the time remaining before the goal expires
@@ -449,5 +455,20 @@ public class Goal implements Comparable<Goal> {
             dayUnit = "days";  // Plural
         }
         return dayUnit;
+    }
+
+    /** Get a comparator intended for comparing past goals by creation date (descending order)
+     *
+     * @return a Goal comparator which orders goals in descending order by creation date
+     */
+    public static Comparator<Goal> getPastGoalComparator() {
+        return (o1, o2) -> {
+            int dateCompare;
+            if ((dateCompare = o1.getCreationDate().compareTo(o2.getCreationDate())) != 0) {
+                return dateCompare * -1;  // Reverse order to descending
+            } else {    // Goals have the same creation date
+                return 0;
+            }
+        };
     }
 }

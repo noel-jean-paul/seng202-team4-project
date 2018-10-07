@@ -1,6 +1,11 @@
 package seng202.team4.controller.GoalTab;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -8,6 +13,8 @@ import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.Controller;
+import seng202.team4.controller.MainScreenController;
+import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.GoalListPair;
 import seng202.team4.view.CurrentGoalRowItem;
@@ -151,35 +158,46 @@ public class GoalsTabController extends Controller {
         expiryDatePicker = new DatePicker();
     }
 
-    /** Display notications of the goals which were expired and completed
+    /** Display notications of the goals which were completed or expired
      *
      * @param goalLists a GoalListPair object contains the completed and expired goals to display
      */
     private void displayGoalNotifications(GoalListPair goalLists) {
+        // Create a new GoalNotification Popup
+        GoalNotificationPopupController goalNotificationPopupController =
+                new GoalNotificationPopupController(applicationStateManager, this);
+        Pane goalNotificationPopup = GuiUtilities.loadPane("GoalsNotificationPopup.fxml", goalNotificationPopupController);
+
         // Display notification of the goals which were completed
-        for (Goal completedGoal: goalLists.getCompletedGoals()) {
-            System.out.println(String.format("Goal '%s' has been completed!", completedGoal.getDescription()));
-        }
+        goalNotificationPopupController.addNotifications(goalLists.getCompletedGoals());
 
         // Display notifaction of the goals that have expired
-        for (Goal expiredGoal: goalLists.getExpiredGoals()) {
-            System.out.println(String.format("Goal '%s' has expired.", expiredGoal.getDescription()));
+        goalNotificationPopupController.addNotifications(goalLists.getExpiredGoals());
+
+        // Display the popup
+        openNotificationPopup(goalNotificationPopup);
+    }
+
+    /** Check for any updates to the current goals due to activities being imported and display a notification about any
+     *   goals which were completed or expired
+     */
+    private void updateGoals() {
+        try {
+            // Update the currentGoals of the currently loaded profile - Do not remove completed/expired goals from the current goals
+            GoalListPair goalListPair = applicationStateManager.getCurrentProfile().updateCurrentGoals(false);
+            // Display notications of which goals were completed and which expired if any completed/expired goals were found
+            if (goalListPair.containsGoals()) {
+                displayGoalNotifications(goalListPair);
+            }
+        } catch (SQLException e) {
+            GuiUtilities.displayErrorMessage("An error occurred regarding the database",
+                    "Goal updates could not be completed successfully");
+            e.printStackTrace();
         }
     }
 
     /** Updates the current profile's goals then fills the current GoalRow vbox using them */
-    public void updateCurrentGoalRowTable() {
-        try {
-            // Update the currentGoals of the currently loaded profile
-            GoalListPair goalListPair = applicationStateManager.getCurrentProfile().updateCurrentGoals();
-            // Display notications of which goals were completed and which expired
-            displayGoalNotifications(goalListPair);
-        } catch (SQLException e) {
-            GuiUtilities.displayErrorMessage("An error occurred regarding the database",
-                    "Goal updates could not be completed successfully");
-            System.out.println("Database error occurred while updating goals");
-        }
-
+    private void updateCurrentGoalRowTable() {
         // Clear the current table (vbox) of goals
         goalsListVbox.getChildren().clear();
 
@@ -209,7 +227,7 @@ public class GoalsTabController extends Controller {
     }
 
     /** Clears the goal table and populates it with the pat goals of the currently loaded profile */
-    public void displayPastGoalRowTable() {
+    private void displayPastGoalRowTable() {
         // Clear the table (vbox) of goals
         goalsListVbox.getChildren().clear();
 
@@ -258,7 +276,7 @@ public class GoalsTabController extends Controller {
         selectedGoalRow.select();
     }
 
-    /**Fill the goal header with information about the goal which currently selected goal row wraps */
+    /** Fill the goal header with information about the goal which currently selected goal row wraps */
     private void displayGoalInformation() {
         // Hide the no goal selected text
         noGoalSelectedText.setText("");
@@ -273,9 +291,13 @@ public class GoalsTabController extends Controller {
         goalProgressIndicator.setProgress(selectedGoal.getProgress() / 100);    // Takes a value between 0 and 1
         goalProgressIndicator.setDisable(false);
 
-        // Allow editing and deleting
-        editButton.setDisable(false);
-        deleteButton.setDisable(false);
+        // Allow editing (for current goals) and deleting.
+        if (currentGoalTableDisplayed) {
+            editButton.setDisable(false);
+        } else {
+            editButton.setDisable(true);    // do not allow editing of past goals
+        }
+        deleteButton.setDisable(false); // both current and past goals can be deleted
 
         // Fill the text fields with the goal information
         descriptionText.setText(selectedGoal.getDescription());
@@ -330,6 +352,9 @@ public class GoalsTabController extends Controller {
             editButton.setText("Done");
             deleteButton.setText("Cancel");
             isEditing = true;
+
+            // Set the button text to 'Done'
+            //editButton.setText("Done");
         } else {
             boolean updateSuccessful = false;
 
@@ -493,10 +518,20 @@ public class GoalsTabController extends Controller {
         }
     }
 
-    /** Display whichever table was last displayed in the goal tab.
+    /**
+     * Update the goals for completion and expiry and display whichever table was last displayed in the goal tab.
      *  Called when clicking on the goal tab.
      */
     public void displayGoalTable() {
+        // Check for any updates to the goals due to activities being imported and display notifications about any changes
+        updateGoals();
+        refreshGoalTable();
+    }
+
+    /** Refresh the goal table currently being displayed. Does not update the goals for completion
+     *   and expiry. */
+    public void refreshGoalTable() {
+        // Display the table which was being displayed when the tab was unselected
         if (currentGoalTableDisplayed) {
             updateCurrentGoalRowTable();
         } else {
@@ -558,5 +593,15 @@ public class GoalsTabController extends Controller {
      */
     public GoalRowItem getSelectedGoalRow() {
         return selectedGoalRow;
+    }
+
+    /** Displays the notification popup passed in if the goalsTab is currently being displayed.
+     *
+     * @param goalNotificationPopup the popup to display
+     */
+    private void openNotificationPopup(Pane goalNotificationPopup) {
+        if (((MainScreenController) applicationStateManager.getScreenController("MainScreen")).isOnGoalsTab()) {
+            applicationStateManager.displayPopUp(goalNotificationPopup);
+        }
     }
 }

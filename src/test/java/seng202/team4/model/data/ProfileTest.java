@@ -306,7 +306,7 @@ public class ProfileTest {
         profile1.addCurrentGoal(goal2);
         expectedGoals.add(goal2);
 
-        profile1.updateCurrentGoals();
+        profile1.updateCurrentGoals(true);;
 
         // Check the expired goal was removed from the current goals and the non-expired remained
         assertEquals(expectedGoals, profile1.getCurrentGoals());
@@ -319,7 +319,7 @@ public class ProfileTest {
         profile1.addCurrentGoal(goal2);
         expectedGoals.add(goal1);   // Expect the expired goal in the past goals
 
-        profile1.updateCurrentGoals();
+        profile1.updateCurrentGoals(true);;
 
         // Check the expired goal was added to the past goals
         assertEquals(expectedGoals, profile1.getPastGoals());
@@ -332,10 +332,27 @@ public class ProfileTest {
         profile1.addCurrentGoal(goal2);
         expectedGoals.add(goal1);   // Expect the expired goal to be returned
 
-        List<Goal> expiredGoals = profile1.updateCurrentGoals().getExpiredGoals();
+        List<Goal> expiredGoals = profile1.updateCurrentGoals(true).getExpiredGoals();
 
         // Check the expired goal returned
         assertEquals(expectedGoals, expiredGoals);
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForExpiry_applyUpdatesFalse_checkGoalNotRemoved() throws SQLException {
+        // Add 2 goals to the current goals - one has expired
+        profile1.addCurrentGoal(goal1);
+        profile1.addCurrentGoal(goal2);
+
+        // Update the goals without applying the updates to the goal lists
+        profile1.updateCurrentGoals(false);
+
+        // Expect both goals to remain
+        expectedGoals.add(goal1);
+        expectedGoals.add(goal2);
+
+        // Check the goals are not removed from the current goals
+        assertEquals(expectedGoals, profile1.getCurrentGoals());
     }
 
     @Test
@@ -450,7 +467,7 @@ public class ProfileTest {
         profile1.addCurrentGoal(goal5);
         profile1.addCurrentGoal(goal6);
 
-        profile1.updateCurrentGoals();
+        profile1.updateCurrentGoals(true);;
 
         // Check the goal is removed from the current goals - expected goals is empty
         assertEquals(expectedGoals, profile1.getCurrentGoals());
@@ -465,7 +482,7 @@ public class ProfileTest {
         expectedGoals.add(goal5);
         expectedGoals.add(goal6);
 
-        profile1.updateCurrentGoals();
+        profile1.updateCurrentGoals(true);;
 
         // Check the goals are added to the past goals
         assertEquals(expectedGoals, profile1.getPastGoals());
@@ -480,10 +497,26 @@ public class ProfileTest {
         expectedGoals.add(goal5);
         expectedGoals.add(goal6);
 
-        List<Goal> completed = profile1.updateCurrentGoals().getCompletedGoals();
+        List<Goal> completed = profile1.updateCurrentGoals(true).getCompletedGoals();
 
         // Check the goals are returned as completed goals
         assertEquals(expectedGoals, completed);
+    }
+
+    @Test
+    public void updateCurrentGoals_updateGoalsForCompletion_applyUpdatesFalse_completedGoals_checkCompleted() throws SQLException {
+        // Add 2 completed goals to the current goals
+        profile1.addCurrentGoal(goal5);
+        profile1.addCurrentGoal(goal6);
+        // Expect both goals to remain
+        expectedGoals.add(goal5);
+        expectedGoals.add(goal6);
+
+        // Update the goals without applying the updates to the goal lists
+        profile1.updateCurrentGoals(false);
+
+        // Check the goals are not removed from the current goals
+        assertEquals(expectedGoals, profile1.getCurrentGoals());
     }
 
     @Test

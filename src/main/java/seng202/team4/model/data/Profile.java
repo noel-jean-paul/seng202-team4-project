@@ -326,7 +326,7 @@ public class Profile {
      */
     private void addPastGoal(Goal goal, boolean insert) throws SQLException {
         pastGoals.add(goal);
-        java.util.Collections.sort(pastGoals);
+        pastGoals.sort(Goal.getPastGoalComparator());   // Sort the past goals using their comparator
         // Set this as the goal owner
         goal.setOwner(this);
         goal.setCurrent(false); // The goal is no longer current if it is in the past goals
@@ -355,7 +355,7 @@ public class Profile {
      */
     public void addAllPastGoals(Collection<Goal> goals) {
         pastGoals.addAll(goals);
-        java.util.Collections.sort(pastGoals);
+        pastGoals.sort(Goal.getPastGoalComparator());   // Sort the past goals using their comparator
     }
 
 
@@ -383,6 +383,7 @@ public class Profile {
      */
     private void removeCurrentGoal(Goal goal, boolean delete) throws SQLException {
         currentGoals.remove(goal);
+        // remove from the database if the delete flag is set
         if (delete) {
             DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
         }
@@ -402,6 +403,7 @@ public class Profile {
      */
     private void removePastGoal(Goal goal, boolean delete) throws SQLException {
         pastGoals.remove(goal);
+        // remove from the database if the delete flag is set
         if (delete) {
             DataStorer.deleteGoals(new ArrayList<>(Collections.singletonList(goal)));
         }
@@ -446,14 +448,18 @@ public class Profile {
         }
     }
 
-    /** Move any goals in currentGoals which have expired into pastGoal and return a list of these goals
+    /** Get a list of the goals in the current goals which have expired
+     * If the applyExpiries flag is set:
+     *      Expires all goals which have expired in the current goals by removing them from the current goals of the
+     *      profile and adding them to the past goals.
      *  Should be called after updateGoalsForProgress to allow for importing of activities to meet a goal
      *  on the day they expire.
      *
+     * @param applyExpiries a boolean denoting if the expired goals found should be expired (removed from current goals)
      * @return a list of the goals which have expired since the method was last called
      * @throws SQLException if an error occurred regarding the database - should not ever occur
      */
-    private List<Goal> updateGoalsForExpiry() throws SQLException {
+    private List<Goal> updateGoalsForExpiry(boolean applyExpiries) throws SQLException {
         // Declare list to return
         List<Goal> expiredGoals;
         expiredGoals = new ArrayList<>();
@@ -461,10 +467,12 @@ public class Profile {
         // Iterate over a copy of the current goal list as we are modifying the currentGoals while we iterate over them
         List<Goal> currentGoalsCopy = new ArrayList<>(currentGoals);
         for (Goal goal: currentGoalsCopy) {
-            if (goal.getExpiryDate().isBefore(LocalDate.now())) {
-                removeCurrentGoal(goal, false); // do not update the database as the goal is already stored in it
-                addPastGoal(goal, false);
+            if (goal.getExpiryDate().isBefore(LocalDate.now())) {   // Check if the expiry date has passed
                 expiredGoals.add(goal);
+                if (applyExpiries) {
+                    removeCurrentGoal(goal, false); // do not update the database as the goal is already stored in it
+                    addPastGoal(goal, false);
+                }
             }
         }
         return  expiredGoals;
@@ -508,14 +516,19 @@ public class Profile {
         }
     }
 
-    /** Remove any goals which have been completed from the current goals list and add them to the past goals list.
+    /** Get a list of the goals in the current goals which are completed
+     *  If the applyUpdates flag is set:
+     *      Remove all completed goals found from the current goals of the
+     *      profile and add them to the past goals.
+     *
      *  Should be called after updateGoalsForProgress and before updateGoalsForExpiry to allow for importing of
      *  activities to meet a goal on the day they expire.
      *
+     * @param applyUpdates boolean denoting whether to remove the completed goals from the current goals
      * @return a list of the goals which were removed from current goals
      * @throws SQLException if an error occurred regarding the database - should not ever occur
      */
-    private List<Goal> updateGoalsForCompletion() throws SQLException {
+    private List<Goal> updateGoalsForCompletion(boolean applyUpdates) throws SQLException {
         List<Goal> completedGoals;
         completedGoals = new ArrayList<>();
 
@@ -523,27 +536,32 @@ public class Profile {
         List<Goal> currentGoalsCopy = new ArrayList<>(currentGoals);
         for (Goal goal: currentGoalsCopy) {
             if (goal.isComplete()) {
-                removeCurrentGoal(goal, false); // do not update the database as the goal is already stored in it
-                addPastGoal(goal, false);
                 completedGoals.add(goal);
+                if (applyUpdates) {
+                    removeCurrentGoal(goal, false); // do not update the database as the goal is already stored in it
+                    addPastGoal(goal, false);
+                }
             }
         }
         return completedGoals;
     }
 
-    /** Update the current goal list of the profile for completion and expiry
+    /** Finds the goals in the current goal list of the profile which have been completed or expired.
+     *  If the applyUpdates flag is set, remove the expired and completed goals found from the current goals list
      *
+     *
+     * @param applyUpdates boolean denoting whether to remove the goals found from the current goal list
      * @return a GoalListPair object containing the goals which expired and those which were completed
      * @throws SQLException if an error occurred regarding the database - should not occur
      */
-    public GoalListPair updateCurrentGoals() throws SQLException {
+    public GoalListPair updateCurrentGoals(boolean applyUpdates) throws SQLException {
         GoalListPair listPair;
         List<Goal> expiredGoals;
         List<Goal> completedGoals;
 
-        // Update the current goals for progress, completion and expiry
-        completedGoals = updateGoalsForCompletion();
-        expiredGoals = updateGoalsForExpiry();
+        // Update the current goals for completion and expiry
+        completedGoals = updateGoalsForCompletion(applyUpdates);
+        expiredGoals = updateGoalsForExpiry(applyUpdates);
 
         return new GoalListPair(expiredGoals, completedGoals);
     }

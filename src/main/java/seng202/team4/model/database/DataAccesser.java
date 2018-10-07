@@ -93,7 +93,7 @@ abstract public class DataAccesser {
                 "foreign key (firstName, lastName) references profile" +
                 ");";
 
-        String createGoal = String.format("create table if not exists goal (\n" +
+        String createGoal = "create table if not exists goal (\n" +
                 "goalNumber integer,\n" +
                 "progress integer constraint check_progress check (progress between 0 and 100),\n" +
                 "type character(3) constraint check_type check (type in (\"Run\", \"Walk\")),\n" +
@@ -101,7 +101,7 @@ abstract public class DataAccesser {
                 "expiryDate character(10),\n" +
                 "completionDate character(10),\n" +
                 "goalDuration character(8),\n" +
-                "goalDistance real constraint check_goalDistance check (goalDistance >= %f),\n" +
+                "goalDistance real constraint check_goalDistance check (goalDistance >= 0),\n" +
                 "caloriesBurned integer not null, \n" +
                 "current text constratint check_current check (current in (\"true\", \"false\")), \n" +
                 "firstName text,\n" +
@@ -109,7 +109,7 @@ abstract public class DataAccesser {
                 "primary key (firstName, lastName, goalNumber),\n" +
                 "foreign key (firstName, lastName) references profile\n" +
                 "on delete cascade on update no action\n" +
-                ");", Goal.MIN_GOAL_DISTANCE);
+                ");";
 
         String createDataRow = String.format("create table if not exists dataRow (\n" +
                 "  rowNumber integer,\n" +

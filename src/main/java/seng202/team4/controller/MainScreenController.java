@@ -56,6 +56,8 @@ public class MainScreenController extends Controller {
     /** The HealthTabController of the health tab. */
     private HealthTabController healthTabController;
 
+    /** Boolean to determine whether the goals tab is being entered or left */
+    private boolean onGoalsTab = false;
 
 
     /**
@@ -132,11 +134,12 @@ public class MainScreenController extends Controller {
     }
 
     /**
-     * Called when the goal tab is clicked.
+     * Called when the goal tab is clicked or when the goals tab is left.
      * Displays the goal table in the goal tab.
      */
     @FXML
     void goalTabSelected() {
+        onGoalsTab = !onGoalsTab;   // Toggle the boolean keeping track of whether the goals tab is being displayed
         goalsTabController.displayGoalTable();
     }
 
@@ -189,4 +192,16 @@ public class MainScreenController extends Controller {
         }
     }
 
+    /** Switch to the activity tab */
+    public void switchToActivityTab() {
+        tabPane.getSelectionModel().select(1);
+    }
+
+    /** Get whether the goals tab is being displayed
+     *
+     * @return true if the goals tab is being displayed, false otherwise
+     */
+    public boolean isOnGoalsTab() {
+        return onGoalsTab;
+    }
 }
