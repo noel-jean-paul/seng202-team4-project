@@ -117,6 +117,9 @@ public class ActivityTabController extends Controller {
     @FXML
     private Button showGraphsButton;
 
+    /** Pane for the CalendarView. */
+    private Pane calendarView;
+
     /** Boolean that stores whether the table is currently reorderable. */
     private boolean isTableReorderable = true;
 
@@ -222,6 +225,10 @@ public class ActivityTabController extends Controller {
 
         tableRowMenu.setAutoHide(true);
 
+        // Initialise Calendar view.
+        calendarViewController = new CalendarViewController(applicationStateManager);
+        calendarView = GuiUtilities.loadPane("CalendarView.fxml", calendarViewController);
+
 
     }
 
@@ -278,20 +285,36 @@ public class ActivityTabController extends Controller {
     @FXML
     public void toggleCalendarView() {
         if (!isCalendarView) {
-            calendarViewController = new CalendarViewController(applicationStateManager);
-            Pane calendarView = GuiUtilities.loadPane("CalendarView.fxml", calendarViewController);
-            //toggleCalendarView.prefWidthProperty().bind(centerContentPane.widthProperty());
-            //toggleCalendarView.prefHeightProperty().bind(centerContentPane.heightProperty());
+            updateCalendar();
+
+            // Add event to enable buttons if an item in the calendar is clicked.
+            calendarViewController.addMouseClickActionToItems(event -> {
+                showMapsButton.setDisable(false);
+                showGraphsButton.setDisable(false);
+            });
+
+            calendarViewController.refresh();
+
             centerContentPane.getChildren().setAll(calendarView);
             calendarViewButton.setText("Table View");
             isCalendarView = true;
         } else {
             centerContentPane.getChildren().setAll(activityTable);
-            calendarViewButton.setText("Calendar view");
+            calendarViewButton.setText("Calendar View");
             isCalendarView = false;
         }
 
 
+    }
+
+    /** Updates the calendar view. */
+    public void updateCalendar() {
+        calendarViewController.clearCalendar();
+
+        // Add all the activities to the calendar.
+        for (Activity activity: applicationStateManager.getCurrentProfile().getActivityList()) {
+            calendarViewController.addCalendarItem(activity);
+        }
     }
 
     /**
@@ -470,7 +493,7 @@ public class ActivityTabController extends Controller {
     private Activity getSelectedActivity() {
         Activity activity;
         if (isCalendarView) {
-            activity = calendarViewController.getSelectedActivity();
+            activity = (Activity) calendarViewController.getSelectedItem();
         } else {
             activity = (Activity) activityTable.getSelectionModel().getSelectedItem();
         }

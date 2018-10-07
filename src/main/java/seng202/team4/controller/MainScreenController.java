@@ -130,6 +130,7 @@ public class MainScreenController extends Controller {
     @FXML
     void activityTabSelected() {
         activityTabController.updateTable();
+        activityTabController.updateCalendar();
     }
 
     /**

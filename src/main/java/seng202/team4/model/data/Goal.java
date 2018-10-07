@@ -1,6 +1,5 @@
 package seng202.team4.model.data;
 
-import seng202.team4.controller.ActivityImportTypePromptController;
 import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
 import seng202.team4.model.data.enums.GoalFields;
 import seng202.team4.model.data.enums.GoalType;
@@ -13,10 +12,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Objects;
 
-import static java.time.Duration.between;
 
-
-public class Goal implements Comparable<Goal> {
+public class Goal implements Comparable<Goal>, CalendarItem {
     /** The minimum distance for a distance goal. */
     public static final double MIN_GOAL_DISTANCE = 1.0;
 
@@ -469,5 +466,15 @@ public class Goal implements Comparable<Goal> {
                 return 0;
             }
         };
+    }
+
+    @Override
+    public LocalDate getDate() {
+        return getExpiryDate();
+    }
+
+    @Override
+    public String getDisplayString() {
+        return "Goal";
     }
 }

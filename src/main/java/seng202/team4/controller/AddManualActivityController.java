@@ -175,6 +175,8 @@ public class AddManualActivityController extends Controller {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
                 applicationStateManager.closePopUP(rootPane);
                 activityTabController.updateTable();
+                activityTabController.updateCalendar();
+
                 // Update the goals with the new activity imported
                 applicationStateManager.getCurrentProfile().updateGoalsForProgress(Collections.singletonList(activity));
             } catch (java.sql.SQLException e) {

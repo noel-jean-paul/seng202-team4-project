@@ -42,6 +42,7 @@ public class ActivityDeletionConfirmationController extends Controller {
         try {
             applicationStateManager.getCurrentProfile().removeActivity(activity);
             activityTabController.updateTable();
+            activityTabController.updateCalendar();
             //applicationStateManager.switchToScreen("ActivityTab");
             applicationStateManager.closePopUP(rootPane);
         } catch (java.sql.SQLException e){

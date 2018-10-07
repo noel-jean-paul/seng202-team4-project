@@ -71,8 +71,8 @@ public class App extends Application {
             DataStorer.deleteProfile(profile);
             // Store a datarow in the database to make the app "use" the database. If the database is empty another
             // instance of the app can be opened in parallel due to the database not being in use.
-            DataStorer.insertActivity(new Activity("Run in the park", "2018-08-29", ActivityType.Run,
-                    "12:15:01", "PT40M", 5.13, 187), profile);
+            //DataStorer.insertActivity(new Activity("Run in the park", "2018-08-29", ActivityType.Run,
+                    //"12:15:01", "PT40M", 5.13, 187), profile);
         } catch (SQLException e) {
             e.printStackTrace();
             // Terminate this instance of the app
@@ -81,7 +81,7 @@ public class App extends Application {
         }
 
         // Creates base scene.
-        Scene baseScene = new Scene(new Group(), 660, 460);
+        Scene baseScene = new Scene(new Group(), 900, 600);
 
         // Creates application state manager.
         ApplicationStateManager applicationStateManager = new ApplicationStateManager(baseScene, primaryStage);

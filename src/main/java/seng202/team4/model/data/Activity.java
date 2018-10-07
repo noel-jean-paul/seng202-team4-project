@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-public class Activity implements Comparable<Activity> {
+public class Activity implements Comparable<Activity>, CalendarItem {
 
     /** Keywords that indicate an Activity is a walk.*/
     private static final String[] walkKeyWords = {"walk", "hike", "stroll", "hiking"};
@@ -172,6 +172,11 @@ public class Activity implements Comparable<Activity> {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    @Override
+    public String getDisplayString() {
+        return getType() + " Activity";
     }
 
     /** Set and update in database */

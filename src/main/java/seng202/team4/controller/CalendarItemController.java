@@ -8,10 +8,10 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.CalendarItem;
 
 /** Controller class for an activity item in a calendar. */
-public class ActivityCalendarItemController extends Controller {
+public class CalendarItemController extends Controller {
 
     /** Background of a selected profile. */
     private final Background selectedBackground = new Background( new BackgroundFill( Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY ) );
@@ -27,19 +27,23 @@ public class ActivityCalendarItemController extends Controller {
     @FXML
     private Text typeText;
 
-    /** The activity of the calendar item. */
-    private Activity activity;
+    /** The CalendarItem being stored calendar item view. */
+    private CalendarItem item;
 
-    /** Creates a new ActivityCalendarItemController with the given application state manager. */
-    public ActivityCalendarItemController(ApplicationStateManager applicationStateManager, Activity activity) {
+    /** String to be displayed in the calendar item. */
+    private String displayString;
+
+    /** Creates a new CalendarItemController with the given application state manager. */
+    public CalendarItemController(ApplicationStateManager applicationStateManager, CalendarItem item, String displayString) {
         super(applicationStateManager);
-        this.activity = activity;
+        this.item = item;
+        this.displayString = displayString;
     }
 
     /** Initializes the activity calendar item. */
     @FXML
     public void initialize() {
-        typeText.setText(activity.getType().toString());
+        typeText.setText(displayString);
         deselect();
     }
 
@@ -54,7 +58,7 @@ public class ActivityCalendarItemController extends Controller {
     }
 
     /** Gets the Activity associated with this activity calendar item. */
-    public Activity getActivity() {
-        return activity;
+    public CalendarItem getItem() {
+        return item;
     }
 }

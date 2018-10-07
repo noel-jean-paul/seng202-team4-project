@@ -1,20 +1,22 @@
 package seng202.team4.controller.GoalTab;
 
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.controller.ApplicationStateManager;
+import seng202.team4.controller.CalendarViewController;
 import seng202.team4.controller.Controller;
 import seng202.team4.controller.MainScreenController;
-import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.GoalListPair;
 import seng202.team4.view.CurrentGoalRowItem;
@@ -70,7 +72,7 @@ public class GoalsTabController extends Controller {
     /** Text for displaying the total amount needed for the goal to be completed. */
     @FXML Text totalAmountText;
 
-    /** The VBost that holds a list of the users goals. */
+    /** The VBox that holds a list of the users goals. */
     @FXML
     private VBox goalsListVbox;
 
@@ -122,6 +124,17 @@ public class GoalsTabController extends Controller {
     @FXML
     private VBox expiryDateVbox;
 
+    /** The center pane that displays either an activity table or calendar. */
+    @FXML
+    private AnchorPane centerContentPane;
+
+    /** GridPane for header and list of goals */
+    @FXML
+    private GridPane goalsListGridPane;
+
+    /** Calendar view pane. */
+    private Pane calendarView;
+
     /** TextField for entering the amount that is need to complete a goal. */
     private TextField totalAmountTextField;
 
@@ -137,6 +150,12 @@ public class GoalsTabController extends Controller {
     /** Boolean representing if the user is currently editing a goal. */
     private boolean isEditing = false;
 
+    /** Stores whether the calendar view is current being displayed. */
+    private boolean isCalendarView = false;
+
+    /** CalendarViewController of the calendar. */
+    private CalendarViewController calendarViewController;
+
     /**
      * Constructor for the Goals Tab Controller.
      *
@@ -151,11 +170,15 @@ public class GoalsTabController extends Controller {
     @FXML
     public void initialize() {
         // Reset the top goal bar to have no goal information displayed
-        reset();
+        clearGoalInformation();
 
         // Create new text field for when the user chooses to edit a goal.
         totalAmountTextField = new TextField();
         expiryDatePicker = new DatePicker();
+
+        // Initialize Calendar view.
+        calendarViewController = new CalendarViewController(applicationStateManager);
+        calendarView = GuiUtilities.loadPane("CalendarView.fxml", calendarViewController);
     }
 
     /** Display notications of the goals which were completed or expired
@@ -278,34 +301,53 @@ public class GoalsTabController extends Controller {
 
     /** Fill the goal header with information about the goal which currently selected goal row wraps */
     private void displayGoalInformation() {
-        // Hide the no goal selected text
-        noGoalSelectedText.setText("");
 
-        // Show goal information headings.
-        showHeadings();
+        // Get the currently selected goal.
+        Goal selectedGoal = getSelectedGoal();
 
-        // Get the goal which the selectedGoalRow wraps
-        Goal selectedGoal = selectedGoalRow.getGoal();
+        if (selectedGoal != null) {
+            // Hide the no goal selected text
+            noGoalSelectedText.setText("");
 
-        // Fill the goal progress indicatior
-        goalProgressIndicator.setProgress(selectedGoal.getProgress() / 100);    // Takes a value between 0 and 1
-        goalProgressIndicator.setDisable(false);
+            // Show goal information headings.
+            showHeadings();
 
-        // Allow editing (for current goals) and deleting.
-        if (currentGoalTableDisplayed) {
-            editButton.setDisable(false);
-        } else {
-            editButton.setDisable(true);    // do not allow editing of past goals
+
+
+            // Fill the goal progress indication
+            goalProgressIndicator.setProgress(selectedGoal.getProgress() / 100);    // Takes a value between 0 and 1
+            goalProgressIndicator.setDisable(false);
+
+            // Allow editing (for current goals) and deleting.
+            if (currentGoalTableDisplayed) {
+                editButton.setDisable(false);
+            } else {
+                editButton.setDisable(true);    // do not allow editing of past goals
+            }
+            deleteButton.setDisable(false); // both current and past goals can be deleted
+
+            // Fill the text fields with the goal information
+            descriptionText.setText(selectedGoal.getDescription());
+            startDateText.setText(selectedGoal.getCreationDate().toString());
+            expiryDateText.setText(selectedGoal.getExpiryDate().toString());
+            remainingTimeText.setText(selectedGoal.getRemainingTimeDescription());
+            currentAmountText.setText(selectedGoal.getAmountDescription("current"));
+            totalAmountText.setText(selectedGoal.getAmountDescription("total"));
         }
-        deleteButton.setDisable(false); // both current and past goals can be deleted
+    }
 
-        // Fill the text fields with the goal information
-        descriptionText.setText(selectedGoal.getDescription());
-        startDateText.setText(selectedGoal.getCreationDate().toString());
-        expiryDateText.setText(selectedGoal.getExpiryDate().toString());
-        remainingTimeText.setText(selectedGoal.getRemainingTimeDescription());
-        currentAmountText.setText(selectedGoal.getAmountDescription("current"));
-        totalAmountText.setText(selectedGoal.getAmountDescription("total"));
+    /** Gets the selected Goal from either the List or calendar.
+     *
+     * @return The selected goal if there is one, null otherwise.
+     */
+    private Goal getSelectedGoal() {
+        Goal goal = null;
+        if (isCalendarView) {
+            goal = (Goal) calendarViewController.getSelectedItem();
+        } else {
+            goal = selectedGoalRow.getGoal();
+        }
+        return goal;
     }
 
     /**
@@ -319,8 +361,62 @@ public class GoalsTabController extends Controller {
         applicationStateManager.displayPopUp(addGoalPopUp);
     }
 
+    /**
+     * Switches to calendar view.
+     */
     @FXML
     void toggleCalendarView() {
+
+        if (!isCalendarView) {
+            // If a goal in the calendar is clicked then information on the goal should be displayed.
+            calendarViewController.addMouseClickActionToItems(event -> {
+
+                // Will update the goal information 1 millisecond later as order of mouse actions can not be controlled.
+                Task<Void> sleeper = new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        try {
+                            Thread.sleep(1);
+                        } catch (InterruptedException e) {
+
+                        }
+                        return null;
+                    }
+                };
+                sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                    @Override
+                    public void handle(WorkerStateEvent event) {
+                        displayGoalInformation();
+                    }
+                });
+                new Thread(sleeper).start();
+            });
+
+            calendarViewController.clearCalendar();
+            // Add all the current goals to the calendar.
+            for (Goal goal: applicationStateManager.getCurrentProfile().getCurrentGoals()) {
+                calendarViewController.addCalendarItem(goal);
+            }
+
+            // Add all the past goals to the calendar.
+            for (Goal goal: applicationStateManager.getCurrentProfile().getPastGoals()) {
+                calendarViewController.addCalendarItem(goal);
+            }
+
+            calendarViewController.refresh();
+
+            centerContentPane.getChildren().setAll(calendarView);
+            calendarViewButton.setText("List View");
+
+            toggleGoalListButton.setVisible(false);
+            isCalendarView = true;
+        } else {
+            centerContentPane.getChildren().setAll(goalsListGridPane);
+            calendarViewButton.setText("Calendar view");
+
+            toggleGoalListButton.setVisible(true);
+            isCalendarView = false;
+        }
 
     }
 
@@ -451,8 +547,6 @@ public class GoalsTabController extends Controller {
                 }
 
             }
-
-
         }
 
     }
@@ -499,7 +593,7 @@ public class GoalsTabController extends Controller {
         }
 
         // Clear the goal tab header of information about the goal
-        reset();
+        clearGoalInformation();
     }
 
     @FXML
@@ -543,9 +637,9 @@ public class GoalsTabController extends Controller {
     }
 
     /**
-     * Resets the Goals tab by clearing all information on the selected activity.
+     * Clears all information on the selected goal.
      */
-    public void reset() {
+    private void clearGoalInformation() {
         selectedGoalRow = null;
         // Reset the progress indicator
         goalProgressIndicator.setProgress(0);
@@ -566,6 +660,15 @@ public class GoalsTabController extends Controller {
         noGoalSelectedText.setText("No Goal Selected");
 
         hideHeadings();
+    }
+
+    /** Resets the goal tab. */
+    public void reset() {
+        clearGoalInformation();
+
+        // change back to list view.
+        isCalendarView = true;
+        toggleCalendarView();
     }
 
     /**

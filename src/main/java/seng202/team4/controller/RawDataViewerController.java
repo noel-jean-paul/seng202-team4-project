@@ -400,6 +400,7 @@ public class RawDataViewerController extends Controller {
         }
         // Update the table holding the activities to display the new values
         activityTabController.updateTable();
+        activityTabController.updateCalendar();
         // Close the popup
         applicationStateManager.closePopUP(popupPane);
     }

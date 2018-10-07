@@ -109,6 +109,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
             }
         }
         activityTabController.updateTable();
+        activityTabController.updateCalendar();
         if (warningFound) {
             HealthWarningDetectedPopup detectedPopup = new HealthWarningDetectedPopup(applicationStateManager);
             Pane popUp = GuiUtilities.loadPane("WarningDetectedPopup.fxml", detectedPopup);

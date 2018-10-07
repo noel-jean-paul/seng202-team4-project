@@ -111,7 +111,7 @@ public class FileParser {
                         Activity activity = new Activity(activityName, rowCopy);
                         skippedActivities.add(activity);
                     }
-                    rows.clear();    //clear the arrayList of rows in preparation for the next lot of data for the next activity
+                    rows.clear();    //clearCalendar the arrayList of rows in preparation for the next lot of data for the next activity
                 } else {
                     line = bufferedReader.readLine();
                 }

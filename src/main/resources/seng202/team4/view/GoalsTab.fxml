@@ -13,21 +13,52 @@
    </columnConstraints>
    <rowConstraints>
       <RowConstraints maxHeight="193.0" minHeight="-Infinity" prefHeight="193.0" vgrow="NEVER" />
-      <RowConstraints maxHeight="44.0" minHeight="-Infinity" prefHeight="20.0" vgrow="NEVER" />
       <RowConstraints vgrow="ALWAYS" />
       <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" vgrow="NEVER" />
    </rowConstraints>
    <children>
-      <AnchorPane GridPane.rowIndex="2">
+      <AnchorPane fx:id="centerContentPane" GridPane.rowIndex="1">
          <children>
-            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="100.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <content>
-                  <VBox fx:id="goalsListVbox" />
-               </content>
-            </ScrollPane>
+            <GridPane fx:id="goalsListGridPane" prefHeight="100.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="NEVER" />
+                <RowConstraints vgrow="ALWAYS" />
+              </rowConstraints>
+               <children>
+                  <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="100.0" prefWidth="100.0" GridPane.rowIndex="1">
+                     <content>
+                        <VBox fx:id="goalsListVbox" />
+                     </content>
+                  </ScrollPane>
+                  <AnchorPane fx:id="rowPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0">
+                     <children>
+                        <GridPane gridLinesVisible="true" layoutX="23.0" layoutY="-31.0" prefHeight="20.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Date" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Text fx:id="expiryCompletionDate" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry Date" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Progress" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </GridPane>
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
          <children>
             <GridPane prefHeight="90.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columnConstraints>
@@ -249,27 +280,6 @@
                      </rowConstraints>
                   </GridPane>
                </children>
-            </GridPane>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="rowPane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" GridPane.rowIndex="1">
-         <children>
-            <GridPane gridLinesVisible="true" layoutX="23.0" layoutY="-31.0" prefHeight="20.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation Date" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Text fx:id="expiryCompletionDate" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry Date" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Progress" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
-               </rowConstraints>
             </GridPane>
          </children>
       </AnchorPane>

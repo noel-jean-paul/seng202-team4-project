@@ -43,7 +43,7 @@ public class GoalTest {
     @Before
     public void setUpReccurring() throws SQLException {
         profile1.getCurrentGoals().clear();
-//        goal1.setCurrent(true); // current is set false is one test so reset it here
+//        goal1.setCurrent(true); // current is set false is one test so clearGoalInformation it here
         DataAccesser.clearDatabase();
     }
 

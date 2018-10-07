@@ -80,7 +80,7 @@ public class ProfileTest {
 
     @Before
     public void setUpReccuring() throws SQLException {
-        // clear lists and database
+        // clearCalendar lists and database
         profile1.getActivityList().clear();
         profile1.getCurrentGoals().clear();
         profile1.getPastGoals().clear();
