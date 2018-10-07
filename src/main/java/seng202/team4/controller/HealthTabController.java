@@ -15,8 +15,8 @@ import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.enums.WarningType;
 import seng202.team4.model.utilities.HealthWarning;
 
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Controller for the health tab.
@@ -169,7 +169,7 @@ public class HealthTabController extends Controller {
 
     private WebEngine engine;
     private String currentUrl;
-    private boolean internetConnected;
+    private boolean tabLoaded = false;
 
 
     /**
@@ -191,13 +191,38 @@ public class HealthTabController extends Controller {
         currentUrl = "https://www.google.co.nz/";
         engine = webBrowser.getEngine();
         imagePane.setStyle("-fx-background-color: white");
-
-        boolean internetConnected = verifyInternetConnection();
-        if (internetConnected) {
-            engine.load(currentUrl);
-        }
     }
 
+    /**
+     * After checking the OS running the program, performs a terminal command to attempt to ping google.com.
+     * Returns a boolean indicating whether the ping was successful or not.
+     * @return true if the ping was successful, false if the ping failed or no internet connection is available.
+     */
+    private boolean verifyConnection() {
+        boolean reachable;
+        try {
+            String OS = System.getProperty("os.name");
+            Process pingProcess;
+            if (OS.contains("Windows")) {
+                pingProcess = java.lang.Runtime.getRuntime().exec("ping -n 2 -w 200 www.google.com"); // Windows ping command
+            } else {
+                pingProcess = java.lang.Runtime.getRuntime().exec("ping -c 2 -W 200 www.google.com"); // Unix ping command (MacOS & Linux)
+            }
+            int returnVal = pingProcess.waitFor();
+            reachable = (returnVal == 0);
+        } catch (IOException noInternet) {
+            reachable = false;
+        } catch (InterruptedException e) {
+            System.out.println("Ping process thread was interrupted during it's operation");
+            reachable = false;
+        }
+        return reachable;
+    }
+
+    /**
+     *
+     * @return
+     */
     private String getBMIStatusString() {
         double BMI = applicationStateManager.getCurrentProfile().getBmi();
         String status;
@@ -213,38 +238,34 @@ public class HealthTabController extends Controller {
         return  status;
     }
 
-    private boolean verifyInternetConnection() {
-        try{
-            Runtime run=Runtime.getRuntime();
-            Process proc = run.exec("ping www.google.com");
-            boolean connected = proc.waitFor(2, TimeUnit.SECONDS);
-            return connected;
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     /**
-     * Populates the table and sets the web view back to Google.com when the health tab is selected.
+     * Populates the table, checks the connection to google.com, and depending on the result
+     * sets the web view to either www.google.com, or displays the no internet icon.
      */
     public void reloadTab() {
-        ObservableList<HealthWarning> warningList = FXCollections.observableArrayList(
-                applicationStateManager.getCurrentProfile().getWarningList());
-        dateColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,LocalDate>("warningDate"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,String>("typeString"));
-        descColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning,String>("description"));
+        if (!tabLoaded) {
+            boolean hasInternetConnection;
+            ObservableList<HealthWarning> warningList = FXCollections.observableArrayList(
+                    applicationStateManager.getCurrentProfile().getWarningList());
+            dateColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning, LocalDate>("warningDate"));
+            typeColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning, String>("typeString"));
+            descColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning, String>("description"));
+            healthWarningTable.setItems(warningList);
+            ScrollBar scrollBarHorizontal = (ScrollBar) healthWarningTable.lookup(".scroll-bar:hotizontal");
+            scrollBarHorizontal.setVisible(false);
 
-        healthWarningTable.setItems(warningList);
-
-        ScrollBar scrollBarHorizontal = (ScrollBar) healthWarningTable.lookup(".scroll-bar:hotizontal");
-        scrollBarHorizontal.setVisible(false);
-
-
-        currentUrl = "https://www.google.com/";
-        engine.load(currentUrl);
-        //noInternetPane.toFront();
+            System.out.println("About to check internet");
+            hasInternetConnection = verifyConnection();
+            System.out.println("Finished checking internet");
+            if (hasInternetConnection) {
+                currentUrl = "https://www.google.com/";
+                engine.load(currentUrl);
+                webBrowser.toFront();
+            } else {
+                imagePane.toFront();
+            }
+        }
+        tabLoaded = !tabLoaded;
     }
 
     /**
@@ -254,5 +275,9 @@ public class HealthTabController extends Controller {
         ageLabel.setText(String.format("%d", (applicationStateManager.getCurrentProfile().getAge())));
         weightLabel.setText(String.format("%.1f", applicationStateManager.getCurrentProfile().getWeight()) + "kg");
         bmiLabel.setText(String.format("%.2f    (%s)", applicationStateManager.getCurrentProfile().getBmi(), getBMIStatusString()));
+    }
+
+    public void setConnectionStatus(boolean hasConnection) {
+
     }
 }
