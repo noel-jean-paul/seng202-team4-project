@@ -482,7 +482,6 @@ public class Profile {
      */
     public void updateGoalsForProgress(List<Activity> activities) throws SQLException {
         for (Goal goal: currentGoals) {
-            // TODO: 4/10/18 Noel make this a while loop which loops while isComplete is false
             for (Activity activity: activities) {
                 // Check the activity is in the correct date range and of the correct type - compare enums by the string
                 if (activity.getDate().isAfter(goal.getCreationDate())
