@@ -4,8 +4,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import seng202.team4.App;
 import seng202.team4.GuiUtilities;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.enums.ActivityType;
@@ -56,6 +60,10 @@ public class AddManualActivityController extends Controller {
     @FXML
     private ActivityTabController activityTabController;
 
+    /** The background for the popup window */
+    @FXML
+    private Rectangle popUpRectangle;
+
 
     /** Creates a new AddManualActivityController with the given ApplicationStateManager. */
     public AddManualActivityController(ApplicationStateManager applicationStateManager, ActivityTabController activityTabController) {
@@ -70,6 +78,8 @@ public class AddManualActivityController extends Controller {
     public void initialize() {
         typeChoiceBox.getItems().addAll(ActivityType.Other, ActivityType.Walk, ActivityType.Run);
         typeChoiceBox.setValue(ActivityType.Other);
+        Image backgroundImage = new Image(App.class.getResource("view/blue_cascade.jpg").toExternalForm());
+        popUpRectangle.setFill(new ImagePattern(backgroundImage));
     }
 
     /**
