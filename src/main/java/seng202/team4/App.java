@@ -16,6 +16,8 @@ import seng202.team4.model.database.DataAccesser;
 import seng202.team4.model.database.DataStorer;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.sql.SQLException;
 
 /**
@@ -28,7 +30,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Redirects System Out and System Err to ErrorLog.txt
-        /*try {
+        try {
             File errorLog = new File("ErrorLog.txt");
             PrintStream errorLogStream = new PrintStream(errorLog);
             System.setOut(errorLogStream);
@@ -36,7 +38,7 @@ public class App extends Application {
         } catch (IOException e) {
             e.printStackTrace();
             GuiUtilities.displayErrorMessage("Failed to open ErrorLog.txt", "This is not critical.");
-        }*/
+        }
 
         // Check if the database file exists
         File f = new File(DataAccesser.getDbFileName());
