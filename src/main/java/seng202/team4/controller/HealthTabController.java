@@ -22,51 +22,69 @@ import java.time.LocalDate;
  * Controller for the health tab.
  */
 public class HealthTabController extends Controller {
-
+    /** The table which holds all the health warnings detected for the user */
     @FXML
     private TableView healthWarningTable;
 
+    /** The column in the table which holds the dates which the warnings were created */
     @FXML
     private TableColumn dateColumn;
 
+    /** The column in the table which indicates the type of the warning */
     @FXML
     private TableColumn typeColumn;
 
+    /** The column in the table which gives a brief description of the warning */
     @FXML
     private TableColumn descColumn;
 
+    /** The web view of the health page */
     @FXML
     private WebView webBrowser;
 
+    /** The back button for the web view */
     @FXML
     private Button backButton;
 
+    /** The forward button for the web view */
     @FXML
     private Button forwardButton;
 
+    /** The button used to bring up more information about the selected warning */
     @FXML
     private Button viewInfoButton;
 
+    /** The button used to search online for the specific health warning */
     @FXML
     private Button webSearchButton;
 
+    /** The 'return to home' button for the web view */
     @FXML
     private Button returnButton;
 
+    /** The label which shows the user's age */
     @FXML
     private Label ageLabel;
 
+    /** The label which shows the user's weight */
     @FXML
     private Label weightLabel;
 
+    /** The label which shows the user's BMI */
     @FXML
     private Label bmiLabel;
 
+    /** The grid pane used to hold the 'no internet' image */
     @FXML
     private GridPane imagePane;
 
+    /** The web engine which the web view uses for internet connections */
     private WebEngine engine;
+
+    /** The current URL used as the web view's home page */
     private String currentUrl;
+
+    /** Holds true if the tab is currently open, false if the tab as selected from another tab */
     private boolean tabLoaded = false;
 
     /**
@@ -279,14 +297,5 @@ public class HealthTabController extends Controller {
         ageLabel.setText(String.format("%d", (applicationStateManager.getCurrentProfile().getAge())));
         weightLabel.setText(String.format("%.1f", applicationStateManager.getCurrentProfile().getWeight()) + "kg");
         bmiLabel.setText(String.format("%.2f    (%s)", applicationStateManager.getCurrentProfile().getBmi(), getBMIStatusString()));
-    }
-
-    /**
-     * Sets whether the web view has a connection to the internet.
-     *
-     * @param hasConnection Whether there is an internet connection.
-     */
-    public void setConnectionStatus(boolean hasConnection) {
-
     }
 }

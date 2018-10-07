@@ -9,18 +9,37 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class HealthWarning implements Comparable<HealthWarning> {
+    /** The average heart rate of the activity */
     private int avgHeartRate;
+
+    /** The minimum heart rate of the activity */
     private int minHeartRate;
+
+    /** The maximum heart rate of the activity */
     private int maxHeartRate;
+
+    /** The description of the health warning */
     private String description;
+
+    /** The URL for the health warning to be used by the web view if selected */
     private String url;
+
+    /** The activity the warning is associated with */
     private Activity activity;
+
+    /** The user's profile */
     private Profile user;
+
+    /** The type of the warning */
     private WarningType type;
-    private String typeString;
+
+    /** The date which the warning was created */
     private LocalDate warningDate;
+
+    /** Whether or not the warning indicates a genuine health risk - In other words, if the warning is valid */
     private boolean healthRisk;
 
+    /** The constructor for the health warning */
     public HealthWarning(Activity activity, Profile user, WarningType type, int avgHearRate, int minHeartRate, int maxHeartRate) {
         this.activity = activity;
         this.user = user;
@@ -31,10 +50,9 @@ public class HealthWarning implements Comparable<HealthWarning> {
         this.warningDate = activity.getDate();
         this.healthRisk = checkRisk();
         this.url = setUpURL();
-        this.typeString = calculateTypeString();
     }
 
-    /** Compare to another Goal based on goalNumber
+    /** Compare to another warning based on date
      *  Consistent with equals as defined by Comparable
      *
      * @param o the HealthWaring to compare to
@@ -46,6 +64,11 @@ public class HealthWarning implements Comparable<HealthWarning> {
         return getWarningDate().compareTo(o.getWarningDate()) * -1;     // Reverse order to descending
     }
 
+    /**
+     * Checks to see if two warnings are equal, that is, if they hold the exact same data.
+     * @param o the warning that is being compared against this one.
+     * @return True if the warnings are equal, False if they are distinct.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,24 +88,15 @@ public class HealthWarning implements Comparable<HealthWarning> {
                 getOwner().getLastName().equals(that.getOwner().getLastName());
     }
 
+    /**
+     * Generates the hash code for the health warning based on its values.
+     * @return the hash code allocated to the warning.
+     */
     @Override
     public int hashCode() {
 
         return Objects.hash(getAvgHeartRate(), getMinHeartRate(), getMaxHeartRate(), getDescription(), getUrl(),
                 getType(), getTypeString(), getWarningDate(), isHealthRisk());
-    }
-
-    // TODO JavaDoc - Kenny
-    private String calculateTypeString() {
-        String typeStr;
-        if (type == WarningType.Tachy) {
-            typeStr = "Tachycardia";
-        } else if (type == WarningType.Brady) {
-            typeStr = "Bradycardia";
-        } else {
-            typeStr = "Cardiovascular Mortality";
-        }
-        return typeStr;
     }
 
     /**
@@ -104,9 +118,6 @@ public class HealthWarning implements Comparable<HealthWarning> {
         }
         return atRisk;
     }
-
-    // TODO - Create modular approach to description setting
-
     /**
      * Checks all the relevant risks which are easily detectable while the user is performing a running activity.
      * @return whether a running risk was detected.
@@ -179,63 +190,123 @@ public class HealthWarning implements Comparable<HealthWarning> {
         return warningURL;
     }
 
+    /**
+     * Getter for the healthRisk attribute.
+     * @return a boolean indicating if the warning is a health risk or not
+     */
     public boolean isHealthRisk() {
         return healthRisk;
     }
 
+    /**
+     * Getter for the average heart rate of the activity.
+     * @return the average speed of the user.
+     */
     public int getAvgHeartRate() {
         return avgHeartRate;
     }
 
+    /**
+     * Getter for the string representation of the average heart rate of the user.
+     * @return the string representation of the average heart rate.
+     */
     public String getAvgHeartRateString() {
         return Integer.toString(avgHeartRate);
     }
 
+    /**
+     * Getter method for the minimum heart rate achieved over the activity.
+     * @return the minimum heart rate of the user.
+     */
     public int getMinHeartRate() {
         return avgHeartRate;
     }
 
+    /**
+     * Getter method for the string representation of the minimum heart rate achieved over the activity
+     * @return the string representation of the minimum heart rate.
+     */
     public String getMinHeartRateString() {
         return Integer.toString(minHeartRate);
     }
 
+    /**
+     * Getter for the maximum heart rate over the activity.
+     * @return the maximum heart rate achieved over the activity.
+     */
     public int getMaxHeartRate() {
         return maxHeartRate;
     }
 
+    /**
+     * Getter for the textual representation of the maximum heart rate over the activity.
+     * @return the textual representation of the maximum heart rate.
+     */
     public String getMaxHeartRateString() {
         return Integer.toString(maxHeartRate);
     }
 
 
+    /**
+     * Gets the date of when the warning was created.
+     * @return the date of creation.
+     */
     public LocalDate getWarningDate() {
         return warningDate;
     }
 
+    /**
+     * Gets the type of the health warning - Tachycardia or Bradycardia
+     * @return the warning type.
+     */
     public WarningType getType() {
         return type;
     }
 
+    /**
+     * Gets the textual representation of the health warning's type.
+     * @return the textual representation of the warning type.
+     */
     public String getTypeString() {
-        return typeString;
+        return type.toString();
     }
 
+    /**
+     * Gets the description of the health warning.
+     * @return the warning description.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Gets the URL to be used by the web view to search for the health warning.
+     * @return the warning URL.
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Gets the activity which the warning was created from.
+     * @return the activity of issue.
+     */
     public Activity getActivity() {
         return activity;
     }
 
+    /**
+     * Gets the owner which holds the health warnings.
+     * @return the warning's owner profile.
+     */
     public Profile getOwner() {
         return user;
     }
 
+    /**
+     * Gets the owner of the health warning to the current user profile.
+     * @param owner the owner to be set.
+     */
     public void setOwner(Profile owner) {
         this.user = owner;
     }
