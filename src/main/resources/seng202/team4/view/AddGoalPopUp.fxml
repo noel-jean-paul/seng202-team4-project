@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.GoalTab.AddGoalPopUpController">
+   <children>
+      <GridPane layoutX="55.0" layoutY="114.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d3cccc" height="300.0" stroke="BLACK" strokeType="INSIDE" width="500.0" GridPane.columnSpan="2" GridPane.rowSpan="3" />
+            <VBox alignment="CENTER" prefHeight="52.0" prefWidth="600.0" GridPane.columnSpan="2">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Goal Information">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Text>
+               </children>
+            </VBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+               <children>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <GridPane prefHeight="191.0" prefWidth="263.0">
+                           <children>
+                              <VBox alignment="CENTER_RIGHT" prefHeight="33.0" prefWidth="228.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Goal Type">
+                                       <VBox.margin>
+                                          <Insets right="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER_RIGHT" prefHeight="33.0" prefWidth="245.0" GridPane.rowIndex="1">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Activity Type">
+                                       <VBox.margin>
+                                          <Insets right="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Expires In">
+                                       <VBox.margin>
+                                          <Insets right="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="3">
+                                 <children>
+                                    <Text fx:id="totalAmountText" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount">
+                                       <VBox.margin>
+                                          <Insets right="10.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="33.0" prefWidth="84.0" GridPane.columnIndex="1">
+                                 <children>
+                                    <ChoiceBox fx:id="goalTypeChoiceBox" prefWidth="150.0" />
+                                 </children>
+                              </VBox>
+                              <TextField fx:id="totalAmountTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                                 <children>
+                                    <Text fx:id="errorText" fill="#e80505" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                 </children>
+                              </VBox>
+                              <ChoiceBox fx:id="activityTypeChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+                                    <TextField fx:id="goalDurationTextField" prefHeight="21.0" prefWidth="56.0" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Days">
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="10.0" prefWidth="147.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="423.0" minWidth="10.0" prefWidth="116.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#cancel" text="Cancel">
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#add" text="Add">
+                     <VBox.margin>
+                        <Insets right="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="359.0" minWidth="10.0" percentWidth="50.0" prefWidth="316.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" percentWidth="50.0" prefWidth="284.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="290.0" minHeight="10.0" prefHeight="211.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="41.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+   </children>
+</AnchorPane>
