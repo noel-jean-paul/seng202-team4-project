@@ -471,6 +471,9 @@ public class GoalsTabController extends Controller {
             GuiUtilities.displayErrorMessage("An error occurred regarding the database while deleting.", "");
             e.printStackTrace();
         }
+
+        // Clear the goal tab header of information about the goal
+        reset();
     }
 
     @FXML
