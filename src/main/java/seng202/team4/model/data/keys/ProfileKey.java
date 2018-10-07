@@ -1,4 +1,4 @@
-package seng202.team4.model.data.Keys;
+package seng202.team4.model.data.keys;
 
 import java.util.Objects;
 
