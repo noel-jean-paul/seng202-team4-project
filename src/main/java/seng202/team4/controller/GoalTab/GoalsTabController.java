@@ -301,10 +301,11 @@ public class GoalsTabController extends Controller {
 
     }
 
-    /** Clear the selected goal row if there is one selected */
+    /** Clear the selected goal row if there is one selected and clear the selection */
     private void clearSelectedGoalRow() {
         // If there is a goal row selected, deselect it and clear the selectedGoalRow field
         if (selectedGoalRow != null) {
+            //clearGoalInformation();
             selectedGoalRow.deselect();
             selectedGoalRow = null;
         }
@@ -313,9 +314,9 @@ public class GoalsTabController extends Controller {
 
     /** Fill the goal header with information about the goal which currently selected goal row wraps */
     private void displayGoalInformation() {
-        if (selectedGoalRow != null) {
-            // Get the currently selected goal.
-            Goal selectedGoal = getSelectedGoal();
+        // Get the currently selected goal.
+        Goal selectedGoal = getSelectedGoal();
+        if (selectedGoal != null) {
             // Hide the no goal selected text
             noGoalSelectedText.setText("");
 
@@ -361,7 +362,11 @@ public class GoalsTabController extends Controller {
         if (isCalendarView) {
             goal = (Goal) calendarViewController.getSelectedItem();
         } else {
-            goal = selectedGoalRow.getGoal();
+            if (selectedGoalRow != null) {  // Check for null to avoid null pointer exception
+                goal = selectedGoalRow.getGoal();
+            } else {
+                goal = null;    // No goalRow is selected so no goal is selected
+            }
         }
         return goal;
     }
@@ -612,22 +617,24 @@ public class GoalsTabController extends Controller {
         isEditing = false;
     }
 
-    /** Delete the currently selected goal from the profile's goals and redisplay the goal table it is contained in */
+    /** Delete the currently selected goal from the profile's goals and refresh the goal table that is
+     * currrently displayed
+     */
     private void deleteGoal() {
         Goal selected = selectedGoalRow.getGoal();
         try {
             if (selected.isCurrent()) {
                 applicationStateManager.getCurrentProfile().removeCurrentGoal(selected);
-                updateCurrentGoalRowTable();
             } else {
                 applicationStateManager.getCurrentProfile().removePastGoal(selected);
-                displayPastGoalRowTable();
             }
         } catch (SQLException e) {
             GuiUtilities.displayErrorMessage("An error occurred regarding the database while deleting.", "");
             e.printStackTrace();
         }
 
+        // Refresh the goal table to display the updates
+        refreshGoalTable();
         // Clear the goal tab header of information about the goal
         clearGoalInformation();
     }

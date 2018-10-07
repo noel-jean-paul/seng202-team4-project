@@ -55,10 +55,10 @@ public class NoelSetup_6Goals {
 
 //        profile.addPastGoal(goal1);
 //        profile.addPastGoal(goal2);
-//        profile.addPastGoal(goal3);
-//        profile.addPastGoal(goal4);
-//        profile.addPastGoal(goal5);
-//        profile.addPastGoal(goal6);
+        profile.addPastGoal(goal3);
+        profile.addPastGoal(goal4);
+        profile.addPastGoal(goal5);
+        profile.addPastGoal(goal6);
 //        profile.addPastGoal(goal7);
 //        profile.addPastGoal(goal8);
     }
