@@ -3,11 +3,15 @@ package seng202.team4.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import seng202.team4.App;
 
 /**
  * Controller class for the activity import warning pop up.
@@ -30,6 +34,15 @@ public class ActivityImportWarningPopUpController extends Controller {
     /** Scroll pane used to scroll through warnings. */
     @FXML
     private ScrollPane scrollPane;
+
+    @FXML
+    private Rectangle popUpRectangle;
+
+    @FXML
+    public void initialize() {
+        Image backgroundImage = new Image(App.class.getResource("view/blue_cascade.jpg").toExternalForm());
+        popUpRectangle.setFill(new ImagePattern(backgroundImage));
+    }
 
     /**
      * Closes the pop up.
