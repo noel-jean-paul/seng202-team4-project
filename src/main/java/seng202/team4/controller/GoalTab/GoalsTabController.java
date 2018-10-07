@@ -245,6 +245,8 @@ public class GoalsTabController extends Controller {
                 selectedGoalRow = currentGoalRowItem;
             }
         }
+        // Updates the Calendar.
+        updateCalendar();
     }
 
     /** Clears the goal table and populates it with the pat goals of the currently loaded profile */
@@ -317,7 +319,7 @@ public class GoalsTabController extends Controller {
             goalProgressIndicator.setDisable(false);
 
             // Allow editing (for current goals) and deleting.
-            if (currentGoalTableDisplayed) {
+            if (selectedGoal.isCurrent()) {
                 editButton.setDisable(false);
             } else {
                 editButton.setDisable(true);    // do not allow editing of past goals
@@ -364,6 +366,11 @@ public class GoalsTabController extends Controller {
      */
     @FXML
     void toggleCalendarView() {
+        // Clears selected goal.
+        clearGoalInformation();
+        if (selectedGoalRow != null) {
+            selectedGoalRow.deselect();
+        }
 
         if (!isCalendarView) {
             // If a goal in the calendar is clicked then information on the goal should be displayed.
@@ -390,18 +397,7 @@ public class GoalsTabController extends Controller {
                 new Thread(sleeper).start();
             });
 
-            calendarViewController.clearCalendar();
-            // Add all the current goals to the calendar.
-            for (Goal goal: applicationStateManager.getCurrentProfile().getCurrentGoals()) {
-                calendarViewController.addCalendarItem(goal);
-            }
-
-            // Add all the past goals to the calendar.
-            for (Goal goal: applicationStateManager.getCurrentProfile().getPastGoals()) {
-                calendarViewController.addCalendarItem(goal);
-            }
-
-            calendarViewController.refresh();
+            updateCalendar();
 
             centerContentPane.getChildren().setAll(calendarView);
             calendarViewButton.setText("List View");
@@ -416,6 +412,23 @@ public class GoalsTabController extends Controller {
             isCalendarView = false;
         }
 
+    }
+
+    /**
+     * Updates the Calendar to what goals are stored in the users profile.
+     */
+    public void updateCalendar() {
+        calendarViewController.clearCalendar();
+        // Add all the current goals to the calendar.
+        for (Goal goal: applicationStateManager.getCurrentProfile().getCurrentGoals()) {
+            calendarViewController.addCalendarItem(goal);
+        }
+
+        // Add all the past goals to the calendar.
+        for (Goal goal: applicationStateManager.getCurrentProfile().getPastGoals()) {
+            calendarViewController.addCalendarItem(goal);
+        }
+        calendarViewController.refresh();
     }
 
     /**
