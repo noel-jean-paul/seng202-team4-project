@@ -1,7 +1,10 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -31,6 +34,10 @@ public class MapsController extends Controller {
     /** WebEngine for google maps */
     private WebEngine webEngine;
 
+    /** The background of the window */
+    @FXML
+    private Rectangle popUpRectangle;
+
 
 
     /**
@@ -47,6 +54,8 @@ public class MapsController extends Controller {
     public void initialize() {
         webEngine = activityMap.getEngine();
         webEngine.load(App.class.getResource("maps/map.html").toExternalForm());
+        Image backgroundImage = new Image(App.class.getResource("view/blue_cascade.jpg").toExternalForm());
+        popUpRectangle.setFill(new ImagePattern(backgroundImage));
     }
 
     /**
