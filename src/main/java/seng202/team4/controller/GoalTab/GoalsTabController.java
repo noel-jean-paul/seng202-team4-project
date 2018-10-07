@@ -326,6 +326,12 @@ public class GoalsTabController extends Controller {
             }
             deleteButton.setDisable(false); // both current and past goals can be deleted
 
+            // Cannot edit or delete while in calendar view
+            if (isCalendarView) {
+                deleteButton.setDisable(true);
+                editButton.setDisable(true);
+            }
+
             // Fill the text fields with the goal information
             descriptionText.setText(selectedGoal.getDescription());
             startDateText.setText(selectedGoal.getCreationDate().toString());
@@ -411,7 +417,6 @@ public class GoalsTabController extends Controller {
             toggleGoalListButton.setVisible(true);
             isCalendarView = false;
         }
-
     }
 
     /**
