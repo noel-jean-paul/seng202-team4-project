@@ -4,40 +4,58 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
+import seng202.team4.App;
 import seng202.team4.model.data.enums.WarningType;
 
 public class WarningDescriptionPopUpController extends Controller{
 
+    /** The pop up warning pane */
     @FXML
     private GridPane popUpWarning;
 
+    /** Displays the average heart rate over the activity */
     @FXML
     private Label averageLabel;
 
+    /** The button used to close the popup */
     @FXML
     private Button cancelButton;
 
+    /** Displays the minimum heart rate over the activity */
     @FXML
     private Label minLabel;
 
+    /** Displays the recommended max heart rate for the activity */
     @FXML
     private Label recommendedLabel;
 
+    /** Displays "Recommended <value>" where value is the heart rate type associated with the warning */
     @FXML
     private Label heartRateRecommendation;
 
+    /** The description of the health warning */
     @FXML
     private TextArea descriptionText;
 
+    /** The displayed title of the popup window */
     @FXML
     private Label popUpTitle;
 
+    /** Displays the max heart rate over the activity */
     @FXML
     private Label maxLabel;
 
+    /** The label which displays the activity name where the warning came from */
     @FXML
     private Label activityNameLabel;
+
+    /** The background of the popup window */
+    @FXML
+    private Rectangle popUpRectangle;
 
 
     /**
@@ -56,6 +74,8 @@ public class WarningDescriptionPopUpController extends Controller{
     public void initialize() {
         descriptionText.setWrapText(true);
         descriptionText.setEditable(false);
+        Image backgroundImage = new Image(App.class.getResource("view/blue_cascade.jpg").toExternalForm());
+        popUpRectangle.setFill(new ImagePattern(backgroundImage));
     }
 
     /**
