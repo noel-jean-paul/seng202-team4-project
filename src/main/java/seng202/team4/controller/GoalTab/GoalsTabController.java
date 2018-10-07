@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import seng202.team4.GuiUtilities;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.Controller;
+import seng202.team4.controller.MainScreenController;
 import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.GoalListPair;
 import seng202.team4.view.CurrentGoalRowItem;
@@ -165,7 +166,7 @@ public class GoalsTabController extends Controller {
         goalNotificationPopupController.addNotifications(goalLists.getExpiredGoals());
 
         // Display the popup
-        applicationStateManager.displayPopUp(goalNotificationPopup);
+        openNotificationPopup(goalNotificationPopup);
     }
 
     /** Check for any updates to the current goals due to activities being imported and display a notification about any
@@ -175,8 +176,10 @@ public class GoalsTabController extends Controller {
         try {
             // Update the currentGoals of the currently loaded profile - Do not remove completed/expired goals from the current goals
             GoalListPair goalListPair = applicationStateManager.getCurrentProfile().updateCurrentGoals(false);
-            // Display notications of which goals were completed and which expired
-            displayGoalNotifications(goalListPair);
+            // Display notications of which goals were completed and which expired if any completed/expired goals were found
+            if (goalListPair.containsGoals()) {
+                displayGoalNotifications(goalListPair);
+            }
         } catch (SQLException e) {
             GuiUtilities.displayErrorMessage("An error occurred regarding the database",
                     "Goal updates could not be completed successfully");
@@ -250,9 +253,6 @@ public class GoalsTabController extends Controller {
      * @param goalRow the goalRow to select
      */
     private void changeSelectedGoalRow(GoalRowItem goalRow) {
-        // close editable fields
-        // TODO: 7/10/18 NB/MT close editable fields
-
         // If there is a goal row selected, deselect it
         if (selectedGoalRow != null) {
             selectedGoalRow.deselect();
@@ -439,5 +439,15 @@ public class GoalsTabController extends Controller {
      */
     public GoalRowItem getSelectedGoalRow() {
         return selectedGoalRow;
+    }
+
+    /** Displays the notification popup passed in if the goalsTab is currently being displayed.
+     *
+     * @param goalNotificationPopup the popup to display
+     */
+    private void openNotificationPopup(Pane goalNotificationPopup) {
+        if (((MainScreenController) applicationStateManager.getScreenController("MainScreen")).isOnGoalsTab()) {
+            applicationStateManager.displayPopUp(goalNotificationPopup);
+        }
     }
 }

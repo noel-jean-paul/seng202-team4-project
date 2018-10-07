@@ -32,4 +32,12 @@ public class GoalListPair {
     public List<Goal> getCompletedGoals() {
         return completedGoals;
     }
+
+    /** Check if this object contains at least 1 completed goal or at least 1 expired goal
+     *
+     * @return true if at least one of the lists contain a goal, false otherwise
+     */
+    public boolean containsGoals() {
+        return (expiredGoals.size() != 0 && completedGoals.size() != 0);
+    }
 }

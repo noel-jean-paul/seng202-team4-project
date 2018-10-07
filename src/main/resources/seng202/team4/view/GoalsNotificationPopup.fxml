@@ -67,7 +67,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button mnemonicParsing="false" text="Return to activity screen" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Button mnemonicParsing="false" onAction="#returnToActivityTab" text="Return to activity tab" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Expiry of goals is delayed until you close this popup" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                      </children>
                   </GridPane>

@@ -9,10 +9,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import org.omg.CORBA.MARSHAL;
 import seng202.team4.App;
 import seng202.team4.GuiUtilities;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.Controller;
+import seng202.team4.controller.MainScreenController;
 import seng202.team4.model.data.Goal;
 
 import java.sql.SQLException;
@@ -39,6 +41,7 @@ public class GoalNotificationPopupController extends Controller {
     GoalNotificationPopupController(ApplicationStateManager applicationStateManager, GoalsTabController goalsTabController) {
         super(applicationStateManager);
         this.goalsTabController = goalsTabController;
+        System.out.println("created a new popup");
     }
 
     /** Closes the pop up.
@@ -56,15 +59,15 @@ public class GoalNotificationPopupController extends Controller {
         }
         // Close the popup and refresh the table
         goalsTabController.refreshGoalTable();
-        applicationStateManager.closePopUP(mainPane);
+        closePopup();
     }
 
     @FXML
     void returnToActivityTab() {
-        // TODO: 7/10/18 N Bisson
-        // change screen
-        // close the popup without the goals being expired
-        //applicationStateManager.change
+        // Switch to the activity tab
+        ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).switchToActivityTab();
+        // close the popup without the goals expiring from the current goals
+        closePopup();
     }
 
     /** Add multiple notifications to the popup.
@@ -95,6 +98,11 @@ public class GoalNotificationPopupController extends Controller {
         label.setWrapText(true);
         label.setTextAlignment(TextAlignment.JUSTIFY);
         notificationsVbox.getChildren().add(label);
+    }
+
+    /** Close this popup */
+    private void closePopup() {
+        applicationStateManager.closePopUP(mainPane);
     }
 }
 
