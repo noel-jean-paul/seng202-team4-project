@@ -371,6 +371,7 @@ public class ActivityTabController extends Controller {
                     // Todo: Reload map 6/10/2018
 //                    mapsController = new MapsController(applicationStateManager);
 //                    mapPane = GuiUtilities.loadPane("Maps.fxml", mapsController);
+                    showMaps();
 
                     e.printStackTrace();
                 }
