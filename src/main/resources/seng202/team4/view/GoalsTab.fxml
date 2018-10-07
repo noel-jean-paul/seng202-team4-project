@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.GoalTab.GoalsTabController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.GoalTab.GoalsTabController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" />
    </columnConstraints>
@@ -95,8 +95,8 @@
          <children>
             <GridPane alignment="CENTER" prefHeight="120.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columnConstraints>
-                  <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="117.0" />
-                  <ColumnConstraints hgrow="ALWAYS" />
+                  <ColumnConstraints hgrow="NEVER" maxWidth="137.0" minWidth="-Infinity" prefWidth="137.0" />
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="119.0" minWidth="105.0" prefWidth="105.0" />
                   <ColumnConstraints hgrow="NEVER" maxWidth="134.0" minWidth="133.0" prefWidth="133.0" />
                   <ColumnConstraints hgrow="NEVER" maxWidth="400.0" minWidth="270.0" prefWidth="300.0" />
                   <ColumnConstraints hgrow="ALWAYS" minWidth="50.0" />
