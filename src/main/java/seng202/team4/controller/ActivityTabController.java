@@ -23,7 +23,6 @@ import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
 import seng202.team4.model.data.DisplayMetrics.SpeedDisplayMetric;
 import seng202.team4.model.data.enums.ActivityType;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -158,13 +157,14 @@ public class ActivityTabController extends Controller {
         activityTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Binds the width of the columns to be evenly distributed.
-        nameColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
-        dateColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
-        distanceColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
-        timeColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
-        averageSpeedColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
-        caloriesColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
-        typeColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(7));
+        nameColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        dateColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        distanceColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        timeColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        averageSpeedColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        caloriesColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        typeColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
+        durationColumn.prefWidthProperty().bind(activityTable.widthProperty().divide(8));
 
         // Sets visibility of summary statistics labels.
         distanceLabel.setVisible(false);

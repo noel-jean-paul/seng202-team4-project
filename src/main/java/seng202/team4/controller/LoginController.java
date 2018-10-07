@@ -111,7 +111,6 @@ public class LoginController extends Controller {
                 applicationStateManager.switchToScreen("MainScreen");
                 ((MainScreenController) applicationStateManager.getScreenController("MainScreen")).reset();
 
-                // TODO remove following once database stores data
                 applicationStateManager.getCurrentProfile().findWarnings();
 
                 reset();

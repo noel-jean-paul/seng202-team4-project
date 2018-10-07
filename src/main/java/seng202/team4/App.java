@@ -6,17 +6,25 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import seng202.team4.actions.NoelSetup_6Goals;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.CreateProfileController;
 import seng202.team4.controller.LoginController;
 import seng202.team4.controller.MainScreenController;
+import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.DataRow;
+import seng202.team4.model.data.Keys.ProfileKey;
+import seng202.team4.model.data.Profile;
+import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.database.DataAccesser;
+import seng202.team4.model.database.DataLoader;
+import seng202.team4.model.database.DataStorer;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The App class is the main class of the program. It initializes many of the different screens that application will
@@ -27,20 +35,6 @@ public class App extends Application {
     /** Starts the app/ */
     @Override
     public void start(Stage primaryStage) {
-
-        // !! does not work - would need to query the database to see if it has a connection open currently
-//        // Check that the database is not already in use
-//        if (!DataAccesser.checkNullConnection()) {
-//            System.out.println("An instance of the app is aleady open");
-//            // TODO: 21/09/18 Implement this by asking the database if it has any connections open?
-//            try {
-//                DataAccesser.closeDatabase();
-//            } catch (SQLException e) {
-//                System.out.println(e.getMessage());
-//            }
-//            System.exit(1);
-//        }
-
         // Redirects System Out and System Err to ErrorLog.txt
         try {
             File errorLog = new File("ErrorLog.txt");
@@ -49,17 +43,43 @@ public class App extends Application {
             System.setErr(errorLogStream);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Failed to open ErrorLog.txt, This is not critical.");
+            GuiUtilities.displayErrorMessage("Failed to open ErrorLog.txt", "This is not critical.");
         }
 
-        // Establishes connection with the data base.
+        // Check if the database file exists
+        File f = new File(DataAccesser.getDbFileName());
+        if (!(f.exists() && !f.isDirectory())) {
+            String errorMessage = String.format("File '%s' could not be located at root.", DataAccesser.getDbFileName());
+            // Print the error message to the error log
+            System.out.println(errorMessage);
+            // File not found - inform the user and terminate the app
+            GuiUtilities.displayErrorMessage("Database file could not be found.",
+                    "", true);
+        }
+
+        // Establishes connection with the database.
         try {
             DataAccesser.initialiseMainConnection();
         } catch (java.sql.SQLException e) {
-            System.out.println("Error: Could not establish connection with the data base.");
             e.printStackTrace();
-            System.exit(1);
+            GuiUtilities.displayErrorMessage("Error encountered when connecting to the database", "",
+                       true);
         }
+
+        // Test if the database file is already connected to another instance of the app.
+        Profile profile = new Profile("", "", "2000-01-01", 100,
+                1.00);
+        try {
+            // Use a first name and last name that are shorter than can be created through the app
+            DataStorer.insertProfile(profile);
+            DataStorer.deleteProfile(profile);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Terminate this instance of the app
+            GuiUtilities.displayErrorMessage("Step-by-Step Fitness Tracker is aleady open", "",
+                    true);
+        }
+
 
         // Creates base scene.
         Scene baseScene = new Scene(new Group(), 660, 460);

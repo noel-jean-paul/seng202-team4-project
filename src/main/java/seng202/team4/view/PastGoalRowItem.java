@@ -21,7 +21,7 @@ public class PastGoalRowItem extends GoalRowItem {
         if (getGoal().isComplete()) {
             controller.setExpiryDate(getGoal().getCompletionDate().toString());
         } else {    // Goal is expired
-            controller.setExpiryDate(String.format("Expired %s", getGoal().getExpiryDate().toString()));
+            controller.setExpiryDate("Not Completed");
         }
     }
 }

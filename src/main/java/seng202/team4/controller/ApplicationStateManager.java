@@ -6,6 +6,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import seng202.team4.model.data.Profile;
+import sun.applet.Main;
 
 import java.util.HashMap;
 
@@ -169,5 +170,4 @@ public class ApplicationStateManager {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
-
 }

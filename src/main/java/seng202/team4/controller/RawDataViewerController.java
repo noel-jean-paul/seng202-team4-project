@@ -148,7 +148,7 @@ public class RawDataViewerController extends Controller {
         addRowButton.setDisable(true);
         deleteButton.setDisable(true);
         dataTableTitleText.setText("Data Rows for " + activity.getName());
-        dataRowTable.setPlaceholder(new Text("There are no data points available for this activity"));  //for manually imported activities
+        dataRowTable.setPlaceholder(new Text("You cannot edit the data of a manually created activity"));  //for manually imported activities
         updateDataRows();   //updates the table
         fillEditBoxes();
         dataRowTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -373,9 +373,7 @@ public class RawDataViewerController extends Controller {
                 errorMessage.setText("You cannot have less than two data rows in an activity");
             } else {
                 try {
-                    for (DataRow row : selectedRows) {
-                        activity.removeDataRow(row);
-                    }
+                    activity.removeDataRows(selectedRows);
                     updateDataRows();
                 } catch (java.sql.SQLException e) {
                     GuiUtilities.displayErrorMessage("Failed to remove data row.", "");

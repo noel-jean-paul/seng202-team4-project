@@ -1,7 +1,6 @@
 package seng202.team4.model.database;
 
 import seng202.team4.model.data.DataRow;
-import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.Profile;
 
 import java.sql.*;
@@ -10,18 +9,13 @@ abstract public class DataAccesser {
     static Connection connection;
     static ResultSet set;
     static PreparedStatement statement;
+    private static String dbFileName = "fitness_tracker.sqlite";
 
     /** Initialise the connection to a the production database.
      *  @throws SQLException if the connection could not be opened
      */
     public static void initialiseMainConnection() throws SQLException {
-        String url = "jdbc:sqlite:fitness_tracker.sqlite";
-        connection = DriverManager.getConnection(url);
-
-//        // Turn foreign keys on
-//        String update = "PRAGMA foreign_keys = ON;";
-//        PreparedStatement statement = connection.prepareStatement(update);
-//        statement.executeUpdate();
+        connection = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
     }
 
     /** Initialise the connection to a the test database.
@@ -30,11 +24,6 @@ abstract public class DataAccesser {
     public static void initialiseTestConnection() throws SQLException {
         String url = "jdbc:sqlite:testDatabase.sqlite";
         connection = DriverManager.getConnection(url);
-
-//        // Turn foreign keys on
-//        String update = "PRAGMA foreign_keys = ON;";
-//        PreparedStatement statement = connection.prepareStatement(update);
-//        statement.executeUpdate();
     }
 
     /** Drop all tables from both the production and test databases and
@@ -93,7 +82,7 @@ abstract public class DataAccesser {
                 "foreign key (firstName, lastName) references profile" +
                 ");";
 
-        String createGoal = String.format("create table if not exists goal (\n" +
+        String createGoal = "create table if not exists goal (\n" +
                 "goalNumber integer,\n" +
                 "progress integer constraint check_progress check (progress between 0 and 100),\n" +
                 "type character(3) constraint check_type check (type in (\"Run\", \"Walk\")),\n" +
@@ -101,7 +90,7 @@ abstract public class DataAccesser {
                 "expiryDate character(10),\n" +
                 "completionDate character(10),\n" +
                 "goalDuration character(8),\n" +
-                "goalDistance real constraint check_goalDistance check (goalDistance >= %f),\n" +
+                "goalDistance real constraint check_goalDistance check (goalDistance >= 0),\n" +
                 "caloriesBurned integer not null, \n" +
                 "current text constratint check_current check (current in (\"true\", \"false\")), \n" +
                 "firstName text,\n" +
@@ -109,7 +98,7 @@ abstract public class DataAccesser {
                 "primary key (firstName, lastName, goalNumber),\n" +
                 "foreign key (firstName, lastName) references profile\n" +
                 "on delete cascade on update no action\n" +
-                ");", Goal.minGoalDistance);
+                ");";
 
         String createDataRow = String.format("create table if not exists dataRow (\n" +
                 "  rowNumber integer,\n" +
@@ -199,5 +188,13 @@ abstract public class DataAccesser {
         // Cleanup
         statement.close();
         connection.close();
+    }
+
+    /** Get the url to the main database
+     *
+     * @return the url to the main database as a string
+     */
+    public static String getDbFileName() {
+        return dbFileName;
     }
 }

@@ -1,5 +1,6 @@
 package seng202.team4.model.data;
 
+import seng202.team4.controller.ActivityImportTypePromptController;
 import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
 import seng202.team4.model.data.enums.GoalFields;
 import seng202.team4.model.data.enums.GoalType;
@@ -9,13 +10,38 @@ import java.sql.SQLException;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
 
 import static java.time.Duration.between;
 
 
 public class Goal implements Comparable<Goal> {
-    public static final double minGoalDistance = 0;
+    /** The minimum distance for a distance goal. */
+    public static final double MIN_GOAL_DISTANCE = 1.0;
+
+    /** The maximum distance for a distance goal. */
+    public static final double MAX_GOAL_DISTANCE = 10000.0;
+
+    /** The minimum calories for a calories goal. */
+    public static final int MIN_GOAL_CALORIES = 50;
+
+    /** The maximum calories for a calories goal. */
+    public static final int MAX_GOAL_CALORIES = 100000;
+
+    /** The minimum duration for a duration goal. */
+    public static final Duration MIN_GOAL_DURATION = Duration.ofMinutes(15);
+
+    /** The maximum duration for a duration goal. */
+    public static final Duration MAX_GOAL_DURATION = Duration.ofHours(1000);
+
+    /** The minimum period of time a goal can last in days. */
+    public static final long MIN_GOAL_PERIOD = 1;
+
+    /** The maximum period of time a goal can last in days. */
+    public static final long MAX_GOAL_PERIOD = 365;
+
+
 
     private int number;
     private double progress;
@@ -23,7 +49,6 @@ public class Goal implements Comparable<Goal> {
     private LocalDate creationDate;
     private LocalDate expiryDate;
     private LocalDate completionDate;
-    private String description;
     private double goalDistance;    // total distance of the goal in kms
     private Duration goalDuration;
     private int caloriesBurned;
@@ -43,7 +68,6 @@ public class Goal implements Comparable<Goal> {
         this.goalDuration = Duration.parse(goalDuration);
         this.caloriesBurned = caloriesBurned;
         this.current = true;    // by default the goal is current
-        this.description = generateDescription(this);
     }
 
     /** Constructor for a distance goal */
@@ -185,12 +209,12 @@ public class Goal implements Comparable<Goal> {
         this.caloriesBurned = caloriesBurned;
     }
 
+    /** Get the description of the goal (regenerates using generateDescription)
+     *
+     * @return the description of the goal
+     */
     public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+        return generateDescription();
     }
 
     public double getGoalDistance() {
@@ -255,35 +279,34 @@ public class Goal implements Comparable<Goal> {
 
     /** Create a description for the goal based of its paramers
      *
-     * @param goal the goal to generate the description for
      * @return a description of the goal as a String.
      */
-    private String generateDescription(Goal goal) {
+    private String generateDescription() {
         String description;
         String suffix;
         description = "";
 
-        if (goal.isDistanceGoal()) {
+        if (isDistanceGoal()) {
             // Describe the type of the goal, Walk or Run
-            description = String.format("%s ", goal.getType());
+            description = String.format("%s ", getType());
             // Use the distanceDisplayMetric class to format the distance value part of the string
-            DistanceDisplayMetric distanceDisplayMetric = new DistanceDisplayMetric(goal.getGoalDistance() * 1000);   // Pass a meter value for distance
+            DistanceDisplayMetric distanceDisplayMetric = new DistanceDisplayMetric(getGoalDistance() * 1000);   // Pass a meter value for distance
             description += distanceDisplayMetric.toString();
-        } else if (goal.isDurationGoal()) {
+        } else if (isDurationGoal()) {
             // Get unit of the number of hours
-            String dayUnit = getHourUnit(goal.getGoalDuration());
+            String dayUnit = getHourUnit(getGoalDuration());
             description = String.format("%s for %d %s and %d minutes",
-                    goal.getType().toString(), goal.getGoalDuration().toHours(), dayUnit,
-                    goal.getGoalDuration().toMinutes() - goal.getGoalDuration().toHours() * 60);    // toMinutes() includes the hours as well so they must be subtracted out
-        } else if (goal.isCaloriesGoal()) {
+                    getType().toString(), getGoalDuration().toHours(), dayUnit,
+                    getGoalDuration().toMinutes() - getGoalDuration().toHours() * 60);    // toMinutes() includes the hours as well so they must be subtracted out
+        } else if (isCaloriesGoal()) {
             // Set an appropriate ending to the description based on the type of the goal
-            if (goal.getType() == GoalType.Run) {
+            if (getType() == GoalType.Run) {
                 suffix = "ning";
             } else {
                 suffix = "ing"; // Walking does not have an n in it
             }
             description = String.format("Burn %s calories while %s%s",
-                    goal.getCaloriesBurned(), goal.getType().toString().toLowerCase(), suffix);
+                    getCaloriesBurned(), getType().toString().toLowerCase(), suffix);
         }
         return description;
     }
@@ -342,7 +365,7 @@ public class Goal implements Comparable<Goal> {
         Double calories = 0.0;
         Double distance = 0.0;
         Double minutes = 0.0;
-        Duration duration = Duration.ZERO;
+        Duration duration;
 
         // Generate the amount values based on the type
         if (type.equals("current")) {
@@ -396,11 +419,16 @@ public class Goal implements Comparable<Goal> {
 
     /** Get a formatted description of the time remaining for this goal
      *
-     * @return a formatted description of the time remaining for this goal
+     * @return the time remaining in days (as a string) if the goal is current or expired 'expiry date'
+     *  if the goal has expired
      */
     public String getRemainingTimeDescription() {
-        Duration remaining = getRemainingTime();
-        return String.format("%d %s", remaining.toDays(), getDayUnit(remaining));
+        if (isCurrent()) {
+            Duration remaining = getRemainingTime();
+            return String.format("%d %s", remaining.toDays(), getDayUnit(remaining));
+        } else {
+            return String.format("Expired %s", getExpiryDate().toString());
+        }
     }
 
     /** Get the time remaining before the goal expires
@@ -426,5 +454,20 @@ public class Goal implements Comparable<Goal> {
             dayUnit = "days";  // Plural
         }
         return dayUnit;
+    }
+
+    /** Get a comparator intended for comparing past goals by creation date (descending order)
+     *
+     * @return a Goal comparator which orders goals in descending order by creation date
+     */
+    public static Comparator<Goal> getPastGoalComparator() {
+        return (o1, o2) -> {
+            int dateCompare;
+            if ((dateCompare = o1.getCreationDate().compareTo(o2.getCreationDate())) != 0) {
+                return dateCompare * -1;  // Reverse order to descending
+            } else {    // Goals have the same creation date
+                return 0;
+            }
+        };
     }
 }

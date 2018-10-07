@@ -51,7 +51,11 @@ public abstract class GuiUtilities {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(userMessage);
-        alert.setContentText(detail);
+        if (detail.equals("")) {
+            alert.setContentText("See error log for details.");
+        } else {
+            alert.setContentText(detail);
+        }
         alert.showAndWait();
         if (isCritical) {
             System.exit(1);
