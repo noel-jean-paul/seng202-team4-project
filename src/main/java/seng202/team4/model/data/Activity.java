@@ -254,10 +254,19 @@ public class Activity implements Comparable<Activity>, CalendarItem {
         Collections.sort(owner.getActivityList());
     }
 
+    /**
+     * Gets the duration of the Activity.
+     * @return The duration of the Activity as a Duration.
+     */
     public Duration getDuration() {
         return duration;
     }
 
+    /**
+     * Gets a String of the duration in a nice format.
+     *
+     * @return The duration of the Activity as a formatted String.
+     */
     public String getDurationString() {
         long totalSeconds = duration.getSeconds();
         int seconds = (int) totalSeconds % 60;
@@ -267,82 +276,155 @@ public class Activity implements Comparable<Activity>, CalendarItem {
         return String.format("%2s:%2s:%2s", hours, minutes, seconds).replace(' ', '0');
     }
 
-    /** Set and update in database */
+    /**
+     * Sets the duration of the Activity and updates it in the database.
+     * @param duration The new duration of the Activity as a String that can be parsed to a Duration.
+     * @throws SQLException Exception that is thrown if the duration could not be updated in the database.
+     */
     public void setDuration(String duration) throws SQLException {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.duration.toString(), duration, false);
         this.duration = Duration.parse(duration);
     }
 
-    /** Gets the distance of the activity */
+    /**
+     * Gets the distance of the Activity.
+     *
+     * @return The distance of the Activity as a double in meters.
+     */
     public double getDistance() {
         return distance;
     }
 
-    /** Gets a string of the distance rounded to 0 decimal places. */
+    /**
+     * Gets DistanceDisplayMetric of the distance for the Activity.
+     *
+     * @return A DistanceDisplayMetric of the distance.
+     */
     public DistanceDisplayMetric getDistanceDisplayMetric() {
         return new DistanceDisplayMetric(distance);
     }
 
+    /**
+     * Gets the CalorieDisplayMetric of calories burned for the Activity.
+     *
+     * @return A CalorieDisplayMetric of the calories burned.
+     */
     public CalorieDisplayMetric getCaloriesDisplayMetric() {
         return new CalorieDisplayMetric(caloriesBurned);
     }
 
-    /** Set and update in database */
+    /**
+     * Sets the distance of the Activity and updates it in the database.
+     * @param distance The new distance of the Activity as a double.
+     * @throws SQLException Exception that is thrown if the distance could not be updated in the database.
+     */
     public void setDistance(double distance) throws SQLException {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.distance.toString(), Double.toString(distance), false);
         this.distance = distance;
     }
 
+    /**
+     * Gets the average speed of the Activity.
+     *
+     * @return The average speed of the Activity as a double in kilometres per hour.
+     */
     public double getAverageSpeed() {
         return averageSpeed;
     }
 
-    /** Set and update in database */
+    /**
+     * Sets the average speed of the Activity.
+     * @param averageSpeed The new average speed of the Activity as a double.
+     */
     public void setAverageSpeed(double averageSpeed) {
         this.averageSpeed = averageSpeed;
     }
 
+    /**
+     * Gets the SpeedDisplayMetric of average speed for the Activity.
+     * NOTE: May appear to be unused but is used by some JavaFX stuff.
+     *
+     * @return A SpeedDisplayMetric of the average speed.
+     */
     public SpeedDisplayMetric getAverageSpeedDisplayMetric() {
         return new SpeedDisplayMetric(averageSpeed);
     }
 
+    /**
+     * Gets the number of calories burned during the Activity.
+     *
+     * @return The number of calories burned during the Activity.
+     */
     public double getCaloriesBurned() {
         return caloriesBurned;
     }
 
-    /** Set and update in database */
+    /**
+     * Sets the number of calories burned for the Activity and updates it in the database.
+     * @param caloriesBurned The new number of calories for the Activity as a double.
+     * @throws SQLException Exception that is thrown if the number of calories could not be updated in the database.
+     */
     public void setCaloriesBurned(double caloriesBurned) throws SQLException {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.caloriesBurned.toString(), Double.toString(caloriesBurned), false);
         this.caloriesBurned = caloriesBurned;
     }
 
+    /**
+     * Sets the value of calories burned with out triggering an update in the data base.
+     * NOTE: Used for initializing the number of calories burned before the Activity has an owner.
+     *
+     * @param caloriesBurned The new number of calories for the Activity.
+     */
     public void setCaloriesBurnedValue(double caloriesBurned) {
         this.caloriesBurned = caloriesBurned;
     }
 
+    /**
+     * Gets the type of the Activity.
+     *
+     * @return The type of a the Activity as an Activity type.
+     */
     public ActivityType getType() {
         return type;
     }
 
-    /** Set and update in database */
+    /**
+     * Sets the activity type of the Activity and updates it in the database.
+     * @param type The new activity type of the Activity as a double.
+     * @throws SQLException Exception that is thrown if the activity type could not be updated in the database.
+     */
     public void setType(ActivityType type) throws SQLException {
         DataUpdater.updateActivities(Collections.singletonList(this),
                 ActivityFields.type.toString(), type.toString(), false);
         this.type = type;
     }
 
+    /**
+     * Gets a list of all the raw data rows for the Activity.
+     *
+     * @return An ArrayList of all the raw activity data rows.
+     */
     public List<DataRow> getRawData() {
         return rawData;
     }
 
-
+    /**
+     * Gets the profile that owns the Activity.
+     *
+     * @return The owner of the Activity.
+     */
     public Profile getOwner() {
         return owner;
     }
 
+    /**
+     * Sets the owner of the Activity.
+     *
+     * @param owner The new owner of the Activity.
+     */
     public void setOwner(Profile owner) {
         this.owner = owner;
     }
@@ -350,6 +432,7 @@ public class Activity implements Comparable<Activity>, CalendarItem {
 
     /**
      * Getter method for the average heart rate.
+     *
      * @return the average heart rate.
      */
     public int getAvgHeartRate() {
@@ -358,6 +441,7 @@ public class Activity implements Comparable<Activity>, CalendarItem {
 
     /**
      * Getter method for the minimum heart rate.
+     *
      * @return the minimum heart rate.
      */
     public int getMinHeartRate() {
@@ -366,6 +450,7 @@ public class Activity implements Comparable<Activity>, CalendarItem {
 
     /**
      * Getter method for the maximum heart rate.
+     *
      * @return the maximum heart rate.
      */
     public int getMaxHeartRate() {
@@ -373,9 +458,11 @@ public class Activity implements Comparable<Activity>, CalendarItem {
     }
 
 
-    /** Add a dataRow to the rawData list in order and insert it into the database
+    /**
+     * Add a data row to the rawData list in order and insert it into the database
      *
-     * @param row the DataRow to be added
+     * @param row The DataRow to be added
+     * @throws SQLException Exception that is thrown if the date row could not be added to the database.
      */
     public void addDataRow(DataRow row) throws SQLException {
         rawData.add(row);
@@ -386,28 +473,33 @@ public class Activity implements Comparable<Activity>, CalendarItem {
         DataStorer.insertDataRow(row);
     }
 
-    /** Adds all dataRows of the specified collection to rawData and sorts the rawData list
-     *  Intended for use by DataLoader as it does not insert into the database
+    /**
+     * Adds all dataRows of the specified collection to rawData and sorts the rawData list.
+     * Intended for use by DataLoader as it does not insert into the database.
      *
-     * @param rows the collection to be added
+     * @param rows the collection to be added.
      */
     public void addAllDataRows(Collection<DataRow> rows) {
         rawData.addAll(rows);
         java.util.Collections.sort(rawData);
     }
 
-    /** Remove the dataRows from the rawData list and the database
+    /**
+     * Removes dataRows from the rawData list and the database.
      *
-     * @param rows the collection of DataRows to be removed
+     * @param rows The collection of DataRows to be removed.
+     * @throws SQLException that is thrown if the data rows could not be removed from the database.
      */
     public void removeDataRows(Collection<DataRow> rows) throws SQLException {
         rawData.removeAll(rows);
         DataStorer.deleteDataRows(rows);
     }
 
-    /** Remove the dataRow from the rawData list and the database
+    /**
+     * Remove a data row from the rawData list and the database.
      *
-     * @param row the dataRow to be removed
+     * @param row the dataRow to be removed.
+     * @throws SQLException that is thrown if the data row could not be removed from the database.
      */
     public void removeDataRows(DataRow row) throws SQLException {
         removeDataRows(Collections.singletonList(row));
@@ -456,8 +548,10 @@ public class Activity implements Comparable<Activity>, CalendarItem {
 
     /**
      * Creates all 3 different warning types for the activities, and if the warning in fact is a health issue, adds it to
-     * the user's list of warnings.
-     * @return whether or not a warning was added to the user's warning list.
+     * the user's list of warnings. Calculates heart rate values only if they have not been calculated before.
+     *
+     * @param heartRatesCalculated Whether the heart rate values have been calculated earlier.
+     * @return Whether or not a warning was added to the user's warning list.
      */
     public boolean addWarnings(boolean heartRatesCalculated) {
         if (!heartRatesCalculated) {
