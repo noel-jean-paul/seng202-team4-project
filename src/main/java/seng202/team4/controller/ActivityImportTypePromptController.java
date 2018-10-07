@@ -1,9 +1,13 @@
 package seng202.team4.controller;
 
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import seng202.team4.App;
 import seng202.team4.GuiUtilities;
 
 import java.io.File;
@@ -21,6 +25,9 @@ public class ActivityImportTypePromptController extends Controller {
     @FXML
     private AnchorPane popupPrompt;
 
+    @FXML
+    private Rectangle popUpRectangle;
+
 
 
     /**
@@ -31,6 +38,12 @@ public class ActivityImportTypePromptController extends Controller {
     public ActivityImportTypePromptController(ApplicationStateManager applicationStateManager, ActivityTabController activityTabController) {
         super(applicationStateManager);
         this.activityTabController = activityTabController;
+    }
+
+    @FXML
+    public void initialize() {
+        Image backgroundImage = new Image(App.class.getResource("view/blue_cascade.jpg").toExternalForm());
+        popUpRectangle.setFill(new ImagePattern(backgroundImage));
     }
 
     /** The method that is called when the user clicks the cancel button. */

@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.shape.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
-
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.AddManualActivityController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seng202.team4.controller.AddManualActivityController">
    <children>
       <GridPane layoutX="55.0" layoutY="114.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
@@ -21,7 +18,7 @@
             <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d3cccc" height="398.0" stroke="BLACK" strokeType="INSIDE" width="599.0" GridPane.columnSpan="2" GridPane.rowSpan="3" />
+            <Rectangle fx:id="popUpRectangle" arcHeight="5.0" arcWidth="5.0" fill="#d3cccc" height="398.0" stroke="BLACK" strokeType="INSIDE" width="599.0" GridPane.columnSpan="2" GridPane.rowSpan="3" />
             <VBox alignment="CENTER" prefHeight="52.0" prefWidth="600.0" GridPane.columnSpan="2">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Activity Information">

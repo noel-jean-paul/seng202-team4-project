@@ -11,21 +11,12 @@ import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.CreateProfileController;
 import seng202.team4.controller.LoginController;
 import seng202.team4.controller.MainScreenController;
-import seng202.team4.model.data.Activity;
-import seng202.team4.model.data.DataRow;
-import seng202.team4.model.data.Keys.ProfileKey;
 import seng202.team4.model.data.Profile;
-import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.database.DataAccesser;
-import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * The App class is the main class of the program. It initializes many of the different screens that application will
@@ -37,7 +28,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Redirects System Out and System Err to ErrorLog.txt
-        try {
+        /*try {
             File errorLog = new File("ErrorLog.txt");
             PrintStream errorLogStream = new PrintStream(errorLog);
             System.setOut(errorLogStream);
@@ -45,7 +36,7 @@ public class App extends Application {
         } catch (IOException e) {
             e.printStackTrace();
             GuiUtilities.displayErrorMessage("Failed to open ErrorLog.txt", "This is not critical.");
-        }
+        }*/
 
         // Check if the database file exists
         File f = new File(DataAccesser.getDbFileName());
