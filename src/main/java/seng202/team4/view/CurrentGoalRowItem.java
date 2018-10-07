@@ -1,6 +1,6 @@
 package seng202.team4.view;
 
-import seng202.team4.controller.GoalTab.GoalRowController;
+import seng202.team4.controller.goaltab.GoalRowController;
 import seng202.team4.model.data.Goal;
 
 /**

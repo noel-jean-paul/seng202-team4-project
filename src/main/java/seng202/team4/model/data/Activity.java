@@ -1,8 +1,8 @@
 package seng202.team4.model.data;
 
-import seng202.team4.model.data.DisplayMetrics.CalorieDisplayMetric;
-import seng202.team4.model.data.DisplayMetrics.DistanceDisplayMetric;
-import seng202.team4.model.data.DisplayMetrics.SpeedDisplayMetric;
+import seng202.team4.model.data.displaymetrics.CalorieDisplayMetric;
+import seng202.team4.model.data.displaymetrics.DistanceDisplayMetric;
+import seng202.team4.model.data.displaymetrics.SpeedDisplayMetric;
 import seng202.team4.model.data.enums.ActivityFields;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.WarningType;
@@ -116,6 +116,8 @@ public class Activity implements Comparable<Activity>, CalendarItem {
     public void updateActivity() throws SQLException {
         // Only update the data if there are at least 2 datarows to prevent IndexOutOfBounds Exceptions
         if (rawData.size() >= 2) {
+            java.util.Collections.sort(this.rawData);   // ensure the data is in order
+
             setDate(this.rawData.get(0).getDate().toString());
             setStartTime(this.rawData.get(0).getTime().toString());
             setDistance(DataProcessor.totalDistance(this.rawData));

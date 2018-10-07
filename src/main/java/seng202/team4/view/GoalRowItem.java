@@ -8,7 +8,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import seng202.team4.App;
-import seng202.team4.controller.GoalTab.GoalRowController;
+import seng202.team4.controller.goaltab.GoalRowController;
 import seng202.team4.model.data.Goal;
 
 /**

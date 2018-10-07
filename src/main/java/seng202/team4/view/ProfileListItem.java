@@ -8,7 +8,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import seng202.team4.App;
-import seng202.team4.controller.ProfileListItemController;
+import seng202.team4.controller.profile.ProfileListItemController;
 import seng202.team4.model.data.Keys.ProfileKey;
 
 /** The item that is displayed in a profile list/ */
