@@ -204,9 +204,9 @@ public class HealthTabController extends Controller {
             String OS = System.getProperty("os.name");
             Process pingProcess;
             if (OS.contains("Windows")) {
-                pingProcess = java.lang.Runtime.getRuntime().exec("ping -n 2 -w 200 www.google.com"); // Windows ping command
+                pingProcess = java.lang.Runtime.getRuntime().exec("ping -n 2 -w 200 8.8.8.8"); // Windows ping command
             } else {
-                pingProcess = java.lang.Runtime.getRuntime().exec("ping -c 2 -W 200 www.google.com"); // Unix ping command (MacOS & Linux)
+                pingProcess = java.lang.Runtime.getRuntime().exec("fping -c 2 -t 200 8.8.8.8"); // Unix ping command (MacOS & Linux)
             }
             int returnVal = pingProcess.waitFor();
             reachable = (returnVal == 0);
