@@ -155,7 +155,7 @@ public class AddGoalPopUpController extends Controller {
         }
 
         if (!isValidGoalDuration) {
-            errorText.setText(String.format("Goal expiry should be an integer, got %s", goalDurationString));
+            errorText.setText("Goal expiry should be a whole number.");
         } else if (goalDuraiton < Goal.MIN_GOAL_PERIOD || goalDuraiton > Goal.MAX_GOAL_PERIOD) {
             errorText.setText(String.format("Goal should expire between %s and %s from now.", Goal.MIN_GOAL_PERIOD, Goal.MAX_GOAL_PERIOD));
         } else if (goalTypeChoiceBox.getValue().equals(DISTANCE_GOAL_TYPE)) {
@@ -169,7 +169,7 @@ public class AddGoalPopUpController extends Controller {
             }
 
             if (!isValidDistance) {
-                errorText.setText(String.format("Distance should be a number, got '%s'", totalAmountString));
+                errorText.setText("Distance should be a number.");
             } else if (distance < Goal.MIN_GOAL_DISTANCE || distance > Goal.MAX_GOAL_DISTANCE) {
                 errorText.setText(String.format("Distance goal must be between %.2f km and %.2f km", Goal.MIN_GOAL_DISTANCE, Goal.MAX_GOAL_DISTANCE));
             } else {
@@ -200,7 +200,7 @@ public class AddGoalPopUpController extends Controller {
             }
 
             if (!isValidDurationFormat) {
-                errorText.setText(String.format("Duration should be hour:min, got '%s'", totalAmountString));
+                errorText.setText("Duration should be in the format hour:min.");
             } else if (duration.compareTo(Goal.MIN_GOAL_DURATION) < 0 || duration.compareTo(Goal.MAX_GOAL_DURATION) > 0) {
                 errorText.setText(String.format("Duration should be between %02d:%02d and %02d:%02d", Goal.MIN_GOAL_DURATION.toHours(), Goal.MIN_GOAL_DURATION.toMinutes()%60, Goal.MAX_GOAL_DURATION.toHours(), Goal.MAX_GOAL_DURATION.toMinutes()%60));
             } else {
@@ -227,7 +227,7 @@ public class AddGoalPopUpController extends Controller {
             }
 
             if (!isValidCalories) {
-                errorText.setText(String.format("Calories should be an integer, got '%s'", totalAmountTextField.getText()));
+                errorText.setText("Calories should be a whole number.");
             } else if (calories < Goal.MIN_GOAL_CALORIES || calories > Goal.MAX_GOAL_CALORIES) {
                 errorText.setText(String.format("Calories goal must be between %s and %s.", Goal.MIN_GOAL_CALORIES, Goal.MAX_GOAL_CALORIES));
             } else {
