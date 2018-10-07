@@ -122,26 +122,4 @@ public class FileParser {
         }
         return validActivities;
     }
-
-//    public static void main(String[] args) {
-//        String filename = "seng202_2018_example_data.csv";  //example file for testing purposes
-//        FileParser fileParser = new FileParser();
-//        ArrayList<Activity> validActivities = new ArrayList<>(); // Creates a list of all activities parsed in the file
-//        ArrayList<Activity> warningActivities = new ArrayList<>();
-//        ArrayList<Activity> skippedActivities = new ArrayList<>();
-//        ArrayList<DataRow> rows = new ArrayList<>();
-//        try {
-//            fileParser.parseFileToActivites(new File(filename), validActivities, warningActivities, skippedActivities);
-//        } catch (IOException e) {
-//
-//        }
-//// TODO: 6/10/18 remove this main
-//
-//        for(Activity oneActivity : validActivities) {     //print out each activity's name. Purely for testing purposes
-//            System.out.println(oneActivity.getName());
-//            System.out.println(oneActivity.getRawData().size());
-//            System.out.println(oneActivity.getStartTime());
-//        }
-//    }
-
 }

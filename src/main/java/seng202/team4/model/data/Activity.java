@@ -338,14 +338,23 @@ public class Activity implements Comparable<Activity> {
         java.util.Collections.sort(rawData);
     }
 
+    /** Remove the dataRows from the rawData list and the database
+     *
+     * @param rows the collection of DataRows to be removed
+     */
+    public void removeDataRows(Collection<DataRow> rows) throws SQLException {
+        rawData.removeAll(rows);
+        DataStorer.deleteDataRows(rows);
+    }
+
     /** Remove the dataRow from the rawData list and the database
      *
      * @param row the dataRow to be removed
      */
-    public void removeDataRow(DataRow row) throws SQLException {
-        rawData.remove(row);
-        DataStorer.deleteDataRows(Collections.singletonList(row));
+    public void removeDataRows(DataRow row) throws SQLException {
+        removeDataRows(Collections.singletonList(row));
     }
+
 
     /**
      * Finds the ActivityType of an Activity from its name.

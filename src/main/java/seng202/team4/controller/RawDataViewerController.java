@@ -373,9 +373,7 @@ public class RawDataViewerController extends Controller {
                 errorMessage.setText("You cannot have less than two data rows in an activity");
             } else {
                 try {
-                    for (DataRow row : selectedRows) {
-                        activity.removeDataRow(row);
-                    }
+                    activity.removeDataRows(selectedRows);
                     updateDataRows();
                 } catch (java.sql.SQLException e) {
                     GuiUtilities.displayErrorMessage("Failed to remove data row.", "");

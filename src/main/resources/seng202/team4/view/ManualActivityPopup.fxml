@@ -24,7 +24,10 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d3cccc" height="398.0" stroke="BLACK" strokeType="INSIDE" width="599.0" GridPane.columnSpan="2" GridPane.rowSpan="3" />
             <VBox alignment="CENTER" prefHeight="52.0" prefWidth="600.0" GridPane.columnSpan="2">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Activity Information" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Activity Information">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Text>
                </children>
             </VBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">

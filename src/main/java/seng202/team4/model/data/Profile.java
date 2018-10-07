@@ -41,6 +41,9 @@ public class Profile {
     private List<Goal> pastGoals;
     private List<HealthWarning> warningList;    // sorted collection - use addWarning to update
 
+    /** Next available unique number for a goal. */
+    private int nextGoalNum = -1;
+
     /**
      *Constructor for profile class taking in the date of birth in string format. Sets pictureURL to the default
      * @param firstName is the first name of the user in string format
@@ -482,7 +485,6 @@ public class Profile {
      */
     public void updateGoalsForProgress(List<Activity> activities) throws SQLException {
         for (Goal goal: currentGoals) {
-            // TODO: 4/10/18 Noel make this a while loop which loops while isComplete is false
             for (Activity activity: activities) {
                 // Check the activity is in the correct date range and of the correct type - compare enums by the string
                 if (activity.getDate().isAfter(goal.getCreationDate())
@@ -591,5 +593,28 @@ public class Profile {
         }
 
         return activityKeys;
+    }
+
+    /** Gets the next available unique goal number */
+    public int getNextGoalNumber() {
+        if (nextGoalNum == -1) {
+            int maxValue = 0;
+            for (Goal goal: currentGoals) {
+                if (goal.getNumber() > maxValue) {
+                    maxValue = goal.getNumber();
+                }
+            }
+
+            for (Goal goal: pastGoals) {
+                if (goal.getNumber() > maxValue) {
+                    maxValue = goal.getNumber();
+                }
+            }
+            nextGoalNum = maxValue;
+        }
+
+        int goalNumber = nextGoalNum;
+        nextGoalNum += 1;
+        return  goalNumber;
     }
 }

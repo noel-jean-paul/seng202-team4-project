@@ -7,6 +7,7 @@ import seng202.team4.model.data.Profile;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -271,7 +272,7 @@ abstract public class DataStorer extends DataAccesser {
      * @param dataRows the list of dataRows to be deleted
      * @throws SQLException if an error occurred regarding the database
      */
-    public static void deleteDataRows(List<DataRow> dataRows) throws SQLException {
+    public static void deleteDataRows(Collection<DataRow> dataRows) throws SQLException {
         // Set auto-commit mode to false
         connection.setAutoCommit(false);
 

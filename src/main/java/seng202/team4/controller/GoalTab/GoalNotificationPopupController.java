@@ -41,7 +41,6 @@ public class GoalNotificationPopupController extends Controller {
     GoalNotificationPopupController(ApplicationStateManager applicationStateManager, GoalsTabController goalsTabController) {
         super(applicationStateManager);
         this.goalsTabController = goalsTabController;
-        System.out.println("created a new popup");
     }
 
     /** Closes the pop up.

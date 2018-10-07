@@ -168,7 +168,7 @@ public class ActivityTest {
     @Test
     public void removeDataRow_checkRemovedFromList() throws SQLException {
         activity1.addDataRow(row1);
-        activity1.removeDataRow(row1);
+        activity1.removeDataRows(row1);
 
         assertEquals(0, activity1.getRawData().size());
     }
@@ -183,7 +183,7 @@ public class ActivityTest {
         DataStorer.insertProfile(profile1);
 
         // Remove the activity from the list and the database
-        activity1.removeDataRow(row1);
+        activity1.removeDataRows(row1);
 
         Profile loadedProfile = DataLoader.loadProfile(profile1.getFirstName(), profile1.getLastName());
 

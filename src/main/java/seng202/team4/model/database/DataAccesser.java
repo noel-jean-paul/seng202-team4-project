@@ -1,7 +1,6 @@
 package seng202.team4.model.database;
 
 import seng202.team4.model.data.DataRow;
-import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.Profile;
 
 import java.sql.*;
@@ -10,18 +9,13 @@ abstract public class DataAccesser {
     static Connection connection;
     static ResultSet set;
     static PreparedStatement statement;
+    private static String dbFileName = "fitness_tracker.sqlite";
 
     /** Initialise the connection to a the production database.
      *  @throws SQLException if the connection could not be opened
      */
     public static void initialiseMainConnection() throws SQLException {
-        String url = "jdbc:sqlite:fitness_tracker.sqlite";
-        connection = DriverManager.getConnection(url);
-
-//        // Turn foreign keys on
-//        String update = "PRAGMA foreign_keys = ON;";
-//        PreparedStatement statement = connection.prepareStatement(update);
-//        statement.executeUpdate();
+        connection = DriverManager.getConnection("jdbc:sqlite:" + dbFileName);
     }
 
     /** Initialise the connection to a the test database.
@@ -30,11 +24,6 @@ abstract public class DataAccesser {
     public static void initialiseTestConnection() throws SQLException {
         String url = "jdbc:sqlite:testDatabase.sqlite";
         connection = DriverManager.getConnection(url);
-
-//        // Turn foreign keys on
-//        String update = "PRAGMA foreign_keys = ON;";
-//        PreparedStatement statement = connection.prepareStatement(update);
-//        statement.executeUpdate();
     }
 
     /** Drop all tables from both the production and test databases and
@@ -199,5 +188,13 @@ abstract public class DataAccesser {
         // Cleanup
         statement.close();
         connection.close();
+    }
+
+    /** Get the url to the main database
+     *
+     * @return the url to the main database as a string
+     */
+    public static String getDbFileName() {
+        return dbFileName;
     }
 }
