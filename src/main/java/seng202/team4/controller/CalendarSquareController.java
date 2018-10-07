@@ -18,7 +18,11 @@ public class CalendarSquareController extends Controller {
     /** Day number of this calendar box. */
     private int day = 0;
 
-    /** Creates a new CalendarSquareController with the given application state manager. */
+    /**
+     * Creates a new CalendarSquareController with the given application state manager.
+     *
+     * @param applicationStateManager The ApplicationStateManager of the app.
+     */
     public CalendarSquareController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
@@ -29,7 +33,11 @@ public class CalendarSquareController extends Controller {
         dayText.setText(Integer.toString(day));
     }
 
-    /** Sets the day of the calendar square. */
+    /**
+     * Sets the day of the calendar square.
+     *
+     * @param day The number of the calendar square.
+     */
     public void setDay(int day) {
         this.day = day;
         if (dayText != null) {

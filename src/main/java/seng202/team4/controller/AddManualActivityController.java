@@ -65,7 +65,11 @@ public class AddManualActivityController extends Controller {
     private Rectangle popUpRectangle;
 
 
-    /** Creates a new AddManualActivityController with the given ApplicationStateManager. */
+    /**
+     * Creates a new AddManualActivityController with the given ApplicationStateManager.
+     * @param applicationStateManager The ApplicationStateManager of the app.
+     * @param activityTabController The ActivityTabController of the app.
+     */
     public AddManualActivityController(ApplicationStateManager applicationStateManager, ActivityTabController activityTabController) {
         super(applicationStateManager);
         this.activityTabController = activityTabController;

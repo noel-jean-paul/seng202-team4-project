@@ -63,6 +63,7 @@ public class Profile {
         this.activityList = new ArrayList<>();
         this.warningList = new ArrayList<>();
         this.pictureURL = Profile.DEFAULT_URL;
+        this.nextGoalNum = -1;
     }
 
     /**
@@ -77,7 +78,7 @@ public class Profile {
                    String pictureURL) {
         this(firstName, lastName, dateOfBirth, weight, height);
         this.pictureURL = pictureURL;
-
+        this.nextGoalNum = -1;
     }
 
     /**
@@ -98,6 +99,7 @@ public class Profile {
         this.height = height;
         currentGoals = new ArrayList<>();
         activityList = new ArrayList<>();
+        this.nextGoalNum = -1;
     }
 
     @Override
@@ -610,7 +612,7 @@ public class Profile {
                     maxValue = goal.getNumber();
                 }
             }
-            nextGoalNum = maxValue;
+            nextGoalNum = maxValue+1;
         }
 
         int goalNumber = nextGoalNum;

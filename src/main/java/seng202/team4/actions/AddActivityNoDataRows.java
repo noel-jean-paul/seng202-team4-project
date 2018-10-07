@@ -1,16 +1,14 @@
 package seng202.team4.actions;
 
 import seng202.team4.model.data.Activity;
-import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
-import seng202.team4.model.data.enums.GoalType;
 import seng202.team4.model.database.DataAccesser;
 import seng202.team4.model.database.DataStorer;
 
 import java.sql.SQLException;
-import java.time.Duration;
 
+@SuppressWarnings("ALL")
 public class AddActivityNoDataRows {
     public static void main(String[] args) throws SQLException {
         DataAccesser.initialiseMainConnection();

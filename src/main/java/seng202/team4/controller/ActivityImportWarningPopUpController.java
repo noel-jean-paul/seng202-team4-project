@@ -18,7 +18,11 @@ import seng202.team4.App;
  */
 public class ActivityImportWarningPopUpController extends Controller {
 
-    /** Creates a new ActivityImportWarningPopUpController with the given ApplicationStateManager. */
+    /**
+     * Creates a new ActivityImportWarningPopUpController with the given ApplicationStateManager.
+     *
+     * @param applicationStateManager The ApplicationStateManager of the app.
+     */
     ActivityImportWarningPopUpController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
@@ -35,9 +39,11 @@ public class ActivityImportWarningPopUpController extends Controller {
     @FXML
     private ScrollPane scrollPane;
 
+    /** Rectangle of the pop up. */
     @FXML
     private Rectangle popUpRectangle;
 
+    /** Initializes the ActivitiesImportWarningPopUP pop up. */
     @FXML
     public void initialize() {
         Image backgroundImage = new Image(App.class.getResource("view/blue_cascade.jpg").toExternalForm());
@@ -53,7 +59,11 @@ public class ActivityImportWarningPopUpController extends Controller {
         applicationStateManager.closePopUP(mainPane);
     }
 
-    /** Adds a new warning to the pop up. */
+    /**
+     * Adds a new warning to the pop up.
+     *
+     * @param warning The warning to add as a String.
+     */
     public void addWarning(String warning) {
         Label label = new Label(warning);
         label.setTextFill(Color.RED);

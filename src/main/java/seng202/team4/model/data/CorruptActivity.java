@@ -12,8 +12,10 @@ public class CorruptActivity extends Activity {
     private int totalRows;
 
     /**
-     * Constructor for the Activity class
-     * @param name is the name of the activity as a string
+     * Constructor for the Activity class.
+     * @param name The name of the activity as a string.
+     * @param rawActivityList An ArrayList of the raw activity data rows of the CorruptActivity.
+     * @param corruptRows The number of rows that got corrupted on import.
      */
     public CorruptActivity(String name, ArrayList<DataRow> rawActivityList, int corruptRows) {
         super(name, rawActivityList);

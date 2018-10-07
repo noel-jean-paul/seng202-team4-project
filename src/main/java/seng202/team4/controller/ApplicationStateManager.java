@@ -6,7 +6,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import seng202.team4.model.data.Profile;
-import sun.applet.Main;
 
 import java.util.HashMap;
 
@@ -62,6 +61,7 @@ public class ApplicationStateManager {
      *
      * @param name The name of the screen.
      * @param pane The screen to be added.
+     * @param controller The controller of the screen to be added.
      */
     public void addScreen(String name, Pane pane, Controller controller) {
         paneMap.put(name, pane);

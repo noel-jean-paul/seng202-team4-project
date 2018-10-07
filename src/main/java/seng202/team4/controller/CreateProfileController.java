@@ -61,7 +61,11 @@ public class CreateProfileController extends Controller {
     private int currentImageIndex = 0;
 
 
-    /** Creates a new CreateProfileController with the given ApplicationStateManager. */
+    /**
+     * Creates a new CreateProfileController with the given ApplicationStateManager.
+     *
+     * @param applicationStateManager The ApplicationStateManager of the app.
+     */
     public CreateProfileController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
         profilePictures = new ArrayList<Image>();

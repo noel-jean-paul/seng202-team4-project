@@ -33,11 +33,15 @@ public class CalendarItemController extends Controller {
     /** String to be displayed in the calendar item. */
     private String displayString;
 
-    /** Creates a new CalendarItemController with the given application state manager. */
-    public CalendarItemController(ApplicationStateManager applicationStateManager, CalendarItem item, String displayString) {
+    /**
+     * Creates a new CalendarItemController with the given application state manager.
+     * @param applicationStateManager The ApplicationStateManager of the app.
+     * @param item The CalendarItem of the CalendarItemView.
+     */
+    public CalendarItemController(ApplicationStateManager applicationStateManager, CalendarItem item) {
         super(applicationStateManager);
         this.item = item;
-        this.displayString = displayString;
+        this.displayString = item.getDisplayString();
     }
 
     /** Initializes the activity calendar item. */
@@ -57,7 +61,11 @@ public class CalendarItemController extends Controller {
         rootPane.setBackground(selectedBackground);
     }
 
-    /** Gets the Activity associated with this activity calendar item. */
+    /**
+     * Gets the Activity associated with this activity calendar item.
+     *
+     * @return The CalendarItem being displayed in the CalendarItem view.
+     */
     public CalendarItem getItem() {
         return item;
     }

@@ -34,12 +34,14 @@ public class ActivityImportTypePromptController extends Controller {
      * Constructor for the ActivityImportTypePromptController.
      *
      * @param applicationStateManager The ApplicationStateManager of the application.
+     * @param activityTabController The Controller of the ActivityTab.
      */
     public ActivityImportTypePromptController(ApplicationStateManager applicationStateManager, ActivityTabController activityTabController) {
         super(applicationStateManager);
         this.activityTabController = activityTabController;
     }
 
+    /** Initializes the ActivityImportTypePrompt by setting the image of the pop up. */
     @FXML
     public void initialize() {
         Image backgroundImage = new Image(App.class.getResource("view/blue_cascade.jpg").toExternalForm());

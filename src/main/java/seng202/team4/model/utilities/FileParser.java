@@ -18,11 +18,12 @@ public class FileParser {
     /**
      * Parse a given csv file into lists of activities.
      *
-     * @param file the name of the file that is to be parsed.
+     * @param file The name of the file that is to be parsed.
      * @param validActivities ArrayList of that will be filled with the activities that were successfully parsed with no warnings or errors.
      * @param warningActivities  ArrayList that will be filled with the activities that were parsed with warnings.
      * @param skippedActivities ArrayList that will be filled with the activities that had to be skipped due to lack of valid data.
-     * @return the arrayList of all activities' data points.
+     * @return The arrayList of all activities' data points.
+     * @throws IOException The Exception thrown if the file can not be opened.
      */
     public ArrayList parseFileToActivites(File file, ArrayList<Activity> validActivities, ArrayList<CorruptActivity> warningActivities, ArrayList<Activity> skippedActivities) throws IOException {
 

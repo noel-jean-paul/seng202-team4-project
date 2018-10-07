@@ -1,7 +1,10 @@
 package seng202.team4.model.database;
 
-import seng202.team4.model.data.*;
+import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.DataRow;
+import seng202.team4.model.data.Goal;
 import seng202.team4.model.data.Keys.ProfileKey;
+import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
 
@@ -53,6 +56,7 @@ abstract public class DataLoader extends DataAccesser {
     /** Load all activities belonging to a profile from the database into that profile's activity list.
      *
      * @param profile the profile owning the activities (must be in the database already)
+     * @throws SQLException Exception that is thrown if the profile could not be loaded from the database.
      */
     private static void loadProfileActivities(Profile profile) throws SQLException {
         //Initialise list
@@ -96,6 +100,7 @@ abstract public class DataLoader extends DataAccesser {
     /** Load all goals belonging to a profile from the database into that profile's goal list
      *
      * @param profile the profile owning the goals (must be in the database already)
+     * @throws SQLException Exception that is thrown if the profile goals could not be loaded from the database.
      */
     private static void loadProfileGoals(Profile profile) throws SQLException {
         //Initialise list
@@ -148,6 +153,7 @@ abstract public class DataLoader extends DataAccesser {
     /** Load all dataRows belonging to an activity from the database into the activity
      *
      * @param activity the activity owning the dataRows (must be in database already)
+     * @throws SQLException Exception that is thrown if the Activity data rows could not be loaded from the database.
      */
     private static void loadActivityDataRows(Activity activity) throws SQLException {
         //Initialise list

@@ -6,7 +6,9 @@ import seng202.team4.model.data.enums.GoalType;
 import seng202.team4.model.database.DataUpdater;
 
 import java.sql.SQLException;
-import java.time.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Comparator;
@@ -52,7 +54,18 @@ public class Goal implements Comparable<Goal>, CalendarItem {
     private Profile owner;
     private boolean current;
 
-    /** Base constructor for goals */
+    /**
+     * Base constructor for goals
+     *
+     * @param number The unique number of the goal.
+     * @param progress The progress of the goal as a percentage.
+     * @param type The type of the goal as a GoalType.
+     * @param creationDate The creation date of the Goal.
+     * @param expiryDate The expiry Date of the Goal.
+     * @param goalDistance The target distance of the Goal.
+     * @param goalDuration The target duration of the Goal.
+     * @param caloriesBurned The calories burned target of the Goal.
+     */
     private Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
                 double goalDistance, String goalDuration, int caloriesBurned) {
         this.number = number;
@@ -67,25 +80,64 @@ public class Goal implements Comparable<Goal>, CalendarItem {
         this.current = true;    // by default the goal is current
     }
 
-    /** Constructor for a distance goal */
+    /**
+     * Constructor for a distance goal.
+     *
+     * @param number The unique number of the goal.
+     * @param progress The progress of the goal as a percentage.
+     * @param type The type of the goal as a GoalType.
+     * @param creationDate The creation date of the Goal.
+     * @param expiryDate The expiry Date of the Goal.
+     * @param goalDistance The target distance of the Goal.
+     */
     public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
                 double goalDistance) {
         this(number, progress, type, creationDate, expiryDate, goalDistance, "PT0M", 0);
     }
 
-    /** Constructor for a duration goal */
+    /**
+     * Constructor for a duration goal.
+     *
+     * @param number The unique number of the goal.
+     * @param progress The progress of the goal as a percentage.
+     * @param type The type of the goal as a GoalType.
+     * @param creationDate The creation date of the Goal.
+     * @param expiryDate The expiry Date of the Goal.
+     * @param goalDuration The target duration of the Goal.
+     */
     public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
                 String goalDuration) {
         this(number, progress, type, creationDate, expiryDate, 0, goalDuration, 0);
     }
 
-    /** Constructor for a calories goal */
+    /**
+     * Constructor for a calories goal.
+     *
+     * @param number The unique number of the goal.
+     * @param progress The progress of the goal as a percentage.
+     * @param type The type of the goal as a GoalType.
+     * @param creationDate The creation date of the Goal.
+     * @param expiryDate The expiry Date of the Goal.
+     * @param caloriesBurned The calories burned target of the Goal.
+     */
     public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
                 int caloriesBurned) {
         this(number, progress, type, creationDate, expiryDate, 0, "PT0M", caloriesBurned);
     }
 
-    /** Constructor for loading goals from the database */
+    /**
+     * Constructor for loading goals from the database.
+     * @param number The unique number of the goal.
+     * @param progress The progress of the goal as a percentage.
+     * @param type The type of the goal as a GoalType.
+     * @param creationDate The creation date of the Goal.
+     * @param expiryDate The expiry Date of the Goal.
+     * @param completionDate The completion date of the Goal.
+     * @param goalDistance The target distance of the Goal.
+     * @param goalDuration The target duration of the Goal.
+     * @param caloriesBurned The calories burned target of the Goal.
+     * @param current Whether the Goal is current or not.
+     */
     public Goal(int number, double progress, GoalType type, String creationDate, String expiryDate,
                 String completionDate, String goalDuration, double goalDistance, int caloriesBurned, boolean current) {
         this(number, progress, type, creationDate, expiryDate, goalDistance, goalDuration, caloriesBurned);
@@ -94,6 +146,11 @@ public class Goal implements Comparable<Goal>, CalendarItem {
 
     }
 
+    /**
+     * Checks whether this Goal is equal to another.
+     * @param o The other goal to compare with.
+     * @return true if the two goals are equal false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -112,9 +169,13 @@ public class Goal implements Comparable<Goal>, CalendarItem {
                 Objects.equals(isCurrent(), goal.isCurrent());
     }
 
+    /**
+     * Generates a hash code for the Goal.
+     *
+     * @return The hash code of the Goal.
+     */
     @Override
     public int hashCode() {
-
         return Objects.hash(getNumber(), getProgress(), getType(), getCreationDate(), getExpiryDate(), getCompletionDate(), getDescription(), getGoalDistance(), getGoalDuration());
     }
 
@@ -137,69 +198,148 @@ public class Goal implements Comparable<Goal>, CalendarItem {
                 '}';
     }
 
+    /**
+     * Gets the unique number of the Goal.
+     * @return The number of the Goal.
+     */
     public int getNumber() {
         return number;
     }
 
+    /**
+     * Sets the number of the Goal and updates it in the database.
+     *
+     * @param number The new number of the Goal.
+     * @throws SQLException Exception that is thrown if the number could not be updated in the database.
+     */
     public void setNumber(int number) throws SQLException {
         DataUpdater.updateGoals(Collections.singletonList(this), GoalFields.goalNumber.toString(), Double.toString(number));
         this.number = number;
     }
 
+    /**
+     * Gets the progress of the Goal.
+     *
+     * @return The progress of the goal as a percentage.
+     */
     public double getProgress() {
         return progress;
     }
 
+    /**
+     * Sets the progress of the Goal and updates it in the database.
+     *
+     * @param progress The new progress of the Goal.
+     * @throws SQLException Exception thrown if the progress could not be updated in the database.
+     */
     public void setProgress(double progress) throws SQLException {
         DataUpdater.updateGoals(Collections.singletonList(this), GoalFields.progress.toString(), Double.toString(progress));
         this.progress = progress;
     }
 
-    /**Set without updating the database */
+    /**
+     * Updates the progress value with out storing it in the database.
+     *
+     * @param progress The new progress of the Goal.
+     */
     public void updateProgressValue(double progress) {
         this.progress = progress;
     }
 
+    /**
+     * Gets the type of the Goal.
+     *
+     * @return The type of the goal as a GoalType.
+     */
     public GoalType getType() {
         return type;
     }
 
+    /**
+     * Sets the type of the goal and updates it in the database.
+     *
+     * @param type The new GoalType of the Goal.
+     * @throws SQLException Exception thrown if the type could not be updated in the database.
+     */
     public void setType(GoalType type) throws SQLException {
         DataUpdater.updateGoals(Collections.singletonList(this), GoalFields.type.toString(), String.valueOf(type));
         this.type = type;
     }
 
+    /**
+     * Gets the creation date of the Goal.
+     *
+     * @return The creation date of the Goal as a LocalDate.
+     */
     public LocalDate getCreationDate() {
         return creationDate;
     }
 
+    /**
+     * Sets the creation date of the goal and updates it in the database.
+     *
+     * @param creationDate The new creation date of the Goal.
+     * @throws SQLException Exception thrown if the creation date could not be updated in the database.
+     */
     public void setCreationDate(String creationDate) throws SQLException {
         DataUpdater.updateGoals(Collections.singletonList(this), GoalFields.creationDate.toString(), creationDate);
         this.creationDate = LocalDate.parse(creationDate);
     }
 
+    /**
+     * Gets the expiry date of the Goal.
+     *
+     * @return The expiry date as a local Date.
+     */
     public LocalDate getExpiryDate() {
         return expiryDate;
     }
 
+    /**
+     * Sets the expiry date of the goal and updates it in the database.
+     *
+     * @param expiryDate The new expiry date of the Goal.
+     * @throws SQLException Exception thrown if the expiry date could not be updated in the database.
+     */
     public void setExpiryDate(String expiryDate) throws SQLException {
         DataUpdater.updateGoals(Collections.singletonList(this),GoalFields.expiryDate.toString(), expiryDate);
         this.expiryDate = LocalDate.parse(expiryDate);
     }
 
+    /**
+     * Gets the completion date of the Goal.
+     *
+     * @return The completion date of the Goal as a LocalDate.
+     */
     public LocalDate getCompletionDate() {
         return completionDate;
     }
 
+    /**
+     * Sets the completion date of the goal and updates it in the database.
+     *
+     * @param completionDate The new completion date of the Goal.
+     * @throws SQLException Exception thrown if the completion date could not be updated in the database.
+     */
     public void setCompletionDate(String completionDate) throws SQLException {
         DataUpdater.updateGoals(Collections.singletonList(this),GoalFields.completionDate.toString(), completionDate);
         this.completionDate = LocalDate.parse(completionDate);
     }
 
+    /**
+     * Gets the target calories burned of the Goal.
+     * @return The target calories burned.
+     */
     public int getCaloriesBurned() {
         return caloriesBurned;
     }
 
+    /**
+     * Sets the calories burned target of the goal and updates it in the database.
+     *
+     * @param caloriesBurned The new calories burned target of the Goal.
+     * @throws SQLException Exception thrown if the calories burned target could not be updated in the database.
+     */
     public void setCaloriesBurned(int caloriesBurned) throws SQLException {
         DataUpdater.updateGoals(Collections.singletonList(this), GoalFields.caloriesBurned.toString(),
                 Integer.toString(caloriesBurned));
@@ -214,25 +354,48 @@ public class Goal implements Comparable<Goal>, CalendarItem {
         return generateDescription();
     }
 
+    /**
+     * Gets the distance target of the Goal.
+     *
+     * @return The distance target of the Goal in kilometers.
+     */
     public double getGoalDistance() {
         return goalDistance;
     }
 
+    /**
+     * Sets the distance target of the goal and updates it in the database.
+     *
+     * @param goalDistance The new distance target of the Goal.
+     * @throws SQLException Exception thrown if the distance target could not be updated in the database.
+     */
     public void setGoalDistance(double goalDistance) throws SQLException {
         DataUpdater.updateGoals(Collections.singletonList(this),GoalFields.goalDistance.toString(), Double.toString(goalDistance));
         this.goalDistance = goalDistance;
     }
 
+    /**
+     * Gets the duration target of the Goal
+     *
+     * @return The target duration of the Goal as a Duration.
+     */
     public Duration getGoalDuration() {
         return goalDuration;
     }
 
+    /**
+     * Sets the duration target of the goal and updates it in the database.
+     *
+     * @param goalDuration The new duration target of the Goal.
+     * @throws SQLException Exception thrown if the duration target could not be updated in the database.
+     */
     public void setGoalDuration(Duration goalDuration) throws SQLException {
         DataUpdater.updateGoals(Collections.singletonList(this), GoalFields.goalDuration.toString(), goalDuration.toString());
         this.goalDuration = goalDuration;
     }
 
-    /** Check if the goal is complete (progress = 100)
+    /**
+     * Check if the goal is complete (progress = 100)
      *
      * @return true if the goal is complete, false otherwise
      */
@@ -240,18 +403,38 @@ public class Goal implements Comparable<Goal>, CalendarItem {
         return progress == 100;
     }
 
+    /**
+     * Gets the time remaining until the Goal expires.
+     *
+     * @return The number of days until the Goal expires.
+     */
     public int getTimeRemaining() {
         return Period.between(expiryDate, LocalDate.now()).getDays();
     }
 
+    /**
+     * Gets the Profile that owns the Goal.
+     *
+     * @return The owner of the goal.
+     */
     public Profile getOwner() {
         return owner;
     }
 
+    /**
+     * Sets the Profile that owns the Goal.
+     *
+     * @param owner The new owner of the goal.
+     */
     public void setOwner(Profile owner) {
         this.owner = owner;
     }
 
+    /**
+     * Checks whether the Goal is current.
+     *
+     * @return true if the goal is current, false otherwise.
+     */
     public boolean isCurrent() {
         return current;
     }

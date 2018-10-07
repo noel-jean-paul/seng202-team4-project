@@ -47,6 +47,10 @@ public class CalendarViewController extends Controller {
     /** ArrayList of CalendarItems to be displayed in the Calendar. */
     private ArrayList<CalendarItem> calendarItems = new ArrayList<>();
 
+    /**
+     * Creates a new CalendarViewController with the given ApplicationStateManager.
+     * @param applicationStateManager The ApplicationStateManager of the app.
+     */
     public CalendarViewController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }
@@ -86,6 +90,7 @@ public class CalendarViewController extends Controller {
     /**
      * Changes the calender view to a particular month.
      * @param month The month to change to, indexed from 0.
+     * @param year The year to change to.
      */
     private void changeMonth(int month, int year) {
         Calendar calendar = Calendar.getInstance();
@@ -120,7 +125,7 @@ public class CalendarViewController extends Controller {
 
                     for (CalendarItem calendarItem: calendarItems) {
                         if (calendarItem.getDate().equals(LocalDate.of(year, month+1, day))) {
-                            CalendarItemController calendarItemController = new CalendarItemController(applicationStateManager, calendarItem, calendarItem.getDisplayString());
+                            CalendarItemController calendarItemController = new CalendarItemController(applicationStateManager, calendarItem);
                             Pane activityItem = GuiUtilities.loadPane("CalendarItem.fxml", calendarItemController);
                             calendarSquareController.addItem(activityItem);
 
@@ -158,12 +163,20 @@ public class CalendarViewController extends Controller {
         return item;
     }
 
-    /** Adds a Mouse Action listener to the Calendar Item. */
+    /**
+     * Adds a Mouse Action listener to the Calendar Item.
+     *
+     * @param event The MouseEvent EventHandler to add to the CalendarItems.
+     */
     public void addMouseClickActionToItems(EventHandler<MouseEvent> event) {
         mouseActionsList.add(event);
     }
 
-    /** Adds a CalendarItem to the calendar. */
+    /**
+     * Adds a CalendarItem to the calendar.
+     *
+     * @param calendarItem The calendarItem to add.
+     */
     public void addCalendarItem(CalendarItem calendarItem) {
         this.calendarItems.add(calendarItem);
     }

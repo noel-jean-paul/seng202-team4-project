@@ -73,6 +73,7 @@ public class AddGoalPopUpController extends Controller {
      * Creates a new AddGoalPopUpController with the given application state manager.
      *
      * @param applicationStateManager The application state manager of the app.
+     * @param goalsTabController The GoalsTabController of the app.
      */
     public AddGoalPopUpController(ApplicationStateManager applicationStateManager, GoalsTabController goalsTabController) {
         super(applicationStateManager);
@@ -100,7 +101,11 @@ public class AddGoalPopUpController extends Controller {
         popUpRectangle.setFill(new ImagePattern(backgroundImage));
     }
 
-    /** Updates the fields based on what goal type is selected. */
+    /**
+     * Updates the fields based on what goal type is selected.
+     *
+     * @param goalType The goal type as a String constant to update the fields to.
+     */
     private void changeGoalType(String goalType) {
         switch (goalType) {
             case DISTANCE_GOAL_TYPE:

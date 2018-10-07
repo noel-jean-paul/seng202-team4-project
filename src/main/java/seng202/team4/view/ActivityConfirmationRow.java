@@ -65,11 +65,19 @@ public class ActivityConfirmationRow extends AnchorPane {
         return activity;
     }
 
-
+    /**
+     * Gets whether the ActivityConfirmationRow is selected.
+     * @return true if the row is currently selected, false otherwise.
+     */
     public boolean isSelected() {
         return controller.isSelected();
     }
 
+    /**
+     * Gets the Controller for the ActivityConfirmationRow.
+     *
+     * @return The ActivityConfirmationRowController of the ActivityConfirmationRow.
+     */
     public ActivityConfirmationRowController getController() {
         return controller;
     }
