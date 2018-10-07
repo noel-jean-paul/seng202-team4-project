@@ -1,5 +1,5 @@
 .root {
-    -fx-background-image: url("orange_cascade.jpg");
+    -fx-background-image: url("blue_cascade.jpg");
     -fx-background-size: cover;
     -fx-font-family: sans-serif;
     -fx-focus-color: transparent;
@@ -27,8 +27,12 @@
     -fx-background-color: #66d9ff;
 }
 
+.tab-header-area {
+    -fx-border-width: 0px 0px 1px 0px;
+    -fx-border-color: #828282;
+}
+
 .tab-header-background {
-    -fx-background-image: transparent;
     -fx-fill: transparent;
     -fx-effect: null;
     -fx-opacity: 0;
@@ -37,7 +41,8 @@
 .tab {
     -fx-text-fill: black;
     -fx-font-family: sans-serif;
-    -fx-background-color: transparent;
+    -fx-background-color: #99e6ff;
+    -fx-opacity: 1;
     -fx-effect: DropShadow(three-pass-box , rgba(0,0,0,0) , 3, 0.0 , 1 , 1 );
 }
 
@@ -53,6 +58,10 @@
     -fx-background-color: #00bfff;
 }
 
+.tab:pressed {
+    -fx-background-colour: #a5e7ff;
+}
+
 .button {
     -fx-text-fill: black;
     -fx-font-family: sans-serif;
@@ -62,6 +71,10 @@
 
 .button:hover {
     -fx-background-color: #66d9ff;
+}
+
+.button:pressed {
+    -fx-background-colour: #a5e7ff;
 }
 
 .vbox {
