@@ -387,6 +387,7 @@ public class GoalsTabController extends Controller {
 
         // Deselect the selected goal in the list if there is one selected
         clearSelectedGoalRow();
+        refreshGoalTable();
 //        if (selectedGoalRow != null) {
 //            selectedGoalRow.deselect();
 //        }
