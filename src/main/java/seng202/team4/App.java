@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import seng202.team4.actions.NoelSetup_6Goals;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.CreateProfileController;
 import seng202.team4.controller.LoginController;
@@ -120,6 +121,6 @@ public class App extends Application {
 
     /** Main method of the program. */
     public static void main(String[] args) throws SQLException {
-        //NoelSetup_6Goals.main(new String[1]);
+         NoelSetup_6Goals.main(new String[1]);
         launch(args); }
 }

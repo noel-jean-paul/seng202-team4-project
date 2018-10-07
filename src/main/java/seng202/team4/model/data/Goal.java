@@ -426,8 +426,12 @@ public class Goal implements Comparable<Goal> {
         if (isCurrent()) {
             Duration remaining = getRemainingTime();
             return String.format("%d %s", remaining.toDays(), getDayUnit(remaining));
-        } else {
-            return String.format("Expired %s", getExpiryDate().toString());
+        } else {    // Goal is a past goal
+            if (isComplete()) {
+                return String.format("Completed %s", getCompletionDate().toString());
+            } else {    // Expired goal
+                return String.format("Expired %s", getExpiryDate().toString());
+            }
         }
     }
 
