@@ -97,8 +97,6 @@ public class ImportActivitiesPreviewScreenController extends Controller {
                 applicationStateManager.getCurrentProfile().addActivity(activity);
                 importedActivities.add(activity);
 
-                // Check the activity for health warnings
-                // TODO: 4/10/18 Matt_T There doesn't seem to be any health warning checking happening here (It might happen elsewhere but the comment above was here)
                 // Store all data rows in the database as they have not been stored yet but are in the rawData list
                 for (DataRow dataRow : activity.getRawData()) {
                     // Set the owner manually as addDataRow has not been called
@@ -108,10 +106,12 @@ public class ImportActivitiesPreviewScreenController extends Controller {
                     // Insert the datarows at once using a transaction
                     DataStorer.insertDataRowTransaction(activity.getRawData());
                 } catch (SQLException e) {
-                    // TODO: 22/09/18 Currently displays error message for every activity failed. Want one for all activities
-                    GuiUtilities.displayErrorMessage("Failed to import one or more activities.", "");
+                    e.printStackTrace();
+                    GuiUtilities.displayErrorMessage("Failed to import one or more activities.", "Database error");
                 }
                 activity.setType(activityConfirmationRow.getController().getSelectedActvityType());
+
+                // Checks for health warnings.
                 if (activity.addWarnings(true)) {
                     warningFound = true;
                 }

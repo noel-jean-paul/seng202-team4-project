@@ -39,8 +39,6 @@ public class DataProcessorTest {
         testProfile.addAllActivities(activityList);
     }
 
-    // TODO add test cases where 1 and 0 data points are given
-
     @Test
     public void totalDistanceLevel() {
         double distance = DataProcessor.totalDistance(testProfile.getActivityList().get(0).getRawData());
