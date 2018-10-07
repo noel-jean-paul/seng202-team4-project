@@ -115,7 +115,7 @@ public class HealthWarning implements Comparable<HealthWarning> {
         boolean atRisk = false;
         if (type == WarningType.Tachy) {
             atRisk = tachyRisk();
-            description = "Heart rate in excess of recommended maximum.";
+            description = "Heart rate over recommended maximum.";
         } else if (type == WarningType.Brady) {
             atRisk = bradyRisk();
             description = "Heart rate under recommended minimum.";
@@ -171,12 +171,10 @@ public class HealthWarning implements Comparable<HealthWarning> {
      */
     private String setUpURL() {
         String warningURL;
-        if (type == WarningType.Brady) {
+        if (type == WarningType.Tachy) {
             warningURL = "https://www.google.com/search?q=tachycardia&ie=utf-8";
-        } else if (type == WarningType.Tachy) {
-            warningURL = "https://www.google.com/search?q=bradycardia&ie=utf-8";
         } else {
-            warningURL = "https://www.google.com/search?q=cardiovascular+mortality&ie=utf-8";
+            warningURL = "https://www.google.com/search?q=bradycardia&ie=utf-8";
         }
         return warningURL;
     }
