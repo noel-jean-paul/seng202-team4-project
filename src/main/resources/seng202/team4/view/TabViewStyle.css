@@ -71,6 +71,7 @@
 
 .button:hover {
     -fx-background-color: #66d9ff;
+    -fx-alignment: center;
 }
 
 .button:pressed {
