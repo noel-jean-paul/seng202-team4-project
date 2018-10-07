@@ -8,6 +8,7 @@ import seng202.team4.model.data.enums.WarningType;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/** The class for the health warning generation and verification */
 public class HealthWarning implements Comparable<HealthWarning> {
     /** The average heart rate of the activity */
     private int avgHeartRate;
@@ -39,7 +40,15 @@ public class HealthWarning implements Comparable<HealthWarning> {
     /** Whether or not the warning indicates a genuine health risk - In other words, if the warning is valid */
     private boolean healthRisk;
 
-    /** The constructor for the health warning */
+    /**
+     * The health warning constructor.
+     * @param activity the activity that the warning is built off.
+     * @param user the user profile by which the warning is being stored with.
+     * @param type the warning type - Tachycardia or Bradycardia
+     * @param avgHearRate the average heart rate of the user over the activity.
+     * @param minHeartRate the minimum heart rate of the user over the activity.
+     * @param maxHeartRate the maximum heart rate of the user over the activity.
+     */
     public HealthWarning(Activity activity, Profile user, WarningType type, int avgHearRate, int minHeartRate, int maxHeartRate) {
         this.activity = activity;
         this.user = user;

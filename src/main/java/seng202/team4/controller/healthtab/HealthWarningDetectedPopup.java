@@ -10,6 +10,7 @@ import seng202.team4.App;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.Controller;
 
+/** Controller class for the health warning detected popup */
 public class HealthWarningDetectedPopup extends Controller {
 
     /** The pane which contains all of the popup window's elements */
@@ -30,7 +31,11 @@ public class HealthWarningDetectedPopup extends Controller {
     @FXML
     private Rectangle popUpRectangle;
 
-    /** The constructor for the popup window */
+    /**
+     * The constructor for the popup window
+     *
+     * @param applicationStateManager the application state manager for the program.
+     */
     public HealthWarningDetectedPopup(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }

@@ -1,4 +1,4 @@
-package seng202.team4.controller.healthtab;
+package seng202.team4.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,11 +9,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import seng202.team4.App;
-import seng202.team4.controller.ApplicationStateManager;
-import seng202.team4.controller.Controller;
 import seng202.team4.model.data.enums.WarningType;
 
-public class WarningDescriptionPopUpController extends Controller {
+/** The controller class for the health warning description popup */
+public class WarningDescriptionPopUpController extends Controller{
 
     /** The pop up warning pane */
     @FXML
