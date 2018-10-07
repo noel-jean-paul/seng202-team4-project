@@ -11,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import seng202.team4.App;
 import seng202.team4.model.data.enums.WarningType;
 
+/** The controller class for the health warning description popup */
 public class WarningDescriptionPopUpController extends Controller{
 
     /** The pop up warning pane */
