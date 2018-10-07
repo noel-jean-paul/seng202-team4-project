@@ -24,7 +24,7 @@ public class NoelSetup_6Goals {
         goal1.setCompletionDate("2018-10-07");
 
         Goal goal2 = new Goal(2, 80, GoalType.Run,"2018-09-28", "2018-12-12",
-                500);
+                12.0);
 
         Goal goal3 = new Goal(3, 55, GoalType.Walk, "2018-03-20", "2018-01-01",
                 200);
@@ -45,20 +45,20 @@ public class NoelSetup_6Goals {
                 10);
 
         profile.addCurrentGoal(goal1);
-//        profile.addCurrentGoal(goal2);
-//        profile.addCurrentGoal(goal3);
-//        profile.addCurrentGoal(goal4);
-//        profile.addCurrentGoal(goal5);
-//        profile.addCurrentGoal(goal6);
+        profile.addCurrentGoal(goal2);
+        profile.addCurrentGoal(goal3);
+        profile.addCurrentGoal(goal4);
+        profile.addCurrentGoal(goal5);
+        profile.addCurrentGoal(goal6);
         profile.addCurrentGoal(goal7);
         profile.addCurrentGoal(goal8);
 
 //        profile.addPastGoal(goal1);
 //        profile.addPastGoal(goal2);
-        profile.addPastGoal(goal3);
-        profile.addPastGoal(goal4);
-        profile.addPastGoal(goal5);
-        profile.addPastGoal(goal6);
+//        profile.addPastGoal(goal3);
+//        profile.addPastGoal(goal4);
+//        profile.addPastGoal(goal5);
+//        profile.addPastGoal(goal6);
 //        profile.addPastGoal(goal7);
 //        profile.addPastGoal(goal8);
     }

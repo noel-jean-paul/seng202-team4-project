@@ -144,6 +144,7 @@ public class MainScreenController extends Controller {
     @FXML
     void goalTabSelected() {
         onGoalsTab = !onGoalsTab;   // Toggle the boolean keeping track of whether the goals tab is being displayed
+
         goalsTabController.displayGoalTable();
     }
 
