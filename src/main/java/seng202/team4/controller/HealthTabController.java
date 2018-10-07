@@ -65,6 +65,13 @@ public class HealthTabController extends Controller {
     @FXML
     private GridPane imagePane;
 
+    private WebEngine engine;
+    private String currentUrl;
+    private boolean tabLoaded = false;
+
+    /**
+     * Loads information about the selected warning and displays it in a pop up.
+     */
     @FXML
     void loadInformation() {
         HealthWarning warning = (HealthWarning) healthWarningTable.getSelectionModel().getSelectedItem();
@@ -152,7 +159,7 @@ public class HealthTabController extends Controller {
         engine.load(currentUrl);
     }
 
-
+    /** Moves the web page forward a page in the web search. */
     @FXML
     void webViewForward() {
         Platform.runLater(() -> {
@@ -160,17 +167,13 @@ public class HealthTabController extends Controller {
         });
     }
 
+    /** Moves the web page backward a page in the web search. */
     @FXML
     void webViewBack() {
         Platform.runLater(() -> {
             engine.executeScript("history.back()");
         });
     }
-
-    private WebEngine engine;
-    private String currentUrl;
-    private boolean tabLoaded = false;
-
 
     /**
      * The constructor for the health tab.
@@ -220,8 +223,9 @@ public class HealthTabController extends Controller {
     }
 
     /**
+     * Gets the BMI status as a String.
      *
-     * @return
+     * @return BMI status as a String.
      */
     private String getBMIStatusString() {
         double BMI = applicationStateManager.getCurrentProfile().getBmi();
@@ -277,6 +281,11 @@ public class HealthTabController extends Controller {
         bmiLabel.setText(String.format("%.2f    (%s)", applicationStateManager.getCurrentProfile().getBmi(), getBMIStatusString()));
     }
 
+    /**
+     * Sets whether the web view has a connection to the internet.
+     *
+     * @param hasConnection Whether there is an internet connection.
+     */
     public void setConnectionStatus(boolean hasConnection) {
 
     }

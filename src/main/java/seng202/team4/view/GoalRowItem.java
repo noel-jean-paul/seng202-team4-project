@@ -11,6 +11,9 @@ import seng202.team4.App;
 import seng202.team4.controller.GoalTab.GoalRowController;
 import seng202.team4.model.data.Goal;
 
+/**
+ * Class for a GoalRowItem that is displayed in a list of the goals tab.
+ */
 public class GoalRowItem extends AnchorPane {
     /**
      * Background of a selected profile.
@@ -48,12 +51,19 @@ public class GoalRowItem extends AnchorPane {
         deselect();
     }
 
+    /**
+     * Gets the Goal of the GoalRowItem.
+     *
+     * @return The Goal of the GoalRowController.
+     */
     public Goal getGoal() {
         return goal;
     }
 
     /**
-     * Set the goal this row describes
+     * Set the goal this row describes.
+     *
+     * @param goal The Goal to set.
      */
     public void setGoal(Goal goal) {
         this.goal = goal;
@@ -73,7 +83,11 @@ public class GoalRowItem extends AnchorPane {
         this.setBackground(unselectedBackground);
     }
 
-    /** Initializes the GoalTableRow using the parameters of the goal it wraps */
+    /**
+     * Initializes the GoalTableRow using the parameters of the goal it wraps
+     *
+     * @param controller The GoalRowController for the GoalRowItem.
+     */
     void initialiseRow(GoalRowController controller) {
         controller.setDescription(getGoal().getDescription());
         controller.setCreationDate(getGoal().getCreationDate().toString());

@@ -14,7 +14,10 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
 
-
+/**
+ * Class for a user profile. Stores all the required attributes to represent a user profile.
+ * Also stores any Activates or Goals that the user has.
+ */
 public class Profile {
     /**
      * A class profile which holds the attributes for each user
@@ -73,6 +76,7 @@ public class Profile {
      * @param dateOfBirth is the date of birth in string format
      * @param weight is the weight of the user in double format
      * @param height is the height of the user in double format
+     * @param pictureURL The URL to the users profile picture.
      */
     public Profile(String firstName, String lastName, String dateOfBirth, double weight, double height,
                    String pictureURL) {
@@ -102,6 +106,12 @@ public class Profile {
         this.nextGoalNum = -1;
     }
 
+    /**
+     * Checks whether this Profile is equal to another.
+     *
+     * @param o The other Profile to compare to.
+     * @return true if the two profiles are equal, false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -118,69 +128,134 @@ public class Profile {
                 Objects.equals(getWarningList(), profile.getWarningList());
     }
 
+    /**
+     * Generates a hash code for the Profile.
+     *
+     * @return The hash code of the Profile.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getFirstName(), getLastName(), getDateOfBirth(), getWeight(), getHeight(), getActivityList(), getCurrentGoals());
     }
 
+    /**
+     * Gets the first name of the Profile.
+     *
+     * @return The first name of the Profile.
+     */
     public String getFirstName() {
         return firstName;
     }
 
-    /** Set and store in database */
+    /**
+     * Sets the first name of the Profile and updates it in the database.
+     * @param firstName The new first name of the profile.
+     * @throws SQLException Exception thrown if the first name can not be updated in the database.
+     */
     public void setFirstName(String firstName) throws SQLException {
         DataUpdater.updateProfile(this, ProfileFields.firstName.toString(), firstName);
         this.firstName = firstName;
     }
 
+    /**
+     * Gets the last name of the Profile.
+     *
+     * @return The last name of the Profile.
+     */
     public String getLastName() {
         return lastName;
     }
 
-    /** Set and store in database */
+    /**
+     * Sets the last name of the Profile and updates it in the database.
+     * @param lastName The new last name of the profile.
+     * @throws SQLException Exception thrown if the last name can not be updated in the database.
+     */
     public void setLastName(String lastName) throws SQLException {
         DataUpdater.updateProfile(this, ProfileFields.lastName.toString(), lastName);
         this.lastName = lastName;
     }
 
+    /**
+     * Gets the date of birth of the Profile.
+     *
+     * @return The date of birth of the profile as a LocalDate.
+     */
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    /** Set and store in database */
+    /**
+     * Sets the date of birth of the Profile and updates it in the database.
+     * @param dateOfBirth The new date of birth of the profile.
+     * @throws SQLException Exception thrown if the date of birth can not be updated in the database.
+     */
     public void setDateOfBirth(String dateOfBirth) throws SQLException {
         this.dateOfBirth = LocalDate.parse(dateOfBirth);
         DataUpdater.updateProfile(this, ProfileFields.dateOfBirth.toString(), dateOfBirth);
     }
 
+    /**
+     * Gets the weight of the Profile.
+     *
+     * @return The weight of the profile in kilograms.
+     */
     public double getWeight() {
         return weight;
     }
 
-    /** Set and store in database */
+    /**
+     * Sets the weight of the Profile and updates it in the database.
+     * @param weight The new weight of the profile.
+     * @throws SQLException Exception thrown if the weight can not be updated in the database.
+     */
     public void setWeight(double weight) throws SQLException {
         this.weight = weight;
         DataUpdater.updateProfile(this, ProfileFields.weight.toString(), Double.toString(weight));
     }
 
+    /**
+     * Gets the height of the Profile.
+     *
+     * @return The height of the Profile.
+     */
     public double getHeight() {
         return height;
     }
 
-    /** Set and store in database */
+    /**
+     * Sets the height of the Profile and updates it in the database.
+     * @param height The new height of the profile.
+     * @throws SQLException Exception thrown if the height can not be updated in the database.
+     */
     public void setHeight(double height) throws SQLException {
         this.height = height;
         DataUpdater.updateProfile(this, ProfileFields.height.toString(), Double.toString(height));
     }
 
+    /**
+     * Gets the list of the Profile activities.
+     *
+     * @return A List of all the activities associated with the Profile.
+     */
     public List<Activity> getActivityList() {
         return activityList;
     }
 
+    /**
+     * Gets the list of the current Profile goals.
+     *
+     * @return A List of all the current goals associated with the Profile.
+     */
     public List<Goal> getCurrentGoals() {
         return currentGoals;
     }
 
+    /**
+     * Gets the list of the past Profile goals.
+     *
+     * @return A List of all the past goals associated with the Profile.
+     */
     public List<Goal> getPastGoals() {
         return pastGoals;
     }
@@ -193,14 +268,29 @@ public class Profile {
         return (this.weight/(this.height * this.height));
     }
 
+    /**
+     * Gets the age of the Profile.
+     *
+     * @return The age of the Profile.
+     */
     public int getAge() {
         return ((LocalDate.now()).getYear() - dateOfBirth.getYear());
     }
 
+    /**
+     * Gets the URL of the Profile picture.
+     *
+     * @return The URL of the Profile picture.
+     */
     public String getPictureURL() {
         return pictureURL;
     }
 
+    /**
+     * Sets the Profile picture URL of the Profile and updates it in the database.
+     * @param pictureURL The new Profile picture URL of the profile.
+     * @throws SQLException Exception thrown if the Profile picture URL can not be updated in the database.
+     */
     public void setPictureURL(String pictureURL) throws SQLException {
         this.pictureURL = pictureURL;
         DataUpdater.updateProfile(this, ProfileFields.pictureURL.toString(), pictureURL);
@@ -274,9 +364,11 @@ public class Profile {
         return (date.compareTo(MIN_DOB) >= 0 && date.compareTo(LocalDate.now()) <= 0);
     }
 
-    /** Add an activity to the activity list in correct date position and insert it into the database.
+    /**
+     * Add an Activity to the Activity list in correct date position and insert it into the database.
      *
-     * @param activity the activity to be added
+     * @param activity The activity to be added.
+     * @throws SQLException Exception thrown if the Activity could not be inserted.
      */
     public void addActivity(Activity activity) throws SQLException {
         activityList.add(activity);
@@ -298,9 +390,10 @@ public class Profile {
         java.util.Collections.sort(activityList);
     }
 
-    /** Add a goal to the current goal list in order and insert it into the database
+    /** Add a Goal to the current goal list in order and insert it into the database
      *
      * @param goal the Goal to be added
+     * @throws SQLException Exception thrown if the Goal could not be inserted.
      */
     public void addCurrentGoal(Goal goal) throws SQLException {
         currentGoals.add(goal);
@@ -313,18 +406,22 @@ public class Profile {
         DataStorer.insertGoal(goal, this);
     }
 
-    /** Add a goal to the past goal list in order and insert it into the database
+    /**
+     * Add a goal to the past goal list in order and insert it into the database
      *
      * @param goal the Goal to be added
+     * @throws SQLException Exception thrown if the Goal could not be inserted.
      */
     public void addPastGoal(Goal goal) throws SQLException {
         addPastGoal(goal, true);
     }
 
-    /** Add a goal to the past goal list in order and insert it into the database if insert is true
+    /**
+     * Add a goal to the past goal list in order and insert it into the database if insert is true.
      *
-     * @param goal the Goal to be added
-     * @param insert the flag determining whether the goal should be inserted into the database or not
+     * @param goal the Goal to be added.
+     * @param insert the flag determining whether the goal should be inserted into the database or not.
+     * @throws SQLException Exception thrown if the Goal could not be inserted into the database.
      */
     private void addPastGoal(Goal goal, boolean insert) throws SQLException {
         pastGoals.add(goal);
@@ -362,26 +459,33 @@ public class Profile {
 
 
 
-    /** Remove the activity from the activityList and the database
+    /**
+     * Remove the Activity from the activityList and the database.
      *
-     * @param activity the activity to be removed
+     * @param activity the Activity to be removed.
+     * @throws SQLException Exception thrown if the Activity could not be removed.
      */
     public void removeActivity(Activity activity) throws SQLException {
         activityList.remove(activity);
         DataStorer.deleteActivities(new ArrayList<>(Collections.singletonList(activity)));
     }
 
-    /** Remove the goal from the currentGoals and the database
+    /**
+     * Remove the Goal from the currentGoals and the database.
      *
-     * @param goal the goal to be removed
+     * @param goal the Goal to be removed.
+     * @throws SQLException Exception thrown if the Goal could not be removed.
      */
     public void removeCurrentGoal(Goal goal) throws SQLException {
         removeCurrentGoal(goal, true);
     }
 
-    /** Remove the goal from the currentGoals and from the database if the delete flag is true
+    /**
+     * Remove the Goal from the currentGoals and from the database if the delete flag is true
      *
      * @param goal the goal to be removed
+     * @param delete Whether the Goal should be deleted from the database.
+     * @throws SQLException Exception thrown if the Goal could not be removed from the database.
      */
     private void removeCurrentGoal(Goal goal, boolean delete) throws SQLException {
         currentGoals.remove(goal);
@@ -391,17 +495,21 @@ public class Profile {
         }
     }
 
-    /** Remove the goal from the currentGoals and the database
+    /** Remove the Goal from the currentGoals and the database
      *
-     * @param goal the goal to be removed
+     * @param goal the Goal to be removed
+     * @throws SQLException Exception thrown if the Goal could not be removed from the database.
      */
     public void removePastGoal(Goal goal) throws SQLException {
         removePastGoal(goal, true);
     }
 
-    /** Remove the goal from the currentGoals and from the database if the delete flag is true
+    /**
+     * Remove the Goal from the currentGoals and from the database if the delete flag is true
      *
-     * @param goal the goal to be removed
+     * @param goal the goal to be removed.
+     * @param delete Whether the Goal should be deleted from the database.
+     * @throws SQLException Exception thrown if the Goal could not be removed from the database.
      */
     private void removePastGoal(Goal goal, boolean delete) throws SQLException {
         pastGoals.remove(goal);
@@ -484,6 +592,9 @@ public class Profile {
      *  Should be called before updateGoalsForExpiry to allow for importing of activities to meet a goal
      *  on the day they expire.
      *  Assumes that each goal is one of distance, duration or calories goal
+     *
+     * @param activities The list of Activities to use to update the goals.
+     * @throws SQLException Exception thrown if goal progress could not be updated in the database.
      */
     public void updateGoalsForProgress(List<Activity> activities) throws SQLException {
         for (Goal goal: currentGoals) {
@@ -597,7 +708,11 @@ public class Profile {
         return activityKeys;
     }
 
-    /** Gets the next available unique goal number */
+    /**
+     * Gets the next available unique Goal number.
+     *
+     * @return The next Goal number that can be used.
+     */
     public int getNextGoalNumber() {
         if (nextGoalNum == -1) {
             int maxValue = 0;
@@ -617,6 +732,6 @@ public class Profile {
 
         int goalNumber = nextGoalNum;
         nextGoalNum += 1;
-        return  goalNumber;
+        return goalNumber;
     }
 }

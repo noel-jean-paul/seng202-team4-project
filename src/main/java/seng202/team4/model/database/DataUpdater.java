@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Class with methods for updating data in the database.
+ */
 public abstract class DataUpdater extends DataAccesser {
     private static String update;
 

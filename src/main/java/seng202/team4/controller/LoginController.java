@@ -27,7 +27,11 @@ public class LoginController extends Controller {
     /** The currently selected ProfileListItem. */
     private ProfileListItem selectedProfileItem = null;
 
-    /** Creates a new LoginController with the given ApplicationStateManager. */
+    /**
+     * Creates a new LoginController with the given ApplicationStateManager.
+     *
+     * @param applicationStateManager The ApplicationStateManager of the app.
+     */
     public LoginController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }

@@ -8,6 +8,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Class for processing data and performing calculations.
+ */
 public class DataProcessor {
 
     /**

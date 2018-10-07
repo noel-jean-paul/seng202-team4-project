@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for loading data from the database.
+ */
 abstract public class DataLoader extends DataAccesser {
     /** Return the Profile in the database matching the first/last names.
      *

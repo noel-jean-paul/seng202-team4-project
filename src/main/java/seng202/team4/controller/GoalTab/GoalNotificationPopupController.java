@@ -21,6 +21,9 @@ import seng202.team4.model.data.Goal;
 import java.sql.SQLException;
 import java.util.Collection;
 
+/**
+ * Controller class for the GoalNotificationPopup.
+ */
 public class GoalNotificationPopupController extends Controller {
 
     /**  The root pane of the popup. */
@@ -42,8 +45,12 @@ public class GoalNotificationPopupController extends Controller {
     /** The goal tab controller of the application */
     private GoalsTabController goalsTabController;
 
-    /** Constructs a new instance of a GoalNotificationPopupController */
-    GoalNotificationPopupController(ApplicationStateManager applicationStateManager, GoalsTabController goalsTabController) {
+    /**
+     * Constructs a new instance of a GoalNotificationPopupController
+     * @param applicationStateManager The ApplicationStateManager of the app.
+     * @param goalsTabController The GoalsTabController of the app.
+     */
+    public GoalNotificationPopupController(ApplicationStateManager applicationStateManager, GoalsTabController goalsTabController) {
         super(applicationStateManager);
         this.goalsTabController = goalsTabController;
     }
@@ -73,6 +80,7 @@ public class GoalNotificationPopupController extends Controller {
         closePopup();
     }
 
+    /** Changes the the screen to the Activity tab and closes the pop up. */
     @FXML
     void returnToActivityTab() {
         // Switch to the activity tab

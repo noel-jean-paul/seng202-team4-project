@@ -6,6 +6,7 @@ import seng202.team4.model.database.DataStorer;
 
 import java.sql.SQLException;
 
+@SuppressWarnings("ALL")
 public class NoelSetup_2Profiles_SameActivities {
     public static void Main(String[] args) throws SQLException {
         DataAccesser.initialiseMainConnection();

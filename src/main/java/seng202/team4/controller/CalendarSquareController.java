@@ -5,6 +5,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/**
+ * Controller class for a single square of a Calendar.
+ */
 public class CalendarSquareController extends Controller {
 
     /** Text that displays the day of the calendar square. */

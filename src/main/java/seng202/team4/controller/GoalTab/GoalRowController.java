@@ -46,14 +46,27 @@ public class GoalRowController extends Controller {
         super(applicationStateManager);
     }
 
+    /**
+     * Sets the description of the GoalRow.
+     *
+     * @param description The new description of the GoalRow.
+     */
     public void setDescription(String description) {
         this.description.setText(description);
     }
 
+    /**
+     * Sets the creation date of the GoalRow creation date Text.
+     * @param creationDate The new creation date of the GoalRow.
+     */
     public void setCreationDate(String creationDate) {
         this.creationDate.setText(creationDate);
     }
 
+    /**
+     * Sets the expiry date of the GoalRow expiry date Text.
+     * @param expiryDate The new expiry date of the GoalRow.
+     */
     public void setExpiryDate(String expiryDate) {
         this.expiryDate.setText(expiryDate);
     }

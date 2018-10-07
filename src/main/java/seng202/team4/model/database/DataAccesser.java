@@ -5,6 +5,9 @@ import seng202.team4.model.data.Profile;
 
 import java.sql.*;
 
+/**
+ * Class for establishing connection to the database.
+ */
 abstract public class DataAccesser {
     static Connection connection;
     static ResultSet set;

@@ -22,7 +22,10 @@ public class ProfileDeletionConfirmationController extends Controller {
     @FXML
     private Rectangle popUpRectangle;
 
-    /** Creates a new Profile deletion controller with the given ApplicationStateManager. */
+    /**
+     * Creates a new Profile deletion controller with the given ApplicationStateManager.
+     * @param applicationStateManager The ApplicationStateManager of the app.
+     */
     public ProfileDeletionConfirmationController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }

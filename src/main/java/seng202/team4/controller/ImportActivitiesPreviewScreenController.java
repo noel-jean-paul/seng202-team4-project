@@ -60,13 +60,15 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     /**
      * Constructor of the ImportActivitiesPreviewScreenController.
      *
-     * @param applicationStateManager The ApplicationStateManager of the application.
+     * @param applicationStateManager The ApplicationStateManager of the app.
+     * @param activityTabController The ActivityTabController of the app.
      */
     public ImportActivitiesPreviewScreenController(ApplicationStateManager applicationStateManager, ActivityTabController activityTabController) {
         super(applicationStateManager);
         this.activityTabController = activityTabController;
     }
 
+    /** Initializes The ImportActivitiesPreviewScreen. */
     @FXML
     public void initialize() {
         scrollHbox.prefWidthProperty().bind(scrollPane.widthProperty());
@@ -75,6 +77,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
     /**
      * Action performed when the import activities button is pressed.
      * Stores all the activities to be imported in the database.
+     * @throws SQLException Exception thrown if any of the Activities could not be stored in the database.
      */
     @FXML
     public void importActivities() throws SQLException {
@@ -124,6 +127,7 @@ public class ImportActivitiesPreviewScreenController extends Controller {
      * Loads all activities from the given csv file.
      *
      * @param csvFile The csv file that contains the data of the activities.
+     * @throws IOException Exception thrown if the csvFile can not be opened.
      */
     public void loadActivities(File csvFile) throws IOException {
         FileParser fileParser = new FileParser();

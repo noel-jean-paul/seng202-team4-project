@@ -32,12 +32,20 @@ public class ProfileListItemController extends Controller {
         super(applicationStateManager);
     }
 
-    /** Sets the name of the name Text. */
+    /**
+     * Sets the name of the name Text.
+     *
+     * @param text The text to set the nameText to.
+     */
     public void setNameText(String text) {
         nameText.setText(text);
     }
 
-    /** Sets the image of the profile picture. */
+    /**
+     * Sets the image of the profile picture.
+     *
+     * @param image The image to set the profile picture of the ProfileListItem to.
+     */
     public void setProfilePicture(Image image) {
         profilePictureImageView.setImage(GuiUtilities.maskProfileImage(image));
     }

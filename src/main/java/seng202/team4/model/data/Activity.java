@@ -17,6 +17,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
+/**
+ * Class that represents an Activity.
+ */
 public class Activity implements Comparable<Activity>, CalendarItem {
 
     /** Keywords that indicate an Activity is a walk.*/

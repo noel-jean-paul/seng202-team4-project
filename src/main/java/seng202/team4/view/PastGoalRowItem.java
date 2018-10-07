@@ -3,6 +3,9 @@ package seng202.team4.view;
 import seng202.team4.controller.GoalTab.GoalRowController;
 import seng202.team4.model.data.Goal;
 
+/**
+ * Class for a PastGoalRow that is displayed in the past goals list of the Goals tab.
+ */
 public class PastGoalRowItem extends GoalRowItem {
     /**
      * Constructor for PastGoalRowItem

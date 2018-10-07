@@ -3,6 +3,9 @@ package seng202.team4.model.data.Keys;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * Class that encapsulates the key object used to store Activities in the database.
+ */
 public class ActivityKey {
     private String name;    // name of the activity this object describes
     private LocalDate date; // date of the activity this object describes

@@ -58,7 +58,11 @@ public class ProfileListItem extends AnchorPane {
     }
 
 
-    /** Gets the profile key of the ProfileListItem. */
+    /**
+     * Gets the profile key of the ProfileListItem.
+     *
+     * @return Gets the ProfileKey of the profile that the ProfileListItem represents.
+     */
     public ProfileKey getProfileKey() {
         return profileKey;
     }

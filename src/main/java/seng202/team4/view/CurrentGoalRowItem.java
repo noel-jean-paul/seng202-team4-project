@@ -3,6 +3,9 @@ package seng202.team4.view;
 import seng202.team4.controller.GoalTab.GoalRowController;
 import seng202.team4.model.data.Goal;
 
+/**
+ * Activity row for a current goal.
+ */
 public class CurrentGoalRowItem extends GoalRowItem {
     /**
      * Constructor for the currentGoalRowItem

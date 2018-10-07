@@ -10,6 +10,23 @@ public class ProfileKey implements Comparable<ProfileKey> {
     private String firstName;
     private String lastName;
 
+    /**
+     * Creates a new ProfileKey.
+     *
+     * @param firstName The first name component of the profile key.
+     * @param lastName The last name component of the profile key.
+     */
+    public ProfileKey(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    /**
+     * Checks whether this ProfileKey is equal to another.
+     *
+     * @param o The other ProfileKey to compare with.
+     * @return true if the two ProfileKeys are equal, false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -19,6 +36,10 @@ public class ProfileKey implements Comparable<ProfileKey> {
                 Objects.equals(getLastName(), that.getLastName());
     }
 
+    /**
+     * Generates a hash code for the ProfileKey.
+     * @return The hash code fo the ProfileKey.
+     */
     @Override
     public int hashCode() {
 
@@ -46,16 +67,18 @@ public class ProfileKey implements Comparable<ProfileKey> {
         }
     }
 
-
-    public ProfileKey(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
+    /**
+     * Gets the first name component of the ProfileKey.
+     * @return the first name component of the ProfileKey.
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Gets the last name component of the ProfileKey.
+     * @return the last name component of the ProfileKey.
+     */
     public String getLastName() {
         return lastName;
     }

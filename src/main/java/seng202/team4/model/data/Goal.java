@@ -14,7 +14,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Objects;
 
-
+/**
+ * Class thar represents a Goal that allows the user to set targets for their exercise.
+ */
 public class Goal implements Comparable<Goal>, CalendarItem {
     /** The minimum distance for a distance goal. */
     public static final double MIN_GOAL_DISTANCE = 1.0;

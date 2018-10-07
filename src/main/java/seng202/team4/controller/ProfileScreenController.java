@@ -128,8 +128,10 @@ public class ProfileScreenController extends Controller {
     /** Index of the current profile image selected. */
     private int currentImageIndex = 0;
 
-    /** Creates a new ProfileScreenController with the given ApplicationStateManager.
-     **/
+    /**
+     * Creates a new ProfileScreenController with the given ApplicationStateManager.
+     * @param applicationStateManager The ApplicationStateManager of the app.
+     */
     public ProfileScreenController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
         profilePictures = new ArrayList<Image>();

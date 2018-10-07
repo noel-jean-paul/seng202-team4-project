@@ -10,7 +10,9 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
-
+/**
+ * Class with methods for storing data in the database.
+ */
 abstract public class DataStorer extends DataAccesser {
     /**Class to handle inserting and deleting of objects from the database */
 

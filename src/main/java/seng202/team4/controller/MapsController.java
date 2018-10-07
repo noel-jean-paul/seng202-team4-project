@@ -33,7 +33,11 @@ public class MapsController extends Controller {
 
 
 
-    /** Creates a new MapsController with the given ApplicationStateManager. */
+    /**
+     * Creates a new MapsController with the given ApplicationStateManager.
+     *
+     * @param applicationStateManager The ApplicationStateManager of the app.
+     */
     public MapsController(ApplicationStateManager applicationStateManager) {
         super(applicationStateManager);
     }

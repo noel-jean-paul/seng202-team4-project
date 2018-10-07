@@ -231,7 +231,8 @@ public class RawDataViewerController extends Controller {
 
 
     /**
-     * checks each of the fields of data row to see if they are within the accepted range, before adding them as a data row
+     * Checks each of the fields of the data row to see if they are within the accepted range, before adding them as a data row.
+     * @param buttonType The type of button that has been pressed (1 = add row button).
      */
     public void fieldErrorChecking(int buttonType) {
         // Try to parse the date string to check that it is in a valid format.

@@ -123,6 +123,11 @@ public class WarningDescriptionPopUpController extends Controller{
         descriptionText.setText(text);
     }
 
+    /**
+     * Sets the Activity name label.
+     *
+     * @param activityName The name of the Activity to set the label to.
+     */
     public void setActivityNameLabel(String activityName) {
         activityNameLabel.setText(activityName);
     }
