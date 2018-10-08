@@ -3,6 +3,9 @@ package seng202.team4.controller.healthtab;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -268,7 +271,7 @@ public class HealthTabController extends Controller {
      */
     public void reloadTab() {
         if (!tabLoaded) {
-            boolean hasInternetConnection;
+
             ObservableList<HealthWarning> warningList = FXCollections.observableArrayList(
                     applicationStateManager.getCurrentProfile().getWarningList());
             dateColumn.setCellValueFactory(new PropertyValueFactory<HealthWarning, LocalDate>("warningDate"));
@@ -278,16 +281,35 @@ public class HealthTabController extends Controller {
             ScrollBar scrollBarHorizontal = (ScrollBar) healthWarningTable.lookup(".scroll-bar:hotizontal");
             scrollBarHorizontal.setVisible(false);
 
-            System.out.println("About to check internet");
-            hasInternetConnection = verifyConnection();
-            System.out.println("Finished checking internet");
-            if (hasInternetConnection) {
-                currentUrl = "https://www.google.com/";
-                engine.load(currentUrl);
-                webBrowser.toFront();
-            } else {
-                imagePane.toFront();
-            }
+            // Checks for internet connection on another thread.
+            Task<Void> sleeper = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+
+                    }
+                    return null;
+                }
+            };
+            sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent event) {
+                    System.out.println("About to check internet");
+                    boolean hasInternetConnection = verifyConnection();
+                    System.out.println("Finished checking internet");
+                    if (hasInternetConnection) {
+                        currentUrl = "https://www.google.com/";
+                        engine.load(currentUrl);
+                        webBrowser.toFront();
+                    } else {
+                        imagePane.toFront();
+                    }
+                }
+            });
+            new Thread(sleeper).start();    //Starts the thread that checks for internet.
+
         }
         tabLoaded = !tabLoaded;
     }
