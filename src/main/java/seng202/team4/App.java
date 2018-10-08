@@ -59,21 +59,6 @@ public class App extends Application {
                        true);
         }
 
-        // Test if the database file is already connected to another instance of the app.
-        Profile profile = new Profile("", "", "2000-01-01", 100,
-                1.00);
-        try {
-            // Use a first name and last name that are shorter than can be created through the app
-            DataStorer.insertProfile(profile);
-            DataStorer.deleteProfile(profile);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Terminate this instance of the app
-            GuiUtilities.displayErrorMessage("Step-by-Step Fitness Tracker is aleady open", "",
-                    true);
-        }
-
-
         // Creates base scene.
         Scene baseScene = new Scene(new Group(), 900, 600);
 

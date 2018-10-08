@@ -31,7 +31,4 @@ public class CorruptActivity extends Activity {
     public double getPercentageCorrupt() {
         return (((double) corruptRows)/((double)totalRows))*100;
     }
-
-
-
 }
