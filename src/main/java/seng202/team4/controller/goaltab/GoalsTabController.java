@@ -207,7 +207,9 @@ public class GoalsTabController extends Controller {
             // Update the currentGoals of the currently loaded profile - Do not remove completed/expired goals from the current goals
             GoalListPair goalListPair = applicationStateManager.getCurrentProfile().updateCurrentGoals(false);
             // Display notications of which goals were completed and which expired if any completed/expired goals were found
+            System.out.println(goalListPair.getCompletedGoals());
             if (goalListPair.containsGoals()) {
+                System.out.println("contains goals");
                 displayGoalNotifications(goalListPair);
             }
         } catch (SQLException e) {

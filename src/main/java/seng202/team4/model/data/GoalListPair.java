@@ -40,6 +40,6 @@ public class GoalListPair {
      * @return true if at least one of the lists contain a goal, false otherwise
      */
     public boolean containsGoals() {
-        return (expiredGoals.size() != 0 && completedGoals.size() != 0);
+        return (expiredGoals.size() != 0 || completedGoals.size() != 0);
     }
 }
