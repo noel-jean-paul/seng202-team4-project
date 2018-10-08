@@ -14,7 +14,6 @@ import seng202.team4.GuiUtilities;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.Controller;
 import seng202.team4.controller.MainScreenController;
-import seng202.team4.controller.profile.ProfileDeletionConfirmationController;
 import seng202.team4.model.data.Profile;
 
 import java.net.URL;

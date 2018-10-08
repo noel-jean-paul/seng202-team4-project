@@ -13,8 +13,6 @@ import javafx.scene.text.Font;
 import seng202.team4.GuiUtilities;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.Controller;
-import seng202.team4.controller.activityimport.ActivityConfirmationRowController;
-import seng202.team4.controller.activityimport.ActivityImportWarningPopUpController;
 import seng202.team4.controller.activitytab.ActivityTabController;
 import seng202.team4.controller.healthtab.HealthWarningDetectedPopup;
 import seng202.team4.model.data.Activity;

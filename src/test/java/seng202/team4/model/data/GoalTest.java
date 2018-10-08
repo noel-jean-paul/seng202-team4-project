@@ -4,14 +4,14 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
 import seng202.team4.model.database.DataAccesser;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
 
 import java.sql.SQLException;
-import java.time.*;
+import java.time.Duration;
+import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 

@@ -9,7 +9,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import seng202.team4.App;
 import seng202.team4.GuiUtilities;
-import seng202.team4.controller.*;
+import seng202.team4.controller.ApplicationStateManager;
+import seng202.team4.controller.Controller;
 import seng202.team4.controller.activityimport.ImportActivitiesPreviewScreenController;
 
 import java.io.File;

@@ -1,9 +1,9 @@
 package seng202.team4.model.data;
 
 import seng202.team4.GuiUtilities;
+import seng202.team4.model.data.enums.ProfileFields;
 import seng202.team4.model.data.keys.ActivityKey;
 import seng202.team4.model.data.keys.ProfileKey;
-import seng202.team4.model.data.enums.ProfileFields;
 import seng202.team4.model.database.DataLoader;
 import seng202.team4.model.database.DataStorer;
 import seng202.team4.model.database.DataUpdater;

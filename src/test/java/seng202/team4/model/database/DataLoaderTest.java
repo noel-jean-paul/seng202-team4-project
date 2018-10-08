@@ -1,10 +1,13 @@
 package seng202.team4.model.database;
 
 import org.junit.*;
-import seng202.team4.model.data.*;
-import seng202.team4.model.data.keys.ProfileKey;
+import seng202.team4.model.data.Activity;
+import seng202.team4.model.data.DataRow;
+import seng202.team4.model.data.Goal;
+import seng202.team4.model.data.Profile;
 import seng202.team4.model.data.enums.ActivityType;
 import seng202.team4.model.data.enums.GoalType;
+import seng202.team4.model.data.keys.ProfileKey;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

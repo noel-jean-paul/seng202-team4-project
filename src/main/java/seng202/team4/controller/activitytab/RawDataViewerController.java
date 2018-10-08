@@ -14,7 +14,6 @@ import seng202.team4.App;
 import seng202.team4.GuiUtilities;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.Controller;
-import seng202.team4.controller.activitytab.ActivityTabController;
 import seng202.team4.model.data.Activity;
 import seng202.team4.model.data.DataRow;
 
