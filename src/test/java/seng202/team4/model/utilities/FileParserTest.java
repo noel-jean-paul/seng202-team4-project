@@ -16,7 +16,7 @@ import static org.junit.Assert.assertThat;
 public class FileParserTest {
 
     private static FileParser testImport;
-    private String filename = "seng202_2018_example_data.csv";
+    private String filename = "inDemoData.csv";
     private ArrayList<Activity> testValidActivities = new ArrayList<>();
     private ArrayList<CorruptActivity> testWarningActivities = new ArrayList<>();
     private ArrayList<Activity> testSkippedActivities = new ArrayList<>();

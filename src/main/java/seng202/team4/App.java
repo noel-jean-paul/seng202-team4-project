@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import seng202.team4.actions.DemoSetup;
 import seng202.team4.controller.ApplicationStateManager;
 import seng202.team4.controller.LoginController;
 import seng202.team4.controller.MainScreenController;
@@ -102,6 +103,7 @@ public class App extends Application {
      *
      * @param args The arguments to run the app with.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+        DemoSetup.main();
         launch(args); }
 }
