@@ -104,6 +104,6 @@ public class App extends Application {
      * @param args The arguments to run the app with.
      */
     public static void main(String[] args) throws SQLException {
-        DemoSetup.main();
+        
         launch(args); }
 }

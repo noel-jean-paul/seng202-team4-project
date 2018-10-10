@@ -29,7 +29,7 @@ public class Profile {
     public static final double MAX_HEIGHT = 3.0;
     public static final double MIN_WEIGHT = 10;
     public static final double MIN_HEIGHT = 0.5;
-    private static final String DEFAULT_URL = "/images/default-profile-icon.png";
+    public static final String DEFAULT_URL = "/images/default-profile-icon.png";
 
     public static final LocalDate MIN_DOB = LocalDate.parse("1900-01-01");
 
