@@ -1,3 +1,6 @@
+# Custom
+.mailmap
+
 # Intellij
 .idea/
 *.iml
