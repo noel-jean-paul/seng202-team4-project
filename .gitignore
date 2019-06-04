@@ -1,5 +1,6 @@
 # Custom
 .mailmap
+ErrorLog.txt
 
 # Intellij
 .idea/
